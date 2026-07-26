@@ -437,7 +437,7 @@
 
     <script>
         // =========================================================================
-        // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO DƯỚI (DẠNG .../exec)
+        // DÁN URL WEB APP CỦA BẠN VÀO GIỮA 2 DẤU NGOẶC KÉP Ở CÂU LỆNH DƯỚI
         // =========================================================================
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
 
@@ -490,13 +490,13 @@
         }
 
         async function fetchDataFromGAS() {
-            if (GAS_WEB_APP_URL.includes("https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec")) {
-                showToast("⚠️ Vui lòng dán Link Web App vào biến GAS_WEB_APP_URL!", true);
+            if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY") {
+                showToast("⚠️ Vui lòng dán URL Web App vào file index.html!", true);
                 return;
             }
             try {
-                showToast("⏳ Đang đồng bộ với Google Sheets...");
-                const response = await fetch(GAS_WEB_APP_URL);
+                showToast("⏳ Đang đồng bộ từ Google Sheets...");
+                const response = await fetch(GAS_WEB_APP_URL, { redirect: "follow" });
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
@@ -517,10 +517,10 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
-                    showToast("✅ Đã đồng bộ Google Sheets thành công!");
+                    showToast("✅ Đã kết nối & đồng bộ dữ liệu thành công!");
                 }
             } catch (err) {
-                showToast("⚠️ Đang dùng dữ liệu lưu tạm trên trình duyệt.", true);
+                showToast("⚠️ Sử dụng bộ nhớ đệm trên máy tính.", true);
             }
         }
 
@@ -607,7 +607,7 @@
             saveToLocalStorage();
             resetForm();
             renderLogTable();
-            showToast("⏳ Đang đẩy lên Google Sheets...");
+            showToast("⏳ Đang ghi vào Google Sheets...");
 
             const rowData = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
@@ -619,16 +619,17 @@
                 const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData })
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData }),
+                    redirect: "follow"
                 });
                 const resData = await response.json();
                 if(resData.status === "success") {
-                    showToast("✅ Đã lưu vào Google Sheets thành công!");
+                    showToast("✅ Đã ghi trực tiếp vào Google Sheet!");
                 } else {
                     showToast("⚠️ Lỗi từ Google Sheet: " + resData.message, true);
                 }
             } catch(err) { 
-                showToast("⚠️ Đã lưu vào bộ nhớ trình duyệt!", true); 
+                showToast("⚠️ Đã lưu vào máy tính cá nhân!", true); 
             }
         }
 
@@ -680,10 +681,11 @@
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "delete", type: "vocab", id })
+                    body: JSON.stringify({ action: "delete", type: "vocab", id }),
+                    redirect: "follow"
                 });
-                showToast("✅ Đã xóa thành công!");
-            } catch(err) { showToast("⚠️ Đã xóa trên bộ nhớ cục bộ!", true); }
+                showToast("✅ Đã xóa thành công khỏi Sheet!");
+            } catch(err) { showToast("⚠️ Đã xóa cục bộ!", true); }
         }
 
         function renderLogTable() {
@@ -817,7 +819,7 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG (TREE / ACCORDION VIEW) ---
+        // --- TAB 3: GRAMMAR BLOG ---
         function insertFormat(startTag, endTag) {
             const textarea = document.getElementById('gramContent');
             const start = textarea.selectionStart;
@@ -951,18 +953,24 @@
 
             saveToLocalStorage();
             resetGrammarForm();
-            showToast("⏳ Saving grammar post...");
+            showToast("⏳ Đang ghi vào Google Sheets...");
 
             const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData })
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData }),
+                    redirect: "follow"
                 });
-                showToast("✅ Grammar note saved!");
-            } catch(err) { showToast("⚠️ Saved to local browser memory!", true); }
+                const resData = await response.json();
+                if(resData.status === "success") {
+                    showToast("✅ Đã ghi trực tiếp vào Google Sheet!");
+                } else {
+                    showToast("⚠️ Lỗi từ Sheet: " + resData.message, true);
+                }
+            } catch(err) { showToast("⚠️ Đã lưu vào bộ nhớ cục bộ!", true); }
         }
 
         async function deleteGrammar() {
@@ -971,16 +979,17 @@
             grammarList = grammarList.filter(item => String(item.id) !== String(id));
             saveToLocalStorage();
             resetGrammarForm();
-            showToast("⏳ Deleting grammar post...");
+            showToast("⏳ Đang xóa...");
 
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "delete", type: "grammar", id })
+                    body: JSON.stringify({ action: "delete", type: "grammar", id }),
+                    redirect: "follow"
                 });
-                showToast("✅ Successfully deleted!");
-            } catch(err) { showToast("⚠️ Deleted from local storage!", true); }
+                showToast("✅ Đã xóa thành công!");
+            } catch(err) { showToast("⚠️ Đã xóa cục bộ!", true); }
         }
 
         // --- TAB 4: QUIZLET REVIEW ---
