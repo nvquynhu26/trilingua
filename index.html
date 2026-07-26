@@ -441,7 +441,7 @@
         // =========================================================================
         // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
-        const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276";
+        const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276/exec";
 
         let userVocabList = [];
         let grammarList = [];
@@ -492,7 +492,7 @@
         }
 
         async function fetchDataFromGAS() {
-            if (GAS_WEB_APP_URL === "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276") {
+            if (GAS_WEB_APP_URL === "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276/exec") {
                 showToast("⚠️ Offline Mode: Paste your GAS Web App URL!", true);
                 return;
             }
