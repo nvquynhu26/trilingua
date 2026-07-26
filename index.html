@@ -37,7 +37,18 @@
         .tab-content.active { display: block; }
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        
+        /* Grid Layouts for 4 Rows Structure */
+        .grid-row-1 { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 16px; margin-bottom: 16px; }
+        .grid-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .grid-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 16px; margin-bottom: 16px; }
+        .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+        @media (max-width: 900px) {
+            .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr; }
+        }
+
         .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
         label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
@@ -55,6 +66,8 @@
         .btn-danger { background: var(--danger); }
         .btn-edit { background: var(--edit); }
         .btn-grammar { background: var(--grammar); }
+        .btn-fmt { background: var(--surface-hover); color: var(--text); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; }
+        .btn-fmt:hover { background: var(--grammar); color: white; }
         
         .table-container { overflow-x: auto; width: 100%; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
@@ -69,9 +82,9 @@
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
         /* Grammar Blog Layout */
-        .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+        .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
         .lang-section { margin-bottom: 20px; }
         .lang-title { font-size: 1rem; font-weight: 700; color: var(--grammar); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .post-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
@@ -80,6 +93,9 @@
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
         .post-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
         .post-item.active .post-meta { color: #ddd; }
+
+        /* Format Toolbar */
+        .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); }
 
         /* Quizlet Mode */
         .quiz-container { max-width: 600px; margin: 0 auto; text-align: center; }
@@ -111,15 +127,18 @@
                 <h2 style="margin-bottom: 16px;">Add New Vocabulary</h2>
                 <form id="vocabForm" onsubmit="saveVocab(event)">
                     <input type="hidden" id="editId" value="">
-                    <div class="form-grid">
+                    
+                    <!-- Row 1: English Word, Part of Speech, Word Family (EN) -->
+                    <div class="grid-row-1">
                         <div class="form-group">
-                            <label>English Word (Type to autocomplete from books)</label>
-                            <input type="text" id="wordEN" required autocomplete="off" oninput="handleAutocomplete(this.value)">
+                            <label>English Word</label>
+                            <input type="text" id="wordEN" autocomplete="off" oninput="handleAutocomplete(this.value)">
                             <div id="autocompleteList" class="autocomplete-list"></div>
                         </div>
                         <div class="form-group">
                             <label>Part of Speech</label>
-                            <select id="pos" required>
+                            <select id="pos">
+                                <option value="">-- Select POS --</option>
                                 <option value="noun">noun (n)</option>
                                 <option value="verb">verb (v)</option>
                                 <option value="adj">adjective (adj)</option>
@@ -132,23 +151,41 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Word Family (e.g., friend (n), friendly (adj))</label>
-                            <input type="text" id="wordFamily" placeholder="Related word forms...">
+                            <label>Word Family (English)</label>
+                            <input type="text" id="wordFamilyEN" placeholder="e.g. friend (n), friendly (adj)">
                         </div>
+                    </div>
 
+                    <!-- Row 2: Spanish Word, Word Family (ES) -->
+                    <div class="grid-row-2">
                         <div class="form-group">
                             <label>Spanish Word (ES)</label>
-                            <input type="text" id="wordES" required>
+                            <input type="text" id="wordES">
                         </div>
                         <div class="form-group">
+                            <label>Word Family (Spanish)</label>
+                            <input type="text" id="wordFamilyES" placeholder="e.g. amigo (n), amigable (adj)">
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Korean Word, Word Family (KO), Vietnamese Meaning -->
+                    <div class="grid-row-3">
+                        <div class="form-group">
                             <label>Korean Word (KO)</label>
-                            <input type="text" id="wordKO" required>
+                            <input type="text" id="wordKO">
+                        </div>
+                        <div class="form-group">
+                            <label>Word Family (Korean)</label>
+                            <input type="text" id="wordFamilyKO" placeholder="e.g. 친구 (n), 친근한 (adj)">
                         </div>
                         <div class="form-group">
                             <label>Vietnamese Meaning (VI)</label>
-                            <input type="text" id="meaningVI" required>
+                            <input type="text" id="meaningVI">
                         </div>
+                    </div>
 
+                    <!-- Row 4: Main Topic, Sub-topic, Book Source, Unit -->
+                    <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
                             <select id="topic" onchange="updateSubtopics(this.value)">
@@ -166,7 +203,6 @@
                             <label>Sub-topic</label>
                             <select id="subTopic"></select>
                         </div>
-
                         <div class="form-group">
                             <label>Book Source</label>
                             <select id="book">
@@ -185,7 +221,10 @@
                             <label>Unit</label>
                             <select id="unit"></select>
                         </div>
+                    </div>
 
+                    <!-- Examples -->
+                    <div class="grid-examples">
                         <div class="form-group full-width">
                             <label>English Example Sentence</label>
                             <textarea id="exEN" rows="2" placeholder="Write an example sentence in English..."></textarea>
@@ -199,6 +238,7 @@
                             <textarea id="exKO" rows="2" placeholder="한국어로 예문을 작성하세요..."></textarea>
                         </div>
                     </div>
+
                     <div style="margin-top: 20px;">
                         <button type="submit" class="btn" id="submitBtn">Save Vocabulary</button>
                         <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelEditBtn" onclick="resetForm()">Cancel Edit</button>
@@ -270,10 +310,14 @@
         <!-- TAB 3: GRAMMAR BLOG -->
         <div id="tab3" class="tab-content">
             <div class="grammar-layout">
-                <!-- Sidebar List -->
+                <!-- Sidebar List & Search -->
                 <div class="sidebar">
-                    <button class="btn btn-grammar full-width" style="margin-bottom: 16px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
+                    <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
                     
+                    <div style="margin-bottom: 16px;">
+                        <input type="text" id="gramSearchInput" placeholder="🔍 Search notes by keyword, title, content..." oninput="renderGrammarSidebar()">
+                    </div>
+
                     <div class="lang-section">
                         <div class="lang-title"><span>🇬🇧 English</span><span id="count-en">0</span></div>
                         <ul class="post-list" id="list-en"></ul>
@@ -293,10 +337,10 @@
                     <h2 id="grammarHeader" style="margin-bottom: 16px; color: var(--grammar);">Create Grammar Note</h2>
                     <form id="grammarForm" onsubmit="saveGrammar(event)">
                         <input type="hidden" id="grammarId" value="">
-                        <div class="form-grid">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                             <div class="form-group">
                                 <label>Language</label>
-                                <select id="gramLang" required>
+                                <select id="gramLang">
                                     <option value="English">English</option>
                                     <option value="Español">Español</option>
                                     <option value="한국어">한국어</option>
@@ -304,21 +348,33 @@
                             </div>
                             <div class="form-group">
                                 <label>Grammar Topic / Category</label>
-                                <input type="text" id="gramTopic" required placeholder="e.g., Present Perfect, Subjunctive, 은/는 vs 이/가...">
-                            </div>
-                            <div class="form-group full-width">
-                                <label>Post Title</label>
-                                <input type="text" id="gramTitle" required placeholder="e.g., How to use Present Perfect for life experiences...">
-                            </div>
-                            <div class="form-group full-width">
-                                <label>Keywords (for quick search)</label>
-                                <input type="text" id="gramKeywords" placeholder="e.g., experience, since, for, past participle...">
-                            </div>
-                            <div class="form-group full-width">
-                                <label>Lesson Content & Usage Notes</label>
-                                <textarea id="gramContent" rows="12" required placeholder="Write detailed grammar rules, structures, and example sentences here..."></textarea>
+                                <input type="text" id="gramTopic" placeholder="e.g., Present Perfect, Subjunctive, 은/는 vs 이/가...">
                             </div>
                         </div>
+
+                        <div class="form-group full-width" style="margin-bottom: 16px;">
+                            <label>Post Title</label>
+                            <input type="text" id="gramTitle" placeholder="e.g., How to use Present Perfect for life experiences...">
+                        </div>
+                        <div class="form-group full-width" style="margin-bottom: 16px;">
+                            <label>Keywords (for quick search)</label>
+                            <input type="text" id="gramKeywords" placeholder="e.g., experience, since, for, past participle...">
+                        </div>
+
+                        <!-- Formatting Toolbar & Large Textarea -->
+                        <div class="form-group full-width">
+                            <label>Lesson Content & Usage Notes</label>
+                            <div class="editor-toolbar">
+                                <button type="button" class="btn-fmt" onclick="insertFormat('<b>', '</b>')" title="Bold text"><b>B</b> Bold</button>
+                                <button type="button" class="btn-fmt" onclick="insertFormat('<i>', '</i>')" title="Italic / Light text"><i>I</i> Light/Italic</button>
+                                <button type="button" class="btn-fmt" onclick="insertFormat('<span style=\'font-size: 1.25em; font-weight: bold;\'>', '</span>')" title="Big text">Large Text</button>
+                                <button type="button" class="btn-fmt" onclick="insertFormat('<span style=\'font-size: 0.85em; color: var(--text-secondary);\'>', '</span>')" title="Small text">Small Text</button>
+                                <button type="button" class="btn-fmt" onclick="insertFormat('<h3>', '</h3>')" title="Heading">Heading</button>
+                                <button type="button" class="btn-fmt" onclick="insertFormat('• ', '')" title="Bullet point">• Bullet</button>
+                            </div>
+                            <textarea id="gramContent" rows="18" style="font-size: 1.05rem; line-height: 1.6;" placeholder="Write detailed grammar rules, structures, and example sentences here..."></textarea>
+                        </div>
+
                         <div style="margin-top: 20px; display: flex; gap: 10px;">
                             <button type="submit" class="btn btn-grammar" id="gramSubmitBtn">Save Grammar Note</button>
                             <button type="button" class="btn btn-danger" id="gramDeleteBtn" style="display: none;" onclick="deleteGrammar()">Delete Note</button>
@@ -421,8 +477,8 @@
             updateSubtopics(document.getElementById('topic').value);
             renderTopicNav();
             populateQuizTopics();
-            loadFromLocalStorage(); // Load ngay lập tức từ bộ nhớ máy tính
-            fetchDataFromGAS();     // Đồng bộ ngầm với Google Sheets
+            loadFromLocalStorage();
+            fetchDataFromGAS();
         };
 
         function generateUnits() {
@@ -433,7 +489,6 @@
             }
         }
 
-        // --- LOCAL STORAGE BACKUP (CHỐNG MẤT DỮ LIỆU KHI F5) ---
         function loadFromLocalStorage() {
             const savedVocab = localStorage.getItem("trilingua_vocab");
             const savedGrammar = localStorage.getItem("trilingua_grammar");
@@ -451,7 +506,7 @@
 
         async function fetchDataFromGAS() {
             if (GAS_WEB_APP_URL === "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY") {
-                showToast("⚠️ Running in Offline Mode! Replace GAS URL to sync with Google Sheets.", true);
+                showToast("⚠️ Offline Mode: Please replace GAS_WEB_APP_URL with your Web App URL!", true);
                 return;
             }
             try {
@@ -462,8 +517,9 @@
                     if (data.userVocab && data.userVocab.length > 0) {
                         userVocabList = data.userVocab.map(row => ({
                             id: row[0], timestamp: row[1], topic: row[2], subTopic: row[3],
-                            en: row[4], es: row[5], ko: row[6], vi: row[7], family: row[8],
-                            pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14]
+                            en: row[4], es: row[5], ko: row[6], vi: row[7], familyEN: row[8],
+                            pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
+                            familyES: row[15] || "", familyKO: row[16] || ""
                         }));
                     }
                     if (data.masterVocab) {
@@ -476,7 +532,7 @@
                             id: row[0], timestamp: row[1], lang: row[2], topic: row[3], title: row[4], keywords: row[5], content: row[6]
                         }));
                     }
-                    saveToLocalStorage(); // Cập nhật lại vào máy
+                    saveToLocalStorage();
                     renderLogTable();
                     renderTab2();
                     renderGrammarSidebar();
@@ -484,7 +540,7 @@
                     showToast("✅ Successfully synchronized!");
                 }
             } catch (err) {
-                showToast("⚠️ Using local browser data (Offline Mode).", true);
+                showToast("⚠️ Using local browser data.", true);
             }
         }
 
@@ -507,18 +563,15 @@
             setTimeout(() => { toast.style.display = "none"; }, 3000);
         }
 
-        // --- TỐI ƯU GIỌNG ĐỌC AI (CHƯẨN HÀN, TÂY, ANH) ---
         function speak(text, langCode) {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel(); // Dừng câu đang đọc dở
+            if (!window.speechSynthesis || !text) return;
+            window.speechSynthesis.cancel();
             
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
             
-            // Tìm giọng chuẩn của hệ thống theo mã ngôn ngữ
             let selectedVoice = voices.find(v => v.lang === langCode || v.lang.replace('_', '-') === langCode);
             if (!selectedVoice) {
-                // Nếu không có mã chính xác, tìm theo tiền tố (vd: 'ko' cho tiếng Hàn)
                 const prefix = langCode.split('-')[0];
                 selectedVoice = voices.find(v => v.lang.startsWith(prefix));
             }
@@ -529,10 +582,8 @@
             } else {
                 utterance.lang = langCode;
             }
-            
             window.speechSynthesis.speak(utterance);
         }
-        // Nạp danh sách giọng đọc sẵn vào trình duyệt
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
         // --- TAB 1: VOCABULARY ---
@@ -560,7 +611,7 @@
                 item.onclick = () => {
                     document.getElementById('wordEN').value = m.en;
                     document.getElementById('pos').value = m.pos;
-                    document.getElementById('wordFamily').value = m.family;
+                    document.getElementById('wordFamilyEN').value = m.family;
                     if(TOPIC_STRUCTURE[m.topic]) {
                         document.getElementById('topic').value = m.topic;
                         updateSubtopics(m.topic);
@@ -590,7 +641,9 @@
                 es: document.getElementById('wordES').value.trim(),
                 ko: document.getElementById('wordKO').value.trim(),
                 vi: document.getElementById('meaningVI').value.trim(),
-                family: document.getElementById('wordFamily').value.trim(),
+                familyEN: document.getElementById('wordFamilyEN').value.trim(),
+                familyES: document.getElementById('wordFamilyES').value.trim(),
+                familyKO: document.getElementById('wordFamilyKO').value.trim(),
                 pos: document.getElementById('pos').value.trim(),
                 exEN: document.getElementById('exEN').value.trim(),
                 exES: document.getElementById('exES').value.trim(),
@@ -610,17 +663,22 @@
             renderLogTable();
             showToast("⏳ Saving to Google Sheets...");
 
-            const rowData = [newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, newEntry.family, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit];
+            const rowData = [
+                newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
+                newEntry.familyEN, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit, 
+                newEntry.familyES, newEntry.familyKO
+            ];
+
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Gửi lệnh không chặn
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData })
                 });
                 showToast("✅ Saved securely!");
             } catch(err) {
-                showToast("⚠️ Saved in browser RAM & LocalStorage!", true);
+                showToast("⚠️ Saved in browser memory!", true);
             }
         }
 
@@ -630,22 +688,24 @@
             switchTab('tab1');
             document.querySelectorAll('.tab-btn')[0].classList.add('active');
             document.getElementById('editId').value = item.id;
-            document.getElementById('wordEN').value = item.en;
-            document.getElementById('wordES').value = item.es;
-            document.getElementById('wordKO').value = item.ko;
-            document.getElementById('meaningVI').value = item.vi;
-            document.getElementById('wordFamily').value = item.family;
-            document.getElementById('pos').value = item.pos;
+            document.getElementById('wordEN').value = item.en || "";
+            document.getElementById('wordES').value = item.es || "";
+            document.getElementById('wordKO').value = item.ko || "";
+            document.getElementById('meaningVI').value = item.vi || "";
+            document.getElementById('wordFamilyEN').value = item.familyEN || "";
+            document.getElementById('wordFamilyES').value = item.familyES || "";
+            document.getElementById('wordFamilyKO').value = item.familyKO || "";
+            document.getElementById('pos').value = item.pos || "";
             if(TOPIC_STRUCTURE[item.topic]) {
                 document.getElementById('topic').value = item.topic;
                 updateSubtopics(item.topic);
                 document.getElementById('subTopic').value = item.subTopic;
             }
-            document.getElementById('book').value = item.book;
-            document.getElementById('unit').value = item.unit;
-            document.getElementById('exEN').value = item.exEN;
-            document.getElementById('exES').value = item.exES;
-            document.getElementById('exKO').value = item.exKO;
+            document.getElementById('book').value = item.book || "";
+            document.getElementById('unit').value = item.unit || "";
+            document.getElementById('exEN').value = item.exEN || "";
+            document.getElementById('exES').value = item.exES || "";
+            document.getElementById('exKO').value = item.exKO || "";
             document.getElementById('submitBtn').innerText = "Update Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "inline-flex";
             window.scrollTo({top: 0, behavior: 'smooth'});
@@ -704,9 +764,9 @@
             filtered.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
-                        <td>${item.es} <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
-                        <td>${item.ko} <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button></td>
+                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td>${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
+                        <td>${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
                         <td>${item.vi}</td>
                         <td style="font-size:0.8rem; color:var(--text-secondary);">${item.topic}<br><em>${item.book} (${item.unit})</em></td>
                         <td>
@@ -768,9 +828,12 @@
                 if (!matchTop || !matchSub) return false;
 
                 if (!query) return true;
-                return item.en.toLowerCase().includes(query) || item.es.toLowerCase().includes(query) ||
-                       item.ko.toLowerCase().includes(query) || item.vi.toLowerCase().includes(query) ||
-                       item.topic.toLowerCase().includes(query) || item.subTopic.toLowerCase().includes(query);
+                return (item.en && item.en.toLowerCase().includes(query)) || 
+                       (item.es && item.es.toLowerCase().includes(query)) ||
+                       (item.ko && item.ko.toLowerCase().includes(query)) || 
+                       (item.vi && item.vi.toLowerCase().includes(query)) ||
+                       (item.topic && item.topic.toLowerCase().includes(query)) || 
+                       (item.subTopic && item.subTopic.toLowerCase().includes(query));
             });
 
             if (filtered.length === 0) {
@@ -781,11 +844,16 @@
             filtered.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
-                        <td>${item.es} <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
-                        <td>${item.ko} <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button></td>
+                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td>${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
+                        <td>${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
                         <td>${item.vi}</td>
-                        <td style="font-size:0.85rem;"><em>${item.pos}</em><br>${item.family}</td>
+                        <td style="font-size:0.85rem;">
+                            <em>${item.pos}</em><br>
+                            ${item.familyEN ? `EN: ${item.familyEN}<br>` : ''}
+                            ${item.familyES ? `ES: ${item.familyES}<br>` : ''}
+                            ${item.familyKO ? `KO: ${item.familyKO}` : ''}
+                        </td>
                         <td style="font-size:0.85rem; color:var(--text-secondary);">
                             ${item.exEN ? `🇬🇧 ${item.exEN}<br>` : ''}
                             ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
@@ -798,7 +866,21 @@
         }
 
         // --- TAB 3: GRAMMAR BLOG ---
+        function insertFormat(startTag, endTag) {
+            const textarea = document.getElementById('gramContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selectedText = text.substring(start, end) || "text";
+            const replacement = startTag + selectedText + endTag;
+            textarea.value = text.substring(0, start) + replacement + text.substring(end);
+            textarea.focus();
+            textarea.selectionStart = start + startTag.length;
+            textarea.selectionEnd = start + startTag.length + selectedText.length;
+        }
+
         function renderGrammarSidebar() {
+            const searchQuery = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
             const listEN = document.getElementById('list-en');
             const listES = document.getElementById('list-es');
             const listKO = document.getElementById('list-ko');
@@ -808,9 +890,17 @@
             const currentEditId = document.getElementById('grammarId').value;
 
             grammarList.forEach(g => {
+                const matchSearch = !searchQuery || 
+                    (g.title && g.title.toLowerCase().includes(searchQuery)) ||
+                    (g.topic && g.topic.toLowerCase().includes(searchQuery)) ||
+                    (g.keywords && g.keywords.toLowerCase().includes(searchQuery)) ||
+                    (g.content && g.content.toLowerCase().includes(searchQuery));
+
+                if (!matchSearch) return;
+
                 const li = document.createElement('li');
                 li.className = `post-item ${String(g.id) === String(currentEditId) ? 'active' : ''}`;
-                li.innerHTML = `<div><strong>${g.title}</strong></div><div class="post-meta">📂 ${g.topic} | 🕒 ${g.timestamp}</div>`;
+                li.innerHTML = `<div><strong>${g.title || "Untitled"}</strong></div><div class="post-meta">📂 ${g.topic || "General"} | 🕒 ${g.timestamp}</div>`;
                 li.onclick = () => loadGrammarPost(g.id);
 
                 if (g.lang === "English") { listEN.appendChild(li); cEN++; }
@@ -827,11 +917,11 @@
             const g = grammarList.find(i => String(i.id) === String(id));
             if (!g) return;
             document.getElementById('grammarId').value = g.id;
-            document.getElementById('gramLang').value = g.lang;
-            document.getElementById('gramTopic').value = g.topic;
-            document.getElementById('gramTitle').value = g.title;
+            document.getElementById('gramLang').value = g.lang || "English";
+            document.getElementById('gramTopic').value = g.topic || "";
+            document.getElementById('gramTitle').value = g.title || "";
             document.getElementById('gramKeywords').value = g.keywords || "";
-            document.getElementById('gramContent').value = g.content;
+            document.getElementById('gramContent').value = g.content || "";
             document.getElementById('grammarHeader').innerText = "Edit Grammar Note";
             document.getElementById('gramSubmitBtn').innerText = "Update Note";
             document.getElementById('gramDeleteBtn').style.display = "inline-flex";
@@ -941,15 +1031,15 @@
             const promptLang = document.getElementById('quizPrompt').value;
             const promptText = promptLang === "VI" ? item.vi : item.en;
 
-            document.getElementById('fcPrompt').innerText = promptText;
+            document.getElementById('fcPrompt').innerText = promptText || "---";
             document.getElementById('fcHint').style.display = 'block';
             document.getElementById('fcAnswer').style.display = 'none';
-            document.getElementById('fcEN').innerText = `🇬🇧 ${item.en}`;
-            document.getElementById('fcES').innerText = `🇪🇸 ${item.es}`;
-            document.getElementById('fcKO').innerText = `🇰🇷 ${item.ko}`;
-            document.getElementById('fcFamily').innerText = `Family: ${item.family} | POS: ${item.pos}`;
+            document.getElementById('fcEN').innerText = `🇬🇧 ${item.en || ""}`;
+            document.getElementById('fcES').innerText = `🇪🇸 ${item.es || ""}`;
+            document.getElementById('fcKO').innerText = `🇰🇷 ${item.ko || ""}`;
+            document.getElementById('fcFamily').innerText = `EN Family: ${item.familyEN || "-"} | POS: ${item.pos || "-"}`;
 
-            document.getElementById('typePrompt').innerText = promptText;
+            document.getElementById('typePrompt').innerText = promptText || "---";
             document.getElementById('inputEN').style.display = promptLang === "EN" ? 'none' : 'block';
             document.getElementById('inputEN').value = "";
             document.getElementById('inputES').value = "";
@@ -965,7 +1055,7 @@
             hint.style.display = isHidden ? 'none' : 'block';
             if(isHidden) {
                 const item = quizList[currentQuizIndex];
-                speak(item.en, 'en-US');
+                if(item.en) speak(item.en, 'en-US');
             }
         }
 
@@ -996,9 +1086,9 @@
             const valES = cleanText(document.getElementById('inputES').value);
             const valKO = cleanText(document.getElementById('inputKO').value);
 
-            const isENCorrect = promptLang === "EN" || valEN === cleanText(item.en);
-            const isESCorrect = valES === cleanText(item.es);
-            const isKOCorrect = valKO === cleanText(item.ko);
+            const isENCorrect = promptLang === "EN" || !item.en || valEN === cleanText(item.en);
+            const isESCorrect = !item.es || valES === cleanText(item.es);
+            const isKOCorrect = !item.ko || valKO === cleanText(item.ko);
 
             const resEl = document.getElementById('typeResult');
             resEl.style.display = 'block';
@@ -1006,15 +1096,15 @@
             if (isENCorrect && isESCorrect && isKOCorrect) {
                 resEl.style.color = "var(--primary)";
                 resEl.innerHTML = `🎉 Perfect Match! Moving to next card...`;
-                speak(item.en, 'en-US');
+                if(item.en) speak(item.en, 'en-US');
                 setTimeout(() => { nextCard(true); }, 1500);
             } else {
                 resEl.style.color = "var(--danger)";
                 resEl.innerHTML = `
-                    ❌ Incorrect! The exact answers are:<br>
-                    ${promptLang === "VI" ? `🇬🇧 <b>${item.en}</b> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button><br>` : ''}
-                    🇪🇸 <b>${item.es}</b> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button><br>
-                    🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>
+                    ❌ Incorrect! The answers are:<br>
+                    ${promptLang === "VI" && item.en ? `🇬🇧 <b>${item.en}</b> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button><br>` : ''}
+                    ${item.es ? `🇪🇸 <b>${item.es}</b> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button><br>` : ''}
+                    ${item.ko ? `🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>` : ''}
                     <button class="btn btn-sm" style="margin-top:10px;" onclick="nextCard(false)">Continue (Review Later)</button>
                 `;
             }
