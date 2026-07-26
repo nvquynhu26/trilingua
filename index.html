@@ -437,7 +437,7 @@
 
     <script>
         // =========================================================================
-        // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO DƯỚI
+        // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO DƯỚI (DẠNG .../exec)
         // =========================================================================
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby-zAnxu9VoIxDyZkDpjWAWiTrbUnYsa7hTd8rvM0ojAeN9QBT__jnutpALNBiqIHBEdA/exec";
 
@@ -490,12 +490,12 @@
         }
 
         async function fetchDataFromGAS() {
-            if (GAS_WEB_APP_URL === "https://script.google.com/macros/s/AKfycby-zAnxu9VoIxDyZkDpjWAWiTrbUnYsa7hTd8rvM0ojAeN9QBT__jnutpALNBiqIHBEdA/exec") {
-                showToast("⚠️ Offline Mode: Paste your GAS Web App URL!", true);
+            if (GAS_WEB_APP_URL.includes("https://script.google.com/macros/s/AKfycby-zAnxu9VoIxDyZkDpjWAWiTrbUnYsa7hTd8rvM0ojAeN9QBT__jnutpALNBiqIHBEdA/exec")) {
+                showToast("⚠️ Vui lòng dán Link Web App vào biến GAS_WEB_APP_URL!", true);
                 return;
             }
             try {
-                showToast("⏳ Synchronizing with Google Sheets...");
+                showToast("⏳ Đang đồng bộ với Google Sheets...");
                 const response = await fetch(GAS_WEB_APP_URL);
                 const data = await response.json();
                 if (data.status === "success") {
@@ -517,10 +517,10 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
-                    showToast("✅ Synced successfully!");
+                    showToast("✅ Đã đồng bộ Google Sheets thành công!");
                 }
             } catch (err) {
-                showToast("⚠️ Using local browser data.", true);
+                showToast("⚠️ Đang dùng dữ liệu lưu tạm trên trình duyệt.", true);
             }
         }
 
@@ -607,7 +607,7 @@
             saveToLocalStorage();
             resetForm();
             renderLogTable();
-            showToast("⏳ Saving to Google Sheets...");
+            showToast("⏳ Đang đẩy lên Google Sheets...");
 
             const rowData = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
@@ -616,13 +616,20 @@
             ];
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData })
                 });
-                showToast("✅ Saved to Google Sheets!");
-            } catch(err) { showToast("⚠️ Saved locally!", true); }
+                const resData = await response.json();
+                if(resData.status === "success") {
+                    showToast("✅ Đã lưu vào Google Sheets thành công!");
+                } else {
+                    showToast("⚠️ Lỗi từ Google Sheet: " + resData.message, true);
+                }
+            } catch(err) { 
+                showToast("⚠️ Đã lưu vào bộ nhớ trình duyệt!", true); 
+            }
         }
 
         function editVocab(id) {
@@ -667,7 +674,7 @@
             saveToLocalStorage();
             renderLogTable();
             renderTab2();
-            showToast("⏳ Deleting...");
+            showToast("⏳ Đang xóa...");
 
             try {
                 await fetch(GAS_WEB_APP_URL, {
@@ -675,8 +682,8 @@
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "vocab", id })
                 });
-                showToast("✅ Successfully deleted!");
-            } catch(err) { showToast("⚠️ Deleted from local memory!", true); }
+                showToast("✅ Đã xóa thành công!");
+            } catch(err) { showToast("⚠️ Đã xóa trên bộ nhớ cục bộ!", true); }
         }
 
         function renderLogTable() {
@@ -852,7 +859,6 @@
                 const langBody = document.createElement('div');
                 langBody.className = "tree-lang-body";
 
-                // Group by Topic / Category
                 const categories = {};
                 langPosts.forEach(p => {
                     const cat = p.topic || "General";
