@@ -7,40 +7,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         :root {
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
             --primary: #10b981;
             --primary-hover: #059669;
             --danger: #ef4444;
             --edit: #3b82f6;
+            --grammar: #8b5cf6;
             --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border: #334155;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; transition: background-color 0.2s, color 0.2s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1500px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; }
+        .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .theme-toggle { background: none; border: 1px solid var(--border); padding: 10px; border-radius: 50%; cursor: pointer; color: var(--text); }
 
-        main { max-width: 1400px; margin: 0 auto; padding: 0 5%; flex: 1; width: 100%; }
-        .tab-content { display: none; margin-top: 20px; }
+        main { max-width: 1500px; margin: 0 auto; padding: 0 5%; flex: 1; width: 100%; }
+        .tab-content { display: none; margin-top: 24px; }
         .tab-content.active { display: block; }
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
@@ -52,34 +45,50 @@
         textarea { resize: vertical; min-height: 80px; }
         .full-width { grid-column: 1 / -1; }
         
-        .autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: var(--shadow); display: none; }
+        .autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 50; box-shadow: var(--shadow); display: none; }
         .autocomplete-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .autocomplete-item:hover { background: var(--primary); color: white; }
 
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
         .btn:hover { background: var(--primary-hover); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
         .btn-danger { background: var(--danger); }
         .btn-edit { background: var(--edit); }
+        .btn-grammar { background: var(--grammar); }
         
         .table-container { overflow-x: auto; width: 100%; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
-        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 6px; }
+        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: 6px; }
+        .tts-btn:hover { transform: scale(1.2); }
 
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-        .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; }
+        .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; transition: all 0.2s; }
+        .sub-btn:hover { background: var(--surface-hover); }
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
+        /* Grammar Blog Layout */
+        .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+        @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
+        .lang-section { margin-bottom: 20px; }
+        .lang-title { font-size: 1rem; font-weight: 700; color: var(--grammar); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .post-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .post-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; background: var(--bg); border: 1px solid transparent; transition: all 0.2s; }
+        .post-item:hover { border-color: var(--grammar); }
+        .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
+        .post-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+        .post-item.active .post-meta { color: #ddd; }
+
+        /* Quizlet Mode */
         .quiz-container { max-width: 600px; margin: 0 auto; text-align: center; }
-        .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 40px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 40px 20px; min-height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
         .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
         .flashcard p { color: var(--text-secondary); font-size: 1.1rem; }
         .quiz-actions { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
 
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
-        
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 100; font-weight: 600; box-shadow: var(--shadow); }
     </style>
 </head>
@@ -88,22 +97,21 @@
     <header>
         <div class="logo">Trilingua.</div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab1')">1. Add Vocabulary & Log</button>
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
-            <button class="tab-btn" onclick="switchTab('tab3')">3. Quizlet Review</button>
-            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌓</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
         </div>
     </header>
 
     <main>
-        <!-- TAB 1: ADD VOCABULARY & DAILY LOG -->
+        <!-- TAB 1: VOCABULARY (FORM & LOG) -->
         <div id="tab1" class="tab-content active">
             <div class="card">
                 <h2 style="margin-bottom: 16px;">Add New Vocabulary</h2>
                 <form id="vocabForm" onsubmit="saveVocab(event)">
                     <input type="hidden" id="editId" value="">
                     <div class="form-grid">
-                        <!-- Row 1: EN, POS, Family -->
                         <div class="form-group">
                             <label>English Word (Type to autocomplete from books)</label>
                             <input type="text" id="wordEN" required autocomplete="off" oninput="handleAutocomplete(this.value)">
@@ -128,7 +136,6 @@
                             <input type="text" id="wordFamily" placeholder="Related word forms...">
                         </div>
 
-                        <!-- Row 2: ES, KO, VI -->
                         <div class="form-group">
                             <label>Spanish Word (ES)</label>
                             <input type="text" id="wordES" required>
@@ -142,7 +149,6 @@
                             <input type="text" id="meaningVI" required>
                         </div>
 
-                        <!-- Row 3: Topic & Sub-topic -->
                         <div class="form-group">
                             <label>Main Topic</label>
                             <select id="topic" onchange="updateSubtopics(this.value)">
@@ -161,7 +167,6 @@
                             <select id="subTopic"></select>
                         </div>
 
-                        <!-- Row 4: Book & Unit Dropdowns -->
                         <div class="form-group">
                             <label>Book Source</label>
                             <select id="book">
@@ -181,7 +186,6 @@
                             <select id="unit"></select>
                         </div>
 
-                        <!-- Row 5: Examples -->
                         <div class="form-group full-width">
                             <label>English Example Sentence</label>
                             <textarea id="exEN" rows="2" placeholder="Write an example sentence in English..."></textarea>
@@ -196,13 +200,12 @@
                         </div>
                     </div>
                     <div style="margin-top: 20px;">
-                        <button type="submit" class="btn" id="submitBtn">Save to Database</button>
+                        <button type="submit" class="btn" id="submitBtn">Save Vocabulary</button>
                         <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelEditBtn" onclick="resetForm()">Cancel Edit</button>
                     </div>
                 </form>
             </div>
 
-            <!-- RECENT LOG SECTION -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -235,7 +238,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH & TOPICS (MERGED) -->
+        <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card">
                 <input type="text" id="searchInput" placeholder="🔍 Type any keyword (English, Spanish, Korean, Vietnamese, or Topic) to filter..." oninput="renderTab2()">
@@ -264,8 +267,70 @@
             </div>
         </div>
 
-        <!-- TAB 3: QUIZLET REVIEW -->
+        <!-- TAB 3: GRAMMAR BLOG -->
         <div id="tab3" class="tab-content">
+            <div class="grammar-layout">
+                <!-- Sidebar List -->
+                <div class="sidebar">
+                    <button class="btn btn-grammar full-width" style="margin-bottom: 16px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
+                    
+                    <div class="lang-section">
+                        <div class="lang-title"><span>🇬🇧 English</span><span id="count-en">0</span></div>
+                        <ul class="post-list" id="list-en"></ul>
+                    </div>
+                    <div class="lang-section">
+                        <div class="lang-title"><span>🇪🇸 Español</span><span id="count-es">0</span></div>
+                        <ul class="post-list" id="list-es"></ul>
+                    </div>
+                    <div class="lang-section">
+                        <div class="lang-title"><span>🇰🇷 한국어</span><span id="count-ko">0</span></div>
+                        <ul class="post-list" id="list-ko"></ul>
+                    </div>
+                </div>
+
+                <!-- Editor / Viewer Right Side -->
+                <div class="card" style="margin-bottom: 0;">
+                    <h2 id="grammarHeader" style="margin-bottom: 16px; color: var(--grammar);">Create Grammar Note</h2>
+                    <form id="grammarForm" onsubmit="saveGrammar(event)">
+                        <input type="hidden" id="grammarId" value="">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Language</label>
+                                <select id="gramLang" required>
+                                    <option value="English">English</option>
+                                    <option value="Español">Español</option>
+                                    <option value="한국어">한국어</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Grammar Topic / Category</label>
+                                <input type="text" id="gramTopic" required placeholder="e.g., Present Perfect, Subjunctive, 은/는 vs 이/가...">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Post Title</label>
+                                <input type="text" id="gramTitle" required placeholder="e.g., How to use Present Perfect for life experiences...">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Keywords (for quick search)</label>
+                                <input type="text" id="gramKeywords" placeholder="e.g., experience, since, for, past participle...">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Lesson Content & Usage Notes</label>
+                                <textarea id="gramContent" rows="12" required placeholder="Write detailed grammar rules, structures, and example sentences here..."></textarea>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button type="submit" class="btn btn-grammar" id="gramSubmitBtn">Save Grammar Note</button>
+                            <button type="button" class="btn btn-danger" id="gramDeleteBtn" style="display: none;" onclick="deleteGrammar()">Delete Note</button>
+                            <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="gramCancelBtn" onclick="resetGrammarForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: QUIZLET REVIEW -->
+        <div id="tab4" class="tab-content">
             <div class="card" style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <label>Topic:</label>
@@ -288,7 +353,6 @@
                 </div>
             </div>
 
-            <!-- Flashcard View -->
             <div id="flashcardView" class="quiz-container">
                 <div class="flashcard" onclick="flipCard()">
                     <h3 id="fcPrompt">---</h3>
@@ -306,7 +370,6 @@
                 </div>
             </div>
 
-            <!-- Typing View -->
             <div id="typingView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
@@ -334,10 +397,11 @@
         // =========================================================================
         // GAS API CONFIG - REPLACE WITH YOUR DEPLOYED WEB APP URL
         // =========================================================================
-        const GAS_WEB_APP_URL = "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY";
+        const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276";
 
         let userVocabList = [];
         let masterVocabList = [];
+        let grammarList = [];
         let currentTopicTab = "ALL";
         let currentSubTopicTab = "ALL";
         
@@ -357,7 +421,8 @@
             updateSubtopics(document.getElementById('topic').value);
             renderTopicNav();
             populateQuizTopics();
-            fetchDataFromGAS();
+            loadFromLocalStorage(); // Load ngay lập tức từ bộ nhớ máy tính
+            fetchDataFromGAS();     // Đồng bộ ngầm với Google Sheets
         };
 
         function generateUnits() {
@@ -368,9 +433,25 @@
             }
         }
 
+        // --- LOCAL STORAGE BACKUP (CHỐNG MẤT DỮ LIỆU KHI F5) ---
+        function loadFromLocalStorage() {
+            const savedVocab = localStorage.getItem("trilingua_vocab");
+            const savedGrammar = localStorage.getItem("trilingua_grammar");
+            if (savedVocab) userVocabList = JSON.parse(savedVocab);
+            if (savedGrammar) grammarList = JSON.parse(savedGrammar);
+            renderLogTable();
+            renderTab2();
+            renderGrammarSidebar();
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem("trilingua_vocab", JSON.stringify(userVocabList));
+            localStorage.setItem("trilingua_grammar", JSON.stringify(grammarList));
+        }
+
         async function fetchDataFromGAS() {
             if (GAS_WEB_APP_URL === "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY") {
-                showToast("⚠️ Please replace GAS_WEB_APP_URL with your Google Apps Script Web App URL!", true);
+                showToast("⚠️ Running in Offline Mode! Replace GAS URL to sync with Google Sheets.", true);
                 return;
             }
             try {
@@ -378,21 +459,32 @@
                 const response = await fetch(GAS_WEB_APP_URL);
                 const data = await response.json();
                 if (data.status === "success") {
-                    userVocabList = data.userVocab.map(row => ({
-                        id: row[0], timestamp: row[1], topic: row[2], subTopic: row[3],
-                        en: row[4], es: row[5], ko: row[6], vi: row[7], family: row[8],
-                        pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14]
-                    }));
-                    masterVocabList = data.masterVocab.map(row => ({
-                        en: row[0], pos: row[1], family: row[2], topic: row[3], subTopic: row[4], book: row[5], unit: row[6]
-                    }));
+                    if (data.userVocab && data.userVocab.length > 0) {
+                        userVocabList = data.userVocab.map(row => ({
+                            id: row[0], timestamp: row[1], topic: row[2], subTopic: row[3],
+                            en: row[4], es: row[5], ko: row[6], vi: row[7], family: row[8],
+                            pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14]
+                        }));
+                    }
+                    if (data.masterVocab) {
+                        masterVocabList = data.masterVocab.map(row => ({
+                            en: row[0], pos: row[1], family: row[2], topic: row[3], subTopic: row[4], book: row[5], unit: row[6]
+                        }));
+                    }
+                    if (data.grammarBlog && data.grammarBlog.length > 0) {
+                        grammarList = data.grammarBlog.map(row => ({
+                            id: row[0], timestamp: row[1], lang: row[2], topic: row[3], title: row[4], keywords: row[5], content: row[6]
+                        }));
+                    }
+                    saveToLocalStorage(); // Cập nhật lại vào máy
                     renderLogTable();
                     renderTab2();
+                    renderGrammarSidebar();
                     startQuiz();
                     showToast("✅ Successfully synchronized!");
                 }
             } catch (err) {
-                showToast("❌ Connection error to Google Sheets!", true);
+                showToast("⚠️ Using local browser data (Offline Mode).", true);
             }
         }
 
@@ -403,13 +495,8 @@
             document.getElementById(tabId).classList.add('active');
             if(tabId === 'tab1') renderLogTable();
             if(tabId === 'tab2') renderTab2();
-            if(tabId === 'tab3') startQuiz();
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+            if(tabId === 'tab3') renderGrammarSidebar();
+            if(tabId === 'tab4') startQuiz();
         }
 
         function showToast(msg, isError = false) {
@@ -420,14 +507,35 @@
             setTimeout(() => { toast.style.display = "none"; }, 3000);
         }
 
-        function speak(text, lang) {
+        // --- TỐI ƯU GIỌNG ĐỌC AI (CHƯẨN HÀN, TÂY, ANH) ---
+        function speak(text, langCode) {
             if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel(); // Dừng câu đang đọc dở
+            
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang; // 'en-US', 'es-ES', 'ko-KR'
+            const voices = window.speechSynthesis.getVoices();
+            
+            // Tìm giọng chuẩn của hệ thống theo mã ngôn ngữ
+            let selectedVoice = voices.find(v => v.lang === langCode || v.lang.replace('_', '-') === langCode);
+            if (!selectedVoice) {
+                // Nếu không có mã chính xác, tìm theo tiền tố (vd: 'ko' cho tiếng Hàn)
+                const prefix = langCode.split('-')[0];
+                selectedVoice = voices.find(v => v.lang.startsWith(prefix));
+            }
+            
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+                utterance.lang = selectedVoice.lang;
+            } else {
+                utterance.lang = langCode;
+            }
+            
             window.speechSynthesis.speak(utterance);
         }
+        // Nạp danh sách giọng đọc sẵn vào trình duyệt
+        if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
-        // --- TAB 1: AUTOCOMPLETE, FORM SAVE & DAILY LOG ---
+        // --- TAB 1: VOCABULARY ---
         function updateSubtopics(topicVal) {
             const subSelect = document.getElementById('subTopic');
             subSelect.innerHTML = "";
@@ -497,6 +605,7 @@
             } else {
                 userVocabList.push(newEntry);
             }
+            saveToLocalStorage();
             resetForm();
             renderLogTable();
             showToast("⏳ Saving to Google Sheets...");
@@ -505,11 +614,13 @@
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", id: newEntry.id, row: rowData })
+                    mode: 'no-cors', // Gửi lệnh không chặn
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData })
                 });
-                showToast("✅ Successfully saved!");
+                showToast("✅ Saved securely!");
             } catch(err) {
-                showToast("❌ Sync error, but saved locally on browser!", true);
+                showToast("⚠️ Saved in browser RAM & LocalStorage!", true);
             }
         }
 
@@ -543,20 +654,24 @@
         function resetForm() {
             document.getElementById('vocabForm').reset();
             document.getElementById('editId').value = "";
-            document.getElementById('submitBtn').innerText = "Save to Database";
+            document.getElementById('submitBtn').innerText = "Save Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "none";
         }
 
         async function deleteVocab(id) {
             if (!confirm("Are you sure you want to delete this vocabulary item?")) return;
             userVocabList = userVocabList.filter(item => String(item.id) !== String(id));
+            saveToLocalStorage();
             renderLogTable();
             renderTab2();
-            showToast("⏳ Deleting from Google Sheets...");
+            showToast("⏳ Deleting from database...");
             try {
-                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "delete", id }) });
+                await fetch(GAS_WEB_APP_URL, { 
+                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "delete", type: "vocab", id }) 
+                });
                 showToast("✅ Successfully deleted!");
-            } catch(err) { showToast("❌ Deletion sync error!", true); }
+            } catch(err) { showToast("⚠️ Deleted from local memory!", true); }
         }
 
         function renderLogTable() {
@@ -579,7 +694,7 @@
                 if (filterVal === '3days') return diffDays <= 3;
                 if (filterVal === '7days') return diffDays <= 7;
                 return true;
-            }).reverse(); // Most recent first
+            }).reverse();
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found for the selected period.</td></tr>`;
@@ -603,7 +718,7 @@
             });
         }
 
-        // --- TAB 2: SEARCH & TOPICS (MERGED) ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function renderTopicNav() {
             const nav = document.getElementById('topicNav');
             nav.innerHTML = `<button class="sub-btn ${currentTopicTab === 'ALL' ? 'active' : ''}" onclick="selectMainTopic('ALL')">ALL TOPICS</button>`;
@@ -682,7 +797,112 @@
             });
         }
 
-        // --- TAB 3: QUIZLET REVIEW ---
+        // --- TAB 3: GRAMMAR BLOG ---
+        function renderGrammarSidebar() {
+            const listEN = document.getElementById('list-en');
+            const listES = document.getElementById('list-es');
+            const listKO = document.getElementById('list-ko');
+            listEN.innerHTML = ""; listES.innerHTML = ""; listKO.innerHTML = "";
+            
+            let cEN = 0, cES = 0, cKO = 0;
+            const currentEditId = document.getElementById('grammarId').value;
+
+            grammarList.forEach(g => {
+                const li = document.createElement('li');
+                li.className = `post-item ${String(g.id) === String(currentEditId) ? 'active' : ''}`;
+                li.innerHTML = `<div><strong>${g.title}</strong></div><div class="post-meta">📂 ${g.topic} | 🕒 ${g.timestamp}</div>`;
+                li.onclick = () => loadGrammarPost(g.id);
+
+                if (g.lang === "English") { listEN.appendChild(li); cEN++; }
+                else if (g.lang === "Español") { listES.appendChild(li); cES++; }
+                else if (g.lang === "한국어") { listKO.appendChild(li); cKO++; }
+            });
+
+            document.getElementById('count-en').innerText = cEN;
+            document.getElementById('count-es').innerText = cES;
+            document.getElementById('count-ko').innerText = cKO;
+        }
+
+        function loadGrammarPost(id) {
+            const g = grammarList.find(i => String(i.id) === String(id));
+            if (!g) return;
+            document.getElementById('grammarId').value = g.id;
+            document.getElementById('gramLang').value = g.lang;
+            document.getElementById('gramTopic').value = g.topic;
+            document.getElementById('gramTitle').value = g.title;
+            document.getElementById('gramKeywords').value = g.keywords || "";
+            document.getElementById('gramContent').value = g.content;
+            document.getElementById('grammarHeader').innerText = "Edit Grammar Note";
+            document.getElementById('gramSubmitBtn').innerText = "Update Note";
+            document.getElementById('gramDeleteBtn').style.display = "inline-flex";
+            document.getElementById('gramCancelBtn').style.display = "inline-flex";
+            renderGrammarSidebar();
+        }
+
+        function resetGrammarForm() {
+            document.getElementById('grammarForm').reset();
+            document.getElementById('grammarId').value = "";
+            document.getElementById('grammarHeader').innerText = "Create Grammar Note";
+            document.getElementById('gramSubmitBtn').innerText = "Save Grammar Note";
+            document.getElementById('gramDeleteBtn').style.display = "none";
+            document.getElementById('gramCancelBtn').style.display = "none";
+            renderGrammarSidebar();
+        }
+
+        async function saveGrammar(e) {
+            e.preventDefault();
+            const editId = document.getElementById('grammarId').value;
+            const isEdit = !!editId;
+            const id = isEdit ? editId : 'GRAM_' + Date.now();
+            const timestamp = isEdit ? grammarList.find(i => String(i.id) === String(id)).timestamp : new Date().toISOString().split('T')[0];
+
+            const newPost = {
+                id, timestamp,
+                lang: document.getElementById('gramLang').value,
+                topic: document.getElementById('gramTopic').value.trim(),
+                title: document.getElementById('gramTitle').value.trim(),
+                keywords: document.getElementById('gramKeywords').value.trim(),
+                content: document.getElementById('gramContent').value.trim()
+            };
+
+            if (isEdit) {
+                const idx = grammarList.findIndex(item => String(item.id) === String(id));
+                if (idx !== -1) grammarList[idx] = newPost;
+            } else {
+                grammarList.push(newPost);
+            }
+
+            saveToLocalStorage();
+            resetGrammarForm();
+            showToast("⏳ Saving grammar post to Google Sheets...");
+
+            const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData })
+                });
+                showToast("✅ Grammar note saved!");
+            } catch(err) { showToast("⚠️ Saved to local browser memory!", true); }
+        }
+
+        async function deleteGrammar() {
+            const id = document.getElementById('grammarId').value;
+            if (!id || !confirm("Are you sure you want to delete this grammar note?")) return;
+            grammarList = grammarList.filter(item => String(item.id) !== String(id));
+            saveToLocalStorage();
+            resetGrammarForm();
+            showToast("⏳ Deleting grammar post...");
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "delete", type: "grammar", id })
+                });
+                showToast("✅ Successfully deleted!");
+            } catch(err) { showToast("⚠️ Deleted from local storage!", true); }
+        }
+
+        // --- TAB 4: QUIZLET REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -721,7 +941,6 @@
             const promptLang = document.getElementById('quizPrompt').value;
             const promptText = promptLang === "VI" ? item.vi : item.en;
 
-            // Flashcard
             document.getElementById('fcPrompt').innerText = promptText;
             document.getElementById('fcHint').style.display = 'block';
             document.getElementById('fcAnswer').style.display = 'none';
@@ -730,7 +949,6 @@
             document.getElementById('fcKO').innerText = `🇰🇷 ${item.ko}`;
             document.getElementById('fcFamily').innerText = `Family: ${item.family} | POS: ${item.pos}`;
 
-            // Typing
             document.getElementById('typePrompt').innerText = promptText;
             document.getElementById('inputEN').style.display = promptLang === "EN" ? 'none' : 'block';
             document.getElementById('inputEN').value = "";
