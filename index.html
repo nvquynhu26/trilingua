@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilingua - English | Español | 한국어</title>
+    <!-- Font Pretendard -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --danger: #ef4444;
+            --edit: #3b82f6;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; transition: background-color 0.2s, color 0.2s; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Navigation & Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .theme-toggle { background: none; border: 1px solid var(--border); padding: 10px; border-radius: 50%; cursor: pointer; color: var(--text); }
+
+        /* Main Container */
+        main { max-width: 1400px; margin: 0 auto; padding: 0 5%; flex: 1; width: 100%; }
+        .tab-content { display: none; margin-top: 20px; }
+        .tab-content.active { display: block; }
+
+        /* Cards & Forms */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        textarea { resize: vertical; min-height: 80px; }
+        .full-width { grid-column: 1 / -1; }
+        
+        /* Auto-complete List */
+        .autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: var(--shadow); display: none; }
+        .autocomplete-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .autocomplete-item:hover { background: var(--primary); color: white; }
+
+        /* Buttons */
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-danger { background: var(--danger); }
+        .btn-edit { background: var(--edit); }
+        
+        /* Tables */
+        .table-container { overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
+        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 6px; }
+
+        /* Topic Tabs (Tab 3) */
+        .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); }
+        .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+        /* Quizlet Mode (Tab 4) */
+        .quiz-container { max-width: 600px; margin: 0 auto; text-align: center; }
+        .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 40px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .flashcard p { color: var(--text-secondary); font-size: 1.1rem; }
+        .quiz-actions { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
+
+        /* Footer */
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
+        
+        /* Notification */
+        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 100; font-weight: 600; box-shadow: var(--shadow); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Trilingua.</div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Nhập từ vựng</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Tra cứu & Nhật ký</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Theo chủ đề (A-H)</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Ôn tập Quizlet</button>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- TAB 1: NHẬP TỪ VỰNG -->
+        <div id="tab1" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Thêm từ vựng mới</h2>
+                <form id="vocabForm" onsubmit="saveVocab(event)">
+                    <input type="hidden" id="editId" value="">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Từ tiếng Anh (Gõ để tìm ý tưởng từ sách)</label>
+                            <input type="text" id="wordEN" required autocomplete="off" oninput="handleAutocomplete(this.value)">
+                            <div id="autocompleteList" class="autocomplete-list"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Từ tiếng Tây Ban Nha (ES)</label>
+                            <input type="text" id="wordES" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Từ tiếng Hàn (KO)</label>
+                            <input type="text" id="wordKO" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nghĩa tiếng Việt (VI)</label>
+                            <input type="text" id="meaningVI" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Word Family (vd: friend (n), friendly (adj))</label>
+                            <input type="text" id="wordFamily">
+                        </div>
+                        <div class="form-group">
+                            <label>Loại từ (Part of Speech)</label>
+                            <input type="text" id="pos" placeholder="n, v, adj, adv...">
+                        </div>
+                        <div class="form-group">
+                            <label>Chủ đề lớn (Topic A-H)</label>
+                            <select id="topic" onchange="updateSubtopics(this.value)">
+                                <option value="A. PEOPLE, PSYCHOLOGY & RELATIONSHIP">A. PEOPLE, PSYCHOLOGY & RELATIONSHIP</option>
+                                <option value="B. DAILY LIFE, HOME & LEISURE">B. DAILY LIFE, HOME & LEISURE</option>
+                                <option value="C. WORK, EDUCATION & BUSINESS">C. WORK, EDUCATION & BUSINESS</option>
+                                <option value="D. WORLD, ENVIRONMENT & TRAVEL">D. WORLD, ENVIRONMENT & TRAVEL</option>
+                                <option value="E. TECHNOLOGY & MEDIA">E. TECHNOLOGY & MEDIA</option>
+                                <option value="F. FUNCTIONAL LANGUAGE & COMMUNICATION">F. FUNCTIONAL LANGUAGE & COMMUNICATION</option>
+                                <option value="G. BASIC CONCEPTS & SEMANTICS">G. BASIC CONCEPTS & SEMANTICS</option>
+                                <option value="H. WORD FORMATION, GRAMMAR & PHRASAL VERBS">H. WORD FORMATION, GRAMMAR & PHRASAL VERBS</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Chủ đề nhỏ (Sub-topic)</label>
+                            <select id="subTopic"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sách (Book)</label>
+                            <input type="text" id="book" placeholder="vd: Advanced">
+                        </div>
+                        <div class="form-group">
+                            <label>Bài học (Unit)</label>
+                            <input type="text" id="unit" placeholder="vd: Unit 1">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Ví dụ tiếng Anh (Example EN)</label>
+                            <textarea id="exEN" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Ví dụ tiếng Tây Ban Nha (Example ES)</label>
+                            <textarea id="exES" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Ví dụ tiếng Hàn (Example KO)</label>
+                            <textarea id="exKO" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn" id="submitBtn">Lưu vào Database</button>
+                        <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelEditBtn" onclick="resetForm()">Hủy sửa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB 2: TRA CỨU & NHẬT KÝ -->
+        <div id="tab2" class="tab-content">
+            <div class="card">
+                <input type="text" id="searchInput" placeholder="🔍 Gõ từ bất kỳ (Anh, Tây, Hàn, Việt, Chủ đề...) để tra cứu tức thì..." oninput="renderTab2()">
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 12px;">Kết quả tìm kiếm & Nhật ký hôm nay</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tiếng Anh</th>
+                                <th>Tây Ban Nha</th>
+                                <th>Tiếng Hàn</th>
+                                <th>Tiếng Việt</th>
+                                <th>Chủ đề</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab2TableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: THEO CHỦ ĐỀ -->
+        <div id="tab3" class="tab-content">
+            <div class="sub-nav" id="topicNav"></div>
+            <div class="sub-nav" id="subTopicNav" style="border-top: 1px dashed var(--border); padding-top: 10px;"></div>
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tiếng Anh</th>
+                                <th>Tây Ban Nha</th>
+                                <th>Tiếng Hàn</th>
+                                <th>Tiếng Việt</th>
+                                <th>Word Family / POS</th>
+                                <th>Ví dụ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tab3TableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ÔN TẬP QUIZLET -->
+        <div id="tab4" class="tab-content">
+            <div class="card" style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <label>Chủ đề:</label>
+                    <select id="quizTopic" onchange="startQuiz()" style="width: auto;">
+                        <option value="ALL">Toàn bộ chủ đề</option>
+                    </select>
+                    <label style="margin-left: 10px;">Chế độ:</label>
+                    <select id="quizMode" onchange="startQuiz()" style="width: auto;">
+                        <option value="flashcard">Lật thẻ (Flashcard)</option>
+                        <option value="typing">Gõ phím (Typing test)</option>
+                    </select>
+                    <label style="margin-left: 10px;">Từ gốc:</label>
+                    <select id="quizPrompt" onchange="startQuiz()" style="width: auto;">
+                        <option value="VI">Tiếng Việt</option>
+                        <option value="EN">Tiếng Anh</option>
+                    </select>
+                </div>
+                <div>
+                    <span id="quizProgress" style="font-weight: bold;">0 / 0</span>
+                </div>
+            </div>
+
+            <!-- Flashcard View -->
+            <div id="flashcardView" class="quiz-container">
+                <div class="flashcard" onclick="flipCard()">
+                    <h3 id="fcPrompt">---</h3>
+                    <p id="fcHint">Bấm để lật thẻ</p>
+                    <div id="fcAnswer" style="display: none; margin-top: 20px; width: 100%; border-top: 1px solid var(--border); padding-top: 16px;">
+                        <p id="fcEN" style="color: var(--text); font-weight: bold; font-size: 1.3rem;"></p>
+                        <p id="fcES" style="color: var(--primary);"></p>
+                        <p id="fcKO" style="color: var(--edit);"></p>
+                        <p id="fcFamily" style="font-size: 0.9rem; margin-top: 8px;"></p>
+                    </div>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-danger" onclick="nextCard(false)">❌ Chưa nhớ</button>
+                    <button class="btn" onclick="nextCard(true)">✔ Đã nhớ</button>
+                </div>
+            </div>
+
+            <!-- Typing View -->
+            <div id="typingView" class="quiz-container" style="display: none;">
+                <div class="card">
+                    <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
+                    <div id="typeInputs" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
+                        <input type="text" id="inputEN" placeholder="Gõ từ tiếng Anh...">
+                        <input type="text" id="inputES" placeholder="Gõ từ tiếng Tây Ban Nha...">
+                        <input type="text" id="inputKO" placeholder="Gõ từ tiếng Hàn...">
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="checkTyping()">Kiểm tra kết quả</button>
+                    </div>
+                    <div id="typeResult" style="margin-top: 16px; font-weight: bold; display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © Bản quyền thuộc nvquynhu
+    </footer>
+
+    <div id="toast">Thông báo</div>
+
+    <script>
+        // =========================================================================
+        // CẤU HÌNH API - THAY ĐỔI URL BÊN DƯỚI BẰNG URL WEB APP CỦA BẠN TRÊN APPS SCRIPT
+        // =========================================================================
+        const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=0#gid=0";
+
+        // Dữ liệu bộ nhớ tạm trên RAM
+        let userVocabList = [];
+        let masterVocabList = [];
+        let currentTopicTab = "A. PEOPLE, PSYCHOLOGY & RELATIONSHIP";
+        let currentSubTopicTab = "ALL";
+        
+        // Cấu trúc Topic chuẩn từ sách Vocabulary in Use
+        const TOPIC_STRUCTURE = {
+            "A. PEOPLE, PSYCHOLOGY & RELATIONSHIP": ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
+            "B. DAILY LIFE, HOME & LEISURE": ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
+            "C. WORK, EDUCATION & BUSINESS": ["Education & Academic Life", "Jobs, Workplace & Career", "Business, Company & Economy"],
+            "D. WORLD, ENVIRONMENT & TRAVEL": ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
+            "E. TECHNOLOGY & MEDIA": ["Technology, Computers & Internet", "Media, Press & News"],
+            "F. FUNCTIONAL LANGUAGE & COMMUNICATION": ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
+            "G. BASIC CONCEPTS & SEMANTICS": ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
+            "H. WORD FORMATION, GRAMMAR & PHRASAL VERBS": ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"]
+        };
+
+        // Khởi tạo ứng dụng
+        window.onload = () => {
+            updateSubtopics(document.getElementById('topic').value);
+            renderTopicNav();
+            populateQuizTopics();
+            fetchDataFromGAS();
+        };
+
+        // Tải dữ liệu từ Google Sheets
+        async function fetchDataFromGAS() {
+            if (GAS_WEB_APP_URL === "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY") {
+                showToast("⚠️ Bạn chưa dán URL Web App của Google Apps Script!", true);
+                return;
+            }
+            try {
+                showToast("⏳ Đang tải dữ liệu từ Google Sheets...");
+                const response = await fetch(GAS_WEB_APP_URL);
+                const data = await response.json();
+                if (data.status === "success") {
+                    userVocabList = data.userVocab.map(row => ({
+                        id: row[0], timestamp: row[1], topic: row[2], subTopic: row[3],
+                        en: row[4], es: row[5], ko: row[6], vi: row[7], family: row[8],
+                        pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14]
+                    }));
+                    masterVocabList = data.masterVocab.map(row => ({
+                        en: row[0], pos: row[1], family: row[2], topic: row[3], subTopic: row[4], book: row[5], unit: row[6]
+                    }));
+                    renderTab2();
+                    renderTab3();
+                    startQuiz();
+                    showToast("✅ Đã đồng bộ dữ liệu thành công!");
+                }
+            } catch (err) {
+                showToast("❌ Lỗi kết nối đến Google Sheets!", true);
+            }
+        }
+
+        // --- CÁC HÀM XỬ LÝ GIAO DIỆN & TABS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            if(tabId === 'tab2') renderTab2();
+            if(tabId === 'tab3') renderTab3();
+            if(tabId === 'tab4') startQuiz();
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.background = isError ? "var(--danger)" : "var(--primary)";
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, 3000);
+        }
+
+        function speak(text, lang) {
+            if (!window.speechSynthesis) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang; // 'en-US', 'es-ES', 'ko-KR'
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- TAB 1: AUTOCOMPLETE & FORM SAVE ---
+        function updateSubtopics(topicVal) {
+            const subSelect = document.getElementById('subTopic');
+            subSelect.innerHTML = "";
+            TOPIC_STRUCTURE[topicVal].forEach(sub => {
+                subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+            });
+        }
+
+        function handleAutocomplete(val) {
+            const listEl = document.getElementById('autocompleteList');
+            if (!val || val.length < 2) { listEl.style.display = 'none'; return; }
+            const matches = masterVocabList.filter(m => m.en.toLowerCase().includes(val.toLowerCase()));
+            if (matches.length === 0) { listEl.style.display = 'none'; return; }
+            
+            listEl.innerHTML = "";
+            matches.forEach(m => {
+                const item = document.createElement('div');
+                item.className = "autocomplete-item";
+                item.innerText = `${m.en} (${m.pos}) - [${m.book} - ${m.unit}]`;
+                item.onclick = () => {
+                    document.getElementById('wordEN').value = m.en;
+                    document.getElementById('pos').value = m.pos;
+                    document.getElementById('wordFamily').value = m.family;
+                    document.getElementById('topic').value = m.topic;
+                    updateSubtopics(m.topic);
+                    document.getElementById('subTopic').value = m.subTopic;
+                    document.getElementById('book').value = m.book;
+                    document.getElementById('unit').value = m.unit;
+                    listEl.style.display = 'none';
+                };
+                listEl.appendChild(item);
+            });
+            listEl.style.display = 'block';
+        }
+
+        async function saveVocab(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editId').value;
+            const isEdit = !!editId;
+            const id = isEdit ? editId : 'ID_' + Date.now();
+            const timestamp = new Date().toLocaleDateString('vi-VN');
+            
+            const newEntry = {
+                id, timestamp,
+                topic: document.getElementById('topic').value,
+                subTopic: document.getElementById('subTopic').value,
+                en: document.getElementById('wordEN').value.trim(),
+                es: document.getElementById('wordES').value.trim(),
+                ko: document.getElementById('wordKO').value.trim(),
+                vi: document.getElementById('meaningVI').value.trim(),
+                family: document.getElementById('wordFamily').value.trim(),
+                pos: document.getElementById('pos').value.trim(),
+                exEN: document.getElementById('exEN').value.trim(),
+                exES: document.getElementById('exES').value.trim(),
+                exKO: document.getElementById('exKO').value.trim(),
+                book: document.getElementById('book').value.trim(),
+                unit: document.getElementById('unit').value.trim()
+            };
+
+            // Cập nhật RAM ngay lập tức để UX mượt
+            if (isEdit) {
+                const index = userVocabList.findIndex(item => String(item.id) === String(id));
+                if (index !== -1) userVocabList[index] = newEntry;
+            } else {
+                userVocabList.push(newEntry);
+            }
+            resetForm();
+            showToast("⏳ Đang lưu lên Google Sheets...");
+
+            // Đẩy ngầm lên Google Sheets
+            const rowData = [newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, newEntry.family, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit];
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", id: newEntry.id, row: rowData })
+                });
+                showToast("✅ Đã lưu thành công!");
+            } catch(err) {
+                showToast("❌ Lỗi đồng bộ lên Sheets, nhưng đã lưu trên trình duyệt!", true);
+            }
+        }
+
+        function editVocab(id) {
+            const item = userVocabList.find(i => String(i.id) === String(id));
+            if (!item) return;
+            switchTab('tab1');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('editId').value = item.id;
+            document.getElementById('wordEN').value = item.en;
+            document.getElementById('wordES').value = item.es;
+            document.getElementById('wordKO').value = item.ko;
+            document.getElementById('meaningVI').value = item.vi;
+            document.getElementById('wordFamily').value = item.family;
+            document.getElementById('pos').value = item.pos;
+            document.getElementById('topic').value = item.topic;
+            updateSubtopics(item.topic);
+            document.getElementById('subTopic').value = item.subTopic;
+            document.getElementById('book').value = item.book;
+            document.getElementById('unit').value = item.unit;
+            document.getElementById('exEN').value = item.exEN;
+            document.getElementById('exES').value = item.exES;
+            document.getElementById('exKO').value = item.exKO;
+            document.getElementById('submitBtn').innerText = "Cập nhật từ vựng";
+            document.getElementById('cancelEditBtn').style.display = "inline-flex";
+        }
+
+        function resetForm() {
+            document.getElementById('vocabForm').reset();
+            document.getElementById('editId').value = "";
+            document.getElementById('submitBtn').innerText = "Lưu vào Database";
+            document.getElementById('cancelEditBtn').style.display = "none";
+        }
+
+        async function deleteVocab(id) {
+            if (!confirm("Bạn có chắc muốn xóa từ này không?")) return;
+            userVocabList = userVocabList.filter(item => String(item.id) !== String(id));
+            renderTab2();
+            renderTab3();
+            showToast("⏳ Đang xóa trên Google Sheets...");
+            try {
+                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "delete", id }) });
+                showToast("✅ Đã xóa thành công!");
+            } catch(err) { showToast("❌ Lỗi khi xóa trên Sheets!", true); }
+        }
+
+        // --- TAB 2: TRA CỨU & NHẬT KÝ ---
+        function renderTab2() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const todayStr = new Date().toLocaleDateString('vi-VN');
+            const tbody = document.getElementById('tab2TableBody');
+            tbody.innerHTML = "";
+
+            const filtered = userVocabList.filter(item => {
+                if (!query) return item.timestamp === todayStr; // Mặc định hiện hôm nay
+                return item.en.toLowerCase().includes(query) || item.es.toLowerCase().includes(query) ||
+                       item.ko.toLowerCase().includes(query) || item.vi.toLowerCase().includes(query) ||
+                       item.topic.toLowerCase().includes(query);
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">Không có từ vựng nào hiển thị.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
+                        <td>${item.es} <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
+                        <td>${item.ko} <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button></td>
+                        <td>${item.vi}</td>
+                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.topic.split('.')[0]} - ${item.subTopic}</td>
+                        <td>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Sửa</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // --- TAB 3: THEO CHỦ ĐỀ ---
+        function renderTopicNav() {
+            const nav = document.getElementById('topicNav');
+            nav.innerHTML = "";
+            Object.keys(TOPIC_STRUCTURE).forEach(top => {
+                const btn = document.createElement('button');
+                btn.className = `sub-btn ${top === currentTopicTab ? 'active' : ''}`;
+                btn.innerText = top.split('.')[0]; // Chỉ lấy chữ A, B, C cho gọn
+                btn.title = top;
+                btn.onclick = () => {
+                    currentTopicTab = top;
+                    currentSubTopicTab = "ALL";
+                    renderTopicNav();
+                    renderSubTopicNav();
+                    renderTab3();
+                };
+                nav.appendChild(btn);
+            });
+            renderSubTopicNav();
+        }
+
+        function renderSubTopicNav() {
+            const nav = document.getElementById('subTopicNav');
+            nav.innerHTML = `<button class="sub-btn ${currentSubTopicTab === 'ALL' ? 'active' : ''}" onclick="selectSubTopic('ALL')">Tất cả</button>`;
+            TOPIC_STRUCTURE[currentTopicTab].forEach(sub => {
+                nav.innerHTML += `<button class="sub-btn ${currentSubTopicTab === sub ? 'active' : ''}" onclick="selectSubTopic('${sub}')">${sub}</button>`;
+            });
+        }
+
+        function selectSubTopic(sub) {
+            currentSubTopicTab = sub;
+            renderSubTopicNav();
+            renderTab3();
+        }
+
+        function renderTab3() {
+            const tbody = document.getElementById('tab3TableBody');
+            tbody.innerHTML = "";
+            const filtered = userVocabList.filter(item => {
+                const matchTop = item.topic === currentTopicTab;
+                const matchSub = currentSubTopicTab === "ALL" || item.subTopic === currentSubTopicTab;
+                return matchTop && matchSub;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">Chưa có từ vựng thuộc chủ đề này.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
+                        <td>${item.es} <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
+                        <td>${item.ko} <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button></td>
+                        <td>${item.vi}</td>
+                        <td style="font-size:0.85rem;"><em>${item.pos}</em><br>${item.family}</td>
+                        <td style="font-size:0.85rem; color:var(--text-secondary);">
+                            ${item.exEN ? `🇬🇧 ${item.exEN}<br>` : ''}
+                            ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
+                            ${item.exKO ? `🇰🇷 ${item.exKO}` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // --- TAB 4: QUIZLET MODE ---
+        let quizList = [];
+        let currentQuizIndex = 0;
+
+        function populateQuizTopics() {
+            const select = document.getElementById('quizTopic');
+            Object.keys(TOPIC_STRUCTURE).forEach(top => {
+                select.innerHTML += `<option value="${top}">${top}</option>`;
+            });
+        }
+
+        function startQuiz() {
+            const topic = document.getElementById('quizTopic').value;
+            const mode = document.getElementById('quizMode').value;
+            
+            quizList = topic === "ALL" ? [...userVocabList] : userVocabList.filter(i => i.topic === topic);
+            quizList = quizList.sort(() => Math.random() - 0.5); // Trộn ngẫu nhiên
+            currentQuizIndex = 0;
+
+            document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'block' : 'none';
+            document.getElementById('typingView').style.display = mode === 'typing' ? 'block' : 'none';
+            
+            renderQuizCard();
+        }
+
+        function renderQuizCard() {
+            const total = quizList.length;
+            document.getElementById('quizProgress').innerText = `${total === 0 ? 0 : currentQuizIndex + 1} / ${total}`;
+            
+            if (total === 0) {
+                document.getElementById('fcPrompt').innerText = "Không có từ vựng để ôn tập!";
+                document.getElementById('typePrompt').innerText = "Không có từ vựng để ôn tập!";
+                return;
+            }
+
+            const item = quizList[currentQuizIndex];
+            const promptLang = document.getElementById('quizPrompt').value; // VI or EN
+            const promptText = promptLang === "VI" ? item.vi : item.en;
+
+            // Flashcard
+            document.getElementById('fcPrompt').innerText = promptText;
+            document.getElementById('fcHint').style.display = 'block';
+            document.getElementById('fcAnswer').style.display = 'none';
+            document.getElementById('fcEN').innerText = `🇬🇧 ${item.en}`;
+            document.getElementById('fcES').innerText = `🇪🇸 ${item.es}`;
+            document.getElementById('fcKO').innerText = `🇰🇷 ${item.ko}`;
+            document.getElementById('fcFamily').innerText = `Family: ${item.family} | POS: ${item.pos}`;
+
+            // Typing
+            document.getElementById('typePrompt').innerText = promptText;
+            document.getElementById('inputEN').style.display = promptLang === "EN" ? 'none' : 'block';
+            document.getElementById('inputEN').value = "";
+            document.getElementById('inputES').value = "";
+            document.getElementById('inputKO').value = "";
+            document.getElementById('typeResult').style.display = 'none';
+        }
+
+        function flipCard() {
+            const ans = document.getElementById('fcAnswer');
+            const hint = document.getElementById('fcHint');
+            const isHidden = ans.style.display === 'none';
+            ans.style.display = isHidden ? 'block' : 'none';
+            hint.style.display = isHidden ? 'none' : 'block';
+            if(isHidden) {
+                const item = quizList[currentQuizIndex];
+                speak(item.en, 'en-US');
+            }
+        }
+
+        function nextCard(remembered) {
+            if (quizList.length === 0) return;
+            if (!remembered) {
+                // Đẩy từ chưa nhớ xuống cuối danh sách để ôn lại
+                quizList.push(quizList[currentQuizIndex]);
+            }
+            currentQuizIndex++;
+            if (currentQuizIndex >= quizList.length) {
+                alert("🎉 Chúc mừng bạn đã hoàn thành bộ ôn tập!");
+                startQuiz();
+            } else {
+                renderQuizCard();
+            }
+        }
+
+        function cleanText(str) {
+            return (str || "").toLowerCase().replace(/\s+/g, '').trim();
+        }
+
+        function checkTyping() {
+            if (quizList.length === 0) return;
+            const item = quizList[currentQuizIndex];
+            const promptLang = document.getElementById('quizPrompt').value;
+
+            const valEN = cleanText(document.getElementById('inputEN').value);
+            const valES = cleanText(document.getElementById('inputES').value);
+            const valKO = cleanText(document.getElementById('inputKO').value);
+
+            const isENCorrect = promptLang === "EN" || valEN === cleanText(item.en);
+            const isESCorrect = valES === cleanText(item.es);
+            const isKOCorrect = valKO === cleanText(item.ko);
+
+            const resEl = document.getElementById('typeResult');
+            resEl.style.display = 'block';
+
+            if (isENCorrect && isESCorrect && isKOCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Chính xác tuyệt đối! Đang chuyển từ tiếp theo...`;
+                speak(item.en, 'en-US');
+                setTimeout(() => { nextCard(true); }, 1500);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `
+                    ❌ Chưa chính xác! Đáp án đúng là:<br>
+                    ${promptLang === "VI" ? `🇬🇧 <b>${item.en}</b> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button><br>` : ''}
+                    🇪🇸 <b>${item.es}</b> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button><br>
+                    🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>
+                    <button class="btn btn-sm" style="margin-top:10px;" onclick="nextCard(false)">Tiếp tục (Ôn lại sau)</button>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
