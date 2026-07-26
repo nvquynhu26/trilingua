@@ -76,18 +76,26 @@
         .sub-btn:hover { background: var(--surface-hover); }
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
-        /* Grammar Blog Layout */
-        .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+        /* Grammar Tree Sidebar */
+        .grammar-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
-        .lang-section { margin-bottom: 20px; }
-        .lang-title { font-size: 1rem; font-weight: 700; color: var(--grammar); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .post-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-        .post-item { padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; background: var(--bg); border: 1px solid transparent; transition: all 0.2s; }
+        
+        .tree-lang { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        .tree-lang-header { background: var(--bg); padding: 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--grammar); }
+        .tree-lang-body { display: none; padding: 8px; background: var(--surface); }
+        .tree-lang.open .tree-lang-body { display: block; }
+        .tree-lang.open .tree-lang-header::after { content: "▲"; font-size: 0.8rem; }
+        .tree-lang-header::after { content: "▼"; font-size: 0.8rem; }
+
+        .tree-cat { margin-bottom: 6px; }
+        .tree-cat-header { padding: 8px 10px; font-weight: 600; font-size: 0.88rem; cursor: pointer; background: var(--surface-hover); border-radius: 6px; display: flex; justify-content: space-between; }
+        .tree-cat-body { display: none; padding-left: 10px; margin-top: 4px; }
+        .tree-cat.open .tree-cat-body { display: block; }
+
+        .post-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
-        .post-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
-        .post-item.active .post-meta { color: #ddd; }
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); }
 
@@ -273,7 +281,7 @@
         <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card">
-                <input type="text" id="searchInput" placeholder="🔍 Type any keyword (English, Spanish, Korean, Vietnamese, or Topic) to filter..." oninput="renderTab2()">
+                <input type="text" id="searchInput" placeholder="🔍 Type any keyword to filter..." oninput="renderTab2()">
             </div>
             
             <div class="card">
@@ -302,27 +310,18 @@
         <!-- TAB 3: GRAMMAR BLOG -->
         <div id="tab3" class="tab-content">
             <div class="grammar-layout">
+                <!-- Tree Sidebar -->
                 <div class="sidebar">
                     <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
                     
                     <div style="margin-bottom: 16px;">
-                        <input type="text" id="gramSearchInput" placeholder="🔍 Search notes..." oninput="renderGrammarSidebar()">
+                        <input type="text" id="gramSearchInput" placeholder="🔍 Search title/keyword..." oninput="renderGrammarSidebar()">
                     </div>
 
-                    <div class="lang-section">
-                        <div class="lang-title"><span>🇬🇧 English</span><span id="count-en">0</span></div>
-                        <ul class="post-list" id="list-en"></ul>
-                    </div>
-                    <div class="lang-section">
-                        <div class="lang-title"><span>🇪🇸 Español</span><span id="count-es">0</span></div>
-                        <ul class="post-list" id="list-es"></ul>
-                    </div>
-                    <div class="lang-section">
-                        <div class="lang-title"><span>🇰🇷 한국어</span><span id="count-ko">0</span></div>
-                        <ul class="post-list" id="list-ko"></ul>
-                    </div>
+                    <div id="grammarTreeContainer"></div>
                 </div>
 
+                <!-- Editor / Viewer Right Side -->
                 <div class="card" style="margin-bottom: 0;">
                     <h2 id="grammarHeader" style="margin-bottom: 16px; color: var(--grammar);">Create Grammar Note</h2>
                     <form id="grammarForm" onsubmit="saveGrammar(event)">
@@ -338,7 +337,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Grammar Topic / Category</label>
-                                <input type="text" id="gramTopic" placeholder="e.g., Present Perfect...">
+                                <input type="text" id="gramTopic" placeholder="e.g., Tenses, Subjunctive, Particle...">
                             </div>
                         </div>
 
@@ -440,7 +439,7 @@
 
     <script>
         // =========================================================================
-        // GAS API CONFIG - REPLACE WITH YOUR DEPLOYED WEB APP URL
+        // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
         const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276";
 
@@ -493,8 +492,8 @@
         }
 
         async function fetchDataFromGAS() {
-            if (GAS_WEB_APP_URL === "Dhttps://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276") {
-                showToast("⚠️ Offline Mode: Replace GAS_WEB_APP_URL with your Web App URL!", true);
+            if (GAS_WEB_APP_URL === "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=2128123276#gid=2128123276") {
+                showToast("⚠️ Offline Mode: Paste your GAS Web App URL!", true);
                 return;
             }
             try {
@@ -549,22 +548,17 @@
         function speak(text, langCode) {
             if (!window.speechSynthesis || !text) return;
             window.speechSynthesis.cancel();
-            
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
-            
             let selectedVoice = voices.find(v => v.lang === langCode || v.lang.replace('_', '-') === langCode);
             if (!selectedVoice) {
                 const prefix = langCode.split('-')[0];
                 selectedVoice = voices.find(v => v.lang.startsWith(prefix));
             }
-            
             if (selectedVoice) {
                 utterance.voice = selectedVoice;
                 utterance.lang = selectedVoice.lang;
-            } else {
-                utterance.lang = langCode;
-            }
+            } else { utterance.lang = langCode; }
             window.speechSynthesis.speak(utterance);
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
@@ -623,22 +617,14 @@
                 newEntry.familyES, newEntry.familyKO
             ];
 
-            // Gửi dữ liệu theo dạng Form Data chuẩn 100% ăn khớp Apps Script
-            const postParams = new URLSearchParams();
-            postParams.append("action", isEdit ? "update" : "add");
-            postParams.append("type", "vocab");
-            postParams.append("id", newEntry.id);
-            postParams.append("row", JSON.stringify(rowData));
-
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    body: postParams
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData })
                 });
                 showToast("✅ Saved to Google Sheets!");
-            } catch(err) {
-                showToast("⚠️ Saved locally!", true);
-            }
+            } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
         function editVocab(id) {
@@ -685,14 +671,12 @@
             renderTab2();
             showToast("⏳ Deleting...");
 
-            const postParams = new URLSearchParams();
-            postParams.append("action", "delete");
-            postParams.append("type", "vocab");
-            postParams.append("id", id);
-            postParams.append("row", "[]");
-
             try {
-                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: postParams });
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "delete", type: "vocab", id })
+                });
                 showToast("✅ Successfully deleted!");
             } catch(err) { showToast("⚠️ Deleted from local memory!", true); }
         }
@@ -828,7 +812,7 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG ---
+        // --- TAB 3: GRAMMAR BLOG (TREE / ACCORDION VIEW) ---
         function insertFormat(startTag, endTag) {
             const textarea = document.getElementById('gramContent');
             const start = textarea.selectionStart;
@@ -843,37 +827,73 @@
         }
 
         function renderGrammarSidebar() {
-            const searchQuery = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
-            const listEN = document.getElementById('list-en');
-            const listES = document.getElementById('list-es');
-            const listKO = document.getElementById('list-ko');
-            listEN.innerHTML = ""; listES.innerHTML = ""; listKO.innerHTML = "";
-            
-            let cEN = 0, cES = 0, cKO = 0;
+            const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
+            const container = document.getElementById('grammarTreeContainer');
+            container.innerHTML = "";
+
             const currentEditId = document.getElementById('grammarId').value;
+            const languages = ["English", "Español", "한국어"];
+            const langFlags = { "English": "🇬🇧", "Español": "🇪🇸", "한국어": "🇰🇷" };
 
-            grammarList.forEach(g => {
-                const matchSearch = !searchQuery || 
-                    (g.title && g.title.toLowerCase().includes(searchQuery)) ||
-                    (g.topic && g.topic.toLowerCase().includes(searchQuery)) ||
-                    (g.keywords && g.keywords.toLowerCase().includes(searchQuery)) ||
-                    (g.content && g.content.toLowerCase().includes(searchQuery));
+            languages.forEach(lang => {
+                const langPosts = grammarList.filter(g => g.lang === lang && (!query || 
+                    (g.title && g.title.toLowerCase().includes(query)) ||
+                    (g.topic && g.topic.toLowerCase().includes(query)) ||
+                    (g.keywords && g.keywords.toLowerCase().includes(query)) ||
+                    (g.content && g.content.toLowerCase().includes(query))
+                ));
 
-                if (!matchSearch) return;
+                const langEl = document.createElement('div');
+                langEl.className = `tree-lang ${query ? 'open' : ''}`;
+                
+                const langHeader = document.createElement('div');
+                langHeader.className = "tree-lang-header";
+                langHeader.innerHTML = `<span>${langFlags[lang]} ${lang}</span> <span>(${langPosts.length})</span>`;
+                langHeader.onclick = () => langEl.classList.toggle('open');
 
-                const li = document.createElement('li');
-                li.className = `post-item ${String(g.id) === String(currentEditId) ? 'active' : ''}`;
-                li.innerHTML = `<div><strong>${g.title || "Untitled"}</strong></div><div class="post-meta">📂 ${g.topic || "General"} | 🕒 ${g.timestamp}</div>`;
-                li.onclick = () => loadGrammarPost(g.id);
+                const langBody = document.createElement('div');
+                langBody.className = "tree-lang-body";
 
-                if (g.lang === "English") { listEN.appendChild(li); cEN++; }
-                else if (g.lang === "Español") { listES.appendChild(li); cES++; }
-                else if (g.lang === "한국어") { listKO.appendChild(li); cKO++; }
+                // Group by Topic / Category
+                const categories = {};
+                langPosts.forEach(p => {
+                    const cat = p.topic || "General";
+                    if (!categories[cat]) categories[cat] = [];
+                    categories[cat].push(p);
+                });
+
+                Object.keys(categories).forEach(cat => {
+                    const catEl = document.createElement('div');
+                    catEl.className = `tree-cat ${query ? 'open' : ''}`;
+
+                    const catHeader = document.createElement('div');
+                    catHeader.className = "tree-cat-header";
+                    catHeader.innerHTML = `<span>📂 ${cat}</span> <span>(${categories[cat].length})</span>`;
+                    catHeader.onclick = () => catEl.classList.toggle('open');
+
+                    const catBody = document.createElement('div');
+                    catBody.className = "tree-cat-body";
+
+                    categories[cat].forEach(post => {
+                        const postEl = document.createElement('div');
+                        postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
+                        postEl.innerText = post.title || "Untitled";
+                        postEl.onclick = (e) => {
+                            e.stopPropagation();
+                            loadGrammarPost(post.id);
+                        };
+                        catBody.appendChild(postEl);
+                    });
+
+                    catEl.appendChild(catHeader);
+                    catEl.appendChild(catBody);
+                    langBody.appendChild(catEl);
+                });
+
+                langEl.appendChild(langHeader);
+                langEl.appendChild(langBody);
+                container.appendChild(langEl);
             });
-
-            document.getElementById('count-en').innerText = cEN;
-            document.getElementById('count-es').innerText = cES;
-            document.getElementById('count-ko').innerText = cKO;
         }
 
         function loadGrammarPost(id) {
@@ -930,17 +950,12 @@
             showToast("⏳ Saving grammar post...");
 
             const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
-            
-            const postParams = new URLSearchParams();
-            postParams.append("action", isEdit ? "update" : "add");
-            postParams.append("type", "grammar");
-            postParams.append("id", newPost.id);
-            postParams.append("row", JSON.stringify(rowData));
 
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    body: postParams
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData })
                 });
                 showToast("✅ Grammar note saved!");
             } catch(err) { showToast("⚠️ Saved to local browser memory!", true); }
@@ -954,14 +969,12 @@
             resetGrammarForm();
             showToast("⏳ Deleting grammar post...");
 
-            const postParams = new URLSearchParams();
-            postParams.append("action", "delete");
-            postParams.append("type", "grammar");
-            postParams.append("id", id);
-            postParams.append("row", "[]");
-
             try {
-                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: postParams });
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "delete", type: "grammar", id })
+                });
                 showToast("✅ Successfully deleted!");
             } catch(err) { showToast("⚠️ Deleted from local storage!", true); }
         }
