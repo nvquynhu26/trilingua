@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trilingua - English | Español | 한국어</title>
-    <!-- Font Pretendard -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         :root {
@@ -33,7 +32,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; transition: background-color 0.2s, color 0.2s; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Navigation & Header */
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
         .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -41,12 +39,10 @@
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .theme-toggle { background: none; border: 1px solid var(--border); padding: 10px; border-radius: 50%; cursor: pointer; color: var(--text); }
 
-        /* Main Container */
         main { max-width: 1400px; margin: 0 auto; padding: 0 5%; flex: 1; width: 100%; }
         .tab-content { display: none; margin-top: 20px; }
         .tab-content.active { display: block; }
 
-        /* Cards & Forms */
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
@@ -56,41 +52,34 @@
         textarea { resize: vertical; min-height: 80px; }
         .full-width { grid-column: 1 / -1; }
         
-        /* Auto-complete List */
         .autocomplete-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: var(--shadow); display: none; }
         .autocomplete-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .autocomplete-item:hover { background: var(--primary); color: white; }
 
-        /* Buttons */
         .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn:hover { background: var(--primary-hover); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
         .btn-danger { background: var(--danger); }
         .btn-edit { background: var(--edit); }
         
-        /* Tables */
         .table-container { overflow-x: auto; width: 100%; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 6px; }
 
-        /* Topic Tabs (Tab 3) */
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-        .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); }
-        .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; }
+        .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
-        /* Quizlet Mode (Tab 4) */
         .quiz-container { max-width: 600px; margin: 0 auto; text-align: center; }
         .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 40px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
         .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
         .flashcard p { color: var(--text-secondary); font-size: 1.1rem; }
         .quiz-actions { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
 
-        /* Footer */
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         
-        /* Notification */
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 100; font-weight: 600; box-shadow: var(--shadow); }
     </style>
 </head>
@@ -99,110 +88,174 @@
     <header>
         <div class="logo">Trilingua.</div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab1')">1. Nhập từ vựng</button>
-            <button class="tab-btn" onclick="switchTab('tab2')">2. Tra cứu & Nhật ký</button>
-            <button class="tab-btn" onclick="switchTab('tab3')">3. Theo chủ đề (A-H)</button>
-            <button class="tab-btn" onclick="switchTab('tab4')">4. Ôn tập Quizlet</button>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Add Vocabulary & Log</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Quizlet Review</button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌓</button>
         </div>
     </header>
 
     <main>
-        <!-- TAB 1: NHẬP TỪ VỰNG -->
+        <!-- TAB 1: ADD VOCABULARY & DAILY LOG -->
         <div id="tab1" class="tab-content active">
             <div class="card">
-                <h2 style="margin-bottom: 16px;">Thêm từ vựng mới</h2>
+                <h2 style="margin-bottom: 16px;">Add New Vocabulary</h2>
                 <form id="vocabForm" onsubmit="saveVocab(event)">
                     <input type="hidden" id="editId" value="">
                     <div class="form-grid">
+                        <!-- Row 1: EN, POS, Family -->
                         <div class="form-group">
-                            <label>Từ tiếng Anh (Gõ để tìm ý tưởng từ sách)</label>
+                            <label>English Word (Type to autocomplete from books)</label>
                             <input type="text" id="wordEN" required autocomplete="off" oninput="handleAutocomplete(this.value)">
                             <div id="autocompleteList" class="autocomplete-list"></div>
                         </div>
                         <div class="form-group">
-                            <label>Từ tiếng Tây Ban Nha (ES)</label>
-                            <input type="text" id="wordES" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Từ tiếng Hàn (KO)</label>
-                            <input type="text" id="wordKO" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nghĩa tiếng Việt (VI)</label>
-                            <input type="text" id="meaningVI" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Word Family (vd: friend (n), friendly (adj))</label>
-                            <input type="text" id="wordFamily">
-                        </div>
-                        <div class="form-group">
-                            <label>Loại từ (Part of Speech)</label>
-                            <input type="text" id="pos" placeholder="n, v, adj, adv...">
-                        </div>
-                        <div class="form-group">
-                            <label>Chủ đề lớn (Topic A-H)</label>
-                            <select id="topic" onchange="updateSubtopics(this.value)">
-                                <option value="A. PEOPLE, PSYCHOLOGY & RELATIONSHIP">A. PEOPLE, PSYCHOLOGY & RELATIONSHIP</option>
-                                <option value="B. DAILY LIFE, HOME & LEISURE">B. DAILY LIFE, HOME & LEISURE</option>
-                                <option value="C. WORK, EDUCATION & BUSINESS">C. WORK, EDUCATION & BUSINESS</option>
-                                <option value="D. WORLD, ENVIRONMENT & TRAVEL">D. WORLD, ENVIRONMENT & TRAVEL</option>
-                                <option value="E. TECHNOLOGY & MEDIA">E. TECHNOLOGY & MEDIA</option>
-                                <option value="F. FUNCTIONAL LANGUAGE & COMMUNICATION">F. FUNCTIONAL LANGUAGE & COMMUNICATION</option>
-                                <option value="G. BASIC CONCEPTS & SEMANTICS">G. BASIC CONCEPTS & SEMANTICS</option>
-                                <option value="H. WORD FORMATION, GRAMMAR & PHRASAL VERBS">H. WORD FORMATION, GRAMMAR & PHRASAL VERBS</option>
+                            <label>Part of Speech</label>
+                            <select id="pos" required>
+                                <option value="noun">noun (n)</option>
+                                <option value="verb">verb (v)</option>
+                                <option value="adj">adjective (adj)</option>
+                                <option value="adv">adverb (adv)</option>
+                                <option value="phrasal verb">phrasal verb</option>
+                                <option value="idiom">idiom</option>
+                                <option value="collocation">collocation</option>
+                                <option value="phrase">phrase / expression</option>
+                                <option value="prefix/suffix">prefix / suffix</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Chủ đề nhỏ (Sub-topic)</label>
+                            <label>Word Family (e.g., friend (n), friendly (adj))</label>
+                            <input type="text" id="wordFamily" placeholder="Related word forms...">
+                        </div>
+
+                        <!-- Row 2: ES, KO, VI -->
+                        <div class="form-group">
+                            <label>Spanish Word (ES)</label>
+                            <input type="text" id="wordES" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Korean Word (KO)</label>
+                            <input type="text" id="wordKO" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Vietnamese Meaning (VI)</label>
+                            <input type="text" id="meaningVI" required>
+                        </div>
+
+                        <!-- Row 3: Topic & Sub-topic -->
+                        <div class="form-group">
+                            <label>Main Topic</label>
+                            <select id="topic" onchange="updateSubtopics(this.value)">
+                                <option value="People, Psychology & Relationship">People, Psychology & Relationship</option>
+                                <option value="Daily Life, Home & Leisure">Daily Life, Home & Leisure</option>
+                                <option value="Work, Education & Business">Work, Education & Business</option>
+                                <option value="World, Environment & Travel">World, Environment & Travel</option>
+                                <option value="Technology & Media">Technology & Media</option>
+                                <option value="Functional Language & Communication">Functional Language & Communication</option>
+                                <option value="Basic Concepts & Semantics">Basic Concepts & Semantics</option>
+                                <option value="Word Formation, Grammar & Phrasal Verbs">Word Formation, Grammar & Phrasal Verbs</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sub-topic</label>
                             <select id="subTopic"></select>
                         </div>
+
+                        <!-- Row 4: Book & Unit Dropdowns -->
                         <div class="form-group">
-                            <label>Sách (Book)</label>
-                            <input type="text" id="book" placeholder="vd: Advanced">
+                            <label>Book Source</label>
+                            <select id="book">
+                                <option value="General - Elementary">General - Elementary</option>
+                                <option value="General - Pre-Int & Int">General - Pre-Int & Int</option>
+                                <option value="General - Upper-Intermediate">General - Upper-Intermediate</option>
+                                <option value="General - Advanced" selected>General - Advanced</option>
+                                <option value="Business - Elementary">Business - Elementary</option>
+                                <option value="Business - Pre-Int & Int">Business - Pre-Int & Int</option>
+                                <option value="Business - Intermediate">Business - Intermediate</option>
+                                <option value="Business - Advanced">Business - Advanced</option>
+                                <option value="Academic Vocabulary in Use">Academic Vocabulary in Use</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label>Bài học (Unit)</label>
-                            <input type="text" id="unit" placeholder="vd: Unit 1">
+                            <label>Unit</label>
+                            <select id="unit"></select>
+                        </div>
+
+                        <!-- Row 5: Examples -->
+                        <div class="form-group full-width">
+                            <label>English Example Sentence</label>
+                            <textarea id="exEN" rows="2" placeholder="Write an example sentence in English..."></textarea>
                         </div>
                         <div class="form-group full-width">
-                            <label>Ví dụ tiếng Anh (Example EN)</label>
-                            <textarea id="exEN" rows="2"></textarea>
+                            <label>Spanish Example Sentence</label>
+                            <textarea id="exES" rows="2" placeholder="Escribe una oración de ejemplo en español..."></textarea>
                         </div>
                         <div class="form-group full-width">
-                            <label>Ví dụ tiếng Tây Ban Nha (Example ES)</label>
-                            <textarea id="exES" rows="2"></textarea>
-                        </div>
-                        <div class="form-group full-width">
-                            <label>Ví dụ tiếng Hàn (Example KO)</label>
-                            <textarea id="exKO" rows="2"></textarea>
+                            <label>Korean Example Sentence</label>
+                            <textarea id="exKO" rows="2" placeholder="한국어로 예문을 작성하세요..."></textarea>
                         </div>
                     </div>
                     <div style="margin-top: 20px;">
-                        <button type="submit" class="btn" id="submitBtn">Lưu vào Database</button>
-                        <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelEditBtn" onclick="resetForm()">Hủy sửa</button>
+                        <button type="submit" class="btn" id="submitBtn">Save to Database</button>
+                        <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelEditBtn" onclick="resetForm()">Cancel Edit</button>
                     </div>
                 </form>
             </div>
-        </div>
 
-        <!-- TAB 2: TRA CỨU & NHẬT KÝ -->
-        <div id="tab2" class="tab-content">
+            <!-- RECENT LOG SECTION -->
             <div class="card">
-                <input type="text" id="searchInput" placeholder="🔍 Gõ từ bất kỳ (Anh, Tây, Hàn, Việt, Chủ đề...) để tra cứu tức thì..." oninput="renderTab2()">
-            </div>
-            <div class="card">
-                <h3 style="margin-bottom: 12px;">Kết quả tìm kiếm & Nhật ký hôm nay</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                    <h3>Vocabulary Log</h3>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="logFilter" style="margin:0;">Filter period:</label>
+                        <select id="logFilter" onchange="renderLogTable()" style="width: auto; padding: 8px 12px;">
+                            <option value="today">Today</option>
+                            <option value="1day">Yesterday & Today (2 days)</option>
+                            <option value="3days">Last 3 Days</option>
+                            <option value="7days">Last 7 Days (1 Week)</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Tiếng Anh</th>
-                                <th>Tây Ban Nha</th>
-                                <th>Tiếng Hàn</th>
-                                <th>Tiếng Việt</th>
-                                <th>Chủ đề</th>
-                                <th>Thao tác</th>
+                                <th>English</th>
+                                <th>Spanish</th>
+                                <th>Korean</th>
+                                <th>Vietnamese</th>
+                                <th>Topic / Source</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SEARCH & TOPICS (MERGED) -->
+        <div id="tab2" class="tab-content">
+            <div class="card">
+                <input type="text" id="searchInput" placeholder="🔍 Type any keyword (English, Spanish, Korean, Vietnamese, or Topic) to filter..." oninput="renderTab2()">
+            </div>
+            
+            <div class="card">
+                <h3 style="margin-bottom: 12px;">Filter by Topic</h3>
+                <div class="sub-nav" id="topicNav"></div>
+                <div class="sub-nav" id="subTopicNav" style="border-top: 1px dashed var(--border); padding-top: 12px;"></div>
+                
+                <div class="table-container" style="margin-top: 16px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>English</th>
+                                <th>Spanish</th>
+                                <th>Korean</th>
+                                <th>Vietnamese</th>
+                                <th>POS / Family</th>
+                                <th>Examples & Source</th>
                             </tr>
                         </thead>
                         <tbody id="tab2TableBody"></tbody>
@@ -211,46 +264,23 @@
             </div>
         </div>
 
-        <!-- TAB 3: THEO CHỦ ĐỀ -->
+        <!-- TAB 3: QUIZLET REVIEW -->
         <div id="tab3" class="tab-content">
-            <div class="sub-nav" id="topicNav"></div>
-            <div class="sub-nav" id="subTopicNav" style="border-top: 1px dashed var(--border); padding-top: 10px;"></div>
-            <div class="card">
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tiếng Anh</th>
-                                <th>Tây Ban Nha</th>
-                                <th>Tiếng Hàn</th>
-                                <th>Tiếng Việt</th>
-                                <th>Word Family / POS</th>
-                                <th>Ví dụ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tab3TableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 4: ÔN TẬP QUIZLET -->
-        <div id="tab4" class="tab-content">
             <div class="card" style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <label>Chủ đề:</label>
+                    <label>Topic:</label>
                     <select id="quizTopic" onchange="startQuiz()" style="width: auto;">
-                        <option value="ALL">Toàn bộ chủ đề</option>
+                        <option value="ALL">All Topics</option>
                     </select>
-                    <label style="margin-left: 10px;">Chế độ:</label>
+                    <label style="margin-left: 10px;">Mode:</label>
                     <select id="quizMode" onchange="startQuiz()" style="width: auto;">
-                        <option value="flashcard">Lật thẻ (Flashcard)</option>
-                        <option value="typing">Gõ phím (Typing test)</option>
+                        <option value="flashcard">Flashcard Flip</option>
+                        <option value="typing">Typing Test</option>
                     </select>
-                    <label style="margin-left: 10px;">Từ gốc:</label>
+                    <label style="margin-left: 10px;">Prompt Language:</label>
                     <select id="quizPrompt" onchange="startQuiz()" style="width: auto;">
-                        <option value="VI">Tiếng Việt</option>
-                        <option value="EN">Tiếng Anh</option>
+                        <option value="VI">Vietnamese</option>
+                        <option value="EN">English</option>
                     </select>
                 </div>
                 <div>
@@ -262,7 +292,7 @@
             <div id="flashcardView" class="quiz-container">
                 <div class="flashcard" onclick="flipCard()">
                     <h3 id="fcPrompt">---</h3>
-                    <p id="fcHint">Bấm để lật thẻ</p>
+                    <p id="fcHint">Click to flip card</p>
                     <div id="fcAnswer" style="display: none; margin-top: 20px; width: 100%; border-top: 1px solid var(--border); padding-top: 16px;">
                         <p id="fcEN" style="color: var(--text); font-weight: bold; font-size: 1.3rem;"></p>
                         <p id="fcES" style="color: var(--primary);"></p>
@@ -271,8 +301,8 @@
                     </div>
                 </div>
                 <div class="quiz-actions">
-                    <button class="btn btn-danger" onclick="nextCard(false)">❌ Chưa nhớ</button>
-                    <button class="btn" onclick="nextCard(true)">✔ Đã nhớ</button>
+                    <button class="btn btn-danger" onclick="nextCard(false)">❌ Still Learning</button>
+                    <button class="btn" onclick="nextCard(true)">✔ Mastered</button>
                 </div>
             </div>
 
@@ -281,12 +311,12 @@
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
                     <div id="typeInputs" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
-                        <input type="text" id="inputEN" placeholder="Gõ từ tiếng Anh...">
-                        <input type="text" id="inputES" placeholder="Gõ từ tiếng Tây Ban Nha...">
-                        <input type="text" id="inputKO" placeholder="Gõ từ tiếng Hàn...">
+                        <input type="text" id="inputEN" placeholder="Type English word...">
+                        <input type="text" id="inputES" placeholder="Type Spanish word...">
+                        <input type="text" id="inputKO" placeholder="Type Korean word...">
                     </div>
                     <div style="margin-top: 20px;">
-                        <button class="btn" onclick="checkTyping()">Kiểm tra kết quả</button>
+                        <button class="btn" onclick="checkTyping()">Check Answer</button>
                     </div>
                     <div id="typeResult" style="margin-top: 16px; font-weight: bold; display: none;"></div>
                 </div>
@@ -295,51 +325,56 @@
     </main>
 
     <footer>
-        © Bản quyền thuộc nvquynhu
+        © Copyright by nvquynhu
     </footer>
 
-    <div id="toast">Thông báo</div>
+    <div id="toast">Notification</div>
 
     <script>
         // =========================================================================
-        // CẤU HÌNH API - THAY ĐỔI URL BÊN DƯỚI BẰNG URL WEB APP CỦA BẠN TRÊN APPS SCRIPT
+        // GAS API CONFIG - REPLACE WITH YOUR DEPLOYED WEB APP URL
         // =========================================================================
-        const GAS_WEB_APP_URL = "https://docs.google.com/spreadsheets/d/1zj0LAOeQmXcHeuVJRXsWHqmc9CNjDUUI5_DW8LjY4nc/edit?gid=0#gid=0";
+        const GAS_WEB_APP_URL = "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY";
 
-        // Dữ liệu bộ nhớ tạm trên RAM
         let userVocabList = [];
         let masterVocabList = [];
-        let currentTopicTab = "A. PEOPLE, PSYCHOLOGY & RELATIONSHIP";
+        let currentTopicTab = "ALL";
         let currentSubTopicTab = "ALL";
         
-        // Cấu trúc Topic chuẩn từ sách Vocabulary in Use
         const TOPIC_STRUCTURE = {
-            "A. PEOPLE, PSYCHOLOGY & RELATIONSHIP": ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
-            "B. DAILY LIFE, HOME & LEISURE": ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
-            "C. WORK, EDUCATION & BUSINESS": ["Education & Academic Life", "Jobs, Workplace & Career", "Business, Company & Economy"],
-            "D. WORLD, ENVIRONMENT & TRAVEL": ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
-            "E. TECHNOLOGY & MEDIA": ["Technology, Computers & Internet", "Media, Press & News"],
-            "F. FUNCTIONAL LANGUAGE & COMMUNICATION": ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
-            "G. BASIC CONCEPTS & SEMANTICS": ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
-            "H. WORD FORMATION, GRAMMAR & PHRASAL VERBS": ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"]
+            "People, Psychology & Relationship": ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
+            "Daily Life, Home & Leisure": ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
+            "Work, Education & Business": ["Education & Academic Life", "Jobs, Workplace & Career", "Business, Company & Economy"],
+            "World, Environment & Travel": ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
+            "Technology & Media": ["Technology, Computers & Internet", "Media, Press & News"],
+            "Functional Language & Communication": ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
+            "Basic Concepts & Semantics": ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
+            "Word Formation, Grammar & Phrasal Verbs": ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"]
         };
 
-        // Khởi tạo ứng dụng
         window.onload = () => {
+            generateUnits();
             updateSubtopics(document.getElementById('topic').value);
             renderTopicNav();
             populateQuizTopics();
             fetchDataFromGAS();
         };
 
-        // Tải dữ liệu từ Google Sheets
+        function generateUnits() {
+            const unitSelect = document.getElementById('unit');
+            unitSelect.innerHTML = "";
+            for (let i = 1; i <= 120; i++) {
+                unitSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
+            }
+        }
+
         async function fetchDataFromGAS() {
             if (GAS_WEB_APP_URL === "DÁN_URL_WEB_APP_CỦA_BẠN_VÀO_ĐÂY") {
-                showToast("⚠️ Bạn chưa dán URL Web App của Google Apps Script!", true);
+                showToast("⚠️ Please replace GAS_WEB_APP_URL with your Google Apps Script Web App URL!", true);
                 return;
             }
             try {
-                showToast("⏳ Đang tải dữ liệu từ Google Sheets...");
+                showToast("⏳ Synchronizing with Google Sheets...");
                 const response = await fetch(GAS_WEB_APP_URL);
                 const data = await response.json();
                 if (data.status === "success") {
@@ -351,25 +386,24 @@
                     masterVocabList = data.masterVocab.map(row => ({
                         en: row[0], pos: row[1], family: row[2], topic: row[3], subTopic: row[4], book: row[5], unit: row[6]
                     }));
+                    renderLogTable();
                     renderTab2();
-                    renderTab3();
                     startQuiz();
-                    showToast("✅ Đã đồng bộ dữ liệu thành công!");
+                    showToast("✅ Successfully synchronized!");
                 }
             } catch (err) {
-                showToast("❌ Lỗi kết nối đến Google Sheets!", true);
+                showToast("❌ Connection error to Google Sheets!", true);
             }
         }
 
-        // --- CÁC HÀM XỬ LÝ GIAO DIỆN & TABS ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
             document.getElementById(tabId).classList.add('active');
+            if(tabId === 'tab1') renderLogTable();
             if(tabId === 'tab2') renderTab2();
-            if(tabId === 'tab3') renderTab3();
-            if(tabId === 'tab4') startQuiz();
+            if(tabId === 'tab3') startQuiz();
         }
 
         function toggleTheme() {
@@ -393,13 +427,15 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // --- TAB 1: AUTOCOMPLETE & FORM SAVE ---
+        // --- TAB 1: AUTOCOMPLETE, FORM SAVE & DAILY LOG ---
         function updateSubtopics(topicVal) {
             const subSelect = document.getElementById('subTopic');
             subSelect.innerHTML = "";
-            TOPIC_STRUCTURE[topicVal].forEach(sub => {
-                subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
-            });
+            if (TOPIC_STRUCTURE[topicVal]) {
+                TOPIC_STRUCTURE[topicVal].forEach(sub => {
+                    subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+                });
+            }
         }
 
         function handleAutocomplete(val) {
@@ -417,9 +453,11 @@
                     document.getElementById('wordEN').value = m.en;
                     document.getElementById('pos').value = m.pos;
                     document.getElementById('wordFamily').value = m.family;
-                    document.getElementById('topic').value = m.topic;
-                    updateSubtopics(m.topic);
-                    document.getElementById('subTopic').value = m.subTopic;
+                    if(TOPIC_STRUCTURE[m.topic]) {
+                        document.getElementById('topic').value = m.topic;
+                        updateSubtopics(m.topic);
+                        document.getElementById('subTopic').value = m.subTopic;
+                    }
                     document.getElementById('book').value = m.book;
                     document.getElementById('unit').value = m.unit;
                     listEl.style.display = 'none';
@@ -434,7 +472,7 @@
             const editId = document.getElementById('editId').value;
             const isEdit = !!editId;
             const id = isEdit ? editId : 'ID_' + Date.now();
-            const timestamp = new Date().toLocaleDateString('vi-VN');
+            const timestamp = isEdit ? userVocabList.find(i => String(i.id) === String(id)).timestamp : new Date().toISOString().split('T')[0];
             
             const newEntry = {
                 id, timestamp,
@@ -453,7 +491,6 @@
                 unit: document.getElementById('unit').value.trim()
             };
 
-            // Cập nhật RAM ngay lập tức để UX mượt
             if (isEdit) {
                 const index = userVocabList.findIndex(item => String(item.id) === String(id));
                 if (index !== -1) userVocabList[index] = newEntry;
@@ -461,18 +498,18 @@
                 userVocabList.push(newEntry);
             }
             resetForm();
-            showToast("⏳ Đang lưu lên Google Sheets...");
+            renderLogTable();
+            showToast("⏳ Saving to Google Sheets...");
 
-            // Đẩy ngầm lên Google Sheets
             const rowData = [newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, newEntry.family, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit];
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: isEdit ? "update" : "add", id: newEntry.id, row: rowData })
                 });
-                showToast("✅ Đã lưu thành công!");
+                showToast("✅ Successfully saved!");
             } catch(err) {
-                showToast("❌ Lỗi đồng bộ lên Sheets, nhưng đã lưu trên trình duyệt!", true);
+                showToast("❌ Sync error, but saved locally on browser!", true);
             }
         }
 
@@ -488,53 +525,64 @@
             document.getElementById('meaningVI').value = item.vi;
             document.getElementById('wordFamily').value = item.family;
             document.getElementById('pos').value = item.pos;
-            document.getElementById('topic').value = item.topic;
-            updateSubtopics(item.topic);
-            document.getElementById('subTopic').value = item.subTopic;
+            if(TOPIC_STRUCTURE[item.topic]) {
+                document.getElementById('topic').value = item.topic;
+                updateSubtopics(item.topic);
+                document.getElementById('subTopic').value = item.subTopic;
+            }
             document.getElementById('book').value = item.book;
             document.getElementById('unit').value = item.unit;
             document.getElementById('exEN').value = item.exEN;
             document.getElementById('exES').value = item.exES;
             document.getElementById('exKO').value = item.exKO;
-            document.getElementById('submitBtn').innerText = "Cập nhật từ vựng";
+            document.getElementById('submitBtn').innerText = "Update Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "inline-flex";
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         function resetForm() {
             document.getElementById('vocabForm').reset();
             document.getElementById('editId').value = "";
-            document.getElementById('submitBtn').innerText = "Lưu vào Database";
+            document.getElementById('submitBtn').innerText = "Save to Database";
             document.getElementById('cancelEditBtn').style.display = "none";
         }
 
         async function deleteVocab(id) {
-            if (!confirm("Bạn có chắc muốn xóa từ này không?")) return;
+            if (!confirm("Are you sure you want to delete this vocabulary item?")) return;
             userVocabList = userVocabList.filter(item => String(item.id) !== String(id));
+            renderLogTable();
             renderTab2();
-            renderTab3();
-            showToast("⏳ Đang xóa trên Google Sheets...");
+            showToast("⏳ Deleting from Google Sheets...");
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "delete", id }) });
-                showToast("✅ Đã xóa thành công!");
-            } catch(err) { showToast("❌ Lỗi khi xóa trên Sheets!", true); }
+                showToast("✅ Successfully deleted!");
+            } catch(err) { showToast("❌ Deletion sync error!", true); }
         }
 
-        // --- TAB 2: TRA CỨU & NHẬT KÝ ---
-        function renderTab2() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const todayStr = new Date().toLocaleDateString('vi-VN');
-            const tbody = document.getElementById('tab2TableBody');
+        function renderLogTable() {
+            const filterVal = document.getElementById('logFilter').value;
+            const tbody = document.getElementById('logTableBody');
             tbody.innerHTML = "";
 
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+
             const filtered = userVocabList.filter(item => {
-                if (!query) return item.timestamp === todayStr; // Mặc định hiện hôm nay
-                return item.en.toLowerCase().includes(query) || item.es.toLowerCase().includes(query) ||
-                       item.ko.toLowerCase().includes(query) || item.vi.toLowerCase().includes(query) ||
-                       item.topic.toLowerCase().includes(query);
-            });
+                if (filterVal === 'all') return true;
+                if (!item.timestamp) return false;
+                const itemDate = new Date(item.timestamp);
+                const diffTime = Math.abs(now - itemDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (filterVal === 'today') return item.timestamp === todayStr || diffDays <= 1;
+                if (filterVal === '1day') return diffDays <= 2;
+                if (filterVal === '3days') return diffDays <= 3;
+                if (filterVal === '7days') return diffDays <= 7;
+                return true;
+            }).reverse(); // Most recent first
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">Không có từ vựng nào hiển thị.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found for the selected period.</td></tr>`;
                 return;
             }
 
@@ -545,40 +593,44 @@
                         <td>${item.es} <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
                         <td>${item.ko} <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button></td>
                         <td>${item.vi}</td>
-                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.topic.split('.')[0]} - ${item.subTopic}</td>
+                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.topic}<br><em>${item.book} (${item.unit})</em></td>
                         <td>
-                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Sửa</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Xóa</button>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        // --- TAB 3: THEO CHỦ ĐỀ ---
+        // --- TAB 2: SEARCH & TOPICS (MERGED) ---
         function renderTopicNav() {
             const nav = document.getElementById('topicNav');
-            nav.innerHTML = "";
+            nav.innerHTML = `<button class="sub-btn ${currentTopicTab === 'ALL' ? 'active' : ''}" onclick="selectMainTopic('ALL')">ALL TOPICS</button>`;
             Object.keys(TOPIC_STRUCTURE).forEach(top => {
                 const btn = document.createElement('button');
                 btn.className = `sub-btn ${top === currentTopicTab ? 'active' : ''}`;
-                btn.innerText = top.split('.')[0]; // Chỉ lấy chữ A, B, C cho gọn
-                btn.title = top;
-                btn.onclick = () => {
-                    currentTopicTab = top;
-                    currentSubTopicTab = "ALL";
-                    renderTopicNav();
-                    renderSubTopicNav();
-                    renderTab3();
-                };
+                btn.innerText = top;
+                btn.onclick = () => selectMainTopic(top);
                 nav.appendChild(btn);
             });
             renderSubTopicNav();
         }
 
+        function selectMainTopic(top) {
+            currentTopicTab = top;
+            currentSubTopicTab = "ALL";
+            renderTopicNav();
+            renderSubTopicNav();
+            renderTab2();
+        }
+
         function renderSubTopicNav() {
             const nav = document.getElementById('subTopicNav');
-            nav.innerHTML = `<button class="sub-btn ${currentSubTopicTab === 'ALL' ? 'active' : ''}" onclick="selectSubTopic('ALL')">Tất cả</button>`;
+            nav.innerHTML = "";
+            if (currentTopicTab === "ALL") return;
+
+            nav.innerHTML = `<button class="sub-btn ${currentSubTopicTab === 'ALL' ? 'active' : ''}" onclick="selectSubTopic('ALL')">All Sub-topics</button>`;
             TOPIC_STRUCTURE[currentTopicTab].forEach(sub => {
                 nav.innerHTML += `<button class="sub-btn ${currentSubTopicTab === sub ? 'active' : ''}" onclick="selectSubTopic('${sub}')">${sub}</button>`;
             });
@@ -587,20 +639,27 @@
         function selectSubTopic(sub) {
             currentSubTopicTab = sub;
             renderSubTopicNav();
-            renderTab3();
+            renderTab2();
         }
 
-        function renderTab3() {
-            const tbody = document.getElementById('tab3TableBody');
+        function renderTab2() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('tab2TableBody');
             tbody.innerHTML = "";
+
             const filtered = userVocabList.filter(item => {
-                const matchTop = item.topic === currentTopicTab;
+                const matchTop = currentTopicTab === "ALL" || item.topic === currentTopicTab;
                 const matchSub = currentSubTopicTab === "ALL" || item.subTopic === currentSubTopicTab;
-                return matchTop && matchSub;
+                if (!matchTop || !matchSub) return false;
+
+                if (!query) return true;
+                return item.en.toLowerCase().includes(query) || item.es.toLowerCase().includes(query) ||
+                       item.ko.toLowerCase().includes(query) || item.vi.toLowerCase().includes(query) ||
+                       item.topic.toLowerCase().includes(query) || item.subTopic.toLowerCase().includes(query);
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">Chưa có từ vựng thuộc chủ đề này.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No vocabulary matching your filter or search query.</td></tr>`;
                 return;
             }
 
@@ -615,14 +674,15 @@
                         <td style="font-size:0.85rem; color:var(--text-secondary);">
                             ${item.exEN ? `🇬🇧 ${item.exEN}<br>` : ''}
                             ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
-                            ${item.exKO ? `🇰🇷 ${item.exKO}` : ''}
+                            ${item.exKO ? `🇰🇷 ${item.exKO}<br>` : ''}
+                            <span style="color:var(--primary); font-weight:600;">[${item.book} - ${item.unit}]</span>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        // --- TAB 4: QUIZLET MODE ---
+        // --- TAB 3: QUIZLET REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -638,7 +698,7 @@
             const mode = document.getElementById('quizMode').value;
             
             quizList = topic === "ALL" ? [...userVocabList] : userVocabList.filter(i => i.topic === topic);
-            quizList = quizList.sort(() => Math.random() - 0.5); // Trộn ngẫu nhiên
+            quizList = quizList.sort(() => Math.random() - 0.5);
             currentQuizIndex = 0;
 
             document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'block' : 'none';
@@ -652,13 +712,13 @@
             document.getElementById('quizProgress').innerText = `${total === 0 ? 0 : currentQuizIndex + 1} / ${total}`;
             
             if (total === 0) {
-                document.getElementById('fcPrompt').innerText = "Không có từ vựng để ôn tập!";
-                document.getElementById('typePrompt').innerText = "Không có từ vựng để ôn tập!";
+                document.getElementById('fcPrompt').innerText = "No vocabulary found for review!";
+                document.getElementById('typePrompt').innerText = "No vocabulary found for review!";
                 return;
             }
 
             const item = quizList[currentQuizIndex];
-            const promptLang = document.getElementById('quizPrompt').value; // VI or EN
+            const promptLang = document.getElementById('quizPrompt').value;
             const promptText = promptLang === "VI" ? item.vi : item.en;
 
             // Flashcard
@@ -694,12 +754,11 @@
         function nextCard(remembered) {
             if (quizList.length === 0) return;
             if (!remembered) {
-                // Đẩy từ chưa nhớ xuống cuối danh sách để ôn lại
                 quizList.push(quizList[currentQuizIndex]);
             }
             currentQuizIndex++;
             if (currentQuizIndex >= quizList.length) {
-                alert("🎉 Chúc mừng bạn đã hoàn thành bộ ôn tập!");
+                alert("🎉 Congratulations! You have completed the review session!");
                 startQuiz();
             } else {
                 renderQuizCard();
@@ -728,17 +787,17 @@
 
             if (isENCorrect && isESCorrect && isKOCorrect) {
                 resEl.style.color = "var(--primary)";
-                resEl.innerHTML = `🎉 Chính xác tuyệt đối! Đang chuyển từ tiếp theo...`;
+                resEl.innerHTML = `🎉 Perfect Match! Moving to next card...`;
                 speak(item.en, 'en-US');
                 setTimeout(() => { nextCard(true); }, 1500);
             } else {
                 resEl.style.color = "var(--danger)";
                 resEl.innerHTML = `
-                    ❌ Chưa chính xác! Đáp án đúng là:<br>
+                    ❌ Incorrect! The exact answers are:<br>
                     ${promptLang === "VI" ? `🇬🇧 <b>${item.en}</b> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button><br>` : ''}
                     🇪🇸 <b>${item.es}</b> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button><br>
                     🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>
-                    <button class="btn btn-sm" style="margin-top:10px;" onclick="nextCard(false)">Tiếp tục (Ôn lại sau)</button>
+                    <button class="btn btn-sm" style="margin-top:10px;" onclick="nextCard(false)">Continue (Review Later)</button>
                 `;
             }
         }
