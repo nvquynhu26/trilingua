@@ -231,6 +231,7 @@
             <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
             <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
+            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--warning); color:#000;">6. Report</button>
         </div>
     </header>
 
@@ -589,7 +590,6 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -626,7 +626,6 @@
                 </div>
             </div>
 
-            <!-- TYPING TEST VIEW -->
             <div id="typingView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
@@ -642,7 +641,6 @@
                 </div>
             </div>
 
-            <!-- MULTIPLE CHOICE VIEW (PHRASAL & IDIOMS) -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
@@ -652,7 +650,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS CHART & FULL-WIDTH BOOK PROGRESS BAR CHART -->
+            <!-- DASHBOARD STATISTICS -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -686,7 +684,7 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-bottom: 24px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
                         <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (Mastered vs Learning)</h4>
                         <canvas id="posChart" style="max-height: 300px;"></canvas>
@@ -706,31 +704,6 @@
                                 <tbody id="topMistakesBody"></tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-
-                <!-- FULL-WIDTH BOOK PROGRESS BAR CHART & TABLE -->
-                <div style="border-top: 1px dashed var(--border); padding-top: 20px;">
-                    <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
-                    
-                    <!-- FULL-WIDTH HORIZONTAL BAR CHART -->
-                    <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px;">
-                        <canvas id="bookChart" style="max-height: 380px; width: 100%;"></canvas>
-                    </div>
-
-                    <!-- SUMMARY TABLE -->
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Book Source</th>
-                                    <th>Learned Units</th>
-                                    <th>Total Units</th>
-                                    <th>Remaining Units</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bookProgressTableBody"></tbody>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -761,6 +734,46 @@
                         <div class="wf-title">🇰🇷 WORD FAMILY [KO]</div>
                         <ul id="wfListKO" class="wf-list"></ul>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: REPORT (DEDICATED REPORT CENTER) -->
+        <div id="tab6" class="tab-content">
+            <!-- HEADER COUNTERS WITH LANGUAGE COLORS -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="border-color: var(--color-en); text-align: center; margin-bottom:0;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-en); margin-bottom: 4px;">ENGLISH VOCABULARY</div>
+                    <div id="reportTotalEN" style="font-size: 2.5rem; font-weight: 800; color: var(--color-en);">0</div>
+                </div>
+                <div class="card" style="border-color: var(--color-es); text-align: center; margin-bottom:0;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-es); margin-bottom: 4px;">SPANISH VOCABULARY</div>
+                    <div id="reportTotalES" style="font-size: 2.5rem; font-weight: 800; color: var(--color-es);">0</div>
+                </div>
+                <div class="card" style="border-color: var(--color-ko); text-align: center; margin-bottom:0;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-ko); margin-bottom: 4px;">KOREAN VOCABULARY</div>
+                    <div id="reportTotalKO" style="font-size: 2.5rem; font-weight: 800; color: var(--color-ko);">0</div>
+                </div>
+            </div>
+
+            <!-- FULL-WIDTH BOOK PROGRESS BAR CHART & TABLE -->
+            <div class="card">
+                <h3 style="color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h3>
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px;">
+                    <canvas id="reportBookChart" style="max-height: 420px; width: 100%;"></canvas>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Book Source</th>
+                                <th>Learned Units</th>
+                                <th>Total Units</th>
+                                <th>Remaining Units</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportBookTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -860,7 +873,7 @@
         let grammarList = [];
         let quizHistory = [];
         let posChartInstance = null;
-        let bookChartInstance = null;
+        let reportBookChartInstance = null;
         let lastRenderedBoardItem = null;
         
         let currentTopicTab = "ALL";
@@ -882,51 +895,51 @@
             { title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"] }
         ];
 
-        /* EXACT BOOK SOURCE UNITS MAPPING (Strict Matching) */
+        /* ABBREVIATED BOOK NAMES MAPPING */
         const BOOK_UNITS_CONFIG = {
-            "Business Vocabulary Elementary": 49,
-            "Business Vocabulary in Use - Elementary to Pre-intermediate": 62,
-            "Business Vocabulary in Use - Intermediate": 66,
-            "Business Vocabulary in Use - Advanced": 66,
-            "Academic Vocabulary in Use": 50,
-            "Vocabulary in Use Elementary": 60,
-            "Vocabulary in Use Pre-intermediate to Intermediate": 100,
-            "Vocabulary in Use Upper-intermediate": 101,
-            "Vocabulary in Use Advanced": 101
+            "Biz Vocab - Elem": { full: "Business Vocabulary Elementary", total: 49 },
+            "Biz In Use - Elem/Pre": { full: "Business Vocabulary in Use - Elementary to Pre-intermediate", total: 62 },
+            "Biz In Use - Inter": { full: "Business Vocabulary in Use - Intermediate", total: 66 },
+            "Biz In Use - Adv": { full: "Business Vocabulary in Use - Advanced", total: 66 },
+            "Academic In Use": { full: "Academic Vocabulary in Use", total: 50 },
+            "In Use - Elem": { full: "Vocabulary in Use Elementary", total: 60 },
+            "In Use - Pre/Inter": { full: "Vocabulary in Use Pre-intermediate to Intermediate", total: 100 },
+            "In Use - Upper": { full: "Vocabulary in Use Upper-intermediate", total: 101 },
+            "In Use - Adv": { full: "Vocabulary in Use Advanced", total: 101 }
         };
 
         const TOPIC_MAPPING = {
             "People, Psychology & Relationship": {
                 subs: ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Daily Life, Home & Leisure": {
                 subs: ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Work, Education & Business": {
                 subs: ["Education & Academic Life", "Jobs, Workplace & Career", "Business, Company & Economy"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "World, Environment & Travel": {
                 subs: ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Technology & Media": {
                 subs: ["Technology, Computers & Internet", "Media, Press & News"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Functional Language & Communication": {
                 subs: ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Basic Concepts & Semantics": {
                 subs: ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Word Formation, Grammar & Phrasal Verbs": {
                 subs: ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"],
-                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
+                books: ["In Use - Elem", "In Use - Pre/Inter", "In Use - Upper", "In Use - Adv"]
             },
             "Business": {
                 subs: [
@@ -934,15 +947,15 @@
                     "MARKETING & LOGISTICS", "COMMUNICATION, TELEPHONING & WRITING", "BUSINESS SKILLS", "RESPONSIBILITY & ETHICS"
                 ],
                 books: [
-                    "Business Vocabulary Elementary",
-                    "Business Vocabulary in Use - Elementary to Pre-intermediate",
-                    "Business Vocabulary in Use - Intermediate",
-                    "Business Vocabulary in Use - Advanced"
+                    "Biz Vocab - Elem",
+                    "Biz In Use - Elem/Pre",
+                    "Biz In Use - Inter",
+                    "Biz In Use - Adv"
                 ]
             },
             "Academic": {
                 subs: ["ACADEMIC SKILLS & RESEARCH"],
-                books: ["Academic Vocabulary in Use"]
+                books: ["Academic In Use"]
             }
         };
 
@@ -990,10 +1003,11 @@
             updateUnitsByBook(bookSelect.value);
         }
 
-        function updateUnitsByBook(bookTitle) {
+        function updateUnitsByBook(shortBookTitle) {
             const unitSelect = document.getElementById('unit');
             unitSelect.innerHTML = "";
-            const maxUnits = BOOK_UNITS_CONFIG[bookTitle] || 100;
+            const config = BOOK_UNITS_CONFIG[shortBookTitle];
+            const maxUnits = config ? config.total : 100;
             for (let i = 1; i <= maxUnits; i++) {
                 unitSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
             }
@@ -1012,6 +1026,7 @@
             renderTab2();
             renderGrammarSidebar();
             renderAnalyticsDashboard();
+            renderReportTab();
         }
 
         function saveToLocalStorage() {
@@ -1051,6 +1066,7 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
+                    renderReportTab();
                     showToast("✅ Synchronized successfully!");
                 }
             } catch (err) { showToast("⚠️ Using local browser data.", true); }
@@ -1065,6 +1081,7 @@
             if(tabId === 'tab2') renderTab2();
             if(tabId === 'tab3') renderGrammarSidebar();
             if(tabId === 'tab4') { startQuiz(); renderAnalyticsDashboard(); }
+            if(tabId === 'tab6') { renderReportTab(); }
         }
 
         function showToast(msg, isError = false) {
@@ -1850,7 +1867,7 @@
             } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (FLASHCARD, TYPING, PHRASAL, IDIOMS) ---
+        // --- TAB 4: QUIZLET REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -1888,7 +1905,6 @@
                 if (mode === 'phrasal') return matchTop && matchSub && i.pos === 'phrasal verb';
                 if (mode === 'idiom') return matchTop && matchSub && i.pos === 'idiom';
                 
-                // For Flashcard & Typing: EXCLUDE phrasal verbs and idioms
                 return matchTop && matchSub && i.pos !== 'phrasal verb' && i.pos !== 'idiom';
             });
             
@@ -1991,6 +2007,7 @@
                 quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: true, source: 'flashcard' });
                 saveToLocalStorage();
                 renderAnalyticsDashboard();
+                renderReportTab();
 
                 setTimeout(() => {
                     currentQuizIndex++;
@@ -2004,6 +2021,7 @@
                 quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: false, source: 'flashcard' });
                 saveToLocalStorage();
                 renderAnalyticsDashboard();
+                renderReportTab();
             }
         }
 
@@ -2038,6 +2056,7 @@
             });
             saveToLocalStorage();
             renderAnalyticsDashboard();
+            renderReportTab();
 
             showToast(`${remembered ? '✔ Mastered' : '❌ Still Learning'} [${lang}]`);
             
@@ -2103,7 +2122,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS & FULL-WIDTH BOOK BAR CHART ---
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2111,7 +2130,6 @@
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
-            // 1. Language Memory Ratios
             ['EN', 'ES', 'KO'].forEach(lang => {
                 const langHist = flashcardHist.filter(h => h.lang === lang);
                 const mastered = langHist.filter(h => h.remembered).length;
@@ -2123,7 +2141,6 @@
                 document.getElementById(`bar${lang}`).style.width = `${pct}%`;
             });
 
-            // 2. POS Chart
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
             const posLearning = {};
@@ -2150,7 +2167,6 @@
                 options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
 
-            // 3. Top 10 Mistakes
             const mistakeMap = {};
             typingHist.filter(h => !h.remembered).forEach(h => {
                 const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
@@ -2175,16 +2191,37 @@
                     `;
                 });
             }
+        }
 
-            // 4. Book Source Completion Progress Chart (Full-width Horizontal) & Table
+        // --- TAB 6: REPORT (DEDICATED REPORT CENTER WITH FULL-WIDTH BAR CHART) ---
+        function renderReportTab() {
+            // 1. Calculate Total Vocab per Language
+            let countEN = 0, countES = 0, countKO = 0;
+            userVocabList.forEach(item => {
+                if (item.en) countEN++;
+                if (item.es) countES++;
+                if (item.ko) countKO++;
+            });
+
+            document.getElementById('reportTotalEN').innerText = countEN;
+            document.getElementById('reportTotalES').innerText = countES;
+            document.getElementById('reportTotalKO').innerText = countKO;
+
+            // 2. Book Progress Tracking with Robust Substring Matching
             const bookProgressMap = {};
-            Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
-                bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
+            Object.keys(BOOK_UNITS_CONFIG).forEach(shortKey => {
+                bookProgressMap[shortKey] = { full: BOOK_UNITS_CONFIG[shortKey].full, total: BOOK_UNITS_CONFIG[shortKey].total, learnedUnits: new Set() };
             });
 
             userVocabList.forEach(item => {
-                if (item.book && bookProgressMap[item.book] && item.unit) {
-                    bookProgressMap[item.book].learnedUnits.add(item.unit);
+                if (item.book && item.unit) {
+                    const itemBookClean = item.book.trim().toLowerCase();
+                    Object.keys(BOOK_UNITS_CONFIG).forEach(shortKey => {
+                        const fullBookClean = BOOK_UNITS_CONFIG[shortKey].full.toLowerCase();
+                        if (itemBookClean.includes(fullBookClean) || fullBookClean.includes(itemBookClean)) {
+                            bookProgressMap[shortKey].learnedUnits.add(item.unit);
+                        }
+                    });
                 }
             });
 
@@ -2192,10 +2229,10 @@
             const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
             const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
 
-            const bCtx = document.getElementById('bookChart').getContext('2d');
-            if (bookChartInstance) bookChartInstance.destroy();
+            const bCtx = document.getElementById('reportBookChart').getContext('2d');
+            if (reportBookChartInstance) reportBookChartInstance.destroy();
 
-            bookChartInstance = new Chart(bCtx, {
+            reportBookChartInstance = new Chart(bCtx, {
                 type: 'bar',
                 data: {
                     labels: bookLabels,
@@ -2213,7 +2250,7 @@
                 }
             });
 
-            const bTbody = document.getElementById('bookProgressTableBody');
+            const bTbody = document.getElementById('reportBookTableBody');
             bTbody.innerHTML = "";
 
             bookLabels.forEach(b => {
