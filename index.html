@@ -157,24 +157,23 @@
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
-        /* Board Clean Layout */
+        /* Board Mind-map & Canvas */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
-        .mindmap-canvas { width: 100%; height: 500px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
-        .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; }
+        .mindmap-canvas { width: 100%; height: 420px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 24px; }
+        .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; z-index: 5; }
 
-        .node-main { width: 170px; height: 170px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.3rem; }
-        .node-main .pos-tag { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+        .node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.2rem; }
+        .node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
 
-        .node-level2 { width: 130px; height: 130px; color: #fff; z-index: 8; font-weight: 700; font-size: 1rem; }
+        .node-level2 { width: 120px; height: 120px; color: #fff; z-index: 8; font-weight: 700; font-size: 0.95rem; }
         .node-level2.es { background: var(--color-es); color: #fff; }
         .node-level2.ko { background: var(--color-ko); color: #fff; }
         .node-level2.vi { background: var(--color-vi); color: #0f172a; }
 
-        /* Bottom Word Families Row Grid */
         .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; }
         @media (max-width: 800px) { .wf-bottom-grid { grid-template-columns: 1fr; } }
         
@@ -1815,7 +1814,7 @@
             } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW ---
+        // --- TAB 4: QUIZLET REVIEW (TRI-FLASHCARD & TYPING TEST) ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2069,7 +2068,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (CLEAN 4-BALLS & BOTTOM WORD FAMILIES GRID) ---
+        // --- TAB 5: BOARD (FIXED CENTER CY & SVG CONNECTOR LINES) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2107,7 +2106,6 @@
             dropdown.style.display = 'block';
         }
 
-        /* Render Helper for Word Family Lists (Split by comma & new line) */
         function formatWordFamilyList(str) {
             if (!str || !str.trim()) return `<li><em>None recorded</em></li>`;
             return str
@@ -2133,9 +2131,11 @@
 
             const rect = canvas.getBoundingClientRect();
             const cx = (rect.width || 800) / 2;
-            const cy = (rect.height || 500) / 2;
+            
+            // Adjust Center CY slightly upwards (y = 190) to leave 60px+ safe margin from bottom
+            const cy = 190;
+            const dist2 = 145; // Safe radius distance
 
-            // 3 Nodes for ES, KO, VI
             const langNodes = [
                 { key: 'es', val: item.es, class: 'es', angle: -30 },
                 { key: 'ko', val: item.ko, class: 'ko', angle: 90 },
@@ -2143,18 +2143,17 @@
             ];
 
             let nodesHTML = "";
-            let svgLinesHTML = `<svg class="mindmap-lines">`;
+            let svgLinesHTML = `<svg class="mindmap-lines" style="width:100%; height:100%;">`;
 
             // 1. Center Node (Main EN)
             nodesHTML += `
-                <div class="node node-main" style="left:${cx - 85}px; top:${cy - 85}px;">
+                <div class="node node-main" style="left:${cx - 75}px; top:${cy - 75}px;">
                     <div>${item.en || "---"}</div>
                     ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
                 </div>
             `;
 
-            // 2. Outer 3 Nodes (ES, KO, VI)
-            const dist2 = 185;
+            // 2. Outer 3 Nodes (ES, KO, VI) & Render SVG Connecting Lines
             langNodes.forEach(lang => {
                 if(!lang.val) return;
 
@@ -2162,10 +2161,11 @@
                 const l2x = cx + dist2 * Math.cos(rad);
                 const l2y = cy + dist2 * Math.sin(rad);
 
-                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="var(--border)" stroke-width="3" stroke-dasharray="4" />`;
+                // Connector Lines (Always Visible)
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
 
                 nodesHTML += `
-                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 65}px; top:${l2y - 65}px;">
+                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 60}px; top:${l2y - 60}px;">
                         ${lang.val}
                     </div>
                 `;
