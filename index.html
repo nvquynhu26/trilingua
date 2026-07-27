@@ -51,7 +51,7 @@
         .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
-        .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1.5fr 1fr; gap: 10px; margin-bottom: 14px; }
         .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
 
         @media (max-width: 1024px) {
@@ -134,6 +134,12 @@
 
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
 
+        /* Multiple Choice Grid */
+        .mc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 600px; margin: 20px auto; }
+        @media (max-width: 600px) { .mc-grid { grid-template-columns: 1fr; } }
+        .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; }
+        .mc-option:hover { background: var(--surface-hover); border-color: var(--primary); }
+
         .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
@@ -157,7 +163,7 @@
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
-        /* Board Mind-map & Canvas */
+        /* Board Canvas */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -297,7 +303,7 @@
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">Note [KO]</button>
                     </div>
 
-                    <!-- Row 4: Topics -->
+                    <!-- Row 4: Topics & Exact Book Source Mapping -->
                     <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
@@ -320,7 +326,7 @@
                         </div>
                         <div class="form-group">
                             <label>Book Source</label>
-                            <select id="book"></select>
+                            <select id="book" onchange="updateUnitsByBook(this.value)"></select>
                         </div>
                         <div class="form-group">
                             <label>Unit</label>
@@ -558,7 +564,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: QUIZLET REVIEW -->
+        <!-- TAB 4: QUIZLET REVIEW (WITH NEW PHRASAL & IDIOM MODES) -->
         <div id="tab4" class="tab-content">
             <div class="card" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -576,6 +582,8 @@
                     <select id="quizMode" onchange="startQuiz()" style="width: auto;">
                         <option value="flashcard">3-Flashcard Grid</option>
                         <option value="typing">Typing Test</option>
+                        <option value="phrasal">Phrasal Verbs Test</option>
+                        <option value="idiom">Idioms Test</option>
                     </select>
                 </div>
                 <div>
@@ -583,7 +591,7 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW CENTERED -->
+            <!-- TRI-FLASHCARD VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -636,6 +644,17 @@
                 </div>
             </div>
 
+            <!-- MULTIPLE CHOICE TEST VIEW (FOR PHRASAL VERBS & IDIOMS) -->
+            <div id="mcView" class="quiz-container" style="display: none;">
+                <div class="card">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
+                    <h3 id="mcPrompt" style="font-size: 1.8rem; color: var(--color-vi); margin-bottom: 20px;">---</h3>
+                    
+                    <div id="mcGridContainer" class="mc-grid"></div>
+                    <div id="mcResult" style="margin-top: 16px; font-weight: bold; display: none;"></div>
+                </div>
+            </div>
+
             <!-- DASHBOARD STATISTICS CHART & TOP MISTAKES -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
@@ -670,10 +689,10 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
                         <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (Mastered vs Learning)</h4>
-                        <canvas id="posChart" style="max-height: 320px;"></canvas>
+                        <canvas id="posChart" style="max-height: 300px;"></canvas>
                     </div>
 
                     <div>
@@ -692,6 +711,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- NEW: BOOK SOURCES PROGRESS CHART & TABLE -->
+                <div style="border-top: 1px dashed var(--border); padding-top: 20px;">
+                    <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+                        <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+                            <canvas id="bookChart" style="max-height: 320px;"></canvas>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Book Source</th>
+                                        <th>Learned Units</th>
+                                        <th>Total Units</th>
+                                        <th>Remaining Units</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookProgressTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -703,12 +745,10 @@
                     <div id="boardDropdown" class="board-dropdown"></div>
                 </div>
 
-                <!-- Canvas Circles -->
                 <div id="mindmapCanvas" class="mindmap-canvas">
                     <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to view its Mind-map.</div>
                 </div>
 
-                <!-- Bottom Word Families Horizontal Grid -->
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
                     <div class="wf-box en">
                         <div class="wf-title">🇬🇧 WORD FAMILY [EN]</div>
@@ -821,6 +861,7 @@
         let grammarList = [];
         let quizHistory = [];
         let posChartInstance = null;
+        let bookChartInstance = null;
         let lastRenderedBoardItem = null;
         
         let currentTopicTab = "ALL";
@@ -842,64 +883,71 @@
             { title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"] }
         ];
 
+        /* EXACT BOOK SOURCE UNITS MAPPING */
+        const BOOK_UNITS_CONFIG = {
+            "Business Vocabulary Elementary": 49,
+            "Business Vocabulary in Use - Elementary to Pre-intermediate": 62,
+            "Business Vocabulary in Use - Intermediate": 66,
+            "Business Vocabulary in Use - Advanced": 66,
+            "Academic Vocabulary in Use": 50,
+            "Vocabulary in Use Elementary": 60,
+            "Vocabulary in Use Pre-intermediate to Intermediate": 100,
+            "Vocabulary in Use Upper-intermediate": 101,
+            "Vocabulary in Use Advanced": 101
+        };
+
         const TOPIC_MAPPING = {
             "People, Psychology & Relationship": {
                 subs: ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Daily Life, Home & Leisure": {
                 subs: ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Work, Education & Business": {
                 subs: ["Education & Academic Life", "Jobs, Workplace & Career", "Business, Company & Economy"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "World, Environment & Travel": {
                 subs: ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Technology & Media": {
                 subs: ["Technology, Computers & Internet", "Media, Press & News"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Functional Language & Communication": {
                 subs: ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Basic Concepts & Semantics": {
                 subs: ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Word Formation, Grammar & Phrasal Verbs": {
                 subs: ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"],
-                books: ["General - Elementary", "General - Pre-Int & Int", "General - Upper-Intermediate", "General - Advanced"]
+                books: ["Vocabulary in Use Elementary", "Vocabulary in Use Pre-intermediate to Intermediate", "Vocabulary in Use Upper-intermediate", "Vocabulary in Use Advanced"]
             },
             "Business": {
                 subs: [
-                    "WORK & CAREERS",
-                    "MONEY, FINANCE & ECONOMY",
-                    "PRODUCTS, SERVICES & PRODUCTION",
-                    "MARKETING & LOGISTICS",
-                    "COMMUNICATION, TELEPHONING & WRITING",
-                    "BUSINESS SKILLS",
-                    "RESPONSIBILITY & ETHICS"
+                    "WORK & CAREERS", "MONEY, FINANCE & ECONOMY", "PRODUCTS, SERVICES & PRODUCTION",
+                    "MARKETING & LOGISTICS", "COMMUNICATION, TELEPHONING & WRITING", "BUSINESS SKILLS", "RESPONSIBILITY & ETHICS"
                 ],
                 books: [
-                    "Business - Elementary",
-                    "Business - Pre-Int & Int",
-                    "Business - Intermediate",
-                    "Business - Advanced"
+                    "Business Vocabulary Elementary",
+                    "Business Vocabulary in Use - Elementary to Pre-intermediate",
+                    "Business Vocabulary in Use - Intermediate",
+                    "Business Vocabulary in Use - Advanced"
                 ]
             },
             "Academic": {
                 subs: ["ACADEMIC SKILLS & RESEARCH"],
-                books: ["Academic"]
+                books: ["Academic Vocabulary in Use"]
             }
         };
 
         window.onload = () => {
-            generateUnits();
             handleTopicChange(document.getElementById('topic').value);
             renderTopicNav();
             populateQuizTopics();
@@ -928,17 +976,7 @@
             }
         }
 
-        function closeWotdModal() {
-            document.getElementById('wotdModal').style.display = "none";
-        }
-
-        function generateUnits() {
-            const unitSelect = document.getElementById('unit');
-            unitSelect.innerHTML = "";
-            for (let i = 1; i <= 120; i++) {
-                unitSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
-            }
-        }
+        function closeWotdModal() { document.getElementById('wotdModal').style.display = "none"; }
 
         function handleTopicChange(topicVal) {
             const subSelect = document.getElementById('subTopic');
@@ -947,12 +985,18 @@
             bookSelect.innerHTML = "";
 
             if (TOPIC_MAPPING[topicVal]) {
-                TOPIC_MAPPING[topicVal].subs.forEach(s => {
-                    subSelect.innerHTML += `<option value="${s}">${s}</option>`;
-                });
-                TOPIC_MAPPING[topicVal].books.forEach(b => {
-                    bookSelect.innerHTML += `<option value="${b}">${b}</option>`;
-                });
+                TOPIC_MAPPING[topicVal].subs.forEach(s => { subSelect.innerHTML += `<option value="${s}">${s}</option>`; });
+                TOPIC_MAPPING[topicVal].books.forEach(b => { bookSelect.innerHTML += `<option value="${b}">${b}</option>`; });
+            }
+            updateUnitsByBook(bookSelect.value);
+        }
+
+        function updateUnitsByBook(bookTitle) {
+            const unitSelect = document.getElementById('unit');
+            unitSelect.innerHTML = "";
+            const maxUnits = BOOK_UNITS_CONFIG[bookTitle] || 100;
+            for (let i = 1; i <= maxUnits; i++) {
+                unitSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
             }
         }
 
@@ -1010,9 +1054,7 @@
                     startQuiz();
                     showToast("✅ Synchronized successfully!");
                 }
-            } catch (err) {
-                showToast("⚠️ Using local browser data.", true);
-            }
+            } catch (err) { showToast("⚠️ Using local browser data.", true); }
         }
 
         function switchTab(tabId) {
@@ -1044,10 +1086,8 @@
                 const prefix = langCode.split('-')[0];
                 selectedVoice = voices.find(v => v.lang.startsWith(prefix));
             }
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-                utterance.lang = selectedVoice.lang;
-            } else { utterance.lang = langCode; }
+            if (selectedVoice) { utterance.voice = selectedVoice; utterance.lang = selectedVoice.lang; } 
+            else { utterance.lang = langCode; }
             window.speechSynthesis.speak(utterance);
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
@@ -1060,10 +1100,7 @@
             esConjBtn.style.display = isVerb ? 'inline-flex' : 'none';
         }
 
-        function execCmd(command, value = null) {
-            document.execCommand(command, false, value);
-        }
-
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
         function insertBoxTable(editorId) {
             const editor = document.getElementById(editorId);
             const tableHTML = `<table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table><p><br></p>`;
@@ -1076,7 +1113,6 @@
             if (!sel.rangeCount) return null;
             let node = sel.getRangeAt(0).startContainer;
             let td = null, tr = null, table = null;
-
             while (node && node.nodeName !== 'BODY') {
                 if (node.nodeName === 'TD' || node.nodeName === 'TH') td = node;
                 if (node.nodeName === 'TR') tr = node;
@@ -1330,6 +1366,7 @@
                 document.getElementById('subTopic').value = item.subTopic;
             }
             document.getElementById('book').value = item.book || "";
+            updateUnitsByBook(item.book);
             document.getElementById('unit').value = item.unit || "";
             document.getElementById('exEN').value = item.exEN || "";
             document.getElementById('exES').value = item.exES || "";
@@ -1814,9 +1851,10 @@
             } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (TRI-FLASHCARD & TYPING TEST) ---
+        // --- TAB 4: QUIZLET REVIEW (WITH NEW MULTIPLE CHOICE MODES) ---
         let quizList = [];
         let currentQuizIndex = 0;
+        let currentMcCorrectOption = null;
 
         function populateQuizTopics() {
             const select = document.getElementById('quizTopic');
@@ -1845,10 +1883,16 @@
             const subTopic = document.getElementById('quizSubTopic').value;
             const mode = document.getElementById('quizMode').value;
             
+            // Filter list based on mode (Exclude Idiom & Phrasal from Flashcard/Typing)
             quizList = userVocabList.filter(i => {
                 const matchTop = (topic === "ALL" || i.topic === topic);
                 const matchSub = (subTopic === "ALL" || i.subTopic === subTopic);
-                return matchTop && matchSub;
+
+                if (mode === 'phrasal') return matchTop && matchSub && i.pos === 'phrasal verb';
+                if (mode === 'idiom') return matchTop && matchSub && i.pos === 'idiom';
+                
+                // For Flashcard & Typing: EXCLUDE phrasal verbs and idioms
+                return matchTop && matchSub && i.pos !== 'phrasal verb' && i.pos !== 'idiom';
             });
             
             quizList = quizList.sort(() => Math.random() - 0.5);
@@ -1856,42 +1900,115 @@
 
             document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'block' : 'none';
             document.getElementById('typingView').style.display = mode === 'typing' ? 'block' : 'none';
+            document.getElementById('mcView').style.display = (mode === 'phrasal' || mode === 'idiom') ? 'block' : 'none';
             
             renderQuizCard();
         }
 
         function renderQuizCard() {
             const total = quizList.length;
+            const mode = document.getElementById('quizMode').value;
             document.getElementById('quizProgress').innerText = `${total === 0 ? 0 : currentQuizIndex + 1} / ${total}`;
             
             if (total === 0) {
                 document.getElementById('triPromptVI').innerText = "No vocabulary found for review!";
                 document.getElementById('typePrompt').innerText = "No vocabulary found for review!";
+                document.getElementById('mcPrompt').innerText = "No items found for review!";
+                document.getElementById('mcGridContainer').innerHTML = "";
                 return;
             }
 
             const item = quizList[currentQuizIndex];
 
-            // Reset Tri-flashcards
-            document.getElementById('triPromptVI').innerText = item.vi || "---";
-            document.getElementById('cardTextEN').innerText = item.en || "---";
-            document.getElementById('cardTextES').innerText = item.es || "---";
-            document.getElementById('cardTextKO').innerText = item.ko || "---";
+            if (mode === 'flashcard') {
+                document.getElementById('triPromptVI').innerText = item.vi || "---";
+                document.getElementById('cardTextEN').innerText = item.en || "---";
+                document.getElementById('cardTextES').innerText = item.es || "---";
+                document.getElementById('cardTextKO').innerText = item.ko || "---";
 
-            document.getElementById('cardFlagEN').style.display = 'block';
-            document.getElementById('cardFlagES').style.display = 'block';
-            document.getElementById('cardFlagKO').style.display = 'block';
+                document.getElementById('cardFlagEN').style.display = 'block';
+                document.getElementById('cardFlagES').style.display = 'block';
+                document.getElementById('cardFlagKO').style.display = 'block';
 
-            document.getElementById('cardTextEN').style.display = 'none';
-            document.getElementById('cardTextES').style.display = 'none';
-            document.getElementById('cardTextKO').style.display = 'none';
+                document.getElementById('cardTextEN').style.display = 'none';
+                document.getElementById('cardTextES').style.display = 'none';
+                document.getElementById('cardTextKO').style.display = 'none';
+            }
+            else if (mode === 'typing') {
+                document.getElementById('typePrompt').innerText = item.vi || "---";
+                document.getElementById('inputEN').value = "";
+                document.getElementById('inputES').value = "";
+                document.getElementById('inputKO').value = "";
+                document.getElementById('typeResult').style.display = 'none';
+            }
+            else if (mode === 'phrasal') {
+                document.getElementById('mcPrompt').innerText = item.vi || "---";
+                document.getElementById('mcResult').style.display = 'none';
 
-            // Reset Typing View
-            document.getElementById('typePrompt').innerText = item.vi || "---";
-            document.getElementById('inputEN').value = "";
-            document.getElementById('inputES').value = "";
-            document.getElementById('inputKO').value = "";
-            document.getElementById('typeResult').style.display = 'none';
+                // Pick 3 random distractor phrasal verbs
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.en).sort(() => Math.random() - 0.5).slice(0, 3);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('mcGridContainer');
+                grid.style.gridTemplateColumns = "repeat(2, 1fr)";
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.innerText = opt.en || "---";
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item, opt.en);
+                    grid.appendChild(btn);
+                });
+            }
+            else if (mode === 'idiom') {
+                document.getElementById('mcPrompt').innerText = item.vi || "---";
+                document.getElementById('mcResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.en).sort(() => Math.random() - 0.5).slice(0, 2);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('mcGridContainer');
+                grid.style.gridTemplateColumns = "1fr";
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.style.fontSize = "0.95rem";
+                    btn.innerHTML = `🇬🇧 <b>${opt.en || '---'}</b> | 🇪🇸 <b>${opt.es || '---'}</b> | 🇰🇷 <b>${opt.ko || '---'}</b>`;
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item, opt.en);
+                    grid.appendChild(btn);
+                });
+            }
+        }
+
+        function checkMcAnswer(isCorrect, item, selectedText) {
+            const resEl = document.getElementById('mcResult');
+            resEl.style.display = 'block';
+
+            if (isCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Correct Answer! Moving to next...`;
+                if (item.en) speak(item.en, 'en-US');
+
+                quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: true, source: 'flashcard' });
+                saveToLocalStorage();
+                renderAnalyticsDashboard();
+
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) { alert("🎉 Session completed!"); startQuiz(); }
+                    else { renderQuizCard(); }
+                }, 1200);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `❌ Incorrect! The correct answer is: <b>${item.en}</b>`;
+
+                quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: false, source: 'flashcard' });
+                saveToLocalStorage();
+                renderAnalyticsDashboard();
+            }
         }
 
         function flipTriCard(lang) {
@@ -1990,7 +2107,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS ---
+        // --- DASHBOARD ANALYTICS & BOOK UNITS TRACKER ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -1998,6 +2115,7 @@
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
+            // 1. Language Memory Ratios
             ['EN', 'ES', 'KO'].forEach(lang => {
                 const langHist = flashcardHist.filter(h => h.lang === lang);
                 const mastered = langHist.filter(h => h.remembered).length;
@@ -2009,6 +2127,7 @@
                 document.getElementById(`bar${lang}`).style.width = `${pct}%`;
             });
 
+            // 2. POS Chart
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
             const posLearning = {};
@@ -2032,15 +2151,10 @@
                         { label: 'Still Learning (❌)', data: posList.map(p => posLearning[p]), backgroundColor: '#ef4444', borderRadius: 4 }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } },
-                        y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
-                    }
-                }
+                options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
 
+            // 3. Top 10 Mistakes
             const mistakeMap = {};
             typingHist.filter(h => !h.remembered).forEach(h => {
                 const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
@@ -2054,21 +2168,74 @@
 
             if (sortedMistakes.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:16px;">No typing mistakes recorded! 🎉</td></tr>`;
-                return;
+            } else {
+                sortedMistakes.forEach(m => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${m.word}</strong></td>
+                            <td><span class="sub-btn" style="padding:2px 8px;">${m.lang}</span></td>
+                            <td style="color:var(--danger); font-weight:bold;">${m.count} times</td>
+                        </tr>
+                    `;
+                });
             }
 
-            sortedMistakes.forEach(m => {
-                tbody.innerHTML += `
+            // 4. Book Source Completion Progress Chart & Table
+            const bookProgressMap = {};
+            Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
+                bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
+            });
+
+            userVocabList.forEach(item => {
+                if (item.book && bookProgressMap[item.book] && item.unit) {
+                    bookProgressMap[item.book].learnedUnits.add(item.unit);
+                }
+            });
+
+            const bookLabels = Object.keys(BOOK_UNITS_CONFIG);
+            const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
+            const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
+
+            const bCtx = document.getElementById('bookChart').getContext('2d');
+            if (bookChartInstance) bookChartInstance.destroy();
+
+            bookChartInstance = new Chart(bCtx, {
+                type: 'bar',
+                data: {
+                    labels: bookLabels.map(b => b.replace('Vocabulary in Use', 'Vocab in Use')),
+                    datasets: [
+                        { label: 'Learned Units', data: bookLearnedCounts, backgroundColor: '#f59e0b', borderRadius: 4 },
+                        { label: 'Total Units', data: bookTotals, backgroundColor: '#334155', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#f8fafc' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                }
+            });
+
+            const bTbody = document.getElementById('bookProgressTableBody');
+            bTbody.innerHTML = "";
+
+            bookLabels.forEach(b => {
+                const learned = bookProgressMap[b].learnedUnits.size;
+                const total = bookProgressMap[b].total;
+                const remaining = total - learned;
+
+                bTbody.innerHTML += `
                     <tr>
-                        <td><strong>${m.word}</strong></td>
-                        <td><span class="sub-btn" style="padding:2px 8px;">${m.lang}</span></td>
-                        <td style="color:var(--danger); font-weight:bold;">${m.count} times</td>
+                        <td><strong>${b}</strong></td>
+                        <td style="color:var(--primary); font-weight:bold;">${learned} Units</td>
+                        <td>${total} Units</td>
+                        <td style="color:var(--warning); font-weight:bold;">${remaining} Units left</td>
                     </tr>
                 `;
             });
         }
 
-        // --- TAB 5: BOARD (FIXED CENTER CY & SVG CONNECTOR LINES) ---
+        // --- TAB 5: BOARD (MIND-MAP) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2131,10 +2298,8 @@
 
             const rect = canvas.getBoundingClientRect();
             const cx = (rect.width || 800) / 2;
-            
-            // Adjust Center CY slightly upwards (y = 190) to leave 60px+ safe margin from bottom
             const cy = 190;
-            const dist2 = 145; // Safe radius distance
+            const dist2 = 145;
 
             const langNodes = [
                 { key: 'es', val: item.es, class: 'es', angle: -30 },
@@ -2145,7 +2310,6 @@
             let nodesHTML = "";
             let svgLinesHTML = `<svg class="mindmap-lines" style="width:100%; height:100%;">`;
 
-            // 1. Center Node (Main EN)
             nodesHTML += `
                 <div class="node node-main" style="left:${cx - 75}px; top:${cy - 75}px;">
                     <div>${item.en || "---"}</div>
@@ -2153,7 +2317,6 @@
                 </div>
             `;
 
-            // 2. Outer 3 Nodes (ES, KO, VI) & Render SVG Connecting Lines
             langNodes.forEach(lang => {
                 if(!lang.val) return;
 
@@ -2161,7 +2324,6 @@
                 const l2x = cx + dist2 * Math.cos(rad);
                 const l2y = cy + dist2 * Math.sin(rad);
 
-                // Connector Lines (Always Visible)
                 svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
 
                 nodesHTML += `
@@ -2174,7 +2336,6 @@
             svgLinesHTML += `</svg>`;
             canvas.innerHTML = svgLinesHTML + nodesHTML;
 
-            // 3. Render Bottom Horizontal Word Family Grid
             document.getElementById('wfListEN').innerHTML = formatWordFamilyList(item.familyEN);
             document.getElementById('wfListES').innerHTML = formatWordFamilyList(item.familyES);
             document.getElementById('wfListKO').innerHTML = formatWordFamilyList(item.familyKO);
