@@ -197,7 +197,7 @@
         .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; }
         .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
 
-        /* Tab 6 Report Dashboard Styling */
+        /* Report Heatmap Matrix */
         .heatmap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 6px; margin-top: 10px; }
         .heatmap-cell { aspect-ratio: 1; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 0.75rem; font-weight: 700; background: var(--bg); border: 1px solid var(--border); color: var(--text-secondary); }
         .heatmap-cell.learned { background: var(--primary); color: #fff; border-color: var(--primary); }
@@ -505,7 +505,6 @@
                 <div class="sidebar">
                     <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
                     
-                    <!-- Tag Filter & Search -->
                     <div style="display: flex; gap: 6px; margin-bottom: 12px;">
                         <input type="text" id="gramSearchInput" placeholder="🔍 Search..." oninput="renderGrammarSidebar()">
                         <select id="tagFilterSelect" onchange="renderGrammarSidebar()" style="width: auto; padding: 6px;">
@@ -620,7 +619,6 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -657,7 +655,6 @@
                 </div>
             </div>
 
-            <!-- TYPING TEST VIEW -->
             <div id="typingView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
@@ -673,7 +670,6 @@
                 </div>
             </div>
 
-            <!-- MULTIPLE CHOICE VIEW -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
@@ -683,7 +679,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS CHART & TOP MISTAKES -->
+            <!-- DASHBOARD STATISTICS -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -771,20 +767,46 @@
             </div>
         </div>
 
-        <!-- TAB 6: REPORT (DEDICATED DASHBOARD & HEATMAPS) -->
+        <!-- TAB 6: REPORT (FULL ANALYTICS, VELOCITY, RADAR, GOAL & HEATMAPS) -->
         <div id="tab6" class="tab-content">
             <div class="card">
-                <h2 style="margin-bottom: 16px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
+                <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- FULL-WIDTH BOOK PROGRESS BAR CHART -->
-                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
+                <!-- ROW 1: GOAL PROGRESS & LANGUAGE RADAR -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+                    <!-- Goal Progress Metric -->
+                    <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
+                        <h4 style="font-size: 0.95rem; color: var(--warning); margin-bottom: 12px;">🎯 Vocabulary Goal Progress (Target: 1,000 words)</h4>
+                        <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 6px;"><span id="totalVocabCount">0</span> / 1,000 words</div>
+                        <div class="progress-bar-bg" style="height: 16px;"><div id="goalProgressBar" class="progress-bar-fill" style="width:0%;"></div></div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px;">Keep adding daily vocabulary to reach your master milestone!</p>
+                    </div>
+
+                    <!-- Language Balance Radar Chart -->
+                    <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center;">
+                        <h4 style="font-size: 0.95rem; color: var(--color-es); margin-bottom: 6px;">🌐 Language Balance Radar (EN - ES - KO)</h4>
+                        <div style="position: relative; height: 220px; width: 100%;">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 2: VELOCITY LINE CHART -->
+                <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
+                    <h4 style="font-size: 1rem; color: var(--edit); margin-bottom: 14px;">📈 Learning Velocity (Weekly New Words Added)</h4>
+                    <div style="position: relative; height: 260px; width: 100%;">
+                        <canvas id="velocityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- ROW 3: FULL-WIDTH BOOK HORIZONTAL BAR CHART & TABLE -->
+                <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
                     <div style="position: relative; height: 350px; width: 100%;">
                         <canvas id="bookChart"></canvas>
                     </div>
                 </div>
 
-                <!-- SUMMARY TABLE -->
                 <div class="table-container" style="margin-bottom: 30px;">
                     <table>
                         <thead>
@@ -799,7 +821,7 @@
                     </table>
                 </div>
 
-                <!-- HEATMAPS / UNIT MATRICES PER BOOK -->
+                <!-- ROW 4: HEATMAPS MATRIX -->
                 <div style="border-top: 1px dashed var(--border); padding-top: 20px;">
                     <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 14px;">🗓️ Book Units Heatmap Matrix</h4>
                     <div id="heatmapContainer" style="display: flex; flex-direction: column; gap: 20px;"></div>
@@ -903,6 +925,8 @@
         let quizHistory = [];
         let posChartInstance = null;
         let bookChartInstance = null;
+        let velocityChartInstance = null;
+        let radarChartInstance = null;
         let lastRenderedBoardItem = null;
         
         let currentTopicTab = "ALL";
@@ -1740,7 +1764,6 @@
                     return matchLang && matchQuery && matchTag;
                 });
 
-                // Sort: Pinned posts always on top
                 langPosts.sort((a, b) => {
                     const aPinned = pinnedPostIds.includes(a.id);
                     const bPinned = pinnedPostIds.includes(b.id);
@@ -2196,8 +2219,87 @@
             }
         }
 
-        // --- TAB 6: REPORT (FULL-WIDTH BOOK BAR CHART, TABLE & HEATMAP MATRICES) ---
+        // --- TAB 6: REPORT (GOAL, RADAR, VELOCITY, BOOK BAR CHART, HEATMAPS) ---
         function renderReportTab() {
+            // 1. Goal Progress Metric
+            const totalVocab = userVocabList.length;
+            const targetVocab = 1000;
+            const goalPct = Math.min(Math.round((totalVocab / targetVocab) * 100), 100);
+            document.getElementById('totalVocabCount').innerText = totalVocab;
+            const goalBar = document.getElementById('goalProgressBar');
+            goalBar.style.width = `${goalPct}%`;
+            goalBar.style.backgroundColor = goalPct >= 100 ? 'var(--primary)' : 'var(--warning)';
+
+            // 2. Language Balance Radar Chart
+            const langCounts = { EN: 0, ES: 0, KO: 0 };
+            userVocabList.forEach(i => {
+                if (i.en) langCounts.EN++;
+                if (i.es) langCounts.ES++;
+                if (i.ko) langCounts.KO++;
+            });
+
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['English (EN)', 'Spanish (ES)', 'Korean (KO)'],
+                    datasets: [{
+                        label: 'Vocabulary Volume',
+                        data: [langCounts.EN, langCounts.ES, langCounts.KO],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: '#10b981',
+                        pointBackgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { r: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', backdropColor: 'transparent' } } }
+                }
+            });
+
+            // 3. Learning Velocity (Weekly New Words)
+            const weeksMap = {};
+            userVocabList.forEach(i => {
+                if (i.timestamp) {
+                    const date = new Date(i.timestamp);
+                    const weekNum = Math.floor(date.getTime() / (7 * 24 * 60 * 60 * 1000));
+                    weeksMap[weekNum] = (weeksMap[weekNum] || 0) + 1;
+                }
+            });
+
+            const sortedWeeks = Object.keys(weeksMap).sort();
+            const velocityLabels = sortedWeeks.map((w, idx) => `Week ${idx + 1}`);
+            const velocityData = sortedWeeks.map(w => weeksMap[w]);
+
+            const velCtx = document.getElementById('velocityChart').getContext('2d');
+            if (velocityChartInstance) velocityChartInstance.destroy();
+
+            velocityChartInstance = new Chart(velCtx, {
+                type: 'line',
+                data: {
+                    labels: velocityLabels.length > 0 ? velocityLabels : ['Week 1'],
+                    datasets: [{
+                        label: 'New Words Added',
+                        data: velocityData.length > 0 ? velocityData : [0],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
+                }
+            });
+
+            // 4. Book Source Completion Progress Chart & Table & Heatmaps
             const bookProgressMap = {};
             Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
                 bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
@@ -2213,7 +2315,6 @@
             const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
             const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
 
-            // 1. Render Full-width Horizontal Bar Chart
             const bCtx = document.getElementById('bookChart').getContext('2d');
             if (bookChartInstance) bookChartInstance.destroy();
 
@@ -2235,7 +2336,6 @@
                 }
             });
 
-            // 2. Render Summary Table
             const bTbody = document.getElementById('bookProgressTableBody');
             bTbody.innerHTML = "";
 
@@ -2254,7 +2354,6 @@
                 `;
             });
 
-            // 3. Render Heatmaps Matrix Grid per Book
             const heatmapContainer = document.getElementById('heatmapContainer');
             heatmapContainer.innerHTML = "";
 
