@@ -71,7 +71,7 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* Rich Text Contenteditable Editor Box */
+        /* Rich Text Editor */
         .rich-editor { width: 100%; min-height: 250px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border); }
@@ -495,13 +495,16 @@
                                 <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '2')">Small</button>
                                 <button type="button" class="btn-fmt" onclick="execCmd('formatBlock', '<h3>')">Heading</button>
                                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Bullet</button>
-                                <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContentEditor')">Box Table</button>
+                                <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContentEditor')">+ Box Table</button>
+                                <button type="button" class="btn-fmt" onclick="addTableRow('gramContentEditor')">+ Row</button>
+                                <button type="button" class="btn-fmt" onclick="addTableCol('gramContentEditor')">+ Col</button>
+                                <button type="button" class="btn-fmt btn-danger" onclick="deleteTableRow('gramContentEditor')">- Row</button>
+                                <button type="button" class="btn-fmt btn-danger" onclick="deleteTableCol('gramContentEditor')">- Col</button>
                                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
-                                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
-                                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                             </div>
-                            <!-- Interactive Visual Contenteditable Editor -->
                             <div id="gramContentEditor" class="rich-editor" contenteditable="true"></div>
                         </div>
 
@@ -627,13 +630,16 @@
                 <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '2')">Small</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('formatBlock', '<h3>')">Heading</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Bullet</button>
-                <button type="button" class="btn-fmt" onclick="insertBoxTable('tempNoteContentEditor')">Box Table</button>
+                <button type="button" class="btn-fmt" onclick="insertBoxTable('tempNoteContentEditor')">+ Box Table</button>
+                <button type="button" class="btn-fmt" onclick="addTableRow('tempNoteContentEditor')">+ Row</button>
+                <button type="button" class="btn-fmt" onclick="addTableCol('tempNoteContentEditor')">+ Col</button>
+                <button type="button" class="btn-fmt btn-danger" onclick="deleteTableRow('tempNoteContentEditor')">- Row</button>
+                <button type="button" class="btn-fmt btn-danger" onclick="deleteTableCol('tempNoteContentEditor')">- Col</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
-                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
-                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
             </div>
-            <!-- Contenteditable Note Editor -->
             <div id="tempNoteContentEditor" class="rich-editor" contenteditable="true" style="min-height: 200px; margin-bottom: 16px;"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn" onclick="saveNoteModal()">Save Note</button>
@@ -915,16 +921,74 @@
             enIrregBtn.style.display = (val === 'verb') ? 'inline-flex' : 'none';
         }
 
-        /* Exec Command for WYSIWYG Contenteditable Editor */
+        /* WYSIWYG Exec Commands */
         function execCmd(command, value = null) {
             document.execCommand(command, false, value);
         }
 
         function insertBoxTable(editorId) {
             const editor = document.getElementById(editorId);
-            const tableHTML = `<table><tr><td>Header 1</td><td>Header 2</td></tr><tr><td>Data 1</td><td>Data 2</td></tr></table><p><br></p>`;
+            const tableHTML = `<table><tr><td>Cell 1</td><td>Cell 2</td></tr><tr><td>Cell 3</td><td>Cell 4</td></tr></table><p><br></p>`;
             editor.focus();
             document.execCommand('insertHTML', false, tableHTML);
+        }
+
+        /* Dynamic Table Operations (Add/Delete Rows & Columns) */
+        function getParentTableAndCell() {
+            const sel = window.getSelection();
+            if (!sel.rangeCount) return null;
+            let node = sel.getRangeAt(0).startContainer;
+            let td = null, tr = null, table = null;
+
+            while (node && node.nodeName !== 'BODY') {
+                if (node.nodeName === 'TD' || node.nodeName === 'TH') td = node;
+                if (node.nodeName === 'TR') tr = node;
+                if (node.nodeName === 'TABLE') { table = node; break; }
+                node = node.parentNode;
+            }
+            if (table && tr && td) return { table, tr, td };
+            return null;
+        }
+
+        function addTableRow(editorId) {
+            const info = getParentTableAndCell();
+            if (!info) { alert("Please click inside a table cell first!"); return; }
+            const colCount = info.tr.cells.length;
+            const newTr = document.createElement('tr');
+            for (let i = 0; i < colCount; i++) {
+                const newTd = document.createElement('td');
+                newTd.innerText = "New cell";
+                newTr.appendChild(newTd);
+            }
+            info.tr.parentNode.insertBefore(newTr, info.tr.nextSibling);
+        }
+
+        function addTableCol(editorId) {
+            const info = getParentTableAndCell();
+            if (!info) { alert("Please click inside a table cell first!"); return; }
+            const cellIndex = info.td.cellIndex;
+            for (let i = 0; i < info.table.rows.length; i++) {
+                const row = info.table.rows[i];
+                const newTd = document.createElement('td');
+                newTd.innerText = "New cell";
+                row.insertBefore(newTd, row.cells[cellIndex + 1] || null);
+            }
+        }
+
+        function deleteTableRow(editorId) {
+            const info = getParentTableAndCell();
+            if (!info) { alert("Please click inside a table cell first!"); return; }
+            info.tr.remove();
+        }
+
+        function deleteTableCol(editorId) {
+            const info = getParentTableAndCell();
+            if (!info) { alert("Please click inside a table cell first!"); return; }
+            const cellIndex = info.td.cellIndex;
+            for (let i = 0; i < info.table.rows.length; i++) {
+                const row = info.table.rows[i];
+                if (row.cells[cellIndex]) row.cells[cellIndex].remove();
+            }
         }
 
         // --- MODALS ---
