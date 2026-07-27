@@ -71,6 +71,12 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
+        /* Rich Text Contenteditable Editor Box */
+        .rich-editor { width: 100%; min-height: 250px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
+        .rich-editor:focus { border-color: var(--primary); }
+        .rich-editor table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border); }
+        .rich-editor td, .rich-editor th { border: 1px solid var(--border); padding: 8px; min-width: 60px; }
+
         .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.88rem; }
         .btn:hover { background: var(--primary-hover); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
@@ -483,19 +489,20 @@
                         <div class="form-group full-width">
                             <label>Lesson Content & Usage Notes *</label>
                             <div class="editor-toolbar">
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<b>', '</b>')"><b>B</b> Bold</button>
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<i>', '</i>')"><i>I</i> Light</button>
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<span style=\'font-size: 1.25em; font-weight: bold;\'>', '</span>')">Large</button>
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<span style=\'font-size: 0.85em; color: var(--text-secondary);\'>', '</span>')">Small</button>
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<h3>', '</h3>')">Heading</button>
-                                <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '• ', '')">• Bullet</button>
-                                <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContent')">Box Table</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '5')">Large</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '2')">Small</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('formatBlock', '<h3>')">Heading</button>
+                                <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+                                <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContentEditor')">Box Table</button>
                                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
-                                <input type="color" id="gramColorPicker" onchange="applyColor('gramContent', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
                                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
-                                <input type="color" id="gramBgPicker" onchange="applyBgColor('gramContent', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
                             </div>
-                            <textarea id="gramContent" rows="18" required style="font-size: 1.05rem; line-height: 1.6;" placeholder="Write detailed notes here..."></textarea>
+                            <!-- Interactive Visual Contenteditable Editor -->
+                            <div id="gramContentEditor" class="rich-editor" contenteditable="true"></div>
                         </div>
 
                         <div style="margin-top: 20px; display: flex; gap: 10px;">
@@ -614,19 +621,20 @@
         <div class="modal-card">
             <h3 id="noteModalTitle" style="margin-bottom: 12px; color: var(--grammar);">Edit Note</h3>
             <div class="editor-toolbar">
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<b>', '</b>')"><b>B</b> Bold</button>
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<i>', '</i>')"><i>I</i> Light</button>
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<span style=\'font-size: 1.2em; font-weight: bold;\'>', '</span>')">Large</button>
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<span style=\'font-size: 0.85em; color: var(--text-secondary);\'>', '</span>')">Small</button>
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<h3>', '</h3>')">Heading</button>
-                <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '• ', '')">• Bullet</button>
-                <button type="button" class="btn-fmt" onclick="insertBoxTable('tempNoteContent')">Box Table</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '5')">Large</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '2')">Small</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('formatBlock', '<h3>')">Heading</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+                <button type="button" class="btn-fmt" onclick="insertBoxTable('tempNoteContentEditor')">Box Table</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
-                <input type="color" onchange="applyColor('tempNoteContent', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
-                <input type="color" onchange="applyBgColor('tempNoteContent', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
             </div>
-            <textarea id="tempNoteContent" rows="10" style="font-size: 1rem; line-height: 1.5; margin-bottom: 16px;" placeholder="Add notes..."></textarea>
+            <!-- Contenteditable Note Editor -->
+            <div id="tempNoteContentEditor" class="rich-editor" contenteditable="true" style="min-height: 200px; margin-bottom: 16px;"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn" onclick="saveNoteModal()">Save Note</button>
                 <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeNoteModal()">Cancel</button>
@@ -907,42 +915,28 @@
             enIrregBtn.style.display = (val === 'verb') ? 'inline-flex' : 'none';
         }
 
-        function insertFormat(textareaId, startTag, endTag) {
-            const textarea = document.getElementById(textareaId);
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const text = textarea.value;
-            const selectedText = text.substring(start, end) || "text";
-            const replacement = startTag + selectedText + endTag;
-            textarea.value = text.substring(0, start) + replacement + text.substring(end);
-            textarea.focus();
-            textarea.selectionStart = start + startTag.length;
-            textarea.selectionEnd = start + startTag.length + selectedText.length;
+        /* Exec Command for WYSIWYG Contenteditable Editor */
+        function execCmd(command, value = null) {
+            document.execCommand(command, false, value);
         }
 
-        function applyColor(textareaId, colorHex) {
-            insertFormat(textareaId, `<span style="color:${colorHex}">`, `</span>`);
-        }
-
-        function applyBgColor(textareaId, colorHex) {
-            insertFormat(textareaId, `<span style="background-color:${colorHex}; padding:2px 4px; border-radius:4px;">`, `</span>`);
-        }
-
-        function insertBoxTable(textareaId) {
-            const tableHTML = `\n<table style="width:100%; border-collapse:collapse; margin:10px 0; border:1px solid var(--border);">\n  <tr>\n    <td style="border:1px solid var(--border); padding:8px;">Header 1</td>\n    <td style="border:1px solid var(--border); padding:8px;">Header 2</td>\n  </tr>\n  <tr>\n    <td style="border:1px solid var(--border); padding:8px;">Data 1</td>\n    <td style="border:1px solid var(--border); padding:8px;">Data 2</td>\n  </tr>\n</table>\n`;
-            insertFormat(textareaId, tableHTML, '');
+        function insertBoxTable(editorId) {
+            const editor = document.getElementById(editorId);
+            const tableHTML = `<table><tr><td>Header 1</td><td>Header 2</td></tr><tr><td>Data 1</td><td>Data 2</td></tr></table><p><br></p>`;
+            editor.focus();
+            document.execCommand('insertHTML', false, tableHTML);
         }
 
         // --- MODALS ---
         function openNoteModal(lang) {
             currentEditingNoteLang = lang;
             document.getElementById('noteModalTitle').innerText = `Edit Note [${lang}]`;
-            document.getElementById('tempNoteContent').value = currentNotes[lang] || "";
+            document.getElementById('tempNoteContentEditor').innerHTML = currentNotes[lang] || "";
             document.getElementById('noteModal').style.display = "flex";
         }
         function closeNoteModal() { document.getElementById('noteModal').style.display = "none"; }
         function saveNoteModal() {
-            if (currentEditingNoteLang) currentNotes[currentEditingNoteLang] = document.getElementById('tempNoteContent').value.trim();
+            if (currentEditingNoteLang) currentNotes[currentEditingNoteLang] = document.getElementById('tempNoteContentEditor').innerHTML.trim();
             closeNoteModal();
             showToast(`✅ Saved Note [${currentEditingNoteLang}]`);
         }
@@ -1540,7 +1534,7 @@
             document.getElementById('gramTopic').value = g.topic || "";
             document.getElementById('gramTitle').value = g.title || "";
             document.getElementById('gramKeywords').value = g.keywords || "";
-            document.getElementById('gramContent').value = g.content || "";
+            document.getElementById('gramContentEditor').innerHTML = g.content || "";
             document.getElementById('grammarHeader').innerText = "Edit Grammar Note";
             document.getElementById('gramSubmitBtn').innerText = "Update Note";
             document.getElementById('gramDeleteBtn').style.display = "inline-flex";
@@ -1551,6 +1545,7 @@
         function resetGrammarForm() {
             document.getElementById('grammarForm').reset();
             document.getElementById('grammarId').value = "";
+            document.getElementById('gramContentEditor').innerHTML = "";
             document.getElementById('grammarHeader').innerText = "Create Grammar Note";
             document.getElementById('gramSubmitBtn').innerText = "Save Grammar Note";
             document.getElementById('gramDeleteBtn').style.display = "none";
@@ -1571,7 +1566,7 @@
                 topic: document.getElementById('gramTopic').value.trim(),
                 title: document.getElementById('gramTitle').value.trim(),
                 keywords: document.getElementById('gramKeywords').value.trim(),
-                content: document.getElementById('gramContent').value.trim()
+                content: document.getElementById('gramContentEditor').innerHTML.trim()
             };
 
             if (isEdit) {
