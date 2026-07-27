@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-    <!-- Chart.js for Visual Statistics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -49,7 +48,6 @@
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
         
-        /* Form Grids */
         .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
@@ -118,22 +116,31 @@
         .wotd-ko { font-size: 1.4rem; font-weight: 600; color: var(--color-ko); margin-bottom: 6px; }
         .wotd-vi { font-size: 1.1rem; font-weight: 500; color: var(--color-vi); margin-bottom: 20px; }
 
-        /* Tri-Flashcard Horizonal Grid Layout */
-        .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        /* Tri-Flashcard Horizonal Grid Layout Centered */
+        .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; }
+        
+        .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; }
         @media (max-width: 800px) { .tri-flashcard-grid { grid-template-columns: 1fr; } }
         
-        .card-box { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; transition: all 0.3s; }
+        .card-box { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; transition: all 0.3s; cursor: pointer; }
         .card-box.en { border-color: var(--color-en); }
         .card-box.es { border-color: var(--color-es); }
         .card-box.ko { border-color: var(--color-ko); }
 
-        .card-flag { font-size: 2.5rem; margin-top: 10px; }
-        .card-text { font-size: 1.4rem; font-weight: 700; display: none; margin: 10px 0; }
+        .card-flag { font-size: 3rem; margin: 30px 0; user-select: none; }
+        .card-text { font-size: 1.35rem; font-weight: 700; display: none; margin: 30px 0; word-break: break-word; }
         .card-box.en .card-text { color: var(--color-en); }
         .card-box.es .card-text { color: var(--color-es); }
         .card-box.ko .card-text { color: var(--color-ko); }
 
         .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; }
+
+        /* Small Centered Vietnamese Card */
+        .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
+
+        /* Progress Bar */
+        .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
+        .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
         /* Grammar Tree Sidebar */
         .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
@@ -574,46 +581,43 @@
             </div>
 
             <!-- TRI-FLASHCARD VIEW -->
-            <div id="flashcardView" class="quiz-container" style="max-width: 900px;">
+            <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <!-- EN Card -->
-                    <div class="card-box en">
-                        <div class="card-flag">🇬🇧</div>
+                    <div class="card-box en" onclick="flipTriCard('EN')">
+                        <div id="cardFlagEN" class="card-flag">🇬🇧</div>
                         <div id="cardTextEN" class="card-text">---</div>
-                        <button class="btn btn-sm btn-fmt" onclick="flipTriCard('EN')">Flip Card</button>
-                        <div class="card-actions" style="margin-top:10px;">
+                        <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('EN', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('EN', true)">✔ Mastered</button>
                         </div>
                     </div>
 
                     <!-- ES Card -->
-                    <div class="card-box es">
-                        <div class="card-flag">🇪🇸</div>
+                    <div class="card-box es" onclick="flipTriCard('ES')">
+                        <div id="cardFlagES" class="card-flag">🇪🇸</div>
                         <div id="cardTextES" class="card-text">---</div>
-                        <button class="btn btn-sm btn-fmt" onclick="flipTriCard('ES')">Flip Card</button>
-                        <div class="card-actions" style="margin-top:10px;">
+                        <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('ES', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('ES', true)">✔ Mastered</button>
                         </div>
                     </div>
 
                     <!-- KO Card -->
-                    <div class="card-box ko">
-                        <div class="card-flag">🇰🇷</div>
+                    <div class="card-box ko" onclick="flipTriCard('KO')">
+                        <div id="cardFlagKO" class="card-flag">🇰🇷</div>
                         <div id="cardTextKO" class="card-text">---</div>
-                        <button class="btn btn-sm btn-fmt" onclick="flipTriCard('KO')">Flip Card</button>
-                        <div class="card-actions" style="margin-top:10px;">
+                        <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('KO', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('KO', true)">✔ Mastered</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Prompt Meaning VI at Bottom -->
-                <div class="card" style="border-color: var(--color-vi); background: rgba(254, 238, 181, 0.1);">
-                    <div style="font-size: 0.85rem; color: var(--color-vi); font-weight: bold; margin-bottom: 4px;">VIETNAMESE MEANING</div>
-                    <h3 id="triPromptVI" style="font-size: 1.6rem; color: var(--color-vi);">---</h3>
+                <!-- Small Centered Vietnamese Card -->
+                <div class="vi-card-box card">
+                    <div style="font-size: 0.75rem; color: var(--color-vi); font-weight: bold; margin-bottom: 2px;">VIETNAMESE MEANING</div>
+                    <h4 id="triPromptVI" style="font-size: 1.25rem; color: var(--color-vi);">---</h4>
                 </div>
             </div>
 
@@ -646,16 +650,38 @@
                     </select>
                 </div>
 
+                <!-- Language Memory Ratio Comparison -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">🇬🇧 ENGLISH PROGRESS</div>
+                        <div id="ratioEN" style="font-size: 1.2rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);" id="pctEN">0% Mastered</div>
+                        <div class="progress-bar-bg"><div id="barEN" class="progress-bar-fill" style="width:0%; background:var(--color-en);"></div></div>
+                    </div>
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="color: var(--color-es); font-weight: 700; font-size: 0.9rem;">🇪🇸 SPANISH PROGRESS</div>
+                        <div id="ratioES" style="font-size: 1.2rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);" id="pctES">0% Mastered</div>
+                        <div class="progress-bar-bg"><div id="barES" class="progress-bar-fill" style="width:0%; background:var(--color-es);"></div></div>
+                    </div>
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="color: var(--color-ko); font-weight: 700; font-size: 0.9rem;">🇰🇷 KOREAN PROGRESS</div>
+                        <div id="ratioKO" style="font-size: 1.2rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);" id="pctKO">0% Mastered</div>
+                        <div class="progress-bar-bg"><div id="barKO" class="progress-bar-fill" style="width:0%; background:var(--color-ko);"></div></div>
+                    </div>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
                     <!-- Chart Column -->
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
-                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Studied Count by Part of Speech (POS)</h4>
+                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (Mastered vs Learning)</h4>
                         <canvas id="posChart" style="max-height: 320px;"></canvas>
                     </div>
 
-                    <!-- Top 10 Mistakes Column -->
+                    <!-- Top 10 Mistakes Column (from Typing Test) -->
                     <div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--danger);">⚠️ Top 10 Most Frequent Mistakes</h4>
+                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--danger);">⚠️ Top 10 Typing Test Mistakes</h4>
                         <div class="table-container">
                             <table>
                                 <thead>
@@ -868,7 +894,6 @@
             fetchDataFromGAS();
         };
 
-        // --- WORD OF THE DAY POPUP LOGIC ---
         function triggerWordOfTheDay() {
             const today = new Date().toISOString().split('T')[0];
             const lastShownDate = localStorage.getItem("trilingua_wotd_date");
@@ -1017,7 +1042,6 @@
             esConjBtn.style.display = isVerb ? 'inline-flex' : 'none';
         }
 
-        /* WYSIWYG Exec Commands */
         function execCmd(command, value = null) {
             document.execCommand(command, false, value);
         }
@@ -1772,7 +1796,7 @@
             } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (TRI-FLASHCARD & TYPING) ---
+        // --- TAB 4: QUIZLET REVIEW (TRI-FLASHCARD & TYPING TEST) ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -1830,18 +1854,21 @@
 
             const item = quizList[currentQuizIndex];
 
-            // Setup Tri-flashcards
+            // Reset Tri-flashcards
             document.getElementById('triPromptVI').innerText = item.vi || "---";
             document.getElementById('cardTextEN').innerText = item.en || "---";
             document.getElementById('cardTextES').innerText = item.es || "---";
             document.getElementById('cardTextKO').innerText = item.ko || "---";
 
-            // Hide text back side initially
+            document.getElementById('cardFlagEN').style.display = 'block';
+            document.getElementById('cardFlagES').style.display = 'block';
+            document.getElementById('cardFlagKO').style.display = 'block';
+
             document.getElementById('cardTextEN').style.display = 'none';
             document.getElementById('cardTextES').style.display = 'none';
             document.getElementById('cardTextKO').style.display = 'none';
 
-            // Setup Typing View
+            // Reset Typing View
             document.getElementById('typePrompt').innerText = item.vi || "---";
             document.getElementById('inputEN').value = "";
             document.getElementById('inputES').value = "";
@@ -1849,11 +1876,16 @@
             document.getElementById('typeResult').style.display = 'none';
         }
 
+        /* Click Card directly to toggle flag/text */
         function flipTriCard(lang) {
+            const flagEl = document.getElementById(`cardFlag${lang}`);
             const textEl = document.getElementById(`cardText${lang}`);
-            const isHidden = textEl.style.display === 'none';
-            textEl.style.display = isHidden ? 'block' : 'none';
-            if (isHidden) {
+            const isTextHidden = textEl.style.display === 'none';
+
+            flagEl.style.display = isTextHidden ? 'none' : 'block';
+            textEl.style.display = isTextHidden ? 'block' : 'none';
+
+            if (isTextHidden) {
                 const item = quizList[currentQuizIndex];
                 if (lang === 'EN' && item.en) speak(item.en, 'en-US');
                 if (lang === 'ES' && item.es) speak(item.es, 'es-ES');
@@ -1865,20 +1897,21 @@
             if (quizList.length === 0) return;
             const item = quizList[currentQuizIndex];
             
+            // Log Flashcard progress ONLY
             quizHistory.push({
                 vocabId: item.id,
                 wordEN: item.en,
                 pos: item.pos || 'noun',
                 lang: lang,
                 timestamp: new Date().toISOString(),
-                remembered: remembered
+                remembered: remembered,
+                source: 'flashcard'
             });
             saveToLocalStorage();
             renderAnalyticsDashboard();
 
             showToast(`${remembered ? '✔ Mastered' : '❌ Still Learning'} [${lang}]`);
             
-            // Move next if all 3 checked or user advances
             currentQuizIndex++;
             if (currentQuizIndex >= quizList.length) {
                 alert("🎉 Completed all flashcards in this session!");
@@ -1895,7 +1928,7 @@
                 .toLowerCase()
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "") // Remove Spanish accents
-                .replace(/[¿¡!?,.]/g, "") // Remove punctuation
+                .replace(/[¿¡!?,.]/g, "")
                 .replace(/\s+/g, " ")
                 .trim();
         }
@@ -1919,13 +1952,6 @@
                 resEl.style.color = "var(--primary)";
                 resEl.innerHTML = `🎉 Perfect Match! Moving to next card...`;
                 if(item.en) speak(item.en, 'en-US');
-                
-                // Log success for all 3 languages
-                ['EN', 'ES', 'KO'].forEach(l => {
-                    quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: l, timestamp: new Date().toISOString(), remembered: true });
-                });
-                saveToLocalStorage();
-                renderAnalyticsDashboard();
 
                 setTimeout(() => {
                     currentQuizIndex++;
@@ -1941,10 +1967,10 @@
                     ${item.ko ? `🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>` : ''}
                 `;
 
-                // Log mistake
-                if(!isENCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'EN', timestamp: new Date().toISOString(), remembered: false });
-                if(!isESCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'ES', timestamp: new Date().toISOString(), remembered: false });
-                if(!isKOCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'KO', timestamp: new Date().toISOString(), remembered: false });
+                // Log Mistakes ONLY from Typing Test
+                if(!isENCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'EN', timestamp: new Date().toISOString(), remembered: false, source: 'typing' });
+                if(!isESCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'ES', timestamp: new Date().toISOString(), remembered: false, source: 'typing' });
+                if(!isKOCorrect) quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'KO', timestamp: new Date().toISOString(), remembered: false, source: 'typing' });
                 saveToLocalStorage();
                 renderAnalyticsDashboard();
             }
@@ -1954,48 +1980,77 @@
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-            const filteredHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff);
+            
+            // Filter Flashcard history
+            const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
+            
+            // Filter Typing test history
+            const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
-            // Group by POS
-            const posStats = {};
-            const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
-            posList.forEach(p => posStats[p] = 0);
+            // 1. Calculate Language Progress Ratios (From Flashcards)
+            ['EN', 'ES', 'KO'].forEach(lang => {
+                const langHist = flashcardHist.filter(h => h.lang === lang);
+                const mastered = langHist.filter(h => h.remembered).length;
+                const total = langHist.length;
+                const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
 
-            filteredHist.forEach(h => {
-                const p = h.pos || "noun";
-                if (posStats[p] !== undefined) posStats[p]++;
-                else posStats[p] = 1;
+                document.getElementById(`ratio${lang}`).innerText = `${mastered} / ${total}`;
+                document.getElementById(`pct${lang}`).innerText = `${pct}% Mastered`;
+                document.getElementById(`bar${lang}`).style.width = `${pct}%`;
             });
 
-            // Render Stacked/Grouped POS Chart
+            // 2. Group by POS (From Flashcards)
+            const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
+            const posMastered = {};
+            const posLearning = {};
+            
+            posList.forEach(p => { posMastered[p] = 0; posLearning[p] = 0; });
+
+            flashcardHist.forEach(h => {
+                const p = h.pos || "noun";
+                if (h.remembered) {
+                    posMastered[p] = (posMastered[p] || 0) + 1;
+                } else {
+                    posLearning[p] = (posLearning[p] || 0) + 1;
+                }
+            });
+
+            // Render Stacked Bar Chart
             const ctx = document.getElementById('posChart').getContext('2d');
             if (posChartInstance) posChartInstance.destroy();
 
             posChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(posStats),
-                    datasets: [{
-                        label: 'Words Reviewed',
-                        data: Object.values(posStats),
-                        backgroundColor: '#10b981',
-                        borderRadius: 6
-                    }]
+                    labels: posList,
+                    datasets: [
+                        {
+                            label: 'Mastered (✔)',
+                            data: posList.map(p => posMastered[p]),
+                            backgroundColor: '#10b981',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Still Learning (❌)',
+                            data: posList.map(p => posLearning[p]),
+                            backgroundColor: '#ef4444',
+                            borderRadius: 4
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
-                    plugins: { legend: { display: false } },
                     scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+                        x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } },
+                        y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
                     }
                 }
             });
 
-            // Top 10 Mistakes Table
+            // 3. Top 10 Mistakes Table (ONLY from Typing Test)
             const mistakeMap = {};
-            filteredHist.filter(h => !h.remembered).forEach(h => {
-                const key = `${h.wordEN || 'Unknown'} (${h.lang})`;
+            typingHist.filter(h => !h.remembered).forEach(h => {
+                const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
                 if (!mistakeMap[key]) mistakeMap[key] = { word: h.wordEN, lang: h.lang, count: 0 };
                 mistakeMap[key].count++;
             });
@@ -2005,7 +2060,7 @@
             tbody.innerHTML = "";
 
             if (sortedMistakes.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:16px;">No mistakes recorded in this period! 🎉</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:16px;">No typing mistakes recorded! 🎉</td></tr>`;
                 return;
             }
 
