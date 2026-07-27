@@ -22,11 +22,11 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            /* Strictly Unified Language Palette */
-            --color-en: #4e90c0; /* Blue for English */
-            --color-es: #10b981; /* Green for Spanish */
-            --color-ko: #d57c91; /* Pink for Korean */
-            --color-vi: #feeeb5; /* Light Yellow for Vietnamese */
+            /* Unified Language Palette */
+            --color-en: #4e90c0; /* Blue */
+            --color-es: #10b981; /* Green */
+            --color-ko: #d57c91; /* Pink */
+            --color-vi: #feeeb5; /* Light Yellow */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -48,7 +48,7 @@
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
         
-        /* Grid Layouts for Form */
+        /* Grid Layouts */
         .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
@@ -81,7 +81,6 @@
         .btn-fmt { background: var(--surface-hover); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; }
         .btn-fmt:hover { background: var(--grammar); color: white; }
 
-        /* Search Sub-Tabs Language Color Themes */
         .btn-lang-en { background: var(--color-en); color: white; }
         .btn-lang-es { background: var(--color-es); color: white; }
         .btn-lang-ko { background: var(--color-ko); color: white; }
@@ -164,7 +163,7 @@
 </head>
 <body>
 
-    <!-- Security PIN Protection -->
+    <!-- Access PIN Protection -->
     <div id="authOverlay">
         <div class="auth-card">
             <h2 style="margin-bottom: 12px; color: var(--primary);">Security Verification</h2>
@@ -189,7 +188,7 @@
         <!-- TAB 1: VOCABULARY -->
         <div id="tab1" class="tab-content active">
             <div class="card">
-                <h2 style="margin-bottom: 16px;">Add New Vocabulary</h2>
+                <h2 style="margin-bottom: 16px;">Add New</h2>
                 <form id="vocabForm" onsubmit="saveVocab(event)">
                     <input type="hidden" id="editId" value="">
                     
@@ -347,7 +346,7 @@
             
             <div class="card">
                 <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-                    <button class="btn btn-sm btn-lang-en" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
+                    <button class="btn btn-sm btn-warning" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
@@ -459,21 +458,21 @@
                         <input type="hidden" id="grammarId" value="">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                             <div class="form-group">
-                                <label>Language</label>
-                                <select id="gramLang">
+                                <label>Language *</label>
+                                <select id="gramLang" required>
                                     <option value="English">English</option>
                                     <option value="Español">Español</option>
                                     <option value="한국어">한국어</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Grammar Topic / Category</label>
-                                <input type="text" id="gramTopic" placeholder="e.g., Tenses, Subjunctive...">
+                                <label>Grammar Topic / Category *</label>
+                                <input type="text" id="gramTopic" required placeholder="e.g., Tenses, Subjunctive...">
                             </div>
                         </div>
 
                         <div class="form-group full-width" style="margin-bottom: 16px;">
-                            <label>Post Title</label>
+                            <label>Post Title (Optional)</label>
                             <input type="text" id="gramTitle" placeholder="e.g., How to use Present Perfect...">
                         </div>
                         <div class="form-group full-width" style="margin-bottom: 16px;">
@@ -482,7 +481,7 @@
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Lesson Content & Usage Notes</label>
+                            <label>Lesson Content & Usage Notes *</label>
                             <div class="editor-toolbar">
                                 <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<b>', '</b>')"><b>B</b> Bold</button>
                                 <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<i>', '</i>')"><i>I</i> Light</button>
@@ -490,9 +489,13 @@
                                 <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<span style=\'font-size: 0.85em; color: var(--text-secondary);\'>', '</span>')">Small</button>
                                 <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '<h3>', '</h3>')">Heading</button>
                                 <button type="button" class="btn-fmt" onclick="insertFormat('gramContent', '• ', '')">• Bullet</button>
-                                <input type="color" id="gramColorPicker" onchange="applyColor('gramContent', this.value)" title="Text Color" style="width:34px; height:30px; padding:2px; cursor:pointer;">
+                                <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContent')">Box Table</button>
+                                <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
+                                <input type="color" id="gramColorPicker" onchange="applyColor('gramContent', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                                <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
+                                <input type="color" id="gramBgPicker" onchange="applyBgColor('gramContent', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
                             </div>
-                            <textarea id="gramContent" rows="18" style="font-size: 1.05rem; line-height: 1.6;" placeholder="Write detailed notes here..."></textarea>
+                            <textarea id="gramContent" rows="18" required style="font-size: 1.05rem; line-height: 1.6;" placeholder="Write detailed notes here..."></textarea>
                         </div>
 
                         <div style="margin-top: 20px; display: flex; gap: 10px;">
@@ -617,7 +620,11 @@
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<span style=\'font-size: 0.85em; color: var(--text-secondary);\'>', '</span>')">Small</button>
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<h3>', '</h3>')">Heading</button>
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '• ', '')">• Bullet</button>
-                <input type="color" onchange="applyColor('tempNoteContent', this.value)" title="Text Color" style="width:34px; height:30px; padding:2px; cursor:pointer;">
+                <button type="button" class="btn-fmt" onclick="insertBoxTable('tempNoteContent')">Box Table</button>
+                <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
+                <input type="color" onchange="applyColor('tempNoteContent', this.value)" title="Text Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
+                <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
+                <input type="color" onchange="applyBgColor('tempNoteContent', this.value)" title="Background Color" style="width:30px; height:28px; padding:1px; cursor:pointer;">
             </div>
             <textarea id="tempNoteContent" rows="10" style="font-size: 1rem; line-height: 1.5; margin-bottom: 16px;" placeholder="Add notes..."></textarea>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
@@ -917,6 +924,15 @@
             insertFormat(textareaId, `<span style="color:${colorHex}">`, `</span>`);
         }
 
+        function applyBgColor(textareaId, colorHex) {
+            insertFormat(textareaId, `<span style="background-color:${colorHex}; padding:2px 4px; border-radius:4px;">`, `</span>`);
+        }
+
+        function insertBoxTable(textareaId) {
+            const tableHTML = `\n<table style="width:100%; border-collapse:collapse; margin:10px 0; border:1px solid var(--border);">\n  <tr>\n    <td style="border:1px solid var(--border); padding:8px;">Header 1</td>\n    <td style="border:1px solid var(--border); padding:8px;">Header 2</td>\n  </tr>\n  <tr>\n    <td style="border:1px solid var(--border); padding:8px;">Data 1</td>\n    <td style="border:1px solid var(--border); padding:8px;">Data 2</td>\n  </tr>\n</table>\n`;
+            insertFormat(textareaId, tableHTML, '');
+        }
+
         // --- MODALS ---
         function openNoteModal(lang) {
             currentEditingNoteLang = lang;
@@ -1043,7 +1059,6 @@
             renderLogTable();
             showToast("⏳ Saving to Google Sheets...");
 
-            // Đẩy vào Tab User_Vocab chính
             const rowDataVocab = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
                 newEntry.familyEN, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit, 
@@ -1058,7 +1073,6 @@
                     redirect: "follow"
                 });
 
-                // TỰ ĐỘNG PHÂN TÁCH DỮ LIỆU SANG CÁC TAB BỔ SUNG TRÊN SHEET
                 if (newEntry.pos === "phrasal verb") {
                     await fetch(GAS_WEB_APP_URL, {
                         method: 'POST', headers: { 'Content-Type': 'text/plain' },
@@ -1499,7 +1513,7 @@
                     categories[cat].forEach(post => {
                         const postEl = document.createElement('div');
                         postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
-                        postEl.innerText = post.title || "Untitled";
+                        postEl.innerText = post.title || "Untitled Note";
                         postEl.onclick = (e) => {
                             e.stopPropagation();
                             loadGrammarPost(post.id);
@@ -1869,7 +1883,7 @@
             let nodesHTML = "";
             let svgLinesHTML = `<svg class="mindmap-lines">`;
 
-            // Center Node (Level 1)
+            // Center Node
             nodesHTML += `
                 <div class="node node-main" style="left:${cx - 90}px; top:${cy - 90}px;">
                     <div>${item.en || "---"}</div>
