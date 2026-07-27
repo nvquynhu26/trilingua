@@ -22,16 +22,16 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            --color-en: #4e90c0;
-            --color-es: #83bfc7;
-            --color-ko: #d57c91;
-            --color-vi: #feeeb5;
+            /* Strictly Unified Language Palette */
+            --color-en: #4e90c0; /* Blue for English */
+            --color-es: #10b981; /* Green for Spanish */
+            --color-ko: #d57c91; /* Pink for Korean */
+            --color-vi: #feeeb5; /* Light Yellow for Vietnamese */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
-        /* Security Overlay */
         #authOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
@@ -48,7 +48,8 @@
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
         
-        .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        /* Grid Layouts for Form */
+        .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -79,6 +80,11 @@
         .btn-warning { background: var(--warning); color: #000; }
         .btn-fmt { background: var(--surface-hover); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; }
         .btn-fmt:hover { background: var(--grammar); color: white; }
+
+        /* Search Sub-Tabs Language Color Themes */
+        .btn-lang-en { background: var(--color-en); color: white; }
+        .btn-lang-es { background: var(--color-es); color: white; }
+        .btn-lang-ko { background: var(--color-ko); color: white; }
         
         .table-container { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
@@ -91,14 +97,16 @@
         .sub-btn:hover { background: var(--surface-hover); }
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
+        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 950px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
+        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
 
-        .conj-section-title { font-size: 1.05rem; font-weight: 700; color: var(--warning); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .conj-section-title { font-size: 1.05rem; font-weight: 700; color: var(--color-es); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
         .conj-table { width: 100%; margin-bottom: 12px; border-collapse: collapse; }
         .conj-table th, .conj-table td { padding: 6px; border: 1px solid var(--border); font-size: 0.85rem; }
         .conj-table input { padding: 6px; font-size: 0.85rem; }
 
+        /* Grammar Tree Sidebar */
         .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
@@ -119,6 +127,7 @@
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
+        /* Quizlet View */
         .quiz-container { max-width: 650px; margin: 0 auto; text-align: center; }
         .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 36px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
         .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
@@ -138,14 +147,14 @@
         .node-main .pos-tag { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
 
         .node-level2 { width: 135px; height: 135px; color: #fff; z-index: 8; font-weight: 700; font-size: 1rem; }
-        .node-level2.es { background: var(--color-es); color: #0f172a; }
+        .node-level2.es { background: var(--color-es); color: #fff; }
         .node-level2.ko { background: var(--color-ko); color: #fff; }
         .node-level2.vi { background: var(--color-vi); color: #0f172a; }
 
         .node-level3 { width: 110px; height: 110px; color: #fff; z-index: 6; font-weight: 500; font-size: 0.78rem; line-height: 1.2; }
-        .node-level3.es { background: rgba(131, 191, 199, 0.25); border: 2px solid var(--color-es); color: var(--text); }
-        .node-level3.ko { background: rgba(213, 124, 145, 0.25); border: 2px solid var(--color-ko); color: var(--text); }
-        .node-level3.vi { background: rgba(254, 238, 181, 0.25); border: 2px solid var(--color-vi); color: var(--text); }
+        .node-level3.es { background: rgba(16, 185, 129, 0.2); border: 2px solid var(--color-es); color: var(--text); }
+        .node-level3.ko { background: rgba(213, 124, 145, 0.2); border: 2px solid var(--color-ko); color: var(--text); }
+        .node-level3.vi { background: rgba(254, 238, 181, 0.2); border: 2px solid var(--color-vi); color: var(--text); }
 
         svg.mindmap-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 
@@ -155,7 +164,7 @@
 </head>
 <body>
 
-    <!-- Access PIN Protection -->
+    <!-- Security PIN Protection -->
     <div id="authOverlay">
         <div class="auth-card">
             <h2 style="margin-bottom: 12px; color: var(--primary);">Security Verification</h2>
@@ -179,14 +188,7 @@
     <main>
         <!-- TAB 1: VOCABULARY -->
         <div id="tab1" class="tab-content active">
-            <!-- Sub Nav in Tab 1 -->
-            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                <button class="btn btn-sm" id="subTabVocabFormBtn" onclick="switchVocabSubTab('vocabForm')">Add New Vocabulary</button>
-                <button class="btn btn-sm btn-warning" id="subTabIdiomFormBtn" onclick="switchVocabSubTab('idiomForm')">Add Idioms</button>
-            </div>
-
-            <!-- VOCAB FORM -->
-            <div id="vocabFormContainer" class="card">
+            <div class="card">
                 <h2 style="margin-bottom: 16px;">Add New Vocabulary</h2>
                 <form id="vocabForm" onsubmit="saveVocab(event)">
                     <input type="hidden" id="editId" value="">
@@ -215,7 +217,6 @@
                             <label>Word Family [EN]</label>
                             <input type="text" id="wordFamilyEN" placeholder="e.g. friend (n), friendly (adj)">
                         </div>
-                        <button type="button" class="btn btn-warning" id="phrasalVerbBtn" style="display: none;" onclick="openPhrasalModal()">+ Phrasal Verbs</button>
                         <button type="button" class="btn btn-warning" id="enIrregBtn" style="display: none;" onclick="openEnIrregModal()">Irregular</button>
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('EN')">Note [EN]</button>
                     </div>
@@ -251,7 +252,7 @@
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">Note [KO]</button>
                     </div>
 
-                    <!-- Row 4: Source & Topics -->
+                    <!-- Row 4: Topics -->
                     <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
@@ -305,63 +306,6 @@
                 </form>
             </div>
 
-            <!-- IDIOMS FORM -->
-            <div id="idiomFormContainer" class="card" style="display: none;">
-                <h2 style="margin-bottom: 16px; color: var(--warning);">Add New Idioms</h2>
-                <form id="idiomForm" onsubmit="saveIdiom(event)">
-                    <input type="hidden" id="editIdiomId" value="">
-                    
-                    <div style="display: flex; flex-direction: column; gap: 14px;">
-                        <!-- Row 1: EN -->
-                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
-                            <div class="form-group">
-                                <label>Idiom [EN]</label>
-                                <input type="text" id="idiomEN" placeholder="e.g. Piece of cake">
-                            </div>
-                            <div class="form-group">
-                                <label>Usage / Explanation [EN]</label>
-                                <input type="text" id="idiomUsageEN" placeholder="Used to say something is very easy">
-                            </div>
-                        </div>
-
-                        <!-- Row 2: ES -->
-                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
-                            <div class="form-group">
-                                <label>Idiom [ES]</label>
-                                <input type="text" id="idiomES" placeholder="e.g. Pan comido">
-                            </div>
-                            <div class="form-group">
-                                <label>Usage / Explanation [ES]</label>
-                                <input type="text" id="idiomUsageES" placeholder="Algo que es muy fácil de hacer">
-                            </div>
-                        </div>
-
-                        <!-- Row 3: KO -->
-                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
-                            <div class="form-group">
-                                <label>Idiom [KO]</label>
-                                <input type="text" id="idiomKO" placeholder="e.g. 식은 죽 먹기">
-                            </div>
-                            <div class="form-group">
-                                <label>Usage / Explanation [KO]</label>
-                                <input type="text" id="idiomUsageKO" placeholder="매우 쉬운 일을 뜻함">
-                            </div>
-                        </div>
-
-                        <!-- Row 4: VI -->
-                        <div class="form-group">
-                            <label>Idiom [VI]</label>
-                            <input type="text" id="idiomVI" placeholder="e.g. Dễ như ăn bánh">
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 20px;">
-                        <button type="submit" class="btn btn-warning" id="idiomSubmitBtn">Save Idiom</button>
-                        <button type="button" class="btn" style="background:var(--text-secondary); display:none;" id="cancelIdiomEditBtn" onclick="resetIdiomForm()">Cancel Edit</button>
-                    </div>
-                </form>
-            </div>
-
             <!-- Log Table -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
@@ -403,11 +347,11 @@
             
             <div class="card">
                 <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-                    <button class="btn btn-sm" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
-                    <button class="btn btn-sm btn-warning" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
-                    <button class="btn btn-sm btn-warning" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
-                    <button class="btn btn-sm btn-warning" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
-                    <button class="btn btn-sm btn-warning" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations</button>
+                    <button class="btn btn-sm btn-lang-en" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
+                    <button class="btn btn-sm btn-lang-en" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
+                    <button class="btn btn-sm btn-lang-en" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
+                    <button class="btn btn-sm btn-lang-en" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
+                    <button class="btn btn-sm btn-lang-es" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations</button>
                 </div>
 
                 <div id="searchVocabView">
@@ -434,7 +378,7 @@
                 </div>
 
                 <div id="searchPhrasalView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--warning);">Phrasal Verbs Directory</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--color-en);">Phrasal Verbs Directory</h3>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -458,11 +402,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Idiom [EN]</th>
-                                    <th>Idiom [ES]</th>
-                                    <th>Idiom [KO]</th>
-                                    <th>Meaning [VI]</th>
-                                    <th>Usages</th>
+                                    <th>English</th>
+                                    <th>Spanish</th>
+                                    <th>Korean</th>
+                                    <th>Vietnamese</th>
+                                    <th>POS / Family</th>
+                                    <th>Examples & Notes</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -472,7 +417,7 @@
                 </div>
 
                 <div id="searchIrregView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--warning);">Irregular Verbs Directory</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--color-en);">Irregular Verbs Directory</h3>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -491,7 +436,7 @@
                 </div>
 
                 <div id="searchConjView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--warning);">Spanish Conjugations</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Conjugations</h3>
                     <div id="conjDirectoryContainer"></div>
                 </div>
             </div>
@@ -598,10 +543,10 @@
                     <h3 id="fcPrompt">---</h3>
                     <p id="fcHint">Click to flip card</p>
                     <div id="fcAnswer" style="display: none; margin-top: 20px; width: 100%; border-top: 1px solid var(--border); padding-top: 16px;">
-                        <p id="fcEN" style="color: var(--text); font-weight: bold; font-size: 1.3rem;"></p>
-                        <p id="fcES" style="color: var(--primary);"></p>
-                        <p id="fcKO" style="color: var(--edit);"></p>
-                        <p id="fcVI" style="color: var(--warning); margin-top: 4px;"></p>
+                        <p id="fcEN" style="color: var(--color-en); font-weight: bold; font-size: 1.3rem;"></p>
+                        <p id="fcES" style="color: var(--color-es);"></p>
+                        <p id="fcKO" style="color: var(--color-ko);"></p>
+                        <p id="fcVI" style="color: var(--color-vi); margin-top: 4px;"></p>
                         <p id="fcFamily" style="font-size: 0.85rem; margin-top: 8px; color: var(--text-secondary);"></p>
                     </div>
                 </div>
@@ -650,12 +595,12 @@
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
-                    <input type="text" id="boardSearchInput" placeholder="🔍 Type any word or idiom (EN, ES, KO) to build Mind-map..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
+                    <input type="text" id="boardSearchInput" placeholder="🔍 Type any word or idiom to build Mind-map..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
                     <div id="boardDropdown" class="board-dropdown"></div>
                 </div>
 
                 <div id="mindmapCanvas" class="mindmap-canvas">
-                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word/idiom above to view its Mind-map.</div>
+                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to view its Mind-map.</div>
                 </div>
             </div>
         </div>
@@ -685,7 +630,7 @@
     <!-- MODAL 2: SPANISH CONJUGATION MODAL -->
     <div id="conjModal" class="modal-overlay">
         <div class="modal-card" style="max-width: 1000px;">
-            <h2 style="margin-bottom: 12px; color: var(--warning);">Tabla de Conjugación de Verbos</h2>
+            <h2 style="margin-bottom: 12px; color: var(--color-es);">Tabla de Conjugación de Verbos</h2>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned.</p>
             <div id="conjTablesContainer"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
@@ -698,7 +643,7 @@
     <!-- MODAL 3: ENGLISH IRREGULAR VERBS MODAL -->
     <div id="enIrregModal" class="modal-overlay">
         <div class="modal-card" style="max-width: 500px;">
-            <h3 style="margin-bottom: 16px; color: var(--warning);">English Irregular Verbs</h3>
+            <h3 style="margin-bottom: 16px; color: var(--color-en);">English Irregular Verbs</h3>
             <div class="form-group" style="margin-bottom: 12px;">
                 <label>Infinitive (Base Form)</label>
                 <input type="text" id="irregBase" placeholder="e.g. go">
@@ -714,36 +659,6 @@
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn btn-warning" onclick="saveEnIrregModal()">Save Irregular Verb</button>
                 <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeEnIrregModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 4: PHRASAL VERBS MODAL -->
-    <div id="phrasalModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 900px;">
-            <h3 style="margin-bottom: 12px; color: var(--warning);">Phrasal Verbs</h3>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Add phrasal verb variations for this verb.</p>
-            
-            <div class="table-container">
-                <table style="margin-bottom: 16px;">
-                    <thead>
-                        <tr>
-                            <th style="width:20%;">Phrasal Verb</th>
-                            <th style="width:25%;">Meaning [EN]</th>
-                            <th style="width:20%;">Meaning [VI]</th>
-                            <th style="width:35%;">Example</th>
-                        </tr>
-                    </thead>
-                    <tbody id="phrasalModalBody"></tbody>
-                </table>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <button type="button" class="btn btn-sm btn-grammar" onclick="addPhrasalRow()">+ Add Row</button>
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn btn-warning" onclick="savePhrasalModal()">Save Phrasal Verbs</button>
-                    <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closePhrasalModal()">Cancel</button>
-                </div>
             </div>
         </div>
     </div>
@@ -773,7 +688,6 @@
 
         let userVocabList = [];
         let grammarList = [];
-        let idiomList = [];
         let quizHistory = [];
         
         let currentTopicTab = "ALL";
@@ -783,7 +697,6 @@
         let currentNotes = { EN: "", ES: "", KO: "" };
         let currentConjData = {};
         let currentEnIrregData = { base: "", past: "", part: "" };
-        let currentPhrasalData = [];
 
         const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
         
@@ -889,12 +802,10 @@
         function loadFromLocalStorage() {
             const savedVocab = localStorage.getItem("trilingua_vocab");
             const savedGrammar = localStorage.getItem("trilingua_grammar");
-            const savedIdioms = localStorage.getItem("trilingua_idioms");
             const savedQuiz = localStorage.getItem("trilingua_quiz_hist");
             
             if (savedVocab) userVocabList = JSON.parse(savedVocab);
             if (savedGrammar) grammarList = JSON.parse(savedGrammar);
-            if (savedIdioms) idiomList = JSON.parse(savedIdioms);
             if (savedQuiz) quizHistory = JSON.parse(savedQuiz);
 
             renderLogTable();
@@ -906,7 +817,6 @@
         function saveToLocalStorage() {
             localStorage.setItem("trilingua_vocab", JSON.stringify(userVocabList));
             localStorage.setItem("trilingua_grammar", JSON.stringify(grammarList));
-            localStorage.setItem("trilingua_idioms", JSON.stringify(idiomList));
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
@@ -928,18 +838,12 @@
                             familyES: row[15] || "", familyKO: row[16] || "",
                             noteEN: row[17] || "", noteES: row[18] || "", noteKO: row[19] || "",
                             conjData: row[20] ? JSON.parse(row[20]) : {},
-                            enIrregData: row[21] ? JSON.parse(row[21]) : { base: "", past: "", part: "" },
-                            phrasalData: row[22] ? JSON.parse(row[22]) : []
+                            enIrregData: row[21] ? JSON.parse(row[21]) : { base: "", past: "", part: "" }
                         }));
                     }
                     if (data.grammarBlog && data.grammarBlog.length > 0) {
                         grammarList = data.grammarBlog.map(row => ({
                             id: row[0], timestamp: row[1], lang: row[2], topic: row[3], title: row[4], keywords: row[5], content: row[6]
-                        }));
-                    }
-                    if (data.idioms && data.idioms.length > 0) {
-                        idiomList = data.idioms.map(row => ({
-                            id: row[0], timestamp: row[1], en: row[2], usageEN: row[3], es: row[4], usageES: row[5], ko: row[6], usageKO: row[7], vi: row[8]
                         }));
                     }
                     saveToLocalStorage();
@@ -963,11 +867,6 @@
             if(tabId === 'tab2') renderTab2();
             if(tabId === 'tab3') renderGrammarSidebar();
             if(tabId === 'tab4') { startQuiz(); renderQuizStats(); }
-        }
-
-        function switchVocabSubTab(sub) {
-            document.getElementById('vocabFormContainer').style.display = sub === 'vocabForm' ? 'block' : 'none';
-            document.getElementById('idiomFormContainer').style.display = sub === 'idiomForm' ? 'block' : 'none';
         }
 
         function showToast(msg, isError = false) {
@@ -998,10 +897,7 @@
 
         function handlePosChange(val) {
             const enIrregBtn = document.getElementById('enIrregBtn');
-            const phrasalVerbBtn = document.getElementById('phrasalVerbBtn');
-            const isVerb = (val === 'verb');
-            enIrregBtn.style.display = isVerb ? 'inline-flex' : 'none';
-            phrasalVerbBtn.style.display = isVerb ? 'inline-flex' : 'none';
+            enIrregBtn.style.display = (val === 'verb') ? 'inline-flex' : 'none';
         }
 
         function insertFormat(textareaId, startTag, endTag) {
@@ -1052,61 +948,6 @@
             showToast("✅ Saved English Irregular Verb!");
         }
 
-        // --- PHRASAL VERBS MODAL ---
-        function openPhrasalModal() {
-            const tbody = document.getElementById('phrasalModalBody');
-            tbody.innerHTML = "";
-
-            if (currentPhrasalData.length === 0) {
-                for (let i = 0; i < 7; i++) currentPhrasalData.push({ pv: "", mEN: "", mVI: "", ex: "" });
-            }
-
-            currentPhrasalData.forEach((row, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><input type="text" id="pv_${idx}" value="${row.pv || ''}" placeholder="e.g. give up"></td>
-                    <td><input type="text" id="pmEN_${idx}" value="${row.mEN || ''}" placeholder="Meaning EN"></td>
-                    <td><input type="text" id="pmVI_${idx}" value="${row.mVI || ''}" placeholder="Meaning VI"></td>
-                    <td><input type="text" id="pex_${idx}" value="${row.ex || ''}" placeholder="Example sentence..."></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('phrasalModal').style.display = "flex";
-        }
-
-        function addPhrasalRow() {
-            const tbody = document.getElementById('phrasalModalBody');
-            const idx = tbody.children.length;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><input type="text" id="pv_${idx}" placeholder="e.g. give up"></td>
-                <td><input type="text" id="pmEN_${idx}" placeholder="Meaning EN"></td>
-                <td><input type="text" id="pmVI_${idx}" placeholder="Meaning VI"></td>
-                <td><input type="text" id="pex_${idx}" placeholder="Example sentence..."></td>
-            `;
-            tbody.appendChild(tr);
-        }
-
-        function closePhrasalModal() { document.getElementById('phrasalModal').style.display = "none"; }
-
-        function savePhrasalModal() {
-            const tbody = document.getElementById('phrasalModalBody');
-            currentPhrasalData = [];
-            for (let i = 0; i < tbody.children.length; i++) {
-                const pv = document.getElementById(`pv_${i}`)?.value.trim();
-                const mEN = document.getElementById(`pmEN_${i}`)?.value.trim();
-                const mVI = document.getElementById(`pmVI_${i}`)?.value.trim();
-                const ex = document.getElementById(`pex_${i}`)?.value.trim();
-                if (pv || mEN || mVI || ex) {
-                    currentPhrasalData.push({ pv, mEN, mVI, ex });
-                }
-            }
-            closePhrasalModal();
-            showToast("✅ Saved Phrasal Verbs!");
-        }
-
-        // --- CONJUGATION MODAL ---
         function buildConjModalHTML() {
             const container = document.getElementById('conjTablesContainer');
             container.innerHTML = "";
@@ -1188,8 +1029,7 @@
                 noteES: currentNotes.ES,
                 noteKO: currentNotes.KO,
                 conjData: currentConjData,
-                enIrregData: currentEnIrregData,
-                phrasalData: currentPhrasalData
+                enIrregData: currentEnIrregData
             };
 
             if (isEdit) {
@@ -1203,119 +1043,67 @@
             renderLogTable();
             showToast("⏳ Saving to Google Sheets...");
 
-            const rowData = [
+            // Đẩy vào Tab User_Vocab chính
+            const rowDataVocab = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
                 newEntry.familyEN, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit, 
                 newEntry.familyES, newEntry.familyKO, newEntry.noteEN, newEntry.noteES, newEntry.noteKO, 
-                JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData), JSON.stringify(newEntry.phrasalData)
+                JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData)
             ];
 
             try {
-                const response = await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowData }),
-                    redirect: "follow"
-                });
-                const resData = await response.json();
-                if(resData.status === "success") showToast("✅ Saved to Google Sheet!");
-                else showToast("⚠️ Error: " + resData.message, true);
-            } catch(err) { showToast("⚠️ Saved locally!", true); }
-        }
-
-        // --- SAVE IDIOMS ---
-        async function saveIdiom(e) {
-            e.preventDefault();
-            const editId = document.getElementById('editIdiomId').value;
-            const isEdit = !!editId;
-            const id = isEdit ? editId : 'IDM_' + Date.now();
-            const timestamp = isEdit ? idiomList.find(i => String(i.id) === String(id)).timestamp : new Date().toISOString().split('T')[0];
-
-            const newIdiom = {
-                id, timestamp,
-                en: document.getElementById('idiomEN').value.trim(),
-                usageEN: document.getElementById('idiomUsageEN').value.trim(),
-                es: document.getElementById('idiomES').value.trim(),
-                usageES: document.getElementById('idiomUsageES').value.trim(),
-                ko: document.getElementById('idiomKO').value.trim(),
-                usageKO: document.getElementById('idiomUsageKO').value.trim(),
-                vi: document.getElementById('idiomVI').value.trim()
-            };
-
-            if (isEdit) {
-                const idx = idiomList.findIndex(item => String(item.id) === String(id));
-                if (idx !== -1) idiomList[idx] = newIdiom;
-            } else {
-                idiomList.push(newIdiom);
-            }
-
-            saveToLocalStorage();
-            resetIdiomForm();
-            showToast("⏳ Saving Idiom to Google Sheets...");
-
-            const rowData = [newIdiom.id, newIdiom.timestamp, newIdiom.en, newIdiom.usageEN, newIdiom.es, newIdiom.usageES, newIdiom.ko, newIdiom.usageKO, newIdiom.vi];
-
-            try {
-                const response = await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "idiom", id: newIdiom.id, row: rowData }),
-                    redirect: "follow"
-                });
-                const resData = await response.json();
-                if(resData.status === "success") showToast("✅ Saved Idiom to Google Sheet!");
-            } catch(err) { showToast("⚠️ Saved locally!", true); }
-        }
-
-        function editIdiom(id) {
-            const item = idiomList.find(i => String(i.id) === String(id));
-            if (!item) return;
-            switchTab('tab1');
-            switchVocabSubTab('idiomForm');
-            document.getElementById('editIdiomId').value = item.id;
-            document.getElementById('idiomEN').value = item.en || "";
-            document.getElementById('idiomUsageEN').value = item.usageEN || "";
-            document.getElementById('idiomES').value = item.es || "";
-            document.getElementById('idiomUsageES').value = item.usageES || "";
-            document.getElementById('idiomKO').value = item.ko || "";
-            document.getElementById('idiomUsageKO').value = item.usageKO || "";
-            document.getElementById('idiomVI').value = item.vi || "";
-            
-            document.getElementById('idiomSubmitBtn').innerText = "Update Idiom";
-            document.getElementById('cancelIdiomEditBtn').style.display = "inline-flex";
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function resetIdiomForm() {
-            document.getElementById('idiomForm').reset();
-            document.getElementById('editIdiomId').value = "";
-            document.getElementById('idiomSubmitBtn').innerText = "Save Idiom";
-            document.getElementById('cancelIdiomEditBtn').style.display = "none";
-        }
-
-        async function deleteIdiom(id) {
-            if (!confirm("Are you sure you want to delete this idiom?")) return;
-            idiomList = idiomList.filter(item => String(item.id) !== String(id));
-            saveToLocalStorage();
-            renderTab2();
-            showToast("⏳ Deleting Idiom...");
-
-            try {
                 await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "delete", type: "idiom", id }),
+                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
                     redirect: "follow"
                 });
-                showToast("✅ Deleted Idiom!");
-            } catch(err) { showToast("⚠️ Deleted locally!", true); }
+
+                // TỰ ĐỘNG PHÂN TÁCH DỮ LIỆU SANG CÁC TAB BỔ SUNG TRÊN SHEET
+                if (newEntry.pos === "phrasal verb") {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: "add", type: "phrasal", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.en, newEntry.exEN, newEntry.vi, newEntry.exEN] }),
+                        redirect: "follow"
+                    });
+                }
+                if (newEntry.pos === "idiom") {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: "add", type: "idiom", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, newEntry.noteEN, newEntry.noteES, newEntry.noteKO] }),
+                        redirect: "follow"
+                    });
+                }
+                if (newEntry.enIrregData && newEntry.enIrregData.past) {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: "add", type: "irreg", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.enIrregData.base || newEntry.en, newEntry.enIrregData.past, newEntry.enIrregData.part, newEntry.vi, newEntry.exEN] }),
+                        redirect: "follow"
+                    });
+                }
+                if (Object.keys(newEntry.conjData).length > 0) {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: "add", type: "conj", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.es, newEntry.en, JSON.stringify(newEntry.conjData)] }),
+                        redirect: "follow"
+                    });
+                }
+                if (newEntry.familyEN || newEntry.familyES || newEntry.familyKO) {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify({ action: "add", type: "family", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.familyEN, newEntry.familyES, newEntry.familyKO] }),
+                        redirect: "follow"
+                    });
+                }
+
+                showToast("✅ Saved & Synced across all Tabs!");
+            } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
         function editVocab(id) {
             const item = userVocabList.find(i => String(i.id) === String(id));
             if (!item) return;
             switchTab('tab1');
-            switchVocabSubTab('vocabForm');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
             document.getElementById('editId').value = item.id;
             document.getElementById('wordEN').value = item.en || "";
             document.getElementById('wordES').value = item.es || "";
@@ -1341,7 +1129,6 @@
             currentNotes = { EN: item.noteEN || "", ES: item.noteES || "", KO: item.noteKO || "" };
             currentConjData = item.conjData || {};
             currentEnIrregData = item.enIrregData || { base: "", past: "", part: "" };
-            currentPhrasalData = item.phrasalData || [];
 
             document.getElementById('submitBtn').innerText = "Update Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "inline-flex";
@@ -1354,7 +1141,6 @@
             currentNotes = { EN: "", ES: "", KO: "" };
             currentConjData = {};
             currentEnIrregData = { base: "", past: "", part: "" };
-            currentPhrasalData = [];
             handlePosChange("");
             document.getElementById('submitBtn').innerText = "Save Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "none";
@@ -1423,7 +1209,7 @@
             });
         }
 
-        // --- TAB 2: SEARCH & TOPICS (MULTIPLE VIEWS) ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function switchSearchSubTab(sub) {
             document.getElementById('searchVocabView').style.display = sub === 'vocab' ? 'block' : 'none';
             document.getElementById('searchPhrasalView').style.display = sub === 'phrasal' ? 'block' : 'none';
@@ -1534,58 +1320,54 @@
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.forEach(item => {
-                if (item.phrasalData && item.phrasalData.length > 0) {
-                    item.phrasalData.forEach(p => {
-                        count++;
-                        tbody.innerHTML += `
-                            <tr>
-                                <td><strong>${item.en}</strong></td>
-                                <td style="color:var(--warning); font-weight:bold;">${p.pv || '---'}</td>
-                                <td>${p.mEN || '---'}</td>
-                                <td>${p.mVI || '---'}</td>
-                                <td style="font-size:0.85rem; color:var(--text-secondary);">${p.ex || '---'}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                }
+            userVocabList.filter(i => i.pos === 'phrasal verb').forEach(item => {
+                count++;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.en}</strong></td>
+                        <td style="color:var(--color-en); font-weight:bold;">${item.en}</td>
+                        <td>${item.exEN || '---'}</td>
+                        <td>${item.vi || '---'}</td>
+                        <td style="font-size:0.85rem; color:var(--text-secondary);">${item.exEN || '---'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
             });
 
-            if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No phrasal verbs recorded yet.</td></tr>`;
+            if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No phrasal verbs found.</td></tr>`;
         }
 
         function renderIdiomDirectory() {
             const tbody = document.getElementById('idiomDirectoryBody');
             tbody.innerHTML = "";
+            let count = 0;
 
-            if (idiomList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No idioms recorded yet.</td></tr>`;
-                return;
-            }
-
-            idiomList.forEach(item => {
+            userVocabList.filter(i => i.pos === 'idiom').forEach(item => {
+                count++;
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td><strong style="color:var(--color-en);">${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
                         <td style="color:var(--color-es);">${item.es || '---'} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
                         <td style="color:var(--color-ko);">${item.ko || '---'} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
                         <td style="color:var(--color-vi);">${item.vi || '---'}</td>
+                        <td style="font-size:0.85rem;"><em>${item.pos}</em></td>
                         <td style="font-size:0.8rem; color:var(--text-secondary);">
-                            ${item.usageEN ? `EN: ${item.usageEN}<br>` : ''}
-                            ${item.usageES ? `ES: ${item.usageES}<br>` : ''}
-                            ${item.usageKO ? `KO: ${item.usageKO}` : ''}
+                            ${item.noteEN ? `EN Note: ${item.noteEN}<br>` : ''}
+                            ${item.noteES ? `ES Note: ${item.noteES}<br>` : ''}
+                            ${item.noteKO ? `KO Note: ${item.noteKO}` : ''}
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-edit" onclick="editIdiom('${item.id}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteIdiom('${item.id}')">Delete</button>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
                     </tr>
                 `;
             });
+
+            if(count === 0) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">No idioms found. Add items with POS = 'idiom'.</td></tr>`;
         }
 
         function renderIrregDirectory() {
@@ -1598,10 +1380,10 @@
                     count++;
                     tbody.innerHTML += `
                         <tr>
-                            <td><strong>${item.enIrregData.base || item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
+                            <td><strong style="color:var(--color-en);">${item.enIrregData.base || item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
                             <td style="color:var(--primary); font-weight:bold;">${item.enIrregData.past || '---'}</td>
                             <td style="color:var(--grammar); font-weight:bold;">${item.enIrregData.part || '---'}</td>
-                            <td>${item.vi || '---'}</td>
+                            <td style="color:var(--color-vi);">${item.vi || '---'}</td>
                             <td style="font-size:0.85rem; color:var(--text-secondary);">${item.exEN || '---'}</td>
                             <td>
                                 <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
@@ -1633,7 +1415,7 @@
                 
                 let conjHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                        <h4 style="color:var(--warning);">${item.es || "Verb"} (${item.en || ""})</h4>
+                        <h4 style="color:var(--color-es);">${item.es || "Verb"} (${item.en || ""})</h4>
                         <div>
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
@@ -2021,7 +1803,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (MIND-MAP INCLUDES IDIOMS & IRREGULAR VERBS) ---
+        // --- TAB 5: BOARD (MIND-MAP) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2030,21 +1812,13 @@
             }
             const q = val.toLowerCase().trim();
             
-            // Search in Vocab List
-            const vocabMatches = userVocabList.filter(i => 
+            const matches = userVocabList.filter(i => 
                 (i.en && i.en.toLowerCase().includes(q)) ||
                 (i.es && i.es.toLowerCase().includes(q)) ||
                 (i.ko && i.ko.toLowerCase().includes(q))
             );
 
-            // Search in Idiom List
-            const idiomMatches = idiomList.filter(i => 
-                (i.en && i.en.toLowerCase().includes(q)) ||
-                (i.es && i.es.toLowerCase().includes(q)) ||
-                (i.ko && i.ko.toLowerCase().includes(q))
-            );
-
-            if(vocabMatches.length === 0 && idiomMatches.length === 0) {
+            if(matches.length === 0) {
                 dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word or Idiom not found in database</div>`;
                 dropdown.style.display = 'block';
                 renderMindmap(null);
@@ -2052,27 +1826,14 @@
             }
 
             dropdown.innerHTML = "";
-            vocabMatches.forEach(item => {
+            matches.forEach(item => {
                 const el = document.createElement('div');
                 el.className = "board-dropdown-item";
-                el.innerText = `[Vocab] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
+                el.innerText = `[${item.pos || 'Vocab'}] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
                 el.onclick = () => {
                     document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
                     dropdown.style.display = 'none';
-                    renderMindmap(item, 'vocab');
-                };
-                dropdown.appendChild(el);
-            });
-
-            idiomMatches.forEach(item => {
-                const el = document.createElement('div');
-                el.className = "board-dropdown-item";
-                el.style.color = "var(--warning)";
-                el.innerText = `[Idiom] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
-                el.onclick = () => {
-                    document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
-                    dropdown.style.display = 'none';
-                    renderMindmap(item, 'idiom');
+                    renderMindmap(item);
                 };
                 dropdown.appendChild(el);
             });
@@ -2080,7 +1841,7 @@
             dropdown.style.display = 'block';
         }
 
-        function renderMindmap(item, type = 'vocab') {
+        function renderMindmap(item) {
             const canvas = document.getElementById('mindmapCanvas');
             canvas.innerHTML = "";
 
@@ -2093,27 +1854,17 @@
             const cx = rect.width / 2 || 500;
             const cy = rect.height / 2 || 375;
 
-            let langNodes = [];
-
-            if (type === 'vocab') {
-                let enIrregStr = "";
-                if(item.enIrregData && item.enIrregData.past) {
-                    enIrregStr = `${item.enIrregData.past} / ${item.enIrregData.part}`;
-                }
-
-                langNodes = [
-                    { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -35 },
-                    { key: 'ko', label: 'Korean', val: item.ko, family: item.familyKO, note: item.noteKO, class: 'ko', angle: 90 },
-                    { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 215 },
-                    { key: 'enExtra', label: 'English Extra', val: "", family: item.familyEN, note: item.noteEN, irreg: enIrregStr, class: 'es', angle: 130 }
-                ];
-            } else if (type === 'idiom') {
-                langNodes = [
-                    { key: 'es', label: 'Spanish', val: item.es, usage: item.usageES, class: 'es', angle: -35 },
-                    { key: 'ko', label: 'Korean', val: item.ko, usage: item.usageKO, class: 'ko', angle: 90 },
-                    { key: 'vi', label: 'Vietnamese', val: item.vi, usage: "", class: 'vi', angle: 215 }
-                ];
+            let enIrregStr = "";
+            if(item.enIrregData && item.enIrregData.past) {
+                enIrregStr = `${item.enIrregData.past} / ${item.enIrregData.part}`;
             }
+
+            const langNodes = [
+                { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -35 },
+                { key: 'ko', label: 'Korean', val: item.ko, family: item.familyKO, note: item.noteKO, class: 'ko', angle: 90 },
+                { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 215 },
+                { key: 'enExtra', label: 'English Extra', val: "", family: item.familyEN, note: item.noteEN, irreg: enIrregStr, class: 'es', angle: 130 }
+            ];
 
             let nodesHTML = "";
             let svgLinesHTML = `<svg class="mindmap-lines">`;
@@ -2139,14 +1890,13 @@
 
                 nodesHTML += `
                     <div class="node node-level2 ${lang.class}" style="left:${l2x - 67}px; top:${l2y - 67}px;">
-                        ${lang.val || (type === 'vocab' ? 'English Extra' : '')}
+                        ${lang.val || 'English Extra'}
                     </div>
                 `;
 
                 const subItems = [];
                 if (lang.family) subItems.push({ title: "Family", text: lang.family });
                 if (lang.note) subItems.push({ title: "Note", text: lang.note });
-                if (lang.usage) subItems.push({ title: "Usage", text: lang.usage });
                 if (lang.irreg) subItems.push({ title: "Irregular", text: lang.irreg });
 
                 subItems.forEach((sub, sIdx) => {
