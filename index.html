@@ -134,7 +134,6 @@
 
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
 
-        /* Multiple Choice Grid */
         .mc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 600px; margin: 20px auto; }
         @media (max-width: 600px) { .mc-grid { grid-template-columns: 1fr; } }
         .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; }
@@ -163,7 +162,6 @@
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
-        /* Board Canvas */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -303,7 +301,7 @@
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">Note [KO]</button>
                     </div>
 
-                    <!-- Row 4: Topics & Exact Book Source Mapping -->
+                    <!-- Row 4: Topics -->
                     <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
@@ -564,7 +562,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: QUIZLET REVIEW (WITH NEW PHRASAL & IDIOM MODES) -->
+        <!-- TAB 4: QUIZLET REVIEW -->
         <div id="tab4" class="tab-content">
             <div class="card" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -644,18 +642,17 @@
                 </div>
             </div>
 
-            <!-- MULTIPLE CHOICE TEST VIEW (FOR PHRASAL VERBS & IDIOMS) -->
+            <!-- MULTIPLE CHOICE VIEW (PHRASAL & IDIOMS) -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
                     <h3 id="mcPrompt" style="font-size: 1.8rem; color: var(--color-vi); margin-bottom: 20px;">---</h3>
-                    
                     <div id="mcGridContainer" class="mc-grid"></div>
                     <div id="mcResult" style="margin-top: 16px; font-weight: bold; display: none;"></div>
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS CHART & TOP MISTAKES -->
+            <!-- DASHBOARD STATISTICS CHART & FULL-WIDTH BOOK PROGRESS BAR CHART -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -712,26 +709,28 @@
                     </div>
                 </div>
 
-                <!-- NEW: BOOK SOURCES PROGRESS CHART & TABLE -->
+                <!-- FULL-WIDTH BOOK PROGRESS BAR CHART & TABLE -->
                 <div style="border-top: 1px dashed var(--border); padding-top: 20px;">
                     <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
-                        <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
-                            <canvas id="bookChart" style="max-height: 320px;"></canvas>
-                        </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Book Source</th>
-                                        <th>Learned Units</th>
-                                        <th>Total Units</th>
-                                        <th>Remaining Units</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bookProgressTableBody"></tbody>
-                            </table>
-                        </div>
+                    
+                    <!-- FULL-WIDTH HORIZONTAL BAR CHART -->
+                    <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px;">
+                        <canvas id="bookChart" style="max-height: 380px; width: 100%;"></canvas>
+                    </div>
+
+                    <!-- SUMMARY TABLE -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Book Source</th>
+                                    <th>Learned Units</th>
+                                    <th>Total Units</th>
+                                    <th>Remaining Units</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookProgressTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -883,7 +882,7 @@
             { title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"] }
         ];
 
-        /* EXACT BOOK SOURCE UNITS MAPPING */
+        /* EXACT BOOK SOURCE UNITS MAPPING (Strict Matching) */
         const BOOK_UNITS_CONFIG = {
             "Business Vocabulary Elementary": 49,
             "Business Vocabulary in Use - Elementary to Pre-intermediate": 62,
@@ -1851,10 +1850,9 @@
             } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (WITH NEW MULTIPLE CHOICE MODES) ---
+        // --- TAB 4: QUIZLET REVIEW (FLASHCARD, TYPING, PHRASAL, IDIOMS) ---
         let quizList = [];
         let currentQuizIndex = 0;
-        let currentMcCorrectOption = null;
 
         function populateQuizTopics() {
             const select = document.getElementById('quizTopic');
@@ -1883,7 +1881,6 @@
             const subTopic = document.getElementById('quizSubTopic').value;
             const mode = document.getElementById('quizMode').value;
             
-            // Filter list based on mode (Exclude Idiom & Phrasal from Flashcard/Typing)
             quizList = userVocabList.filter(i => {
                 const matchTop = (topic === "ALL" || i.topic === topic);
                 const matchSub = (subTopic === "ALL" || i.subTopic === subTopic);
@@ -1945,7 +1942,6 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                // Pick 3 random distractor phrasal verbs
                 const distractors = userVocabList.filter(x => x.id !== item.id && x.en).sort(() => Math.random() - 0.5).slice(0, 3);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
@@ -1957,7 +1953,7 @@
                     const btn = document.createElement('div');
                     btn.className = "mc-option";
                     btn.innerText = opt.en || "---";
-                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item, opt.en);
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
                 });
             }
@@ -1977,13 +1973,13 @@
                     btn.className = "mc-option";
                     btn.style.fontSize = "0.95rem";
                     btn.innerHTML = `🇬🇧 <b>${opt.en || '---'}</b> | 🇪🇸 <b>${opt.es || '---'}</b> | 🇰🇷 <b>${opt.ko || '---'}</b>`;
-                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item, opt.en);
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
                 });
             }
         }
 
-        function checkMcAnswer(isCorrect, item, selectedText) {
+        function checkMcAnswer(isCorrect, item) {
             const resEl = document.getElementById('mcResult');
             resEl.style.display = 'block';
 
@@ -2107,7 +2103,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS & BOOK UNITS TRACKER ---
+        // --- DASHBOARD ANALYTICS & FULL-WIDTH BOOK BAR CHART ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2180,7 +2176,7 @@
                 });
             }
 
-            // 4. Book Source Completion Progress Chart & Table
+            // 4. Book Source Completion Progress Chart (Full-width Horizontal) & Table
             const bookProgressMap = {};
             Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
                 bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
@@ -2202,7 +2198,7 @@
             bookChartInstance = new Chart(bCtx, {
                 type: 'bar',
                 data: {
-                    labels: bookLabels.map(b => b.replace('Vocabulary in Use', 'Vocab in Use')),
+                    labels: bookLabels,
                     datasets: [
                         { label: 'Learned Units', data: bookLearnedCounts, backgroundColor: '#f59e0b', borderRadius: 4 },
                         { label: 'Total Units', data: bookTotals, backgroundColor: '#334155', borderRadius: 4 }
@@ -2211,8 +2207,9 @@
                 options: {
                     indexAxis: 'y',
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#f8fafc' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
                 }
             });
 
