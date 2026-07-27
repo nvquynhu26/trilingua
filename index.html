@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <!-- Chart.js & Chart.js Radar Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -115,7 +116,6 @@
         .wotd-vi { font-size: 1.1rem; font-weight: 500; color: var(--color-vi); margin-bottom: 20px; }
 
         .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; }
-        
         .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; }
         @media (max-width: 800px) { .tri-flashcard-grid { grid-template-columns: 1fr; } }
         
@@ -131,7 +131,6 @@
         .card-box.ko .card-text { color: var(--color-ko); }
 
         .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; }
-
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
 
         .mc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 600px; margin: 20px auto; }
@@ -141,6 +140,11 @@
 
         .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+
+        /* Report Heatmap Grid */
+        .heatmap-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+        .heatmap-cell { width: 22px; height: 22px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--text-secondary); }
+        .heatmap-cell.learned { background: var(--primary); color: #fff; font-weight: bold; border-color: var(--primary); }
 
         .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
@@ -156,7 +160,7 @@
         .tree-cat-body { display: none; padding-left: 8px; margin-top: 4px; }
         .tree-cat.open .tree-cat-body { display: block; }
 
-        .post-item { padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; }
+        .post-item { padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
 
@@ -226,12 +230,12 @@
     <header>
         <div class="logo">Trilingua.</div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
-            <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
-            <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
-            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocab</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Search</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
-            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--warning); color:#000;">6. Report</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">6. Report</button>
         </div>
     </header>
 
@@ -650,7 +654,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS -->
+            <!-- LEARNING ANALYTICS DASHBOARD -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -738,30 +742,34 @@
             </div>
         </div>
 
-        <!-- TAB 6: REPORT (DEDICATED REPORT CENTER) -->
+        <!-- TAB 6: REPORT (DEDICATED ANALYTICS & BOOK PROGRESS CENTER) -->
         <div id="tab6" class="tab-content">
-            <!-- HEADER COUNTERS WITH LANGUAGE COLORS -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
-                <div class="card" style="border-color: var(--color-en); text-align: center; margin-bottom:0;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-en); margin-bottom: 4px;">ENGLISH VOCABULARY</div>
-                    <div id="reportTotalEN" style="font-size: 2.5rem; font-weight: 800; color: var(--color-en);">0</div>
+            <!-- 3 Top Language Counter Cards -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+                <div class="card" style="text-align: center; border-color: var(--color-en); margin-bottom:0;">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">ENGLISH VOCABULARY LEARNED</div>
+                    <div id="reportTotalEN" style="font-size: 2.5rem; font-weight: 800; color: var(--color-en); margin-top: 6px;">0</div>
                 </div>
-                <div class="card" style="border-color: var(--color-es); text-align: center; margin-bottom:0;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-es); margin-bottom: 4px;">SPANISH VOCABULARY</div>
-                    <div id="reportTotalES" style="font-size: 2.5rem; font-weight: 800; color: var(--color-es);">0</div>
+                <div class="card" style="text-align: center; border-color: var(--color-es); margin-bottom:0;">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">SPANISH VOCABULARY LEARNED</div>
+                    <div id="reportTotalES" style="font-size: 2.5rem; font-weight: 800; color: var(--color-es); margin-top: 6px;">0</div>
                 </div>
-                <div class="card" style="border-color: var(--color-ko); text-align: center; margin-bottom:0;">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--color-ko); margin-bottom: 4px;">KOREAN VOCABULARY</div>
-                    <div id="reportTotalKO" style="font-size: 2.5rem; font-weight: 800; color: var(--color-ko);">0</div>
+                <div class="card" style="text-align: center; border-color: var(--color-ko); margin-bottom:0;">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">KOREAN VOCABULARY LEARNED</div>
+                    <div id="reportTotalKO" style="font-size: 2.5rem; font-weight: 800; color: var(--color-ko); margin-top: 6px;">0</div>
                 </div>
             </div>
 
-            <!-- FULL-WIDTH BOOK PROGRESS BAR CHART & TABLE -->
+            <!-- Full-width Book Completion Tracker Card -->
             <div class="card">
-                <h3 style="color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h3>
-                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px;">
-                    <canvas id="reportBookChart" style="max-height: 420px; width: 100%;"></canvas>
+                <h3 style="color: var(--warning); margin-bottom: 16px;">📚 Book Source Units Completion Tracker</h3>
+                
+                <!-- FULL-WIDTH HORIZONTAL BAR CHART -->
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; height: 380px;">
+                    <canvas id="bookChart" style="width: 100%; height: 100%;"></canvas>
                 </div>
+
+                <!-- SUMMARY TABLE -->
                 <div class="table-container">
                     <table>
                         <thead>
@@ -772,7 +780,7 @@
                                 <th>Remaining Units</th>
                             </tr>
                         </thead>
-                        <tbody id="reportBookTableBody"></tbody>
+                        <tbody id="bookProgressTableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -873,7 +881,7 @@
         let grammarList = [];
         let quizHistory = [];
         let posChartInstance = null;
-        let reportBookChartInstance = null;
+        let bookChartInstance = null;
         let lastRenderedBoardItem = null;
         
         let currentTopicTab = "ALL";
@@ -897,15 +905,15 @@
 
         /* ABBREVIATED BOOK NAMES MAPPING */
         const BOOK_UNITS_CONFIG = {
-            "Biz Vocab - Elem": { full: "Business Vocabulary Elementary", total: 49 },
-            "Biz In Use - Elem/Pre": { full: "Business Vocabulary in Use - Elementary to Pre-intermediate", total: 62 },
-            "Biz In Use - Inter": { full: "Business Vocabulary in Use - Intermediate", total: 66 },
-            "Biz In Use - Adv": { full: "Business Vocabulary in Use - Advanced", total: 66 },
-            "Academic In Use": { full: "Academic Vocabulary in Use", total: 50 },
-            "In Use - Elem": { full: "Vocabulary in Use Elementary", total: 60 },
-            "In Use - Pre/Inter": { full: "Vocabulary in Use Pre-intermediate to Intermediate", total: 100 },
-            "In Use - Upper": { full: "Vocabulary in Use Upper-intermediate", total: 101 },
-            "In Use - Adv": { full: "Vocabulary in Use Advanced", total: 101 }
+            "Biz Vocab - Elem": 49,
+            "Biz In Use - Elem/Pre": 62,
+            "Biz In Use - Inter": 66,
+            "Biz In Use - Adv": 66,
+            "Academic In Use": 50,
+            "In Use - Elem": 60,
+            "In Use - Pre/Inter": 100,
+            "In Use - Upper": 101,
+            "In Use - Adv": 101
         };
 
         const TOPIC_MAPPING = {
@@ -1003,11 +1011,10 @@
             updateUnitsByBook(bookSelect.value);
         }
 
-        function updateUnitsByBook(shortBookTitle) {
+        function updateUnitsByBook(bookTitle) {
             const unitSelect = document.getElementById('unit');
             unitSelect.innerHTML = "";
-            const config = BOOK_UNITS_CONFIG[shortBookTitle];
-            const maxUnits = config ? config.total : 100;
+            const maxUnits = BOOK_UNITS_CONFIG[bookTitle] || 100;
             for (let i = 1; i <= maxUnits; i++) {
                 unitSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
             }
@@ -1026,7 +1033,6 @@
             renderTab2();
             renderGrammarSidebar();
             renderAnalyticsDashboard();
-            renderReportTab();
         }
 
         function saveToLocalStorage() {
@@ -1066,7 +1072,6 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
-                    renderReportTab();
                     showToast("✅ Synchronized successfully!");
                 }
             } catch (err) { showToast("⚠️ Using local browser data.", true); }
@@ -1081,7 +1086,7 @@
             if(tabId === 'tab2') renderTab2();
             if(tabId === 'tab3') renderGrammarSidebar();
             if(tabId === 'tab4') { startQuiz(); renderAnalyticsDashboard(); }
-            if(tabId === 'tab6') { renderReportTab(); }
+            if(tabId === 'tab6') renderAnalyticsDashboard();
         }
 
         function showToast(msg, isError = false) {
@@ -1761,7 +1766,7 @@
                     categories[cat].forEach(post => {
                         const postEl = document.createElement('div');
                         postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
-                        postEl.innerText = post.title || "Untitled Note";
+                        postEl.innerHTML = `<span>${post.title || "Untitled Note"}</span> <span style="cursor:pointer;" onclick="togglePinGrammar(event, '${post.id}')">${post.pinned ? '⭐' : '☆'}</span>`;
                         postEl.onclick = (e) => {
                             e.stopPropagation();
                             loadGrammarPost(post.id);
@@ -1778,6 +1783,17 @@
                 langEl.appendChild(langBody);
                 container.appendChild(langEl);
             });
+        }
+
+        function togglePinGrammar(e, id) {
+            e.stopPropagation();
+            const g = grammarList.find(i => String(i.id) === String(id));
+            if (g) {
+                g.pinned = !g.pinned;
+                grammarList.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+                saveToLocalStorage();
+                renderGrammarSidebar();
+            }
         }
 
         function loadGrammarPost(id) {
@@ -1820,14 +1836,18 @@
                 topic: document.getElementById('gramTopic').value.trim(),
                 title: document.getElementById('gramTitle').value.trim(),
                 keywords: document.getElementById('gramKeywords').value.trim(),
-                content: document.getElementById('gramContentEditor').innerHTML.trim()
+                content: document.getElementById('gramContentEditor').innerHTML.trim(),
+                pinned: false
             };
 
             if (isEdit) {
                 const idx = grammarList.findIndex(item => String(item.id) === String(id));
-                if (idx !== -1) grammarList[idx] = newPost;
+                if (idx !== -1) {
+                    newPost.pinned = grammarList[idx].pinned || false;
+                    grammarList[idx] = newPost;
+                }
             } else {
-                grammarList.push(newPost);
+                grammarList.unshift(newPost);
             }
 
             saveToLocalStorage();
@@ -1904,7 +1924,6 @@
 
                 if (mode === 'phrasal') return matchTop && matchSub && i.pos === 'phrasal verb';
                 if (mode === 'idiom') return matchTop && matchSub && i.pos === 'idiom';
-                
                 return matchTop && matchSub && i.pos !== 'phrasal verb' && i.pos !== 'idiom';
             });
             
@@ -2007,7 +2026,6 @@
                 quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: true, source: 'flashcard' });
                 saveToLocalStorage();
                 renderAnalyticsDashboard();
-                renderReportTab();
 
                 setTimeout(() => {
                     currentQuizIndex++;
@@ -2021,7 +2039,6 @@
                 quizHistory.push({ vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: new Date().toISOString(), remembered: false, source: 'flashcard' });
                 saveToLocalStorage();
                 renderAnalyticsDashboard();
-                renderReportTab();
             }
         }
 
@@ -2056,7 +2073,6 @@
             });
             saveToLocalStorage();
             renderAnalyticsDashboard();
-            renderReportTab();
 
             showToast(`${remembered ? '✔ Mastered' : '❌ Still Learning'} [${lang}]`);
             
@@ -2122,13 +2138,25 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS ---
+        // --- DASHBOARD ANALYTICS & TAB 6 REPORT ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
+
+            // 1. Language Memory Ratios & Tab 6 Counter Cards
+            let totalENCount = 0, totalESCount = 0, totalKOCount = 0;
+            userVocabList.forEach(i => {
+                if (i.en) totalENCount++;
+                if (i.es) totalESCount++;
+                if (i.ko) totalKOCount++;
+            });
+
+            document.getElementById('reportTotalEN').innerText = totalENCount;
+            document.getElementById('reportTotalES').innerText = totalESCount;
+            document.getElementById('reportTotalKO').innerText = totalKOCount;
 
             ['EN', 'ES', 'KO'].forEach(lang => {
                 const langHist = flashcardHist.filter(h => h.lang === lang);
@@ -2141,6 +2169,7 @@
                 document.getElementById(`bar${lang}`).style.width = `${pct}%`;
             });
 
+            // 2. POS Chart
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
             const posLearning = {};
@@ -2167,6 +2196,7 @@
                 options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
 
+            // 3. Top 10 Mistakes
             const mistakeMap = {};
             typingHist.filter(h => !h.remembered).forEach(h => {
                 const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
@@ -2191,37 +2221,20 @@
                     `;
                 });
             }
-        }
 
-        // --- TAB 6: REPORT (DEDICATED REPORT CENTER WITH FULL-WIDTH BAR CHART) ---
-        function renderReportTab() {
-            // 1. Calculate Total Vocab per Language
-            let countEN = 0, countES = 0, countKO = 0;
-            userVocabList.forEach(item => {
-                if (item.en) countEN++;
-                if (item.es) countES++;
-                if (item.ko) countKO++;
-            });
-
-            document.getElementById('reportTotalEN').innerText = countEN;
-            document.getElementById('reportTotalES').innerText = countES;
-            document.getElementById('reportTotalKO').innerText = countKO;
-
-            // 2. Book Progress Tracking with Robust Substring Matching
+            // 4. Full-width Book Progress Bar Chart & Table (FIXED BOOK KEY MATCHING)
             const bookProgressMap = {};
-            Object.keys(BOOK_UNITS_CONFIG).forEach(shortKey => {
-                bookProgressMap[shortKey] = { full: BOOK_UNITS_CONFIG[shortKey].full, total: BOOK_UNITS_CONFIG[shortKey].total, learnedUnits: new Set() };
+            Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
+                bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
             });
 
             userVocabList.forEach(item => {
                 if (item.book && item.unit) {
-                    const itemBookClean = item.book.trim().toLowerCase();
-                    Object.keys(BOOK_UNITS_CONFIG).forEach(shortKey => {
-                        const fullBookClean = BOOK_UNITS_CONFIG[shortKey].full.toLowerCase();
-                        if (itemBookClean.includes(fullBookClean) || fullBookClean.includes(itemBookClean)) {
-                            bookProgressMap[shortKey].learnedUnits.add(item.unit);
-                        }
-                    });
+                    // Match book key (handle user inputs or shortened names)
+                    let matchedBookKey = Object.keys(BOOK_UNITS_CONFIG).find(k => item.book.includes(k) || k.includes(item.book));
+                    if (matchedBookKey && bookProgressMap[matchedBookKey]) {
+                        bookProgressMap[matchedBookKey].learnedUnits.add(item.unit);
+                    }
                 }
             });
 
@@ -2229,10 +2242,10 @@
             const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
             const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
 
-            const bCtx = document.getElementById('reportBookChart').getContext('2d');
-            if (reportBookChartInstance) reportBookChartInstance.destroy();
+            const bCtx = document.getElementById('bookChart').getContext('2d');
+            if (bookChartInstance) bookChartInstance.destroy();
 
-            reportBookChartInstance = new Chart(bCtx, {
+            bookChartInstance = new Chart(bCtx, {
                 type: 'bar',
                 data: {
                     labels: bookLabels,
@@ -2246,11 +2259,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#f8fafc' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
+                    scales: { x: { stacked: false, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
                 }
             });
 
-            const bTbody = document.getElementById('reportBookTableBody');
+            const bTbody = document.getElementById('bookProgressTableBody');
             bTbody.innerHTML = "";
 
             bookLabels.forEach(b => {
