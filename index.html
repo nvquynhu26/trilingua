@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Trilingua - English | Español | 한국어</title>
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         :root {
@@ -22,37 +22,39 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            /* Language Palette for Board */
             --color-en: #4e90c0;
             --color-es: #83bfc7;
             --color-ko: #d57c91;
             --color-vi: #feeeb5;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1500px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
+        /* Security Overlay */
+        #authOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
+
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
         .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.9rem; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.88rem; }
         .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        main { max-width: 1500px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; }
+        main { max-width: 1600px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; }
         .tab-content { display: none; margin-top: 20px; }
         .tab-content.active { display: block; }
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
         
         /* Grid Layouts for Vocabulary Form */
-        .grid-row-1 { display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
-        .grid-row-2 { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
-        .grid-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
 
-        /* Responsive Fixes for iPad Pro M1 & iPhone 17 */
         @media (max-width: 1024px) {
             header { flex-direction: column; align-items: flex-start; gap: 12px; }
             .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr 1fr; }
@@ -69,7 +71,7 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.9rem; }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.88rem; }
         .btn:hover { background: var(--primary-hover); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
         .btn-danger { background: var(--danger); }
@@ -83,17 +85,17 @@
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
-        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: 4px; }
+        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
         .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; transition: all 0.2s; }
+        .sub-btn:hover { background: var(--surface-hover); }
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
         /* Modal Overlay & Card */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
         .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
 
-        /* Conjugation Tables */
         .conj-section-title { font-size: 1.05rem; font-weight: 700; color: var(--warning); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
         .conj-table { width: 100%; margin-bottom: 12px; border-collapse: collapse; }
         .conj-table th, .conj-table td { padding: 6px; border: 1px solid var(--border); font-size: 0.85rem; }
@@ -126,25 +128,25 @@
         .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
         .quiz-actions { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
 
-        /* Board Mind-map Layout */
-        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 24px auto; }
+        /* Expanded Board Canvas */
+        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
-        .mindmap-canvas { width: 100%; min-height: 600px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: auto; display: flex; justify-content: center; align-items: center; }
+        .mindmap-canvas { width: 100%; min-height: 750px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; }
         @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .node-main { width: 170px; height: 170px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.25rem; }
-        .node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+        .node-main { width: 180px; height: 180px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.3rem; }
+        .node-main .pos-tag { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
 
-        .node-level2 { width: 130px; height: 130px; color: #fff; z-index: 8; font-weight: 700; font-size: 1rem; }
+        .node-level2 { width: 140px; height: 140px; color: #fff; z-index: 8; font-weight: 700; font-size: 1.05rem; }
         .node-level2.es { background: var(--color-es); color: #0f172a; }
         .node-level2.ko { background: var(--color-ko); color: #fff; }
         .node-level2.vi { background: var(--color-vi); color: #0f172a; }
 
-        .node-level3 { width: 105px; height: 105px; color: #fff; z-index: 6; font-weight: 500; font-size: 0.78rem; line-height: 1.2; }
+        .node-level3 { width: 115px; height: 115px; color: #fff; z-index: 6; font-weight: 500; font-size: 0.8rem; line-height: 1.25; }
         .node-level3.es { background: rgba(131, 191, 199, 0.25); border: 2px solid var(--color-es); color: var(--text); }
         .node-level3.ko { background: rgba(213, 124, 145, 0.25); border: 2px solid var(--color-ko); color: var(--text); }
         .node-level3.vi { background: rgba(254, 238, 181, 0.25); border: 2px solid var(--color-vi); color: var(--text); }
@@ -156,6 +158,16 @@
     </style>
 </head>
 <body>
+
+    <!-- Access PIN Protection -->
+    <div id="authOverlay">
+        <div class="auth-card">
+            <h2 style="margin-bottom: 12px; color: var(--primary);">Security Verification</h2>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 20px;">Please enter your Access PIN to proceed.</p>
+            <input type="password" id="pinInput" placeholder="Enter PIN..." style="text-align: center; font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 16px;" autofocus>
+            <button class="btn full-width" style="width: 100%;" onclick="verifyPin()">Unlock System</button>
+        </div>
+    </div>
 
     <header>
         <div class="logo">Trilingua.</div>
@@ -179,12 +191,12 @@
                     <!-- Row 1: EN -->
                     <div class="grid-row-1">
                         <div class="form-group">
-                            <label>English Word</label>
+                            <label>Word [EN]</label>
                             <input type="text" id="wordEN">
                         </div>
                         <div class="form-group">
-                            <label>Part of Speech</label>
-                            <select id="pos">
+                            <label>POS</label>
+                            <select id="pos" onchange="handlePosChange(this.value)">
                                 <option value="">-- Select --</option>
                                 <option value="noun">noun (n)</option>
                                 <option value="verb">verb (v)</option>
@@ -197,44 +209,45 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Word Family (English)</label>
+                            <label>Word Family [EN]</label>
                             <input type="text" id="wordFamilyEN" placeholder="e.g. friend (n), friendly (adj)">
                         </div>
-                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('EN')">📝 Note (EN)</button>
+                        <button type="button" class="btn btn-warning" id="enIrregBtn" style="display: none;" onclick="openEnIrregModal()">Irregular Verb [EN]</button>
+                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('EN')">Note [EN]</button>
                     </div>
 
-                    <!-- Row 2: ES (Swapped & Renamed Conjugation button) -->
+                    <!-- Row 2: ES -->
                     <div class="grid-row-2">
                         <div class="form-group">
-                            <label>Spanish Word (ES)</label>
+                            <label>Word [ES]</label>
                             <input type="text" id="wordES">
                         </div>
                         <div class="form-group">
-                            <label>Word Family (Spanish)</label>
+                            <label>Word Family [ES]</label>
                             <input type="text" id="wordFamilyES" placeholder="e.g. amigo (n), amigable (adj)">
                         </div>
                         <button type="button" class="btn btn-warning" onclick="openConjModal()">Conjugation</button>
-                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">📝 Note (ES)</button>
+                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">Note [ES]</button>
                     </div>
 
                     <!-- Row 3: KO & VI -->
                     <div class="grid-row-3">
                         <div class="form-group">
-                            <label>Korean Word (KO)</label>
+                            <label>Word [KO]</label>
                             <input type="text" id="wordKO">
                         </div>
                         <div class="form-group">
-                            <label>Word Family (Korean)</label>
+                            <label>Word Family [KO]</label>
                             <input type="text" id="wordFamilyKO" placeholder="e.g. 친구 (n), 친근한 (adj)">
                         </div>
                         <div class="form-group">
-                            <label>Vietnamese Meaning (VI)</label>
+                            <label>Meaning [VI]</label>
                             <input type="text" id="meaningVI">
                         </div>
-                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">📝 Note (KO)</button>
+                        <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">Note [KO]</button>
                     </div>
 
-                    <!-- Row 4: Topics -->
+                    <!-- Row 4: Source & Topics -->
                     <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
@@ -276,15 +289,15 @@
                     <!-- Examples -->
                     <div class="grid-examples">
                         <div class="form-group">
-                            <label>English Example</label>
+                            <label>Example [EN]</label>
                             <textarea id="exEN" rows="2"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Spanish Example</label>
+                            <label>Example [ES]</label>
                             <textarea id="exES" rows="2"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Korean Example</label>
+                            <label>Example [KO]</label>
                             <textarea id="exKO" rows="2"></textarea>
                         </div>
                     </div>
@@ -338,7 +351,7 @@
             <div class="card">
                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
                     <button class="btn btn-sm" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
-                    <button class="btn btn-sm btn-warning" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations Directory</button>
+                    <button class="btn btn-sm btn-warning" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations</button>
                 </div>
 
                 <div id="searchVocabView">
@@ -356,6 +369,7 @@
                                     <th>Vietnamese</th>
                                     <th>POS / Family</th>
                                     <th>Examples & Notes</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="tab2TableBody"></tbody>
@@ -364,7 +378,7 @@
                 </div>
 
                 <div id="searchConjView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--warning);">🇪🇸 Spanish Conjugations Directory</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--warning);">Spanish Conjugations</h3>
                     <div id="conjDirectoryContainer"></div>
                 </div>
             </div>
@@ -455,10 +469,10 @@
 
                     <label style="margin-left: 6px;">Prompt Language:</label>
                     <select id="quizPrompt" onchange="startQuiz()" style="width: auto;">
-                        <option value="VI">Vietnamese (Tiếng Việt)</option>
-                        <option value="EN">English (Tiếng Anh)</option>
-                        <option value="ES">Spanish (Español)</option>
-                        <option value="KO">Korean (한국어)</option>
+                        <option value="VI">Vietnamese (VI)</option>
+                        <option value="EN">English (EN)</option>
+                        <option value="ES">Spanish (ES)</option>
+                        <option value="KO">Korean (KO)</option>
                     </select>
                 </div>
                 <div>
@@ -519,7 +533,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD (MIND-MAP VISUALIZER) -->
+        <!-- TAB 5: BOARD -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
@@ -528,7 +542,7 @@
                 </div>
 
                 <div id="mindmapCanvas" class="mindmap-canvas">
-                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to see the Mind-map relationship graph.</div>
+                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to view its Mind-map.</div>
                 </div>
             </div>
         </div>
@@ -537,7 +551,7 @@
     <!-- MODAL 1: NOTE EDITOR MODAL -->
     <div id="noteModal" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="noteModalTitle" style="margin-bottom: 12px; color: var(--grammar);">Edit Vocabulary Note</h3>
+            <h3 id="noteModalTitle" style="margin-bottom: 12px; color: var(--grammar);">Edit Note</h3>
             <div class="editor-toolbar">
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<b>', '</b>')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '<i>', '</i>')"><i>I</i> Light</button>
@@ -547,7 +561,7 @@
                 <button type="button" class="btn-fmt" onclick="insertFormat('tempNoteContent', '• ', '')">• Bullet</button>
                 <input type="color" onchange="applyColor('tempNoteContent', this.value)" title="Text Color" style="width:34px; height:30px; padding:2px; cursor:pointer;">
             </div>
-            <textarea id="tempNoteContent" rows="10" style="font-size: 1rem; line-height: 1.5; margin-bottom: 16px;" placeholder="Add notes about grammar usage, collocations, or rules..."></textarea>
+            <textarea id="tempNoteContent" rows="10" style="font-size: 1rem; line-height: 1.5; margin-bottom: 16px;" placeholder="Add notes..."></textarea>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn" onclick="saveNoteModal()">Save Note</button>
                 <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeNoteModal()">Cancel</button>
@@ -559,7 +573,7 @@
     <div id="conjModal" class="modal-overlay">
         <div class="modal-card" style="max-width: 1000px;">
             <h2 style="margin-bottom: 12px; color: var(--warning);">Tabla de Conjugación de Verbos</h2>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned. Unfilled boxes will remain blank.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned.</p>
             <div id="conjTablesContainer"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
                 <button type="button" class="btn btn-warning" onclick="saveConjModal()">Save Conjugation</button>
@@ -568,15 +582,52 @@
         </div>
     </div>
 
+    <!-- MODAL 3: ENGLISH IRREGULAR VERBS MODAL -->
+    <div id="enIrregModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 500px;">
+            <h3 style="margin-bottom: 16px; color: var(--warning);">English Irregular Verbs</h3>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label>Infinitive (Base Form)</label>
+                <input type="text" id="irregBase" placeholder="e.g. go">
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label>Past Simple</label>
+                <input type="text" id="irregPast" placeholder="e.g. went">
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>Past Participle</label>
+                <input type="text" id="irregPart" placeholder="e.g. gone">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-warning" onclick="saveEnIrregModal()">Save Irregular Verb</button>
+                <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeEnIrregModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        © Copyright by nvquynhu
+        © Copyright by Youme
     </footer>
 
     <div id="toast">Notification</div>
 
     <script>
+        // Security PIN logic
+        function verifyPin() {
+            const input = document.getElementById('pinInput').value.trim();
+            if (input === "3536") {
+                document.getElementById('authOverlay').style.display = 'none';
+                localStorage.setItem("trilingua_auth", "true");
+            } else {
+                alert("Incorrect Access PIN!");
+            }
+        }
+        if (localStorage.getItem("trilingua_auth") === "true") {
+            document.getElementById('authOverlay').style.display = 'none';
+        }
+
         // =========================================================================
-        // GAS API CONFIG - DÁN LINK DEPLOY CỦA BẠN VÀO DƯỚI (DẠNG .../exec)
+        // GAS API CONFIG - REPLACE WITH YOUR DEPLOYED WEB APP URL
         // =========================================================================
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
 
@@ -589,6 +640,7 @@
         let currentEditingNoteLang = null;
         let currentNotes = { EN: "", ES: "", KO: "" };
         let currentConjData = {};
+        let currentEnIrregData = { base: "", past: "", part: "" };
 
         const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
         
@@ -655,7 +707,7 @@
                 return;
             }
             try {
-                showToast("⏳ Đang đồng bộ từ Google Sheets...");
+                showToast("⏳ Synchronizing from Google Sheets...");
                 const response = await fetch(GAS_WEB_APP_URL, { redirect: "follow" });
                 const data = await response.json();
                 if (data.status === "success") {
@@ -666,7 +718,8 @@
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
                             familyES: row[15] || "", familyKO: row[16] || "",
                             noteEN: row[17] || "", noteES: row[18] || "", noteKO: row[19] || "",
-                            conjData: row[20] ? JSON.parse(row[20]) : {}
+                            conjData: row[20] ? JSON.parse(row[20]) : {},
+                            enIrregData: row[21] ? JSON.parse(row[21]) : { base: "", past: "", part: "" }
                         }));
                     }
                     if (data.grammarBlog && data.grammarBlog.length > 0) {
@@ -679,10 +732,10 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
-                    showToast("✅ Đã kết nối & đồng bộ dữ liệu thành công!");
+                    showToast("✅ Synchronized successfully!");
                 }
             } catch (err) {
-                showToast("⚠️ Sử dụng bộ nhớ đệm trên máy tính.", true);
+                showToast("⚠️ Using local browser data.", true);
             }
         }
 
@@ -723,6 +776,11 @@
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
+        function handlePosChange(val) {
+            const enIrregBtn = document.getElementById('enIrregBtn');
+            enIrregBtn.style.display = (val === 'verb') ? 'inline-flex' : 'none';
+        }
+
         function insertFormat(textareaId, startTag, endTag) {
             const textarea = document.getElementById(textareaId);
             const start = textarea.selectionStart;
@@ -743,7 +801,7 @@
         // --- MODAL NOTE FUNCTIONS ---
         function openNoteModal(lang) {
             currentEditingNoteLang = lang;
-            document.getElementById('noteModalTitle').innerText = `Edit Note (${lang})`;
+            document.getElementById('noteModalTitle').innerText = `Edit Note [${lang}]`;
             document.getElementById('tempNoteContent').value = currentNotes[lang] || "";
             document.getElementById('noteModal').style.display = "flex";
         }
@@ -757,7 +815,29 @@
                 currentNotes[currentEditingNoteLang] = document.getElementById('tempNoteContent').value.trim();
             }
             closeNoteModal();
-            showToast(`✅ Saved Note (${currentEditingNoteLang})`);
+            showToast(`✅ Saved Note [${currentEditingNoteLang}]`);
+        }
+
+        // --- MODAL ENGLISH IRREGULAR VERB FUNCTIONS ---
+        function openEnIrregModal() {
+            document.getElementById('irregBase').value = currentEnIrregData.base || document.getElementById('wordEN').value.trim();
+            document.getElementById('irregPast').value = currentEnIrregData.past || "";
+            document.getElementById('irregPart').value = currentEnIrregData.part || "";
+            document.getElementById('enIrregModal').style.display = "flex";
+        }
+
+        function closeEnIrregModal() {
+            document.getElementById('enIrregModal').style.display = "none";
+        }
+
+        function saveEnIrregModal() {
+            currentEnIrregData = {
+                base: document.getElementById('irregBase').value.trim(),
+                past: document.getElementById('irregPast').value.trim(),
+                part: document.getElementById('irregPart').value.trim()
+            };
+            closeEnIrregModal();
+            showToast("✅ Saved English Irregular Verb!");
         }
 
         // --- MODAL CONJUGATION FUNCTIONS ---
@@ -862,7 +942,8 @@
                 noteEN: currentNotes.EN,
                 noteES: currentNotes.ES,
                 noteKO: currentNotes.KO,
-                conjData: currentConjData
+                conjData: currentConjData,
+                enIrregData: currentEnIrregData
             };
 
             if (isEdit) {
@@ -874,12 +955,13 @@
             saveToLocalStorage();
             resetForm();
             renderLogTable();
-            showToast("⏳ Đang ghi vào Google Sheets...");
+            showToast("⏳ Saving to Google Sheets...");
 
             const rowData = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
                 newEntry.familyEN, newEntry.pos, newEntry.exEN, newEntry.exES, newEntry.exKO, newEntry.book, newEntry.unit, 
-                newEntry.familyES, newEntry.familyKO, newEntry.noteEN, newEntry.noteES, newEntry.noteKO, JSON.stringify(newEntry.conjData)
+                newEntry.familyES, newEntry.familyKO, newEntry.noteEN, newEntry.noteES, newEntry.noteKO, 
+                JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData)
             ];
 
             try {
@@ -891,12 +973,12 @@
                 });
                 const resData = await response.json();
                 if(resData.status === "success") {
-                    showToast("✅ Đã ghi trực tiếp vào Google Sheet!");
+                    showToast("✅ Saved to Google Sheet!");
                 } else {
-                    showToast("⚠️ Lỗi từ Sheet: " + resData.message, true);
+                    showToast("⚠️ Error: " + resData.message, true);
                 }
             } catch(err) { 
-                showToast("⚠️ Đã lưu vào máy tính cá nhân!", true); 
+                showToast("⚠️ Saved locally!", true); 
             }
         }
 
@@ -914,6 +996,8 @@
             document.getElementById('wordFamilyES').value = item.familyES || "";
             document.getElementById('wordFamilyKO').value = item.familyKO || "";
             document.getElementById('pos').value = item.pos || "";
+            handlePosChange(item.pos);
+
             if(TOPIC_STRUCTURE[item.topic]) {
                 document.getElementById('topic').value = item.topic;
                 updateSubtopics(item.topic);
@@ -927,6 +1011,7 @@
             
             currentNotes = { EN: item.noteEN || "", ES: item.noteES || "", KO: item.noteKO || "" };
             currentConjData = item.conjData || {};
+            currentEnIrregData = item.enIrregData || { base: "", past: "", part: "" };
 
             document.getElementById('submitBtn').innerText = "Update Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "inline-flex";
@@ -938,17 +1023,19 @@
             document.getElementById('editId').value = "";
             currentNotes = { EN: "", ES: "", KO: "" };
             currentConjData = {};
+            currentEnIrregData = { base: "", past: "", part: "" };
+            handlePosChange("");
             document.getElementById('submitBtn').innerText = "Save Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "none";
         }
 
         async function deleteVocab(id) {
-            if (!confirm("Are you sure you want to delete this vocabulary item?")) return;
+            if (!confirm("Are you sure you want to delete this item?")) return;
             userVocabList = userVocabList.filter(item => String(item.id) !== String(id));
             saveToLocalStorage();
             renderLogTable();
             renderTab2();
-            showToast("⏳ Đang xóa...");
+            showToast("⏳ Deleting...");
 
             try {
                 await fetch(GAS_WEB_APP_URL, {
@@ -957,8 +1044,8 @@
                     body: JSON.stringify({ action: "delete", type: "vocab", id }),
                     redirect: "follow"
                 });
-                showToast("✅ Đã xóa thành công khỏi Sheet!");
-            } catch(err) { showToast("⚠️ Đã xóa cục bộ!", true); }
+                showToast("✅ Deleted successfully!");
+            } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
         function renderLogTable() {
@@ -984,7 +1071,7 @@
             }).reverse();
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found for the selected period.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found.</td></tr>`;
                 return;
             }
 
@@ -1070,14 +1157,19 @@
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No vocabulary matching your filter or search query.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
                 return;
             }
 
             filtered.forEach(item => {
+                let irregStr = "";
+                if(item.enIrregData && item.enIrregData.past) {
+                    irregStr = `<div style="margin-top:2px; color:var(--warning); font-size:0.8rem;">⚡ <b>Irreg:</b> ${item.enIrregData.base} | ${item.enIrregData.past} | ${item.enIrregData.part}</div>`;
+                }
+
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}${irregStr}</td>
                         <td>${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
                         <td>${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
                         <td>${item.vi}</td>
@@ -1091,9 +1183,13 @@
                             ${item.exEN ? `🇬🇧 ${item.exEN}<br>` : ''}
                             ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
                             ${item.exKO ? `🇰🇷 ${item.exKO}<br>` : ''}
-                            ${item.noteEN ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note (EN):</b> ${item.noteEN}</div>` : ''}
-                            ${item.noteES ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note (ES):</b> ${item.noteES}</div>` : ''}
-                            ${item.noteKO ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note (KO):</b> ${item.noteKO}</div>` : ''}
+                            ${item.noteEN ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note [EN]:</b> ${item.noteEN}</div>` : ''}
+                            ${item.noteES ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note [ES]:</b> ${item.noteES}</div>` : ''}
+                            ${item.noteKO ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note [KO]:</b> ${item.noteKO}</div>` : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
                     </tr>
                 `;
@@ -1107,7 +1203,7 @@
             const verbsWithConj = userVocabList.filter(i => i.conjData && Object.keys(i.conjData).length > 0);
 
             if(verbsWithConj.length === 0) {
-                container.innerHTML = `<p style="padding:20px; text-align:center; color:var(--text-secondary);">No verb conjugations saved yet.</p>`;
+                container.innerHTML = `<p style="padding:20px; text-align:center; color:var(--text-secondary);">No verb conjugations recorded yet.</p>`;
                 return;
             }
 
@@ -1116,7 +1212,15 @@
                 card.className = "card";
                 card.style.marginBottom = "16px";
                 
-                let conjHTML = `<h4 style="color:var(--warning); margin-bottom:12px;">🇪🇸 ${item.es || "Verb"} (${item.en || ""})</h4>`;
+                let conjHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <h4 style="color:var(--warning);">${item.es || "Verb"} (${item.en || ""})</h4>
+                        <div>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
                 
                 CONJ_STRUCTURE.forEach((sec, sIdx) => {
                     let sectionHasData = false;
@@ -1264,7 +1368,7 @@
 
             saveToLocalStorage();
             resetGrammarForm();
-            showToast("⏳ Đang ghi vào Google Sheets...");
+            showToast("⏳ Saving grammar post...");
 
             const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
 
@@ -1277,11 +1381,11 @@
                 });
                 const resData = await response.json();
                 if(resData.status === "success") {
-                    showToast("✅ Đã ghi trực tiếp vào Google Sheet!");
+                    showToast("✅ Saved to Google Sheet!");
                 } else {
-                    showToast("⚠️ Lỗi từ Sheet: " + resData.message, true);
+                    showToast("⚠️ Error: " + resData.message, true);
                 }
-            } catch(err) { showToast("⚠️ Đã lưu vào bộ nhớ cục bộ!", true); }
+            } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
         async function deleteGrammar() {
@@ -1290,7 +1394,7 @@
             grammarList = grammarList.filter(item => String(item.id) !== String(id));
             saveToLocalStorage();
             resetGrammarForm();
-            showToast("⏳ Đang xóa...");
+            showToast("⏳ Deleting...");
 
             try {
                 await fetch(GAS_WEB_APP_URL, {
@@ -1299,8 +1403,8 @@
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
                     redirect: "follow"
                 });
-                showToast("✅ Đã xóa thành công!");
-            } catch(err) { showToast("⚠️ Đã xóa cục bộ!", true); }
+                showToast("✅ Deleted successfully!");
+            } catch(err) { showToast("⚠️ Deleted locally!", true); }
         }
 
         // --- TAB 4: QUIZLET REVIEW ---
@@ -1502,7 +1606,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (MIND-MAP GRAPH VISUALIZER) ---
+        // --- TAB 5: BOARD (EXPANDED MIND-MAP) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -1547,14 +1651,14 @@
                 return;
             }
 
-            // Positions configuration
-            const cx = canvas.clientWidth / 2 || 400;
-            const cy = 300;
+            const rect = canvas.getBoundingClientRect();
+            const cx = rect.width / 2 || 500;
+            const cy = rect.height / 2 || 375;
 
             const langNodes = [
-                { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -30 },
+                { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -35 },
                 { key: 'ko', label: 'Korean', val: item.ko, family: item.familyKO, note: item.noteKO, class: 'ko', angle: 90 },
-                { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 210 }
+                { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 215 }
             ];
 
             let nodesHTML = "";
@@ -1562,48 +1666,44 @@
 
             // Center Node (Level 1 - Main EN)
             nodesHTML += `
-                <div class="node node-main" style="left:${cx - 85}px; top:${cy - 85}px;">
+                <div class="node node-main" style="left:${cx - 90}px; top:${cy - 90}px;">
                     <div>${item.en || "---"}</div>
                     ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
                 </div>
             `;
 
-            // Level 2 & 3
+            // Level 2 & 3 Nodes
             langNodes.forEach(lang => {
                 if(!lang.val) return;
 
                 const rad = (lang.angle * Math.PI) / 180;
-                const dist2 = 180;
+                const dist2 = 220; // Expanded spacing
                 const l2x = cx + dist2 * Math.cos(rad);
                 const l2y = cy + dist2 * Math.sin(rad);
 
-                // Line L1 -> L2
                 svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="var(--border)" stroke-width="3" stroke-dasharray="4" />`;
 
-                // Node Level 2
                 nodesHTML += `
-                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 65}px; top:${l2y - 65}px;">
+                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 70}px; top:${l2y - 70}px;">
                         ${lang.val}
                     </div>
                 `;
 
-                // Level 3 Sub-nodes (Family & Note)
                 const subItems = [];
                 if (lang.family) subItems.push({ title: "Family", text: lang.family });
                 if (lang.note) subItems.push({ title: "Note", text: lang.note });
 
                 subItems.forEach((sub, sIdx) => {
-                    const subAngle = lang.angle + (sIdx === 0 ? -35 : 35);
+                    const subAngle = lang.angle + (sIdx === 0 ? -40 : 40);
                     const subRad = (subAngle * Math.PI) / 180;
-                    const dist3 = 140;
+                    const dist3 = 160;
                     const l3x = l2x + dist3 * Math.cos(subRad);
                     const l3y = l2y + dist3 * Math.sin(subRad);
 
-                    // Line L2 -> L3
                     svgLinesHTML += `<line x1="${l2x}" y1="${l2y}" x2="${l3x}" y2="${l3y}" stroke="var(--border)" stroke-width="2" />`;
 
                     nodesHTML += `
-                        <div class="node node-level3 ${lang.class}" style="left:${l3x - 52}px; top:${l3y - 52}px;">
+                        <div class="node node-level3 ${lang.class}" style="left:${l3x - 57}px; top:${l3y - 57}px;">
                             <strong>${sub.title}</strong>
                             <div>${sub.text}</div>
                         </div>
