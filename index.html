@@ -236,7 +236,7 @@
                             <label>Word Family [ES]</label>
                             <input type="text" id="wordFamilyES" placeholder="e.g. amigo (n), amigable (adj)">
                         </div>
-                        <button type="button" class="btn btn-warning" onclick="openConjModal()">Conjugation</button>
+                        <button type="button" class="btn btn-warning" id="esConjBtn" style="display: none;" onclick="openConjModal()">Conjugation</button>
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">Note [ES]</button>
                     </div>
 
@@ -916,9 +916,13 @@
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
+        /* Toggle Conjugation and Irregular buttons only when POS is 'verb' */
         function handlePosChange(val) {
             const enIrregBtn = document.getElementById('enIrregBtn');
-            enIrregBtn.style.display = (val === 'verb') ? 'inline-flex' : 'none';
+            const esConjBtn = document.getElementById('esConjBtn');
+            const isVerb = (val === 'verb');
+            enIrregBtn.style.display = isVerb ? 'inline-flex' : 'none';
+            esConjBtn.style.display = isVerb ? 'inline-flex' : 'none';
         }
 
         /* WYSIWYG Exec Commands */
@@ -933,7 +937,6 @@
             document.execCommand('insertHTML', false, tableHTML);
         }
 
-        /* Dynamic Table Operations (Add/Delete Rows & Columns) */
         function getParentTableAndCell() {
             const sel = window.getSelection();
             if (!sel.rangeCount) return null;
@@ -1486,7 +1489,7 @@
                 card.style.marginBottom = "16px";
                 
                 let conjHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div style="display:flex; justify-between; align-items:center; margin-bottom:12px;">
                         <h4 style="color:var(--color-es);">${item.es || "Verb"} (${item.en || ""})</h4>
                         <div>
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
