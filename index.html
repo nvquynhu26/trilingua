@@ -70,7 +70,8 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        .rich-editor { width: 100%; min-height: 250px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
+        /* Expanded Rich Text Editor Box for Blog */
+        .rich-editor { width: 100%; min-height: 450px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1.05rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 1px solid var(--border); }
         .rich-editor td, .rich-editor th { border: 1px solid var(--border); padding: 8px; min-width: 60px; }
@@ -141,25 +142,21 @@
         .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        /* Blog Sidebar & Pin Badge */
+        /* Blog Sidebar Date & Pin */
         .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
         
         .tree-lang { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
         .tree-lang-header { background: var(--bg); padding: 10px 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--grammar); }
         .tree-lang-body { display: none; padding: 8px; background: var(--surface); }
         .tree-lang.open .tree-lang-body { display: block; }
 
-        .tree-cat { margin-bottom: 6px; }
-        .tree-cat-header { padding: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; background: var(--surface-hover); border-radius: 6px; display: flex; justify-content: space-between; }
-        .tree-cat-body { display: none; padding-left: 8px; margin-top: 4px; }
-        .tree-cat.open .tree-cat-body { display: block; }
-
-        .post-item { padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
+        .post-item { padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 6px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
-        .pin-icon { color: var(--warning); cursor: pointer; font-size: 0.9rem; }
+        .post-date { font-size: 0.72rem; color: var(--text-secondary); display: block; margin-top: 2px; }
+        .pin-icon { color: var(--warning); cursor: pointer; font-size: 0.95rem; margin-left: 6px; }
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
@@ -404,6 +401,8 @@
                     <button class="btn btn-sm btn-lang-en" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
                     <button class="btn btn-sm btn-lang-es" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations</button>
+                    <!-- SEPARATE TAB FOR SPANISH PHRASAL VERBS -->
+                    <button class="btn btn-sm btn-lang-es" id="subTabEsPhrasalBtn" onclick="switchSearchSubTab('esPhrasal')">Spanish Phrasal Verbs</button>
                 </div>
 
                 <div id="searchVocabView">
@@ -430,7 +429,7 @@
                 </div>
 
                 <div id="searchPhrasalView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--color-en);">Phrasal Verbs Directory</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--color-en);">English Phrasal Verbs Directory</h3>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -491,6 +490,26 @@
                     <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Conjugations</h3>
                     <div id="conjDirectoryContainer"></div>
                 </div>
+
+                <!-- SPANISH PHRASAL VERBS VIEW -->
+                <div id="searchEsPhrasalView" style="display: none;">
+                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Phrasal Verbs</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Spanish Verb / Expression</th>
+                                    <th>English Equivalent</th>
+                                    <th>Vietnamese Meaning</th>
+                                    <th>Example [ES]</th>
+                                    <th>Notes [ES]</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="esPhrasalDirectoryBody"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -522,9 +541,9 @@
                             <div class="form-group">
                                 <label>Language *</label>
                                 <select id="gramLang" required>
-                                    <option value="English">English</option>
-                                    <option value="Español">Español</option>
-                                    <option value="한국어">한국어</option>
+                                    <option value="English">English 🇬🇧</option>
+                                    <option value="Español">Español 🇪🇸</option>
+                                    <option value="한국어">한국어 🇰🇷</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -535,8 +554,8 @@
 
                         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
                             <div class="form-group">
-                                <label>Post Title (Optional)</label>
-                                <input type="text" id="gramTitle" placeholder="e.g., How to use Present Perfect...">
+                                <label>Post Title *</label>
+                                <input type="text" id="gramTitle" required placeholder="e.g., How to use Present Perfect...">
                             </div>
                             <div class="form-group">
                                 <label>Level / Tag</label>
@@ -560,8 +579,16 @@
                             <div class="editor-toolbar">
                                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
-                                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '5')">Large</button>
-                                <button type="button" class="btn-fmt" onclick="execCmd('fontSize', '2')">Small</button>
+                                
+                                <!-- FONT SIZE DROPDOWN SELECTOR -->
+                                <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
+                                    <option value="2">Small (12px)</option>
+                                    <option value="3" selected>Normal (16px)</option>
+                                    <option value="4">Medium (20px)</option>
+                                    <option value="5">Large (24px)</option>
+                                    <option value="6">Huge (32px)</option>
+                                </select>
+
                                 <button type="button" class="btn-fmt" onclick="execCmd('formatBlock', '<h3>')">Heading</button>
                                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Bullet</button>
                                 <button type="button" class="btn-fmt" onclick="insertBoxTable('gramContentEditor')">+ Box Table</button>
@@ -574,6 +601,7 @@
                                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
                                 <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                             </div>
+                            <!-- EXPANDED RICH EDITOR BOX -->
                             <div id="gramContentEditor" class="rich-editor" contenteditable="true"></div>
                         </div>
 
@@ -674,7 +702,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS (WITH 3 GROUPS: STRONG, MEDIUM, WEAK) -->
+            <!-- DASHBOARD STATISTICS (3 GROUPS: STRONG, MEDIUM, WEAK) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -687,7 +715,6 @@
                     </select>
                 </div>
 
-                <!-- 3 Categorization Groups: Strong, Medium, Weak -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
                         <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">🟢 STRONG (Mastered ≥80%)</div>
@@ -757,12 +784,12 @@
             </div>
         </div>
 
-        <!-- TAB 6: REPORT (CUSTOM GOALS, 3-LANG CARDS ROW, RADAR, VELOCITY, BOOK BAR CHART) -->
+        <!-- TAB 6: REPORT -->
         <div id="tab6" class="tab-content">
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- ROW 0: THREE LANGUAGE CARDS ROW -->
+                <!-- THREE LANGUAGE CARDS ROW -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
                         <div style="font-size: 1.5rem; margin-bottom: 4px;">🇬🇧</div>
@@ -781,9 +808,8 @@
                     </div>
                 </div>
 
-                <!-- ROW 1: CUSTOM GOALS & LANGUAGE RADAR -->
+                <!-- CUSTOM GOALS & RADAR -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-                    <!-- Custom Goal Setting Card -->
                     <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
                         <h4 style="font-size: 0.95rem; color: var(--warning); margin-bottom: 12px;">🎯 Custom Vocabulary Goals</h4>
                         
@@ -812,7 +838,6 @@
                         </div>
                     </div>
 
-                    <!-- Language Balance Radar Chart -->
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center;">
                         <h4 style="font-size: 0.95rem; color: var(--color-es); margin-bottom: 6px;">🌐 Language Balance Radar (EN - ES - KO)</h4>
                         <div style="position: relative; height: 220px; width: 100%;">
@@ -821,7 +846,7 @@
                     </div>
                 </div>
 
-                <!-- ROW 2: VELOCITY LINE CHART -->
+                <!-- VELOCITY LINE CHART -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <h4 style="font-size: 1rem; color: var(--edit); margin-bottom: 14px;">📈 Learning Velocity (Weekly New Words Added)</h4>
                     <div style="position: relative; height: 260px; width: 100%;">
@@ -829,7 +854,7 @@
                     </div>
                 </div>
 
-                <!-- ROW 3: FULL-WIDTH BOOK HORIZONTAL BAR CHART & TABLE -->
+                <!-- FULL-WIDTH BOOK BAR CHART & TABLE -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
                     <div style="position: relative; height: 350px; width: 100%;">
@@ -1540,11 +1565,13 @@
             document.getElementById('searchIdiomView').style.display = sub === 'idiom' ? 'block' : 'none';
             document.getElementById('searchIrregView').style.display = sub === 'irreg' ? 'block' : 'none';
             document.getElementById('searchConjView').style.display = sub === 'conj' ? 'block' : 'none';
+            document.getElementById('searchEsPhrasalView').style.display = sub === 'esPhrasal' ? 'block' : 'none';
 
             if (sub === 'phrasal') renderPhrasalDirectory();
             if (sub === 'idiom') renderIdiomDirectory();
             if (sub === 'irreg') renderIrregDirectory();
             if (sub === 'conj') renderConjDirectory();
+            if (sub === 'esPhrasal') renderEsPhrasalDirectory();
         }
 
         function renderTopicNav() {
@@ -1661,7 +1688,33 @@
                 `;
             });
 
-            if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No phrasal verbs found.</td></tr>`;
+            if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No English phrasal verbs found.</td></tr>`;
+        }
+
+        /* RENDER SEPARATE SPANISH PHRASAL VERBS DIRECTORY */
+        function renderEsPhrasalDirectory() {
+            const tbody = document.getElementById('esPhrasalDirectoryBody');
+            tbody.innerHTML = "";
+            let count = 0;
+
+            userVocabList.filter(i => i.es && (i.pos === 'phrasal verb' || i.noteES.toLowerCase().includes('phrasal') || i.es.split(' ').length > 1)).forEach(item => {
+                count++;
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color:var(--color-es); font-weight:bold;"><strong>${item.es}</strong> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
+                        <td>${item.en || '---'}</td>
+                        <td>${item.vi || '---'}</td>
+                        <td style="font-size:0.85rem; color:var(--text-secondary);">${item.exES || '---'}</td>
+                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.noteES || '---'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No Spanish phrasal verbs or expressions found.</td></tr>`;
         }
 
         function renderIdiomDirectory() {
@@ -1772,7 +1825,7 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG ---
+        // --- TAB 3: GRAMMAR BLOG (ACCORDION TREE 3 LANGUAGES + DATES + PIN + TAGS) ---
         let pinnedPostIds = JSON.parse(localStorage.getItem("trilingua_pinned_posts") || "[]");
 
         function togglePinPost(e, id) {
@@ -1815,10 +1868,8 @@
                     return bPinned - aPinned;
                 });
 
-                if (langPosts.length === 0) return;
-
                 const langEl = document.createElement('div');
-                langEl.className = `tree-lang ${query || selectedTag !== 'ALL' ? 'open' : ''}`;
+                langEl.className = `tree-lang ${query || selectedTag !== 'ALL' || langPosts.length > 0 ? 'open' : ''}`;
                 
                 const langHeader = document.createElement('div');
                 langHeader.className = "tree-lang-header";
@@ -1828,19 +1879,47 @@
                 const langBody = document.createElement('div');
                 langBody.className = "tree-lang-body";
 
-                langPosts.forEach(post => {
-                    const isPinned = pinnedPostIds.includes(post.id);
-                    const postEl = document.createElement('div');
-                    postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
-                    postEl.innerHTML = `
-                        <span>${isPinned ? '⭐ ' : ''}${post.title || "Untitled Note"}</span>
-                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin / Unpin">${isPinned ? '★' : '☆'}</span>
-                    `;
-                    postEl.onclick = (e) => {
-                        e.stopPropagation();
-                        loadGrammarPost(post.id);
-                    };
-                    langBody.appendChild(postEl);
+                const categories = {};
+                langPosts.forEach(p => {
+                    const cat = p.topic || "General";
+                    if (!categories[cat]) categories[cat] = [];
+                    categories[cat].push(p);
+                });
+
+                Object.keys(categories).forEach(cat => {
+                    const catEl = document.createElement('div');
+                    catEl.className = `tree-cat ${query ? 'open' : ''}`;
+
+                    const catHeader = document.createElement('div');
+                    catHeader.className = "tree-cat-header";
+                    catHeader.innerHTML = `<span>📂 ${cat}</span> <span>(${categories[cat].length})</span>`;
+                    catHeader.onclick = () => catEl.classList.toggle('open');
+
+                    const catBody = document.createElement('div');
+                    catBody.className = "tree-cat-body";
+
+                    categories[cat].forEach(post => {
+                        const isPinned = pinnedPostIds.includes(post.id);
+                        const postDateStr = post.timestamp || '2026-07-27';
+                        const postEl = document.createElement('div');
+                        postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
+                        postEl.innerHTML = `
+                            <div>
+                                <div>${isPinned ? '⭐ ' : ''}<b>${post.title || "Untitled Note"}</b></div>
+                                <span class="post-date">📅 ${postDateStr}</span>
+                            </div>
+                            <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin / Unpin">${isPinned ? '★' : '☆'}</span>
+                        `;
+                        postEl.onclick = (e) => {
+                            e.stopPropagation();
+                            loadGrammarPost(post.id);
+                        };
+                        catBody.appendChild(postEl);
+                    });
+
+                    catEl.appendChild(catHeader);
+                    catEl.appendChild(catBody);
+                    langBody.appendChild(catEl);
                 });
 
                 langEl.appendChild(langHeader);
@@ -1881,7 +1960,7 @@
             const editId = document.getElementById('grammarId').value;
             const isEdit = !!editId;
             const id = isEdit ? editId : 'GRAM_' + Date.now();
-            const timestamp = isEdit ? grammarList.find(i => String(i.id) === String(id)).timestamp : new Date().toISOString().split('T')[0];
+            const timestamp = isEdit ? (grammarList.find(i => String(i.id) === String(id)).timestamp || new Date().toISOString().split('T')[0]) : new Date().toISOString().split('T')[0];
 
             let contentHTML = document.getElementById('gramContentEditor').innerHTML.trim();
             const selectedTag = document.getElementById('gramTag').value;
@@ -2193,7 +2272,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (WITH 3 GROUPS: STRONG, MEDIUM, WEAK) ---
+        // --- DASHBOARD ANALYTICS (STRONG, MEDIUM, WEAK) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2275,7 +2354,7 @@
             }
         }
 
-        // --- TAB 6: REPORT (3-LANG CARDS ROW, CUSTOM GOALS, RADAR, VELOCITY, BOOK BAR CHART) ---
+        // --- TAB 6: REPORT ---
         function renderReportTab() {
             // 0. Three Language Cards Row
             let countEN = 0, countES = 0, countKO = 0;
@@ -2325,7 +2404,7 @@
                 }
             });
 
-            // 3. Learning Velocity (Weekly New Words)
+            // 3. Learning Velocity
             const weeksMap = {};
             userVocabList.forEach(i => {
                 if (i.timestamp) {
