@@ -138,7 +138,6 @@
         /* Small Centered Vietnamese Card */
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
 
-        /* Progress Bar */
         .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
@@ -163,25 +162,25 @@
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
-        /* Board Mind-map Layout */
+        /* Board Mind-map Responsive Layout */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
-        .mindmap-canvas { width: 100%; min-height: 750px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .mindmap-canvas { width: 100%; height: 750px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; }
         @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .node-main { width: 180px; height: 180px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.3rem; }
-        .node-main .pos-tag { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+        .node-main { background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.25rem; }
+        .node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
 
-        .node-level2 { width: 135px; height: 135px; color: #fff; z-index: 8; font-weight: 700; font-size: 1rem; }
+        .node-level2 { color: #fff; z-index: 8; font-weight: 700; font-size: 0.95rem; }
         .node-level2.es { background: var(--color-es); color: #fff; }
         .node-level2.ko { background: var(--color-ko); color: #fff; }
         .node-level2.vi { background: var(--color-vi); color: #0f172a; }
 
-        .node-level3 { width: 110px; height: 110px; color: #fff; z-index: 6; font-weight: 500; font-size: 0.78rem; line-height: 1.2; }
+        .node-level3 { color: #fff; z-index: 6; font-weight: 500; font-size: 0.75rem; line-height: 1.2; }
         .node-level3.es { background: rgba(16, 185, 129, 0.2); border: 2px solid var(--color-es); color: var(--text); }
         .node-level3.ko { background: rgba(213, 124, 145, 0.2); border: 2px solid var(--color-ko); color: var(--text); }
         .node-level3.vi { background: rgba(254, 238, 181, 0.2); border: 2px solid var(--color-vi); color: var(--text); }
@@ -580,7 +579,7 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW -->
+            <!-- TRI-FLASHCARD VIEW CENTERED -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <!-- EN Card -->
@@ -650,7 +649,7 @@
                     </select>
                 </div>
 
-                <!-- Language Memory Ratio Comparison -->
+                <!-- Language Memory Ratio Comparison (FROM FLASHCARDS) -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
                         <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">🇬🇧 ENGLISH PROGRESS</div>
@@ -673,13 +672,13 @@
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
-                    <!-- Chart Column -->
+                    <!-- Chart Column (FROM FLASHCARDS) -->
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
                         <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (Mastered vs Learning)</h4>
                         <canvas id="posChart" style="max-height: 320px;"></canvas>
                     </div>
 
-                    <!-- Top 10 Mistakes Column (from Typing Test) -->
+                    <!-- Top 10 Mistakes Column (FROM TYPING TEST ONLY) -->
                     <div>
                         <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--danger);">⚠️ Top 10 Typing Test Mistakes</h4>
                         <div class="table-container">
@@ -808,6 +807,7 @@
         let grammarList = [];
         let quizHistory = [];
         let posChartInstance = null;
+        let lastRenderedBoardItem = null;
         
         let currentTopicTab = "ALL";
         let currentSubTopicTab = "ALL";
@@ -892,6 +892,10 @@
             buildConjModalHTML();
             loadFromLocalStorage();
             fetchDataFromGAS();
+
+            window.addEventListener('resize', () => {
+                if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem);
+            });
         };
 
         function triggerWordOfTheDay() {
@@ -2075,7 +2079,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (MIND-MAP) ---
+        // --- TAB 5: BOARD (MIND-MAP AUTO-FIT DYNAMIC SCALING) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2114,6 +2118,7 @@
         }
 
         function renderMindmap(item) {
+            lastRenderedBoardItem = item;
             const canvas = document.getElementById('mindmapCanvas');
             canvas.innerHTML = "";
 
@@ -2123,8 +2128,25 @@
             }
 
             const rect = canvas.getBoundingClientRect();
-            const cx = rect.width / 2 || 500;
-            const cy = rect.height / 2 || 375;
+            const width = rect.width || 800;
+            const height = rect.height || 750;
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // Compute dynamic scaling based on viewport size to prevent overflow
+            const baseMaxRadius = 380; // Default max distance needed from center
+            const availRadiusY = (height / 2) - 30; // 30px padding
+            const availRadiusX = (width / 2) - 30;
+            
+            const scale = Math.min(availRadiusX / baseMaxRadius, availRadiusY / baseMaxRadius, 1.0);
+
+            // Dynamic distances & node sizes
+            const dist2 = 210 * scale;
+            const dist3 = 130 * scale;
+
+            const sizeMain = Math.max(120, 180 * scale);
+            const sizeL2 = Math.max(90, 135 * scale);
+            const sizeL3 = Math.max(75, 110 * scale);
 
             let enIrregStr = "";
             if(item.enIrregData && item.enIrregData.past) {
@@ -2135,7 +2157,7 @@
                 { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -35 },
                 { key: 'ko', label: 'Korean', val: item.ko, family: item.familyKO, note: item.noteKO, class: 'ko', angle: 90 },
                 { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 215 },
-                { key: 'enExtra', label: 'English Extra', val: "", family: item.familyEN, note: item.noteEN, irreg: enIrregStr, class: 'es', angle: 130 }
+                { key: 'enExtra', label: 'English Extra', val: "", family: item.familyEN, note: item.noteEN, irreg: enIrregStr, class: 'es', angle: 135 }
             ];
 
             let nodesHTML = "";
@@ -2143,7 +2165,7 @@
 
             // Center Node
             nodesHTML += `
-                <div class="node node-main" style="left:${cx - 90}px; top:${cy - 90}px;">
+                <div class="node node-main" style="width:${sizeMain}px; height:${sizeMain}px; left:${cx - (sizeMain/2)}px; top:${cy - (sizeMain/2)}px; font-size:${1.2 * scale}rem;">
                     <div>${item.en || "---"}</div>
                     ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
                 </div>
@@ -2154,14 +2176,13 @@
                 if(!lang.val && !lang.irreg && !lang.note) return;
 
                 const rad = (lang.angle * Math.PI) / 180;
-                const dist2 = 230;
                 const l2x = cx + dist2 * Math.cos(rad);
                 const l2y = cy + dist2 * Math.sin(rad);
 
-                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="var(--border)" stroke-width="3" stroke-dasharray="4" />`;
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="var(--border)" stroke-width="${Math.max(1.5, 3*scale)}" stroke-dasharray="4" />`;
 
                 nodesHTML += `
-                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 67}px; top:${l2y - 67}px;">
+                    <div class="node node-level2 ${lang.class}" style="width:${sizeL2}px; height:${sizeL2}px; left:${l2x - (sizeL2/2)}px; top:${l2y - (sizeL2/2)}px; font-size:${0.95 * scale}rem;">
                         ${lang.val || 'English Extra'}
                     </div>
                 `;
@@ -2172,18 +2193,17 @@
                 if (lang.irreg) subItems.push({ title: "Irregular", text: lang.irreg });
 
                 subItems.forEach((sub, sIdx) => {
-                    const subAngle = lang.angle + (sIdx === 0 ? -40 : 40);
+                    const subAngle = lang.angle + (sIdx === 0 ? -35 : 35);
                     const subRad = (subAngle * Math.PI) / 180;
-                    const dist3 = 150;
                     const l3x = l2x + dist3 * Math.cos(subRad);
                     const l3y = l2y + dist3 * Math.sin(subRad);
 
-                    svgLinesHTML += `<line x1="${l2x}" y1="${l2y}" x2="${l3x}" y2="${l3y}" stroke="var(--border)" stroke-width="2" />`;
+                    svgLinesHTML += `<line x1="${l2x}" y1="${l2y}" x2="${l3x}" y2="${l3y}" stroke="var(--border)" stroke-width="${Math.max(1, 2*scale)}" />`;
 
                     nodesHTML += `
-                        <div class="node node-level3 ${lang.class}" style="left:${l3x - 55}px; top:${l3y - 55}px;">
+                        <div class="node node-level3 ${lang.class}" style="width:${sizeL3}px; height:${sizeL3}px; left:${l3x - (sizeL3/2)}px; top:${l3y - (sizeL3/2)}px; font-size:${0.75 * scale}rem;">
                             <strong>${sub.title}</strong>
-                            <div>${sub.text}</div>
+                            <div style="font-size:0.7rem;">${sub.text}</div>
                         </div>
                     `;
                 });
