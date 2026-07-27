@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-    <!-- Chart.js & Chart.js Radar Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -38,8 +37,8 @@
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
         .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.88rem; }
+        .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.85rem; }
         .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
@@ -62,7 +61,7 @@
         @media (max-width: 640px) {
             .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr; }
             .nav-tabs { width: 100%; justify-content: space-between; }
-            .tab-btn { flex: 1 1 auto; text-align: center; padding: 8px 10px; font-size: 0.8rem; }
+            .tab-btn { flex: 1 1 auto; text-align: center; padding: 8px 6px; font-size: 0.78rem; }
         }
 
         .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
@@ -116,6 +115,7 @@
         .wotd-vi { font-size: 1.1rem; font-weight: 500; color: var(--color-vi); margin-bottom: 20px; }
 
         .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; }
+        
         .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; }
         @media (max-width: 800px) { .tri-flashcard-grid { grid-template-columns: 1fr; } }
         
@@ -141,11 +141,7 @@
         .progress-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        /* Report Heatmap Grid */
-        .heatmap-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-        .heatmap-cell { width: 22px; height: 22px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--text-secondary); }
-        .heatmap-cell.learned { background: var(--primary); color: #fff; font-weight: bold; border-color: var(--primary); }
-
+        /* Blog Sidebar & Pin Badge */
         .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
@@ -163,9 +159,11 @@
         .post-item { padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
+        .pin-icon { color: var(--warning); cursor: pointer; font-size: 0.9rem; }
 
         .editor-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); align-items: center; }
 
+        /* Board Canvas */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -199,6 +197,11 @@
         .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; }
         .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
 
+        /* Tab 6 Report Dashboard Styling */
+        .heatmap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 6px; margin-top: 10px; }
+        .heatmap-cell { aspect-ratio: 1; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 0.75rem; font-weight: 700; background: var(--bg); border: 1px solid var(--border); color: var(--text-secondary); }
+        .heatmap-cell.learned { background: var(--primary); color: #fff; border-color: var(--primary); }
+
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
     </style>
@@ -230,12 +233,12 @@
     <header>
         <div class="logo">Trilingua.</div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocab</button>
-            <button class="tab-btn" onclick="switchTab('tab2')">2. Search</button>
-            <button class="tab-btn" onclick="switchTab('tab3')">3. Blog</button>
-            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet</button>
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
-            <button class="tab-btn" onclick="switchTab('tab6')">6. Report</button>
+            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--grammar); color: white;">6. Report</button>
         </div>
     </header>
 
@@ -501,9 +504,19 @@
             <div class="grammar-layout">
                 <div class="sidebar">
                     <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="resetGrammarForm()">+ Write New Post</button>
-                    <div style="margin-bottom: 16px;">
-                        <input type="text" id="gramSearchInput" placeholder="🔍 Search title/keyword..." oninput="renderGrammarSidebar()">
+                    
+                    <!-- Tag Filter & Search -->
+                    <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+                        <input type="text" id="gramSearchInput" placeholder="🔍 Search..." oninput="renderGrammarSidebar()">
+                        <select id="tagFilterSelect" onchange="renderGrammarSidebar()" style="width: auto; padding: 6px;">
+                            <option value="ALL">All Tags</option>
+                            <option value="A1-A2">#A1-A2</option>
+                            <option value="B1-B2">#B1-B2</option>
+                            <option value="C1-C2">#C1-C2</option>
+                            <option value="Exam_Prep">#Exam_Prep</option>
+                        </select>
                     </div>
+
                     <div id="grammarTreeContainer"></div>
                 </div>
 
@@ -526,10 +539,23 @@
                             </div>
                         </div>
 
-                        <div class="form-group full-width" style="margin-bottom: 16px;">
-                            <label>Post Title (Optional)</label>
-                            <input type="text" id="gramTitle" placeholder="e.g., How to use Present Perfect...">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
+                            <div class="form-group">
+                                <label>Post Title (Optional)</label>
+                                <input type="text" id="gramTitle" placeholder="e.g., How to use Present Perfect...">
+                            </div>
+                            <div class="form-group">
+                                <label>Level / Tag</label>
+                                <select id="gramTag">
+                                    <option value="">-- None --</option>
+                                    <option value="A1-A2">#A1-A2</option>
+                                    <option value="B1-B2">#B1-B2</option>
+                                    <option value="C1-C2">#C1-C2</option>
+                                    <option value="Exam_Prep">#Exam_Prep</option>
+                                </select>
+                            </div>
                         </div>
+
                         <div class="form-group full-width" style="margin-bottom: 16px;">
                             <label>Keywords</label>
                             <input type="text" id="gramKeywords" placeholder="e.g., experience, since, for...">
@@ -594,6 +620,7 @@
                 </div>
             </div>
 
+            <!-- TRI-FLASHCARD VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -630,6 +657,7 @@
                 </div>
             </div>
 
+            <!-- TYPING TEST VIEW -->
             <div id="typingView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
@@ -645,6 +673,7 @@
                 </div>
             </div>
 
+            <!-- MULTIPLE CHOICE VIEW -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
@@ -654,7 +683,7 @@
                 </div>
             </div>
 
-            <!-- LEARNING ANALYTICS DASHBOARD -->
+            <!-- DASHBOARD STATISTICS CHART & TOP MISTAKES -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -742,35 +771,21 @@
             </div>
         </div>
 
-        <!-- TAB 6: REPORT (DEDICATED ANALYTICS & BOOK PROGRESS CENTER) -->
+        <!-- TAB 6: REPORT (DEDICATED DASHBOARD & HEATMAPS) -->
         <div id="tab6" class="tab-content">
-            <!-- 3 Top Language Counter Cards -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
-                <div class="card" style="text-align: center; border-color: var(--color-en); margin-bottom:0;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">ENGLISH VOCABULARY LEARNED</div>
-                    <div id="reportTotalEN" style="font-size: 2.5rem; font-weight: 800; color: var(--color-en); margin-top: 6px;">0</div>
-                </div>
-                <div class="card" style="text-align: center; border-color: var(--color-es); margin-bottom:0;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">SPANISH VOCABULARY LEARNED</div>
-                    <div id="reportTotalES" style="font-size: 2.5rem; font-weight: 800; color: var(--color-es); margin-top: 6px;">0</div>
-                </div>
-                <div class="card" style="text-align: center; border-color: var(--color-ko); margin-bottom:0;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">KOREAN VOCABULARY LEARNED</div>
-                    <div id="reportTotalKO" style="font-size: 2.5rem; font-weight: 800; color: var(--color-ko); margin-top: 6px;">0</div>
-                </div>
-            </div>
-
-            <!-- Full-width Book Completion Tracker Card -->
             <div class="card">
-                <h3 style="color: var(--warning); margin-bottom: 16px;">📚 Book Source Units Completion Tracker</h3>
+                <h2 style="margin-bottom: 16px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- FULL-WIDTH HORIZONTAL BAR CHART -->
-                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; height: 380px;">
-                    <canvas id="bookChart" style="width: 100%; height: 100%;"></canvas>
+                <!-- FULL-WIDTH BOOK PROGRESS BAR CHART -->
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
+                    <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="bookChart"></canvas>
+                    </div>
                 </div>
 
                 <!-- SUMMARY TABLE -->
-                <div class="table-container">
+                <div class="table-container" style="margin-bottom: 30px;">
                     <table>
                         <thead>
                             <tr>
@@ -782,6 +797,12 @@
                         </thead>
                         <tbody id="bookProgressTableBody"></tbody>
                     </table>
+                </div>
+
+                <!-- HEATMAPS / UNIT MATRICES PER BOOK -->
+                <div style="border-top: 1px dashed var(--border); padding-top: 20px;">
+                    <h4 style="font-size: 1rem; color: var(--primary); margin-bottom: 14px;">🗓️ Book Units Heatmap Matrix</h4>
+                    <div id="heatmapContainer" style="display: flex; flex-direction: column; gap: 20px;"></div>
                 </div>
             </div>
         </div>
@@ -875,7 +896,7 @@
         // =========================================================================
         // GAS API CONFIG - DÁN URL WEB APP CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec ";
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
 
         let userVocabList = [];
         let grammarList = [];
@@ -903,7 +924,7 @@
             { title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"] }
         ];
 
-        /* ABBREVIATED BOOK NAMES MAPPING */
+        /* STRICT MAPPING WITH SHORTENED BOOK NAMES */
         const BOOK_UNITS_CONFIG = {
             "Biz Vocab - Elem": 49,
             "Biz In Use - Elem/Pre": 62,
@@ -1033,6 +1054,7 @@
             renderTab2();
             renderGrammarSidebar();
             renderAnalyticsDashboard();
+            renderReportTab();
         }
 
         function saveToLocalStorage() {
@@ -1072,6 +1094,8 @@
                     renderTab2();
                     renderGrammarSidebar();
                     startQuiz();
+                    renderAnalyticsDashboard();
+                    renderReportTab();
                     showToast("✅ Synchronized successfully!");
                 }
             } catch (err) { showToast("⚠️ Using local browser data.", true); }
@@ -1086,7 +1110,7 @@
             if(tabId === 'tab2') renderTab2();
             if(tabId === 'tab3') renderGrammarSidebar();
             if(tabId === 'tab4') { startQuiz(); renderAnalyticsDashboard(); }
-            if(tabId === 'tab6') renderAnalyticsDashboard();
+            if(tabId === 'tab6') { renderReportTab(); }
         }
 
         function showToast(msg, isError = false) {
@@ -1325,43 +1349,7 @@
                     redirect: "follow"
                 });
 
-                if (newEntry.pos === "phrasal verb") {
-                    await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: "add", type: "phrasal", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.en, newEntry.exEN, newEntry.vi, newEntry.exEN] }),
-                        redirect: "follow"
-                    });
-                }
-                if (newEntry.pos === "idiom") {
-                    await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: "add", type: "idiom", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, newEntry.noteEN, newEntry.noteES, newEntry.noteKO] }),
-                        redirect: "follow"
-                    });
-                }
-                if (newEntry.enIrregData && newEntry.enIrregData.past) {
-                    await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: "add", type: "irreg", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.enIrregData.base || newEntry.en, newEntry.enIrregData.past, newEntry.enIrregData.part, newEntry.vi, newEntry.exEN] }),
-                        redirect: "follow"
-                    });
-                }
-                if (Object.keys(newEntry.conjData).length > 0) {
-                    await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: "add", type: "conj", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.es, newEntry.en, JSON.stringify(newEntry.conjData)] }),
-                        redirect: "follow"
-                    });
-                }
-                if (newEntry.familyEN || newEntry.familyES || newEntry.familyKO) {
-                    await fetch(GAS_WEB_APP_URL, {
-                        method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({ action: "add", type: "family", id: newEntry.id, row: [newEntry.id, newEntry.timestamp, newEntry.en, newEntry.familyEN, newEntry.familyES, newEntry.familyKO] }),
-                        redirect: "follow"
-                    });
-                }
-
-                showToast("✅ Saved & Synced across all Tabs!");
+                showToast("✅ Saved & Synced successfully!");
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
@@ -1715,9 +1703,23 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG ---
+        // --- TAB 3: GRAMMAR BLOG (WITH PIN & TAG FILTER) ---
+        let pinnedPostIds = JSON.parse(localStorage.getItem("trilingua_pinned_posts") || "[]");
+
+        function togglePinPost(e, id) {
+            e.stopPropagation();
+            if (pinnedPostIds.includes(id)) {
+                pinnedPostIds = pinnedPostIds.filter(pId => pId !== id);
+            } else {
+                pinnedPostIds.push(id);
+            }
+            localStorage.setItem("trilingua_pinned_posts", JSON.stringify(pinnedPostIds));
+            renderGrammarSidebar();
+        }
+
         function renderGrammarSidebar() {
             const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
+            const selectedTag = document.getElementById('tagFilterSelect').value;
             const container = document.getElementById('grammarTreeContainer');
             container.innerHTML = "";
 
@@ -1726,15 +1728,29 @@
             const langFlags = { "English": "🇬🇧", "Español": "🇪🇸", "한국어": "🇰🇷" };
 
             languages.forEach(lang => {
-                const langPosts = grammarList.filter(g => g.lang === lang && (!query || 
-                    (g.title && g.title.toLowerCase().includes(query)) ||
-                    (g.topic && g.topic.toLowerCase().includes(query)) ||
-                    (g.keywords && g.keywords.toLowerCase().includes(query)) ||
-                    (g.content && g.content.toLowerCase().includes(query))
-                ));
+                let langPosts = grammarList.filter(g => {
+                    const matchLang = g.lang === lang;
+                    const matchQuery = !query || 
+                        (g.title && g.title.toLowerCase().includes(query)) ||
+                        (g.topic && g.topic.toLowerCase().includes(query)) ||
+                        (g.keywords && g.keywords.toLowerCase().includes(query)) ||
+                        (g.content && g.content.toLowerCase().includes(query));
+                    
+                    const matchTag = (selectedTag === "ALL") || (g.content && g.content.includes(`#${selectedTag}`)) || (g.topic && g.topic.includes(selectedTag));
+                    return matchLang && matchQuery && matchTag;
+                });
+
+                // Sort: Pinned posts always on top
+                langPosts.sort((a, b) => {
+                    const aPinned = pinnedPostIds.includes(a.id);
+                    const bPinned = pinnedPostIds.includes(b.id);
+                    return bPinned - aPinned;
+                });
+
+                if (langPosts.length === 0) return;
 
                 const langEl = document.createElement('div');
-                langEl.className = `tree-lang ${query ? 'open' : ''}`;
+                langEl.className = `tree-lang ${query || selectedTag !== 'ALL' ? 'open' : ''}`;
                 
                 const langHeader = document.createElement('div');
                 langHeader.className = "tree-lang-header";
@@ -1744,56 +1760,25 @@
                 const langBody = document.createElement('div');
                 langBody.className = "tree-lang-body";
 
-                const categories = {};
-                langPosts.forEach(p => {
-                    const cat = p.topic || "General";
-                    if (!categories[cat]) categories[cat] = [];
-                    categories[cat].push(p);
-                });
-
-                Object.keys(categories).forEach(cat => {
-                    const catEl = document.createElement('div');
-                    catEl.className = `tree-cat ${query ? 'open' : ''}`;
-
-                    const catHeader = document.createElement('div');
-                    catHeader.className = "tree-cat-header";
-                    catHeader.innerHTML = `<span>📂 ${cat}</span> <span>(${categories[cat].length})</span>`;
-                    catHeader.onclick = () => catEl.classList.toggle('open');
-
-                    const catBody = document.createElement('div');
-                    catBody.className = "tree-cat-body";
-
-                    categories[cat].forEach(post => {
-                        const postEl = document.createElement('div');
-                        postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
-                        postEl.innerHTML = `<span>${post.title || "Untitled Note"}</span> <span style="cursor:pointer;" onclick="togglePinGrammar(event, '${post.id}')">${post.pinned ? '⭐' : '☆'}</span>`;
-                        postEl.onclick = (e) => {
-                            e.stopPropagation();
-                            loadGrammarPost(post.id);
-                        };
-                        catBody.appendChild(postEl);
-                    });
-
-                    catEl.appendChild(catHeader);
-                    catEl.appendChild(catBody);
-                    langBody.appendChild(catEl);
+                langPosts.forEach(post => {
+                    const isPinned = pinnedPostIds.includes(post.id);
+                    const postEl = document.createElement('div');
+                    postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
+                    postEl.innerHTML = `
+                        <span>${isPinned ? '⭐ ' : ''}${post.title || "Untitled Note"}</span>
+                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin / Unpin">${isPinned ? '★' : '☆'}</span>
+                    `;
+                    postEl.onclick = (e) => {
+                        e.stopPropagation();
+                        loadGrammarPost(post.id);
+                    };
+                    langBody.appendChild(postEl);
                 });
 
                 langEl.appendChild(langHeader);
                 langEl.appendChild(langBody);
                 container.appendChild(langEl);
             });
-        }
-
-        function togglePinGrammar(e, id) {
-            e.stopPropagation();
-            const g = grammarList.find(i => String(i.id) === String(id));
-            if (g) {
-                g.pinned = !g.pinned;
-                grammarList.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
-                saveToLocalStorage();
-                renderGrammarSidebar();
-            }
         }
 
         function loadGrammarPost(id) {
@@ -1830,24 +1815,26 @@
             const id = isEdit ? editId : 'GRAM_' + Date.now();
             const timestamp = isEdit ? grammarList.find(i => String(i.id) === String(id)).timestamp : new Date().toISOString().split('T')[0];
 
+            let contentHTML = document.getElementById('gramContentEditor').innerHTML.trim();
+            const selectedTag = document.getElementById('gramTag').value;
+            if (selectedTag && !contentHTML.includes(`#${selectedTag}`)) {
+                contentHTML += ` <span style="background:var(--primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.75rem;">#${selectedTag}</span>`;
+            }
+
             const newPost = {
                 id, timestamp,
                 lang: document.getElementById('gramLang').value,
                 topic: document.getElementById('gramTopic').value.trim(),
                 title: document.getElementById('gramTitle').value.trim(),
                 keywords: document.getElementById('gramKeywords').value.trim(),
-                content: document.getElementById('gramContentEditor').innerHTML.trim(),
-                pinned: false
+                content: contentHTML
             };
 
             if (isEdit) {
                 const idx = grammarList.findIndex(item => String(item.id) === String(id));
-                if (idx !== -1) {
-                    newPost.pinned = grammarList[idx].pinned || false;
-                    grammarList[idx] = newPost;
-                }
+                if (idx !== -1) grammarList[idx] = newPost;
             } else {
-                grammarList.unshift(newPost);
+                grammarList.push(newPost);
             }
 
             saveToLocalStorage();
@@ -1877,7 +1864,7 @@
             showToast("⏳ Deleting...");
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -2138,25 +2125,13 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS & TAB 6 REPORT ---
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
-
-            // 1. Language Memory Ratios & Tab 6 Counter Cards
-            let totalENCount = 0, totalESCount = 0, totalKOCount = 0;
-            userVocabList.forEach(i => {
-                if (i.en) totalENCount++;
-                if (i.es) totalESCount++;
-                if (i.ko) totalKOCount++;
-            });
-
-            document.getElementById('reportTotalEN').innerText = totalENCount;
-            document.getElementById('reportTotalES').innerText = totalESCount;
-            document.getElementById('reportTotalKO').innerText = totalKOCount;
 
             ['EN', 'ES', 'KO'].forEach(lang => {
                 const langHist = flashcardHist.filter(h => h.lang === lang);
@@ -2169,7 +2144,6 @@
                 document.getElementById(`bar${lang}`).style.width = `${pct}%`;
             });
 
-            // 2. POS Chart
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
             const posLearning = {};
@@ -2196,7 +2170,6 @@
                 options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
 
-            // 3. Top 10 Mistakes
             const mistakeMap = {};
             typingHist.filter(h => !h.remembered).forEach(h => {
                 const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
@@ -2221,20 +2194,18 @@
                     `;
                 });
             }
+        }
 
-            // 4. Full-width Book Progress Bar Chart & Table (FIXED BOOK KEY MATCHING)
+        // --- TAB 6: REPORT (FULL-WIDTH BOOK BAR CHART, TABLE & HEATMAP MATRICES) ---
+        function renderReportTab() {
             const bookProgressMap = {};
             Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
                 bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
             });
 
             userVocabList.forEach(item => {
-                if (item.book && item.unit) {
-                    // Match book key (handle user inputs or shortened names)
-                    let matchedBookKey = Object.keys(BOOK_UNITS_CONFIG).find(k => item.book.includes(k) || k.includes(item.book));
-                    if (matchedBookKey && bookProgressMap[matchedBookKey]) {
-                        bookProgressMap[matchedBookKey].learnedUnits.add(item.unit);
-                    }
+                if (item.book && bookProgressMap[item.book] && item.unit) {
+                    bookProgressMap[item.book].learnedUnits.add(item.unit);
                 }
             });
 
@@ -2242,6 +2213,7 @@
             const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
             const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
 
+            // 1. Render Full-width Horizontal Bar Chart
             const bCtx = document.getElementById('bookChart').getContext('2d');
             if (bookChartInstance) bookChartInstance.destroy();
 
@@ -2259,10 +2231,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#f8fafc' } } },
-                    scales: { x: { stacked: false, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
                 }
             });
 
+            // 2. Render Summary Table
             const bTbody = document.getElementById('bookProgressTableBody');
             bTbody.innerHTML = "";
 
@@ -2279,6 +2252,29 @@
                         <td style="color:var(--warning); font-weight:bold;">${remaining} Units left</td>
                     </tr>
                 `;
+            });
+
+            // 3. Render Heatmaps Matrix Grid per Book
+            const heatmapContainer = document.getElementById('heatmapContainer');
+            heatmapContainer.innerHTML = "";
+
+            bookLabels.forEach(b => {
+                const total = BOOK_UNITS_CONFIG[b];
+                const learnedSet = bookProgressMap[b].learnedUnits;
+
+                let cellsHTML = "";
+                for (let u = 1; u <= total; u++) {
+                    const unitName = `Unit ${u}`;
+                    const isLearned = learnedSet.has(unitName);
+                    cellsHTML += `<div class="heatmap-cell ${isLearned ? 'learned' : ''}" title="${b} - Unit ${u}">${u}</div>`;
+                }
+
+                const section = document.createElement('div');
+                section.innerHTML = `
+                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; color: var(--text);">${b} (${learnedSet.size}/${total} Units)</div>
+                    <div class="heatmap-grid">${cellsHTML}</div>
+                `;
+                heatmapContainer.appendChild(section);
             });
         }
 
