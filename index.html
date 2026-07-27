@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Trilingua - English | Español | 한국어</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
@@ -21,42 +21,55 @@
             --warning: #f59e0b;
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+            /* Language Palette for Board */
+            --color-en: #4e90c0;
+            --color-es: #83bfc7;
+            --color-ko: #d57c91;
+            --color-vi: #feeeb5;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1500px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1500px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
         .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; }
+        .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.9rem; }
         .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        main { max-width: 1500px; margin: 0 auto; padding: 0 5%; flex: 1; width: 100%; }
-        .tab-content { display: none; margin-top: 24px; }
+        main { max-width: 1500px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; }
+        .tab-content { display: none; margin-top: 20px; }
         .tab-content.active { display: block; }
 
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
         
         /* Grid Layouts for Vocabulary Form */
-        .grid-row-1 { display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 12px; align-items: end; margin-bottom: 16px; }
-        .grid-row-2 { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 12px; align-items: end; margin-bottom: 16px; }
-        .grid-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; gap: 12px; align-items: end; margin-bottom: 16px; }
-        .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .grid-row-1 { display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-2 { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.5fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
 
-        @media (max-width: 900px) {
+        /* Responsive Fixes for iPad Pro M1 & iPhone 17 */
+        @media (max-width: 1024px) {
+            header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
             .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr; }
+            .nav-tabs { width: 100%; justify-content: space-between; }
+            .tab-btn { flex: 1 1 auto; text-align: center; padding: 8px 10px; font-size: 0.8rem; }
         }
 
         .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
-        label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
+        label { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); }
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
-        textarea { resize: vertical; min-height: 80px; }
+        textarea { resize: vertical; min-height: 70px; }
 
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; white-space: nowrap; }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.9rem; }
         .btn:hover { background: var(--primary-hover); }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
         .btn-danger { background: var(--danger); }
@@ -66,7 +79,7 @@
         .btn-fmt { background: var(--surface-hover); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; }
         .btn-fmt:hover { background: var(--grammar); color: white; }
         
-        .table-container { overflow-x: auto; width: 100%; }
+        .table-container { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
@@ -77,31 +90,31 @@
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
         /* Modal Overlay & Card */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
+        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
 
         /* Conjugation Tables */
-        .conj-section-title { font-size: 1.1rem; font-weight: 700; color: var(--warning); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .conj-section-title { font-size: 1.05rem; font-weight: 700; color: var(--warning); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
         .conj-table { width: 100%; margin-bottom: 12px; border-collapse: collapse; }
         .conj-table th, .conj-table td { padding: 6px; border: 1px solid var(--border); font-size: 0.85rem; }
         .conj-table input { padding: 6px; font-size: 0.85rem; }
 
         /* Grammar Tree Sidebar */
-        .grammar-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+        .grammar-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 800px; overflow-y: auto; }
         
         .tree-lang { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-        .tree-lang-header { background: var(--bg); padding: 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--grammar); }
+        .tree-lang-header { background: var(--bg); padding: 10px 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--grammar); }
         .tree-lang-body { display: none; padding: 8px; background: var(--surface); }
         .tree-lang.open .tree-lang-body { display: block; }
 
         .tree-cat { margin-bottom: 6px; }
-        .tree-cat-header { padding: 8px 10px; font-weight: 600; font-size: 0.88rem; cursor: pointer; background: var(--surface-hover); border-radius: 6px; display: flex; justify-content: space-between; }
-        .tree-cat-body { display: none; padding-left: 10px; margin-top: 4px; }
+        .tree-cat-header { padding: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; background: var(--surface-hover); border-radius: 6px; display: flex; justify-content: space-between; }
+        .tree-cat-body { display: none; padding-left: 8px; margin-top: 4px; }
         .tree-cat.open .tree-cat-body { display: block; }
 
-        .post-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; }
+        .post-item { padding: 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
 
@@ -109,9 +122,34 @@
 
         /* Quizlet View */
         .quiz-container { max-width: 650px; margin: 0 auto; text-align: center; }
-        .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 40px 20px; min-height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .flashcard { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 36px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: var(--shadow); margin-bottom: 20px; }
         .flashcard h3 { font-size: 1.8rem; margin-bottom: 10px; }
         .quiz-actions { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
+
+        /* Board Mind-map Layout */
+        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 24px auto; }
+        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
+        .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .board-dropdown-item:hover { background: var(--primary); color: white; }
+
+        .mindmap-canvas { width: 100%; min-height: 600px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: auto; display: flex; justify-content: center; align-items: center; }
+        .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; }
+        @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .node-main { width: 170px; height: 170px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.25rem; }
+        .node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+
+        .node-level2 { width: 130px; height: 130px; color: #fff; z-index: 8; font-weight: 700; font-size: 1rem; }
+        .node-level2.es { background: var(--color-es); color: #0f172a; }
+        .node-level2.ko { background: var(--color-ko); color: #fff; }
+        .node-level2.vi { background: var(--color-vi); color: #0f172a; }
+
+        .node-level3 { width: 105px; height: 105px; color: #fff; z-index: 6; font-weight: 500; font-size: 0.78rem; line-height: 1.2; }
+        .node-level3.es { background: rgba(131, 191, 199, 0.25); border: 2px solid var(--color-es); color: var(--text); }
+        .node-level3.ko { background: rgba(213, 124, 145, 0.25); border: 2px solid var(--color-ko); color: var(--text); }
+        .node-level3.vi { background: rgba(254, 238, 181, 0.25); border: 2px solid var(--color-vi); color: var(--text); }
+
+        svg.mindmap-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
@@ -126,6 +164,7 @@
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
             <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
             <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
         </div>
     </header>
 
@@ -164,7 +203,7 @@
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('EN')">📝 Note (EN)</button>
                     </div>
 
-                    <!-- Row 2: ES -->
+                    <!-- Row 2: ES (Swapped & Renamed Conjugation button) -->
                     <div class="grid-row-2">
                         <div class="form-group">
                             <label>Spanish Word (ES)</label>
@@ -174,8 +213,8 @@
                             <label>Word Family (Spanish)</label>
                             <input type="text" id="wordFamilyES" placeholder="e.g. amigo (n), amigable (adj)">
                         </div>
+                        <button type="button" class="btn btn-warning" onclick="openConjModal()">Conjugation</button>
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">📝 Note (ES)</button>
-                        <button type="button" class="btn btn-warning" onclick="openConjModal()">🇪🇸 Conjugación</button>
                     </div>
 
                     <!-- Row 3: KO & VI -->
@@ -195,7 +234,7 @@
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">📝 Note (KO)</button>
                     </div>
 
-                    <!-- Row 4: Source & Topics -->
+                    <!-- Row 4: Topics -->
                     <div class="grid-row-4">
                         <div class="form-group">
                             <label>Main Topic</label>
@@ -263,7 +302,7 @@
                     <h3>Vocabulary Log</h3>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="logFilter" style="margin:0;">Filter period:</label>
-                        <select id="logFilter" onchange="renderLogTable()" style="width: auto; padding: 8px 12px;">
+                        <select id="logFilter" onchange="renderLogTable()" style="width: auto; padding: 6px 10px;">
                             <option value="today">Today</option>
                             <option value="1day">Yesterday & Today (2 days)</option>
                             <option value="3days">Last 3 Days</option>
@@ -299,7 +338,7 @@
             <div class="card">
                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
                     <button class="btn btn-sm" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
-                    <button class="btn btn-sm btn-warning" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">🇪🇸 Spanish Conjugations Table</button>
+                    <button class="btn btn-sm btn-warning" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations Directory</button>
                 </div>
 
                 <div id="searchVocabView">
@@ -325,7 +364,7 @@
                 </div>
 
                 <div id="searchConjView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--warning);">🇪🇸 Master Spanish Conjugations Directory</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--warning);">🇪🇸 Spanish Conjugations Directory</h3>
                     <div id="conjDirectoryContainer"></div>
                 </div>
             </div>
@@ -357,7 +396,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Grammar Topic / Category</label>
-                                <input type="text" id="gramTopic" placeholder="e.g., Tenses, Subjunctive, Particle...">
+                                <input type="text" id="gramTopic" placeholder="e.g., Tenses, Subjunctive...">
                             </div>
                         </div>
 
@@ -461,7 +500,6 @@
                 </div>
             </div>
 
-            <!-- Quizlet Statistics Table -->
             <div class="card" style="margin-top: 24px;">
                 <h3 style="margin-bottom: 12px; color: var(--primary);">📊 Learning Statistics & Progress</h3>
                 <div class="table-container">
@@ -477,6 +515,20 @@
                         </thead>
                         <tbody id="quizStatsBody"></tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: BOARD (MIND-MAP VISUALIZER) -->
+        <div id="tab5" class="tab-content">
+            <div class="card">
+                <div class="board-search-container">
+                    <input type="text" id="boardSearchInput" placeholder="🔍 Type any word (EN, ES, KO) to build Mind-map..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
+                    <div id="boardDropdown" class="board-dropdown"></div>
+                </div>
+
+                <div id="mindmapCanvas" class="mindmap-canvas">
+                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to see the Mind-map relationship graph.</div>
                 </div>
             </div>
         </div>
@@ -506,11 +558,9 @@
     <!-- MODAL 2: SPANISH CONJUGATION MODAL -->
     <div id="conjModal" class="modal-overlay">
         <div class="modal-card" style="max-width: 1000px;">
-            <h2 style="margin-bottom: 12px; color: var(--warning);">🇪🇸 Tabla de Conjugación de Verbos</h2>
+            <h2 style="margin-bottom: 12px; color: var(--warning);">Tabla de Conjugación de Verbos</h2>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned. Unfilled boxes will remain blank.</p>
-            
             <div id="conjTablesContainer"></div>
-
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
                 <button type="button" class="btn btn-warning" onclick="saveConjModal()">Save Conjugation</button>
                 <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeConjModal()">Close</button>
@@ -532,13 +582,13 @@
 
         let userVocabList = [];
         let grammarList = [];
-        let quizHistory = []; // Lịch sử làm quizlet
+        let quizHistory = [];
         let currentTopicTab = "ALL";
         let currentSubTopicTab = "ALL";
         
-        let currentEditingNoteLang = null; // 'EN', 'ES', 'KO'
+        let currentEditingNoteLang = null;
         let currentNotes = { EN: "", ES: "", KO: "" };
-        let currentConjData = {}; // Data conjugation tạm thời
+        let currentConjData = {};
 
         const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
         
@@ -601,7 +651,7 @@
 
         async function fetchDataFromGAS() {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
-                showToast("⚠️ Vui lòng dán Link Web App vào biến GAS_WEB_APP_URL!", true);
+                showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
                 return;
             }
             try {
@@ -673,7 +723,6 @@
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
-        // --- FORMATTING TOOLBAR FUNCTIONS ---
         function insertFormat(textareaId, startTag, endTag) {
             const textarea = document.getElementById(textareaId);
             const start = textarea.selectionStart;
@@ -711,7 +760,7 @@
             showToast(`✅ Saved Note (${currentEditingNoteLang})`);
         }
 
-        // --- MODAL SPANISH CONJUGATION FUNCTIONS ---
+        // --- MODAL CONJUGATION FUNCTIONS ---
         function buildConjModalHTML() {
             const container = document.getElementById('conjTablesContainer');
             container.innerHTML = "";
@@ -742,7 +791,6 @@
         }
 
         function openConjModal() {
-            // Load current data into inputs
             CONJ_STRUCTURE.forEach((sec, sIdx) => {
                 sec.tenses.forEach((t, tIdx) => {
                     PRONOUNS.forEach((p, pIdx) => {
@@ -957,7 +1005,7 @@
             });
         }
 
-        // --- TAB 2: SEARCH & TOPICS (WITH SPANISH CONJUGATION DIRECTORY) ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function switchSearchSubTab(sub) {
             document.getElementById('searchVocabView').style.display = sub === 'vocab' ? 'block' : 'none';
             document.getElementById('searchConjView').style.display = sub === 'conj' ? 'block' : 'none';
@@ -1255,7 +1303,7 @@
             } catch(err) { showToast("⚠️ Đã xóa cục bộ!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (WITH SUB-TOPICS & STATS) ---
+        // --- TAB 4: QUIZLET REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -1312,7 +1360,7 @@
             }
 
             const item = quizList[currentQuizIndex];
-            const promptLang = document.getElementById('quizPrompt').value; // VI, EN, ES, KO
+            const promptLang = document.getElementById('quizPrompt').value;
             
             let promptText = "";
             if (promptLang === "VI") promptText = item.vi;
@@ -1358,7 +1406,6 @@
             if (quizList.length === 0) return;
             const item = quizList[currentQuizIndex];
             
-            // Log History for Stats
             quizHistory.push({
                 vocabId: item.id,
                 timestamp: new Date().toISOString(),
@@ -1419,7 +1466,6 @@
             }
         }
 
-        // --- QUIZLET STATISTICS ---
         function renderQuizStats() {
             const tbody = document.getElementById('quizStatsBody');
             tbody.innerHTML = "";
@@ -1454,6 +1500,119 @@
                     </tr>
                 `;
             });
+        }
+
+        // --- TAB 5: BOARD (MIND-MAP GRAPH VISUALIZER) ---
+        function handleBoardAutocomplete(val) {
+            const dropdown = document.getElementById('boardDropdown');
+            if(!val || val.trim().length < 1) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            const q = val.toLowerCase().trim();
+            const matches = userVocabList.filter(i => 
+                (i.en && i.en.toLowerCase().includes(q)) ||
+                (i.es && i.es.toLowerCase().includes(q)) ||
+                (i.ko && i.ko.toLowerCase().includes(q))
+            );
+
+            if(matches.length === 0) {
+                dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
+                dropdown.style.display = 'block';
+                renderMindmap(null);
+                return;
+            }
+
+            dropdown.innerHTML = "";
+            matches.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "board-dropdown-item";
+                el.innerText = `${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
+                el.onclick = () => {
+                    document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
+                    dropdown.style.display = 'none';
+                    renderMindmap(item);
+                };
+                dropdown.appendChild(el);
+            });
+            dropdown.style.display = 'block';
+        }
+
+        function renderMindmap(item) {
+            const canvas = document.getElementById('mindmapCanvas');
+            canvas.innerHTML = "";
+
+            if (!item) {
+                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; font-weight:600;">Word not found in database!</div>`;
+                return;
+            }
+
+            // Positions configuration
+            const cx = canvas.clientWidth / 2 || 400;
+            const cy = 300;
+
+            const langNodes = [
+                { key: 'es', label: 'Spanish', val: item.es, family: item.familyES, note: item.noteES, class: 'es', angle: -30 },
+                { key: 'ko', label: 'Korean', val: item.ko, family: item.familyKO, note: item.noteKO, class: 'ko', angle: 90 },
+                { key: 'vi', label: 'Vietnamese', val: item.vi, family: "", note: "", class: 'vi', angle: 210 }
+            ];
+
+            let nodesHTML = "";
+            let svgLinesHTML = `<svg class="mindmap-lines">`;
+
+            // Center Node (Level 1 - Main EN)
+            nodesHTML += `
+                <div class="node node-main" style="left:${cx - 85}px; top:${cy - 85}px;">
+                    <div>${item.en || "---"}</div>
+                    ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
+                </div>
+            `;
+
+            // Level 2 & 3
+            langNodes.forEach(lang => {
+                if(!lang.val) return;
+
+                const rad = (lang.angle * Math.PI) / 180;
+                const dist2 = 180;
+                const l2x = cx + dist2 * Math.cos(rad);
+                const l2y = cy + dist2 * Math.sin(rad);
+
+                // Line L1 -> L2
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="var(--border)" stroke-width="3" stroke-dasharray="4" />`;
+
+                // Node Level 2
+                nodesHTML += `
+                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 65}px; top:${l2y - 65}px;">
+                        ${lang.val}
+                    </div>
+                `;
+
+                // Level 3 Sub-nodes (Family & Note)
+                const subItems = [];
+                if (lang.family) subItems.push({ title: "Family", text: lang.family });
+                if (lang.note) subItems.push({ title: "Note", text: lang.note });
+
+                subItems.forEach((sub, sIdx) => {
+                    const subAngle = lang.angle + (sIdx === 0 ? -35 : 35);
+                    const subRad = (subAngle * Math.PI) / 180;
+                    const dist3 = 140;
+                    const l3x = l2x + dist3 * Math.cos(subRad);
+                    const l3y = l2y + dist3 * Math.sin(subRad);
+
+                    // Line L2 -> L3
+                    svgLinesHTML += `<line x1="${l2x}" y1="${l2y}" x2="${l3x}" y2="${l3y}" stroke="var(--border)" stroke-width="2" />`;
+
+                    nodesHTML += `
+                        <div class="node node-level3 ${lang.class}" style="left:${l3x - 52}px; top:${l3y - 52}px;">
+                            <strong>${sub.title}</strong>
+                            <div>${sub.text}</div>
+                        </div>
+                    `;
+                });
+            });
+
+            svgLinesHTML += `</svg>`;
+            canvas.innerHTML = svgLinesHTML + nodesHTML;
         }
     </script>
 </body>
