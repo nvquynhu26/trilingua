@@ -179,7 +179,7 @@
         .dot-vocab { width: 5px; height: 5px; border-radius: 50%; background: var(--color-en); }
         .dot-blog { width: 5px; height: 5px; border-radius: 50%; background: var(--grammar); }
 
-        /* BOARD (TAB 5) - FIXED FLEXBOX CENTERING */
+        /* BOARD (TAB 5) */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -257,7 +257,7 @@
         <div class="modal-card" style="max-width: 700px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
                 <span id="quickBlogDate" style="font-size: 0.85rem; color: var(--grammar); font-weight: bold;">📅 Date</span>
-                <button class="btn btn-sm btn-fmt" onclick="closeQuickBlogModal()">✖ Close</button>
+                <button class="btn btn-sm btn-fmt" onclick="closeQuickBlogPopup()">✖ Close</button>
             </div>
             <h2 id="quickBlogTitle" style="color: var(--primary); margin-bottom: 12px;">Title</h2>
             <div id="quickBlogContent" style="font-size: 1rem; line-height: 1.6; max-height: 400px; overflow-y: auto; margin-bottom: 20px; background: var(--bg); padding: 16px; border-radius: 8px;">Content</div>
@@ -341,7 +341,7 @@
                             <label>Word Family [ES]</label>
                             <input type="text" id="wordFamilyES" placeholder="e.g. amigo (n), amigable (adj)">
                         </div>
-                        <button type="button" class="btn btn-warning" id="esConjBtn" style="display: none;" onclick="openConjModal()">Conjugation</button>
+                        <button type="button" class="btn btn-warning" id="esConjBtn" style="display: none;" onclick="openConjModal()">Conjugación</button>
                         <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">Note [ES]</button>
                     </div>
 
@@ -416,13 +416,13 @@
                 </form>
             </div>
 
-            <!-- Log Table -->
+            <!-- Log Table with 15-item daily pagination -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                    <h3>Vocabulary Log</h3>
+                    <h3>Vocabulary Log (Today's Entries)</h3>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="logFilter" style="margin:0;">Filter period:</label>
-                        <select id="logFilter" onchange="renderLogTable()" style="width: auto; padding: 6px 10px;">
+                        <select id="logFilter" onchange="logPage = 1; renderLogTable()" style="width: auto; padding: 6px 10px;">
                             <option value="today">Today</option>
                             <option value="1day">Yesterday & Today (2 days)</option>
                             <option value="3days">Last 3 Days</option>
@@ -446,10 +446,12 @@
                         <tbody id="logTableBody"></tbody>
                     </table>
                 </div>
+                <!-- LOG PAGINATION FOOTER -->
+                <div id="logPagination" style="display:flex; justify-content:center; gap:6px; margin-top:16px;"></div>
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH & TOPICS (PAGINATED 50 ITEMS & SORT BY DATE/ALPHABET) -->
+        <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <input type="text" id="searchInput" placeholder="🔍 Type any keyword to filter..." oninput="searchPage = 1; renderTab2()" style="flex:1; min-width:250px;">
@@ -468,7 +470,8 @@
                     <button class="btn btn-sm btn-lang-en" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
-                    <button class="btn btn-sm btn-lang-es" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Spanish Conjugations</button>
+                    <!-- UPDATED SPANISH TAB NAME: Conjugación -->
+                    <button class="btn btn-sm btn-lang-es" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Conjugación</button>
                     <button class="btn btn-sm btn-lang-es" id="subTabEsPhrasalBtn" onclick="switchSearchSubTab('esPhrasal')">Spanish Phrasal Verbs</button>
                 </div>
 
@@ -493,7 +496,6 @@
                             <tbody id="tab2TableBody"></tbody>
                         </table>
                     </div>
-                    <!-- SEARCH PAGINATION FOOTER -->
                     <div id="searchPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
                 </div>
 
@@ -556,17 +558,18 @@
                 </div>
 
                 <div id="searchConjView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Conjugations</h3>
+                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Conjugación</h3>
                     <div id="conjDirectoryContainer"></div>
                 </div>
 
+                <!-- STRICT SPANISH PHRASAL VERBS VIEW -->
                 <div id="searchEsPhrasalView" style="display: none;">
                     <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Phrasal Verbs</h3>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Spanish Verb / Expression</th>
+                                    <th>Spanish Expression</th>
                                     <th>English Equivalent</th>
                                     <th>Vietnamese Meaning</th>
                                     <th>Example [ES]</th>
@@ -777,6 +780,7 @@
                 </div>
             </div>
 
+            <!-- DASHBOARD STATISTICS (REMOVED MISTAKES TABLE) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -1075,9 +1079,11 @@
         let currentConjData = {};
         let currentEnIrregData = { base: "", past: "", part: "" };
 
-        // SEARCH PAGINATION STATE
+        // SEARCH PAGINATION STATE (15 items for Log, 50 items for Search)
         let searchPage = 1;
         const searchPageSize = 50;
+        let logPage = 1;
+        const logPageSize = 15;
 
         // QUICK BLOG POPUP NAVIGATION STATE
         let activeQuickBlogIndex = 0;
@@ -1392,10 +1398,7 @@
         }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
-
-        function toggleStyle(styleName) {
-            document.execCommand(styleName, false, null);
-        }
+        function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
         
         function insertSmartTable(editorId) {
             const editor = document.getElementById(editorId);
@@ -1645,26 +1648,33 @@
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
+            const paginationEl = document.getElementById('logPagination');
             tbody.innerHTML = "";
+            paginationEl.innerHTML = "";
 
             const now = new Date();
             const todayStr = formatDateYYYYMMDD(now);
 
-            const filtered = userVocabList.filter(item => {
+            let filtered = userVocabList.filter(item => {
                 if (filterVal === 'all') return true;
                 if (!item.timestamp) return false;
                 const itemDateStr = formatDateYYYYMMDD(item.timestamp);
-
                 if (filterVal === 'today') return itemDateStr === todayStr;
                 return true;
             }).reverse();
 
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found.</td></tr>`;
+            // Default to today's entries or latest entries (up to 15 per page)
+            const totalPages = Math.ceil(filtered.length / logPageSize) || 1;
+            if (logPage > totalPages) logPage = totalPages;
+
+            const pagedItems = filtered.slice((logPage - 1) * logPageSize, logPage * logPageSize);
+
+            if (pagedItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found for today.</td></tr>`;
                 return;
             }
 
-            filtered.forEach(item => {
+            pagedItems.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
@@ -1679,9 +1689,20 @@
                     </tr>
                 `;
             });
+
+            // Log Pagination ◄ Prev / Next ►
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = `btn btn-sm ${i === logPage ? '' : 'btn-fmt'}`;
+                    btn.innerText = i;
+                    btn.onclick = () => { logPage = i; renderLogTable(); };
+                    paginationEl.appendChild(btn);
+                }
+            }
         }
 
-        // --- TAB 2: SEARCH & TOPICS (PAGINATED 50 ITEMS & SORT BY DATE/ALPHABET) ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function switchSearchSubTab(sub) {
             document.getElementById('searchVocabView').style.display = sub === 'vocab' ? 'block' : 'none';
             document.getElementById('searchPhrasalView').style.display = sub === 'phrasal' ? 'block' : 'none';
@@ -1759,7 +1780,6 @@
                        (item.subTopic && item.subTopic.toLowerCase().includes(query));
             });
 
-            // Sort Mode: Date (Newest first) vs Alphabet (A-Z by English word)
             if (sortMode === 'date') {
                 filtered.sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
             } else {
@@ -1805,7 +1825,6 @@
                 `;
             });
 
-            // Render Pagination Buttons
             if (totalPages > 1) {
                 for (let i = 1; i <= totalPages; i++) {
                     const btn = document.createElement('button');
@@ -1842,12 +1861,13 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No English phrasal verbs found.</td></tr>`;
         }
 
+        /* STRICT SPANISH PHRASAL VERBS FILTERING (NO IDIOMS) */
         function renderEsPhrasalDirectory() {
             const tbody = document.getElementById('esPhrasalDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.es && (i.pos === 'phrasal verb' || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1)).forEach(item => {
+            userVocabList.filter(i => i.es && i.pos !== 'idiom' && (i.pos === 'phrasal verb' || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1)).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2256,7 +2276,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW ---
+        // --- TAB 4: QUIZLET REVIEW (STRICTLY SEPARATED IDIOMS & PHRASAL) ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2376,7 +2396,6 @@
                     const btn = document.createElement('div');
                     btn.className = "mc-option";
                     btn.style.fontSize = "0.95rem";
-                    // Stack answers per language on separate lines
                     btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
                     btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
@@ -2509,7 +2528,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (REMOVED MISTAKES TABLE) ---
+        // --- DASHBOARD ANALYTICS (FULL WIDTH POS CHART) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2783,7 +2802,6 @@
             }
         }
 
-        /* QUICK BLOG POPUP & PREV/NEXT NAVIGATOR */
         function openQuickBlogPopup(blogId) {
             activeQuickBlogList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
             activeQuickBlogIndex = activeQuickBlogList.findIndex(x => String(x.id) === String(blogId));
@@ -2810,12 +2828,12 @@
         function goToEditCurrentBlog() {
             if (activeQuickBlogList.length === 0) return;
             const post = activeQuickBlogList[activeQuickBlogIndex];
-            closeQuickBlogModal();
+            closeQuickBlogPopup();
             switchTab('tab3');
             openWriteBlogForm(post.id);
         }
 
-        function closeQuickBlogModal() {
+        function closeQuickBlogPopup() {
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
