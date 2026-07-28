@@ -35,7 +35,6 @@
         #authOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
-        /* HEADER & COLLAPSIBLE MENU RESPONSIVE */
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
         .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         
@@ -44,7 +43,6 @@
         .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Hamburger Menu Toggle Button for Mobile / Small Screens */
         .menu-toggle-btn { display: none; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 0.9rem; }
         .dropdown-menu-mobile { display: none; position: absolute; top: 100%; right: 4%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); z-index: 1000; width: 220px; padding: 10px; flex-direction: column; gap: 6px; }
         .dropdown-menu-mobile.show { display: flex; }
@@ -137,7 +135,6 @@
         .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; flex-wrap: wrap; }
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; width: 100%; }
 
-        /* Multiple Choice Grid for Idioms & Phrasal Tests */
         .mc-grid { display: flex; flex-direction: column; gap: 12px; max-width: 600px; margin: 20px auto; width: 100%; }
         .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; width: 100%; text-align: left; }
         .mc-option:hover { background: var(--surface-hover); border-color: var(--primary); }
@@ -145,7 +142,6 @@
         .progress-bar-bg { width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        /* Grammar Blog Layout */
         .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; width: 100%; }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; width: 100%; }
         
@@ -183,13 +179,13 @@
         .dot-vocab { width: 5px; height: 5px; border-radius: 50%; background: var(--color-en); }
         .dot-blog { width: 5px; height: 5px; border-radius: 50%; background: var(--grammar); }
 
-        /* STYLED BOARD (TAB 5) - FIXED 3 SEPARATE WORD FAMILY BOXES */
+        /* BOARD (TAB 5) - FIXED FLEXBOX CENTERING */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
-        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
+        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
-        .mindmap-canvas { width: 100%; height: 450px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
+        .mindmap-canvas { width: 100%; height: 450px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; display: flex; justify-content: center; align-items: center; }
         .mindmap-node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; box-shadow: var(--shadow); transition: all 0.3s ease; z-index: 10; transform: translate(-50%, -50%); }
 
         .mindmap-node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; font-weight: 800; font-size: 1.25rem; }
@@ -202,7 +198,6 @@
 
         svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
 
-        /* 3 SEPARATE WORD FAMILY BOXES AT BOARD BOTTOM */
         .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; width: 100%; }
         .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; width: 100%; }
         .wf-box.en { border-color: var(--color-en); }
@@ -220,7 +215,6 @@
 
         .report-grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; width: 100%; }
 
-        /* RESPONSIVE BREAKPOINTS MOBILE OPTIMIZATION */
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
             .grammar-layout { grid-template-columns: 1fr; }
@@ -255,6 +249,24 @@
             <div id="wotdKO" class="wotd-ko">---</div>
             <div id="wotdVI" class="wotd-vi">---</div>
             <button class="btn full-width" style="width: 100%;" onclick="closeWotdModal()">Continue to App</button>
+        </div>
+    </div>
+
+    <!-- QUICK BLOG PREVIEW & NAVIGATOR MODAL -->
+    <div id="quickBlogModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 700px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
+                <span id="quickBlogDate" style="font-size: 0.85rem; color: var(--grammar); font-weight: bold;">📅 Date</span>
+                <button class="btn btn-sm btn-fmt" onclick="closeQuickBlogModal()">✖ Close</button>
+            </div>
+            <h2 id="quickBlogTitle" style="color: var(--primary); margin-bottom: 12px;">Title</h2>
+            <div id="quickBlogContent" style="font-size: 1rem; line-height: 1.6; max-height: 400px; overflow-y: auto; margin-bottom: 20px; background: var(--bg); padding: 16px; border-radius: 8px;">Content</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 12px;">
+                <button class="btn btn-sm btn-fmt" onclick="navigateQuickBlog(-1)">◄ Prev Post</button>
+                <button class="btn btn-sm btn-grammar" id="quickBlogEditBtn" onclick="goToEditCurrentBlog()">✏ Edit in Grammar Blog</button>
+                <button class="btn btn-sm btn-fmt" onclick="navigateQuickBlog(1)">Next Post ►</button>
+            </div>
         </div>
     </div>
 
@@ -437,10 +449,17 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH & TOPICS -->
+        <!-- TAB 2: SEARCH & TOPICS (PAGINATED 50 ITEMS & SORT BY DATE/ALPHABET) -->
         <div id="tab2" class="tab-content">
-            <div class="card">
-                <input type="text" id="searchInput" placeholder="🔍 Type any keyword to filter..." oninput="renderTab2()">
+            <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <input type="text" id="searchInput" placeholder="🔍 Type any keyword to filter..." oninput="searchPage = 1; renderTab2()" style="flex:1; min-width:250px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label style="margin:0;">Sort by:</label>
+                    <select id="searchSortMode" onchange="searchPage = 1; renderTab2()" style="width:auto; padding:6px 10px;">
+                        <option value="date">Date (Newest first)</option>
+                        <option value="alphabet">Alphabet (A-Z)</option>
+                    </select>
+                </div>
             </div>
             
             <div class="card">
@@ -474,6 +493,8 @@
                             <tbody id="tab2TableBody"></tbody>
                         </table>
                     </div>
+                    <!-- SEARCH PAGINATION FOOTER -->
+                    <div id="searchPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
                 </div>
 
                 <div id="searchPhrasalView" style="display: none;">
@@ -633,11 +654,9 @@
                             <div class="form-group full-width">
                                 <label>Lesson Content & Usage Notes *</label>
                                 <div class="editor-toolbar">
-                                    <!-- TOGGLE BOLD & ITALIC BUTTONS -->
                                     <button type="button" id="btnBold" class="btn-fmt" onclick="toggleStyle('bold')"><b>B</b> Bold</button>
                                     <button type="button" id="btnItalic" class="btn-fmt" onclick="toggleStyle('italic')"><i>I</i> Italic</button>
                                     
-                                    <!-- FONT SIZE 12-40px -->
                                     <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
                                         <option value="1">12px</option>
                                         <option value="2">14px</option>
@@ -648,8 +667,7 @@
                                         <option value="7">32px</option>
                                     </select>
 
-                                    <!-- BULLETS & NUMBERS -->
-                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- Bullet</button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
                                     <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. Number</button>
                                     <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('gramContentEditor')">+ Table 3x2</button>
 
@@ -759,7 +777,6 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS (REMOVED MISTAKES TABLE, FULL WIDTH POS CHART) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -806,7 +823,6 @@
                     <div style="color:var(--text-secondary); text-align:center; margin-top:200px;">Type or select a word above to build Mind-map.</div>
                 </div>
 
-                <!-- 3 SEPARATE WORD FAMILY BOXES AT BOARD BOTTOM -->
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
                     <div class="wf-box en">
                         <div class="wf-title">🇺🇸 WORD FAMILY [EN]</div>
@@ -1058,6 +1074,14 @@
         let currentNotes = { EN: "", ES: "", KO: "" };
         let currentConjData = {};
         let currentEnIrregData = { base: "", past: "", part: "" };
+
+        // SEARCH PAGINATION STATE
+        let searchPage = 1;
+        const searchPageSize = 50;
+
+        // QUICK BLOG POPUP NAVIGATION STATE
+        let activeQuickBlogIndex = 0;
+        let activeQuickBlogList = [];
 
         const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
         
@@ -1323,7 +1347,6 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             
-            // Activate Desktop Tab buttons
             const activeDesktopBtn = document.querySelector(`.nav-tabs button[onclick*="${tabId}"]`);
             if (activeDesktopBtn) activeDesktopBtn.classList.add('active');
 
@@ -1616,7 +1639,7 @@
                     redirect: "follow"
                 });
                 showToast("✅ Deleted successfully!");
-            } catch(err) { showToast("⚠️ Deleted locally!", true); }
+            } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
         function renderLogTable() {
@@ -1658,7 +1681,7 @@
             });
         }
 
-        // --- TAB 2: SEARCH & TOPICS ---
+        // --- TAB 2: SEARCH & TOPICS (PAGINATED 50 ITEMS & SORT BY DATE/ALPHABET) ---
         function switchSearchSubTab(sub) {
             document.getElementById('searchVocabView').style.display = sub === 'vocab' ? 'block' : 'none';
             document.getElementById('searchPhrasalView').style.display = sub === 'phrasal' ? 'block' : 'none';
@@ -1692,6 +1715,7 @@
             currentSubTopicTab = "ALL";
             renderTopicNav();
             renderSubTopicNav();
+            searchPage = 1;
             renderTab2();
         }
 
@@ -1709,15 +1733,19 @@
         function selectSubTopic(sub) {
             currentSubTopicTab = sub;
             renderSubTopicNav();
+            searchPage = 1;
             renderTab2();
         }
 
         function renderTab2() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = (document.getElementById('searchInput')?.value || "").toLowerCase();
+            const sortMode = document.getElementById('searchSortMode')?.value || "date";
             const tbody = document.getElementById('tab2TableBody');
+            const paginationEl = document.getElementById('searchPagination');
             tbody.innerHTML = "";
+            paginationEl.innerHTML = "";
 
-            const filtered = userVocabList.filter(item => {
+            let filtered = userVocabList.filter(item => {
                 const matchTop = currentTopicTab === "ALL" || item.topic === currentTopicTab;
                 const matchSub = currentSubTopicTab === "ALL" || item.subTopic === currentSubTopicTab;
                 if (!matchTop || !matchSub) return false;
@@ -1731,12 +1759,24 @@
                        (item.subTopic && item.subTopic.toLowerCase().includes(query));
             });
 
-            if (filtered.length === 0) {
+            // Sort Mode: Date (Newest first) vs Alphabet (A-Z by English word)
+            if (sortMode === 'date') {
+                filtered.sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            } else {
+                filtered.sort((a, b) => (a.en || '').localeCompare(b.en || ''));
+            }
+
+            const totalPages = Math.ceil(filtered.length / searchPageSize) || 1;
+            if (searchPage > totalPages) searchPage = totalPages;
+
+            const pagedItems = filtered.slice((searchPage - 1) * searchPageSize, searchPage * searchPageSize);
+
+            if (pagedItems.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
                 return;
             }
 
-            filtered.forEach(item => {
+            pagedItems.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
@@ -1764,6 +1804,17 @@
                     </tr>
                 `;
             });
+
+            // Render Pagination Buttons
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = `btn btn-sm ${i === searchPage ? '' : 'btn-fmt'}`;
+                    btn.innerText = i;
+                    btn.onclick = () => { searchPage = i; renderTab2(); };
+                    paginationEl.appendChild(btn);
+                }
+            }
         }
 
         function renderPhrasalDirectory() {
@@ -2205,7 +2256,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (STRICTLY SEPARATED IDIOMS & PHRASAL) ---
+        // --- TAB 4: QUIZLET REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2295,12 +2346,11 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                // STRICTLY PHRASAL VERBS DISTRACTORS
                 const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'phrasal verb').sort(() => Math.random() - 0.5).slice(0, 3);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
-                grid.style.gridTemplateColumns = "1fr"; // Stack vertically per requirement
+                grid.style.gridTemplateColumns = "1fr";
                 grid.innerHTML = "";
 
                 options.forEach(opt => {
@@ -2315,18 +2365,18 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                // STRICTLY IDIOMS DISTRACTORS
                 const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'idiom').sort(() => Math.random() - 0.5).slice(0, 2);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
-                grid.style.gridTemplateColumns = "1fr"; // Stack vertically per requirement
+                grid.style.gridTemplateColumns = "1fr";
                 grid.innerHTML = "";
 
                 options.forEach(opt => {
                     const btn = document.createElement('div');
                     btn.className = "mc-option";
                     btn.style.fontSize = "0.95rem";
+                    // Stack answers per language on separate lines
                     btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
                     btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
@@ -2459,13 +2509,12 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS ---
+        // --- DASHBOARD ANALYTICS (REMOVED MISTAKES TABLE) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
-            const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
             const vocabRecordMap = {};
             flashcardHist.forEach(h => {
@@ -2511,31 +2560,6 @@
                 },
                 options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
-
-            const mistakeMap = {};
-            typingHist.filter(h => !h.remembered).forEach(h => {
-                const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
-                if (!mistakeMap[key]) mistakeMap[key] = { word: h.wordEN, lang: h.lang, count: 0 };
-                mistakeMap[key].count++;
-            });
-
-            const sortedMistakes = Object.values(mistakeMap).sort((a,b) => b.count - a.count).slice(0, 10);
-            const tbody = document.getElementById('topMistakesBody');
-            tbody.innerHTML = "";
-
-            if (sortedMistakes.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:16px;">No typing mistakes recorded! 🎉</td></tr>`;
-            } else {
-                sortedMistakes.forEach(m => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><strong>${m.word}</strong></td>
-                            <td><span class="sub-btn" style="padding:2px 8px;">${m.lang}</span></td>
-                            <td style="color:var(--danger); font-weight:bold;">${m.count} times</td>
-                        </tr>
-                    `;
-                });
-            }
         }
 
         // --- TAB 5: BOARD ---
@@ -2755,8 +2779,44 @@
             const bList = document.getElementById('dayBlogList');
             if (dayBlogs.length === 0) bList.innerText = "No blog posts published on this day.";
             else {
-                bList.innerHTML = dayBlogs.map(g => `• [<b>${g.lang}</b>] ${g.title || 'Untitled Note'} (${g.topic})`).join('<br>');
+                bList.innerHTML = dayBlogs.map(g => `• [<b>${g.lang}</b>] <span style="cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="openQuickBlogPopup('${g.id}')">${g.title || 'Untitled Note'}</span> (${g.topic})`).join('<br>');
             }
+        }
+
+        /* QUICK BLOG POPUP & PREV/NEXT NAVIGATOR */
+        function openQuickBlogPopup(blogId) {
+            activeQuickBlogList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            activeQuickBlogIndex = activeQuickBlogList.findIndex(x => String(x.id) === String(blogId));
+            if (activeQuickBlogIndex === -1) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+            document.getElementById('quickBlogModal').style.display = "flex";
+        }
+
+        function displayQuickBlogModal() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            document.getElementById('quickBlogDate').innerText = `📅 Published: ${post.timestamp || '2026-07-28'} • [${post.lang}]`;
+            document.getElementById('quickBlogTitle').innerText = post.title || 'Untitled Note';
+            document.getElementById('quickBlogContent').innerHTML = post.content || 'No content';
+        }
+
+        function navigateQuickBlog(direction) {
+            activeQuickBlogIndex += direction;
+            if (activeQuickBlogIndex < 0) activeQuickBlogIndex = activeQuickBlogList.length - 1;
+            if (activeQuickBlogIndex >= activeQuickBlogList.length) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+        }
+
+        function goToEditCurrentBlog() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            closeQuickBlogModal();
+            switchTab('tab3');
+            openWriteBlogForm(post.id);
+        }
+
+        function closeQuickBlogModal() {
+            document.getElementById('quickBlogModal').style.display = "none";
         }
 
         // --- TAB 7: REPORT ---
