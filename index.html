@@ -139,7 +139,7 @@
         .progress-bar-bg { width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        /* Blog Sidebar Accordion Tree */
+        /* Grammar Blog Layout */
         .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
@@ -165,7 +165,7 @@
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* Calendar View Tab 6 */
+        /* Calendar */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 8px; font-size: 0.85rem; }
@@ -178,39 +178,24 @@
         .dot-vocab { width: 6px; height: 6px; border-radius: 50%; background: var(--color-en); }
         .dot-blog { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
-        /* TAB 5 BOARD - STYLES FIXED FOR BALLS & SVG */
-        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
-        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
+        /* STYLED BOARD (TAB 5) - FIXED VẼ BONG BÓNG */
+        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; }
+        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
-        .mindmap-canvas { width: 100%; height: 420px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
-        
-        .board-node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; z-index: 5; }
-        .board-node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; font-weight: 800; font-size: 1.2rem; }
-        .board-node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+        .mindmap-canvas { width: 100%; height: 450px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
+        .mindmap-node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; box-shadow: var(--shadow); transition: all 0.3s ease; z-index: 10; transform: translate(-50%, -50%); }
 
-        .board-node-l2 { width: 120px; height: 120px; color: #fff; font-weight: 700; font-size: 0.95rem; }
-        .board-node-l2.es { background: var(--color-es); color: #fff; }
-        .board-node-l2.ko { background: var(--color-ko); color: #fff; }
-        .board-node-l2.vi { background: var(--color-vi); color: #0f172a; }
+        .mindmap-node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; font-weight: 800; font-size: 1.25rem; }
+        .mindmap-node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
 
-        .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; }
-        @media (max-width: 800px) { .wf-bottom-grid { grid-template-columns: 1fr; } }
-        
-        .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; }
-        .wf-box.en { border-color: var(--color-en); }
-        .wf-box.es { border-color: var(--color-es); }
-        .wf-box.ko { border-color: var(--color-ko); }
+        .mindmap-node-sub { width: 125px; height: 125px; color: #fff; font-weight: 700; font-size: 0.95rem; }
+        .mindmap-node-sub.es { background: var(--color-es); color: #fff; }
+        .mindmap-node-sub.ko { background: var(--color-ko); color: #fff; }
+        .mindmap-node-sub.vi { background: var(--color-vi); color: #0f172a; }
 
-        .wf-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
-        .wf-box.en .wf-title { color: var(--color-en); }
-        .wf-box.es .wf-title { color: var(--color-es); }
-        .wf-box.ko .wf-title { color: var(--color-ko); }
-
-        .wf-list { list-style: none; padding: 0; margin: 0; font-size: 0.88rem; line-height: 1.6; }
-        .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; }
-        .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
+        svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
 
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
@@ -533,7 +518,6 @@
         <!-- TAB 3: GRAMMAR BLOG -->
         <div id="tab3" class="tab-content">
             <div class="grammar-layout">
-                <!-- LEFT SIDEBAR -->
                 <div class="sidebar">
                     <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="openWriteBlogForm()">+ Write New Post</button>
                     
@@ -551,7 +535,6 @@
                     <div id="grammarTreeContainer"></div>
                 </div>
 
-                <!-- RIGHT MAIN CONTENT -->
                 <div>
                     <div id="blogFeedContainer">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -779,18 +762,20 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD (PERFECTED CIRCLES & CONNECTOR LINES) -->
+        <!-- TAB 5: BOARD (FIXED CENTER CANVAS + ABSOLUTE BUBBLES) -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
-                    <input type="text" id="boardSearchInput" placeholder="🔍 Type any word to build Mind-map..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
+                    <input type="text" id="boardSearchInput" placeholder="🔍 Type keyword to filter alphabet..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
                     <div id="boardDropdown" class="board-dropdown"></div>
                 </div>
 
+                <!-- RELATIVE MINDMAP CANVAS -->
                 <div id="mindmapCanvas" class="mindmap-canvas">
-                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to view its Mind-map.</div>
+                    <div style="color:var(--text-secondary); text-align:center; margin-top:200px;">Type or select a word above to build Mind-map.</div>
                 </div>
 
+                <!-- BOTTOM 3 WORD FAMILY BOXES -->
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
                     <div class="wf-box en">
                         <div class="wf-title">🇺🇸 WORD FAMILY [EN]</div>
@@ -1323,6 +1308,121 @@
         }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        
+        function insertSmartTable(editorId) {
+            const editor = document.getElementById(editorId);
+            const tableHTML = `
+                <div class="smart-table-wrapper" contenteditable="false">
+                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <table class="smart-table">
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
+                    </table>
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, tableHTML);
+        }
+
+        function addSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            const cols = table.rows[0].cells.length;
+            const newTr = table.insertRow();
+            newTr.contentEditable = "true";
+            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
+        }
+
+        function addSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            for(let i=0; i<table.rows.length; i++) {
+                const cell = table.rows[i].insertCell();
+                cell.innerText = "New cell";
+            }
+        }
+
+        // --- MODALS ---
+        function openNoteModal(lang) {
+            currentEditingNoteLang = lang;
+            document.getElementById('noteModalTitle').innerText = `Edit Note [${lang}]`;
+            document.getElementById('tempNoteContentEditor').innerHTML = currentNotes[lang] || "";
+            document.getElementById('noteModal').style.display = "flex";
+        }
+        function closeNoteModal() { document.getElementById('noteModal').style.display = "none"; }
+        function saveNoteModal() {
+            if (currentEditingNoteLang) currentNotes[currentEditingNoteLang] = document.getElementById('tempNoteContentEditor').innerHTML.trim();
+            closeNoteModal();
+            showToast(`✅ Saved Note [${currentEditingNoteLang}]`);
+        }
+
+        function openEnIrregModal() {
+            document.getElementById('irregBase').value = currentEnIrregData.base || document.getElementById('wordEN').value.trim();
+            document.getElementById('irregPast').value = currentEnIrregData.past || "";
+            document.getElementById('irregPart').value = currentEnIrregData.part || "";
+            document.getElementById('enIrregModal').style.display = "flex";
+        }
+        function closeEnIrregModal() { document.getElementById('enIrregModal').style.display = "none"; }
+        function saveEnIrregModal() {
+            currentEnIrregData = {
+                base: document.getElementById('irregBase').value.trim(),
+                past: document.getElementById('irregPast').value.trim(),
+                part: document.getElementById('irregPart').value.trim()
+            };
+            closeEnIrregModal();
+            showToast("✅ Saved English Irregular Verb!");
+        }
+
+        function buildConjModalHTML() {
+            const container = document.getElementById('conjTablesContainer');
+            container.innerHTML = "";
+            CONJ_STRUCTURE.forEach((sec, sIdx) => {
+                const sectionEl = document.createElement('div');
+                sectionEl.innerHTML = `<div class="conj-section-title">${sec.title}</div>`;
+                const table = document.createElement('table');
+                table.className = "conj-table";
+                let headerRow = `<tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr>`;
+                let bodyRows = "";
+                PRONOUNS.forEach((p, pIdx) => {
+                    bodyRows += `<tr><td><strong>${p}</strong></td>`;
+                    sec.tenses.forEach((t, tIdx) => {
+                        const key = `${sIdx}_${tIdx}_${pIdx}`;
+                        bodyRows += `<td><input type="text" id="conj_${key}" placeholder="..."></td>`;
+                    });
+                    bodyRows += `</tr>`;
+                });
+                table.innerHTML = headerRow + bodyRows;
+                sectionEl.appendChild(table);
+                container.appendChild(sectionEl);
+            });
+        }
+
+        function openConjModal() {
+            CONJ_STRUCTURE.forEach((sec, sIdx) => {
+                sec.tenses.forEach((t, tIdx) => {
+                    PRONOUNS.forEach((p, pIdx) => {
+                        const key = `${sIdx}_${tIdx}_${pIdx}`;
+                        const input = document.getElementById(`conj_${key}`);
+                        if(input) input.value = currentConjData[key] || "";
+                    });
+                });
+            });
+            document.getElementById('conjModal').style.display = "flex";
+        }
+        function closeConjModal() { document.getElementById('conjModal').style.display = "none"; }
+        function saveConjModal() {
+            currentConjData = {};
+            CONJ_STRUCTURE.forEach((sec, sIdx) => {
+                sec.tenses.forEach((t, tIdx) => {
+                    PRONOUNS.forEach((p, pIdx) => {
+                        const key = `${sIdx}_${tIdx}_${pIdx}`;
+                        const input = document.getElementById(`conj_${key}`);
+                        if(input && input.value.trim()) { currentConjData[key] = input.value.trim(); }
+                    });
+                });
+            });
+            closeConjModal();
+            showToast("✅ Saved Spanish Conjugations!");
+        }
 
         // --- SAVE VOCABULARY ---
         async function saveVocab(e) {
@@ -1769,11 +1869,8 @@
         function openWriteBlogForm(editId = null) {
             document.getElementById('blogFeedContainer').style.display = "none";
             document.getElementById('blogFormCard').style.display = "block";
-            if (editId) {
-                loadGrammarPost(editId);
-            } else {
-                resetGrammarForm();
-            }
+            if (editId) { loadGrammarPost(editId); } 
+            else { resetGrammarForm(); }
         }
 
         function closeWriteBlogForm() {
@@ -2303,7 +2400,7 @@
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
-            // Strong, Medium, Weak Group Calculation
+            // 3 Categorization Groups
             const vocabRecordMap = {};
             flashcardHist.forEach(h => {
                 if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
@@ -2375,6 +2472,117 @@
                     `;
                 });
             }
+        }
+
+        // --- TAB 5: BOARD (FIXED RELATIVE CANVAS & PERFECT BUBBLE POSITIONS) ---
+        function handleBoardAutocomplete(val) {
+            const dropdown = document.getElementById('boardDropdown');
+            if(!val || val.trim().length < 1) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            const q = val.toLowerCase().trim();
+            
+            // SORT MATCHES ALPHABETICALLY (A-Z)
+            const matches = userVocabList.filter(i => 
+                (i.en && i.en.toLowerCase().includes(q)) ||
+                (i.es && i.es.toLowerCase().includes(q)) ||
+                (i.ko && i.ko.toLowerCase().includes(q))
+            ).sort((a,b) => (a.en || '').localeCompare(b.en || ''));
+
+            if(matches.length === 0) {
+                dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
+                dropdown.style.display = 'block';
+                renderMindmap(null);
+                return;
+            }
+
+            dropdown.innerHTML = "";
+            matches.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "board-dropdown-item";
+                el.innerText = `[${item.pos || 'Vocab'}] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
+                el.onclick = () => {
+                    document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
+                    dropdown.style.display = 'none';
+                    renderMindmap(item);
+                };
+                dropdown.appendChild(el);
+            });
+
+            dropdown.style.display = 'block';
+        }
+
+        function formatWordFamilyList(str) {
+            if (!str || !str.trim()) return `<li><em>None recorded</em></li>`;
+            return str
+                .split(',')
+                .map(s => s.trim())
+                .filter(s => s.length > 0)
+                .map(s => `<li>${s}</li>`)
+                .join('');
+        }
+
+        function renderMindmap(item) {
+            lastRenderedBoardItem = item;
+            const canvas = document.getElementById('mindmapCanvas');
+            const bottomGrid = document.getElementById('wfBottomContainer');
+            
+            canvas.innerHTML = "";
+
+            if (!item) {
+                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:200px; font-weight:600;">Item not found in database!</div>`;
+                bottomGrid.style.display = "none";
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const cx = (rect.width || 800) / 2;
+            const cy = 210; // Center Y
+            const dist2 = 140;
+
+            const langNodes = [
+                { key: 'es', val: item.es, class: 'es', angle: -30 },
+                { key: 'ko', val: item.ko, class: 'ko', angle: 90 },
+                { key: 'vi', val: item.vi, class: 'vi', angle: 210 }
+            ];
+
+            let nodesHTML = "";
+            let svgLinesHTML = `<svg class="mindmap-svg-lines">`;
+
+            // 1. Center EN Node
+            nodesHTML += `
+                <div class="mindmap-node mindmap-node-main" style="left:${cx}px; top:${cy}px;">
+                    <div>${item.en || "---"}</div>
+                    ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
+                </div>
+            `;
+
+            // 2. Sub Nodes (ES, KO, VI) & SVG Connecting Lines
+            langNodes.forEach(lang => {
+                if(!lang.val) return;
+
+                const rad = (lang.angle * Math.PI) / 180;
+                const l2x = cx + dist2 * Math.cos(rad);
+                const l2y = cy + dist2 * Math.sin(rad);
+
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
+
+                nodesHTML += `
+                    <div class="mindmap-node mindmap-node-sub ${lang.class}" style="left:${l2x}px; top:${l2y}px;">
+                        ${lang.val}
+                    </div>
+                `;
+            });
+
+            svgLinesHTML += `</svg>`;
+            canvas.innerHTML = svgLinesHTML + nodesHTML;
+
+            // 3. Render Bottom Word Families
+            document.getElementById('wfListEN').innerHTML = formatWordFamilyList(item.familyEN);
+            document.getElementById('wfListES').innerHTML = formatWordFamilyList(item.familyES);
+            document.getElementById('wfListKO').innerHTML = formatWordFamilyList(item.familyKO);
+            bottomGrid.style.display = "grid";
         }
 
         // --- TAB 6: CALENDAR ---
@@ -2628,113 +2836,6 @@
                     </tr>
                 `;
             });
-        }
-
-        // --- TAB 5: BOARD (FIXED ABSOLUTE POSITIONING & CANVAS RENDER) ---
-        function handleBoardAutocomplete(val) {
-            const dropdown = document.getElementById('boardDropdown');
-            if(!val || val.trim().length < 1) {
-                dropdown.style.display = 'none';
-                return;
-            }
-            const q = val.toLowerCase().trim();
-            
-            const matches = userVocabList.filter(i => 
-                (i.en && i.en.toLowerCase().includes(q)) ||
-                (i.es && i.es.toLowerCase().includes(q)) ||
-                (i.ko && i.ko.toLowerCase().includes(q))
-            );
-
-            if(matches.length === 0) {
-                dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
-                dropdown.style.display = 'block';
-                renderMindmap(null);
-                return;
-            }
-
-            dropdown.innerHTML = "";
-            matches.forEach(item => {
-                const el = document.createElement('div');
-                el.className = "board-dropdown-item";
-                el.innerText = `[${item.pos || 'Vocab'}] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
-                el.onclick = () => {
-                    document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
-                    dropdown.style.display = 'none';
-                    renderMindmap(item);
-                };
-                dropdown.appendChild(el);
-            });
-
-            dropdown.style.display = 'block';
-        }
-
-        function formatWordFamilyList(str) {
-            if (!str || !str.trim()) return `<li><em>None recorded</em></li>`;
-            return str
-                .split(',')
-                .map(s => s.trim())
-                .filter(s => s.length > 0)
-                .map(s => `<li>${s}</li>`)
-                .join('');
-        }
-
-        function renderMindmap(item) {
-            lastRenderedBoardItem = item;
-            const canvas = document.getElementById('mindmapCanvas');
-            const bottomGrid = document.getElementById('wfBottomContainer');
-            
-            canvas.innerHTML = "";
-
-            if (!item) {
-                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; font-weight:600; margin-top:180px;">Item not found in database!</div>`;
-                bottomGrid.style.display = "none";
-                return;
-            }
-
-            const rect = canvas.getBoundingClientRect();
-            const cx = (rect.width || 800) / 2;
-            const cy = 190;
-            const dist2 = 145;
-
-            const langNodes = [
-                { key: 'es', val: item.es, class: 'es', angle: -30 },
-                { key: 'ko', val: item.ko, class: 'ko', angle: 90 },
-                { key: 'vi', val: item.vi, class: 'vi', angle: 210 }
-            ];
-
-            let nodesHTML = "";
-            let svgLinesHTML = `<svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;">`;
-
-            nodesHTML += `
-                <div class="board-node board-node-main" style="left:${cx - 75}px; top:${cy - 75}px;">
-                    <div>${item.en || "---"}</div>
-                    ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
-                </div>
-            `;
-
-            langNodes.forEach(lang => {
-                if(!lang.val) return;
-
-                const rad = (lang.angle * Math.PI) / 180;
-                const l2x = cx + dist2 * Math.cos(rad);
-                const l2y = cy + dist2 * Math.sin(rad);
-
-                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
-
-                nodesHTML += `
-                    <div class="board-node board-node-l2 ${lang.class}" style="left:${l2x - 60}px; top:${l2y - 60}px;">
-                        ${lang.val}
-                    </div>
-                `;
-            });
-
-            svgLinesHTML += `</svg>`;
-            canvas.innerHTML = svgLinesHTML + nodesHTML;
-
-            document.getElementById('wfListEN').innerHTML = formatWordFamilyList(item.familyEN);
-            document.getElementById('wfListES').innerHTML = formatWordFamilyList(item.familyES);
-            document.getElementById('wfListKO').innerHTML = formatWordFamilyList(item.familyKO);
-            bottomGrid.style.display = "grid";
         }
     </script>
 </body>
