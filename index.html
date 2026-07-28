@@ -29,7 +29,7 @@
             --color-vi: #feeeb5; /* Light Yellow */
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
         #authOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
@@ -70,12 +70,16 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        .rich-editor { width: 100%; min-height: 450px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1.05rem; line-height: 1.6; overflow-y: auto; outline: none; }
+        /* Expanded Rich Editor */
+        .rich-editor { width: 100%; min-height: 480px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         
-        /* Interactive Table inside Editor with controls */
-        .rich-editor table { width: 100%; border-collapse: collapse; margin: 10px 0; border: 2px solid var(--border); position: relative; }
-        .rich-editor td, .rich-editor th { border: 1px solid var(--border); padding: 8px; min-width: 60px; position: relative; }
+        /* Smart Table with Built-in Add/Delete Controls */
+        .smart-table-wrapper { position: relative; margin: 16px 0; display: inline-block; width: 100%; }
+        .smart-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); }
+        .smart-table td, .smart-table th { border: 1px solid var(--border); padding: 10px; min-width: 60px; position: relative; }
+        .tbl-btn { position: absolute; background: var(--surface); border: 1px solid var(--border); color: var(--text); width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0.7; }
+        .tbl-btn:hover { opacity: 1; background: var(--primary); color: white; }
 
         .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.88rem; }
         .btn:hover { background: var(--primary-hover); }
@@ -105,11 +109,6 @@
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
         .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
 
-        .conj-section-title { font-size: 1.05rem; font-weight: 700; color: var(--color-es); margin: 16px 0 8px 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-        .conj-table { width: 100%; margin-bottom: 12px; border-collapse: collapse; }
-        .conj-table th, .conj-table td { padding: 6px; border: 1px solid var(--border); font-size: 0.85rem; }
-        .conj-table input { padding: 6px; font-size: 0.85rem; }
-
         .wotd-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 30px; text-align: center; max-width: 480px; width: 100%; box-shadow: var(--shadow); }
         .wotd-en { font-size: 2.2rem; font-weight: 800; color: var(--color-en); margin-bottom: 6px; }
         .wotd-es { font-size: 1.7rem; font-weight: 700; color: var(--color-es); margin-bottom: 6px; }
@@ -117,7 +116,6 @@
         .wotd-vi { font-size: 1.1rem; font-weight: 500; color: var(--color-vi); margin-bottom: 20px; }
 
         .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; }
-        
         .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; }
         @media (max-width: 800px) { .tri-flashcard-grid { grid-template-columns: 1fr; } }
         
@@ -126,15 +124,11 @@
         .card-box.es { border-color: var(--color-es); }
         .card-box.ko { border-color: var(--color-ko); }
 
-        .card-flag { font-size: 2.2rem; font-weight: 800; margin: 30px 0; user-select: none; }
-        .card-box.en .card-flag { color: var(--color-en); }
-        .card-box.es .card-flag { color: var(--color-es); }
-        .card-box.ko .card-flag { color: var(--color-ko); }
-
-        .card-text { font-size: 1.35rem; font-weight: 700; display: none; margin: 30px 0; word-break: break-word; }
-        .card-box.en .card-text { color: var(--color-en); }
-        .card-box.es .card-text { color: var(--color-es); }
-        .card-box.ko .card-text { color: var(--color-ko); }
+        .card-flag { font-size: 3rem; margin: 30px 0; user-select: none; }
+        .card-text-lang { font-size: 1.8rem; font-weight: 800; display: none; margin: 30px 0; word-break: break-word; letter-spacing: 1px; }
+        .card-box.en .card-text-lang { color: var(--color-en); }
+        .card-box.es .card-text-lang { color: var(--color-es); }
+        .card-box.ko .card-text-lang { color: var(--color-ko); }
 
         .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; }
         .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
@@ -144,10 +138,11 @@
         .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; }
         .mc-option:hover { background: var(--surface-hover); border-color: var(--primary); }
 
-        .progress-bar-bg { width: 100%; height: 10px; background: #334155; border-radius: 5px; overflow: hidden; margin-top: 6px; display: flex; }
+        /* Progress Bar Gray Background Unlearned */
+        .progress-bar-bg { width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        /* Blog Facebook Feed & Sidebar */
+        /* Blog Sidebar Accordion Tree */
         .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
         @media (max-width: 900px) { .grammar-layout { grid-template-columns: 1fr; } }
         .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
@@ -157,69 +152,35 @@
         .tree-lang-body { display: none; padding: 8px; background: var(--surface); }
         .tree-lang.open .tree-lang-body { display: block; }
 
-        .post-item { padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 6px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
+        .tree-folder { margin-bottom: 6px; }
+        .tree-folder-header { padding: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; background: var(--surface-hover); border-radius: 6px; display: flex; justify-content: space-between; }
+        .tree-folder-body { display: none; padding-left: 8px; margin-top: 4px; }
+        .tree-folder.open .tree-folder-body { display: block; }
+
+        .post-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; background: var(--bg); margin-bottom: 4px; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
         .post-item:hover { border-color: var(--grammar); }
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
-        .post-date { font-size: 0.72rem; color: var(--text-secondary); display: block; margin-top: 2px; }
+        .post-date { font-size: 0.7rem; color: var(--text-secondary); display: block; }
 
-        /* FB Wall Post Card */
-        .fb-post-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); position: relative; }
-        .fb-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px; }
-        .fb-post-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
-        .fb-post-body { font-size: 1.05rem; line-height: 1.6; margin-bottom: 16px; color: var(--text); }
-        .fb-post-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px dashed var(--border); padding-top: 12px; font-size: 0.85rem; color: var(--text-secondary); }
+        /* Facebook-style Blog Post Feed */
+        .feed-post { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+        .feed-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
+        .feed-post-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+        .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
+        .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* Pagination */
-        .pagination-container { display: flex; justify-content: center; gap: 6px; margin-top: 20px; flex-wrap: wrap; }
-        .page-btn { background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; color: var(--text); cursor: pointer; font-weight: 600; }
-        .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-        /* Calendar Grid */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-        .cal-day-name { font-weight: 700; padding: 8px; color: var(--text-secondary); font-size: 0.85rem; }
-        .cal-day-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; min-height: 75px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
-        .cal-day-cell:hover { border-color: var(--primary); background: var(--surface-hover); }
-        .cal-day-cell.selected { border-color: var(--warning); background: rgba(245, 158, 11, 0.15); }
-        .cal-dots-row { display: flex; gap: 4px; margin-top: 4px; }
-        .cal-dot { width: 8px; height: 8px; border-radius: 50%; background: #475569; }
-        .cal-dot.en.active { background: var(--color-en); }
-        .cal-dot.es.active { background: var(--color-es); }
-        .cal-dot.ko.active { background: var(--color-ko); }
-
-        /* Board Canvas */
-        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
-        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
-        .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .board-dropdown-item:hover { background: var(--primary); color: white; }
-
-        .mindmap-canvas { width: 100%; height: 420px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-bottom: 24px; }
-        .node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; z-index: 5; }
-
-        .node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; z-index: 10; font-weight: 800; font-size: 1.2rem; }
-        .node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
-
-        .node-level2 { width: 120px; height: 120px; color: #fff; z-index: 8; font-weight: 700; font-size: 0.95rem; }
-        .node-level2.es { background: var(--color-es); color: #fff; }
-        .node-level2.ko { background: var(--color-ko); color: #fff; }
-        .node-level2.vi { background: var(--color-vi); color: #0f172a; }
-
-        .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; }
-        @media (max-width: 800px) { .wf-bottom-grid { grid-template-columns: 1fr; } }
-        
-        .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; }
-        .wf-box.en { border-color: var(--color-en); }
-        .wf-box.es { border-color: var(--color-es); }
-        .wf-box.ko { border-color: var(--color-ko); }
-
-        .wf-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
-        .wf-box.en .wf-title { color: var(--color-en); }
-        .wf-box.es .wf-title { color: var(--color-es); }
-        .wf-box.ko .wf-title { color: var(--color-ko); }
-
-        .wf-list { list-style: none; padding: 0; margin: 0; font-size: 0.88rem; line-height: 1.6; }
-        .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; }
-        .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
+        /* Calendar View Tab 6 */
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 8px; font-size: 0.85rem; }
+        .cal-cell { aspect-ratio: 1.1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; }
+        .cal-cell:hover { border-color: var(--primary); }
+        .cal-cell.active-study { background: rgba(16, 185, 129, 0.15); border-color: var(--primary); }
+        .cal-cell.active-study .cal-num { color: var(--primary); font-weight: 800; }
+        .cal-num { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); }
+        .cal-dots { display: flex; justify-content: center; gap: 3px; }
+        .dot-vocab { width: 6px; height: 6px; border-radius: 50%; background: var(--color-en); }
+        .dot-blog { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
@@ -227,7 +188,7 @@
 </head>
 <body>
 
-    <!-- Access PIN Protection -->
+    <!-- Security Access PIN -->
     <div id="authOverlay">
         <div class="auth-card">
             <h2 style="margin-bottom: 12px; color: var(--primary);">Security Verification</h2>
@@ -257,7 +218,7 @@
             <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
             <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
-            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--warning); color: #000;">6. Calendar</button>
+            <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--edit); color: white;">6. Calendar</button>
             <button class="tab-btn" onclick="switchTab('tab7')" style="background: var(--grammar); color: white;">7. Report</button>
         </div>
     </header>
@@ -539,12 +500,12 @@
             </div>
         </div>
 
-        <!-- TAB 3: GRAMMAR BLOG (FACEBOOK WALL FEED + COLLAPSED FOLDERS) -->
+        <!-- TAB 3: GRAMMAR BLOG (TIMELINE FEED & ACCORDION TREE + NOTE CATEGORY) -->
         <div id="tab3" class="tab-content">
             <div class="grammar-layout">
-                <!-- SIDEBAR FOLDERS -->
+                <!-- LEFT SIDEBAR -->
                 <div class="sidebar">
-                    <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="openGrammarEditorMode()">+ Write New Post</button>
+                    <button class="btn btn-grammar full-width" style="margin-bottom: 12px; width: 100%;" onclick="openWriteBlogForm()">+ Write New Post</button>
                     
                     <div style="display: flex; gap: 6px; margin-bottom: 12px;">
                         <input type="text" id="gramSearchInput" placeholder="🔍 Search..." oninput="renderGrammarSidebar()">
@@ -560,30 +521,31 @@
                     <div id="grammarTreeContainer"></div>
                 </div>
 
-                <!-- RIGHT MAIN CONTENT: FB WALL FEED OR EDITOR -->
+                <!-- RIGHT MAIN CONTENT: TIMELINE FEED OR EDIT FORM -->
                 <div>
-                    <!-- Mode 1: Facebook Wall Feed (Default) -->
-                    <div id="grammarFeedContainer">
+                    <!-- FEED CONTAINER (DEFAULT VIEW) -->
+                    <div id="blogFeedContainer">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h2 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h2>
-                            <button class="btn btn-sm btn-grammar" onclick="openGrammarEditorMode()">+ New Post</button>
+                            <h3 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h3>
+                            <button class="btn btn-sm btn-fmt" onclick="renderBlogFeed(1)">🔄 Refresh Feed</button>
                         </div>
-                        <div id="fbPostsList"></div>
-                        <div id="fbPagination" class="pagination-container"></div>
+                        <div id="feedPostsList"></div>
+                        <div id="feedPagination" style="display: flex; justify-content: center; gap: 6px; margin-top: 20px;"></div>
                     </div>
 
-                    <!-- Mode 2: Editor Card (Hidden by default) -->
-                    <div id="grammarEditorContainer" class="card" style="display: none; margin-bottom: 0;">
+                    <!-- FORM CONTAINER (SHOWS WHEN EDITING/WRITING) -->
+                    <div id="blogFormCard" class="card" style="display: none; margin-bottom: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h2 id="grammarHeader" style="color: var(--grammar);">Create Grammar Note</h2>
-                            <button class="btn btn-sm btn-fmt" onclick="closeGrammarEditorMode()">✖ Back to Feed</button>
+                            <button class="btn btn-sm btn-fmt" onclick="closeWriteBlogForm()">✖ Close Editor</button>
                         </div>
+
                         <form id="grammarForm" onsubmit="saveGrammar(event)">
                             <input type="hidden" id="grammarId" value="">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                                 <div class="form-group">
                                     <label>Language *</label>
-                                    <select id="gramLang" required>
+                                    <select id="gramLang" required onchange="handleGramLangChange(this.value)">
                                         <option value="English">English 🇺🇸</option>
                                         <option value="Español">Español 🇪🇸</option>
                                         <option value="한국어">한국어 🇰🇷</option>
@@ -603,14 +565,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Level / Tag</label>
-                                    <select id="gramTag">
-                                        <option value="">-- None --</option>
-                                        <option value="A1-A2">#A1-A2</option>
-                                        <option value="B1-B2">#B1-B2</option>
-                                        <option value="C1-C2">#C1-C2</option>
-                                        <option value="Exam_Prep">#Exam_Prep</option>
-                                        <option value="Jottings">#Jottings</option>
-                                    </select>
+                                    <select id="gramTag"></select>
                                 </div>
                             </div>
 
@@ -622,26 +577,22 @@
                             <div class="form-group full-width">
                                 <label>Lesson Content & Usage Notes *</label>
                                 <div class="editor-toolbar">
-                                    <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b></button>
-                                    <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i></button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
                                     
-                                    <!-- FONT SIZE NUMERIC SELECTOR 12-40 -->
-                                    <select class="btn-fmt" onchange="applyCustomFontSize(this.value)" style="width: auto; padding: 4px;">
-                                        <option value="12px">12px</option>
-                                        <option value="14px">14px</option>
-                                        <option value="16px" selected>16px</option>
-                                        <option value="18px">18px</option>
-                                        <option value="20px">20px</option>
-                                        <option value="24px">24px</option>
-                                        <option value="28px">28px</option>
-                                        <option value="32px">32px</option>
-                                        <option value="40px">40px</option>
+                                    <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
+                                        <option value="2">12px</option>
+                                        <option value="3" selected>16px</option>
+                                        <option value="4">20px</option>
+                                        <option value="5">24px</option>
+                                        <option value="6">32px</option>
+                                        <option value="7">40px</option>
                                     </select>
 
-                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Dash List</button>
-                                    <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. Numbered</button>
-                                    <button type="button" class="btn-fmt" onclick="insert3x2BoxTable('gramContentEditor')">+ 3x2 Table</button>
-                                    
+                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. List</button>
+                                    <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('gramContentEditor')">+ Table 3x2</button>
+
                                     <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                                     <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                                     <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
@@ -653,7 +604,7 @@
                             <div style="margin-top: 20px; display: flex; gap: 10px;">
                                 <button type="submit" class="btn btn-grammar" id="gramSubmitBtn">Save Grammar Note</button>
                                 <button type="button" class="btn btn-danger" id="gramDeleteBtn" style="display: none;" onclick="deleteGrammar()">Delete Note</button>
-                                <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeGrammarEditorMode()">Exit Editor</button>
+                                <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeWriteBlogForm()">Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -688,12 +639,11 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW WITH TEXT CODE (EN, ES, KO) -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
-                        <div id="cardFlagEN" class="card-flag">EN</div>
-                        <div id="cardTextEN" class="card-text">---</div>
+                        <div id="cardFlagEN" class="card-flag">🇺🇸</div>
+                        <div id="cardTextEN" class="card-text-lang">EN</div>
                         <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('EN', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('EN', true)">✔ Mastered</button>
@@ -701,8 +651,8 @@
                     </div>
 
                     <div class="card-box es" onclick="flipTriCard('ES')">
-                        <div id="cardFlagES" class="card-flag">ES</div>
-                        <div id="cardTextES" class="card-text">---</div>
+                        <div id="cardFlagES" class="card-flag">🇪🇸</div>
+                        <div id="cardTextES" class="card-text-lang">ES</div>
                         <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('ES', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('ES', true)">✔ Mastered</button>
@@ -710,8 +660,8 @@
                     </div>
 
                     <div class="card-box ko" onclick="flipTriCard('KO')">
-                        <div id="cardFlagKO" class="card-flag">KO</div>
-                        <div id="cardTextKO" class="card-text">---</div>
+                        <div id="cardFlagKO" class="card-flag">🇰🇷</div>
+                        <div id="cardTextKO" class="card-text-lang">KO</div>
                         <div class="card-actions" onclick="event.stopPropagation();">
                             <button class="btn btn-sm btn-danger" onclick="markCardLang('KO', false)">❌ Still Learning</button>
                             <button class="btn btn-sm" onclick="markCardLang('KO', true)">✔ Mastered</button>
@@ -749,7 +699,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS -->
+            <!-- DASHBOARD STATISTICS (3 GROUPS: STRONG, MEDIUM, WEAK) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -831,42 +781,37 @@
             </div>
         </div>
 
-        <!-- TAB 6: CALENDAR (NEW STUDY TRACKER) -->
+        <!-- TAB 6: CALENDAR (LỊCH HỌC TẬP TỔNG HỢP) -->
         <div id="tab6" class="tab-content">
             <div class="card">
-                <div class="cal-header">
+                <div class="calendar-header">
+                    <h2 style="color: var(--edit);">📅 Activity Calendar</h2>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <h2 id="calMonthYearTitle" style="color: var(--warning);">July 2026</h2>
-                        <button class="btn btn-sm btn-fmt" onclick="changeCalMonth(-1)">◀ Prev</button>
-                        <button class="btn btn-sm btn-fmt" onclick="changeCalMonth(1)">Next ▶</button>
-                    </div>
-                    <div>
-                        <select id="calViewMode" onchange="renderCalendar()" style="width: auto; padding: 6px 10px;">
-                            <option value="month" selected>Month View</option>
+                        <select id="calViewMode" onchange="renderCalendarTab()" style="width: auto;">
+                            <option value="month">Month View</option>
                             <option value="week">Week View</option>
                             <option value="year">Year View</option>
                         </select>
+                        <button class="btn btn-sm btn-fmt" onclick="changeCalDate(-1)">◄ Prev</button>
+                        <span id="calCurrentLabel" style="font-weight: 800; font-size: 1.1rem;">July 2026</span>
+                        <button class="btn btn-sm btn-fmt" onclick="changeCalDate(1)">Next ►</button>
                     </div>
                 </div>
 
-                <!-- Calendar Days Grid -->
-                <div id="calendarGrid" class="cal-grid"></div>
+                <!-- CALENDAR GRID -->
+                <div id="calendarGrid" class="calendar-grid"></div>
 
-                <!-- Daily Summary Panel when clicking a date -->
-                <div id="calDailySummary" style="margin-top: 24px; border-top: 1px dashed var(--border); padding-top: 16px; display: none;">
-                    <h3 id="calSummaryDateTitle" style="color: var(--primary); margin-bottom: 12px;">Daily Activity Summary</h3>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                        <!-- Vocab Learned -->
-                        <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border);">
-                            <h4 style="font-size: 0.9rem; color: var(--color-en); margin-bottom: 8px;">📖 Words Studied/Added</h4>
-                            <div id="calVocabSummaryList" style="font-size: 0.85rem; max-height: 200px; overflow-y: auto;">---</div>
+                <!-- DAILY SUMMARY BOARD -->
+                <div id="daySummaryCard" class="card" style="margin-top: 20px; background: var(--bg); display: none;">
+                    <h3 id="selectedDateTitle" style="color: var(--warning); margin-bottom: 12px;">Summary for YYYY-MM-DD</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4 style="color: var(--color-en); margin-bottom: 8px;">📚 Learned Vocabulary</h4>
+                            <div id="dayVocabList" style="font-size: 0.9rem;">None</div>
                         </div>
-
-                        <!-- Grammar Blog Posts -->
-                        <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border);">
-                            <h4 style="font-size: 0.9rem; color: var(--grammar); margin-bottom: 8px;">📝 Grammar Posts Published</h4>
-                            <div id="calGrammarSummaryList" style="font-size: 0.85rem; max-height: 200px; overflow-y: auto;">---</div>
+                        <div>
+                            <h4 style="color: var(--grammar); margin-bottom: 8px;">📝 Published Grammar Blog</h4>
+                            <div id="dayBlogList" style="font-size: 0.9rem;">None</div>
                         </div>
                     </div>
                 </div>
@@ -897,33 +842,33 @@
                     </div>
                 </div>
 
-                <!-- CUSTOM GOALS (LOCKED WITH GLOBAL EDIT BUTTON) & RADAR -->
+                <!-- CUSTOM GOALS (LOCKED WITH SHARED EDIT BUTTON) & RADAR -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-                    <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); position: relative;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="font-size: 0.95rem; color: var(--warning);">🎯 Custom Vocabulary Goals</h4>
-                            <button class="btn btn-sm btn-edit" id="toggleGoalEditBtn" onclick="toggleGoalEditLock()">✏️ Edit Goals</button>
+                            <h4 style="font-size: 0.95rem; color: var(--warning); margin: 0;">🎯 Custom Vocabulary Goals</h4>
+                            <button id="toggleGoalEditBtn" class="btn btn-sm btn-edit" onclick="toggleGoalEditLock()">Edit Goals</button>
                         </div>
                         
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:2px;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
                                     <span style="color:var(--color-en)">English Target (<span id="goalTextEN">500</span> words):</span>
-                                    <span><input type="number" id="inputGoalEN" value="500" disabled style="width:75px; padding:2px 6px; font-size:0.8rem;" onchange="saveCustomGoals()"></span>
+                                    <span><input type="number" id="inputGoalEN" value="500" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
                                 </div>
                                 <div class="progress-bar-bg"><div id="goalBarEN" class="progress-bar-fill" style="width:0%; background:var(--color-en);"></div></div>
                             </div>
                             <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:2px;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
                                     <span style="color:var(--color-es)">Spanish Target (<span id="goalTextES">300</span> words):</span>
-                                    <span><input type="number" id="inputGoalES" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem;" onchange="saveCustomGoals()"></span>
+                                    <span><input type="number" id="inputGoalES" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
                                 </div>
                                 <div class="progress-bar-bg"><div id="goalBarES" class="progress-bar-fill" style="width:0%; background:var(--color-es);"></div></div>
                             </div>
                             <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:2px;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
                                     <span style="color:var(--color-ko)">Korean Target (<span id="goalTextKO">300</span> words):</span>
-                                    <span><input type="number" id="inputGoalKO" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem;" onchange="saveCustomGoals()"></span>
+                                    <span><input type="number" id="inputGoalKO" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
                                 </div>
                                 <div class="progress-bar-bg"><div id="goalBarKO" class="progress-bar-fill" style="width:0%; background:var(--color-ko);"></div></div>
                             </div>
@@ -978,23 +923,20 @@
             <div class="editor-toolbar">
                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
-                <select class="btn-fmt" onchange="applyCustomFontSize(this.value)" style="width: auto; padding: 4px;">
-                    <option value="12px">12px</option>
-                    <option value="14px">14px</option>
-                    <option value="16px" selected>16px</option>
-                    <option value="18px">18px</option>
-                    <option value="20px">20px</option>
-                    <option value="24px">24px</option>
+                <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
+                    <option value="2">12px</option>
+                    <option value="3" selected>16px</option>
+                    <option value="4">20px</option>
+                    <option value="5">24px</option>
                 </select>
-                <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">• Dash</button>
-                <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. Number</button>
-                <button type="button" class="btn-fmt" onclick="insert3x2BoxTable('tempNoteContentEditor')">+ 3x2 Table</button>
+                <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
+                <button type="button" class="btn-fmt" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 3x2</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                 <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
                 <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
             </div>
-            <div id="tempNoteContentEditor" class="rich-editor" contenteditable="true" style="min-height: 200px; margin-bottom: 16px;"></div>
+            <div id="tempNoteContentEditor" class="rich-editor" contenteditable="true" style="min-height: 220px; margin-bottom: 16px;"></div>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn" onclick="saveNoteModal()">Save Note</button>
                 <button type="button" class="btn" style="background:var(--text-secondary);" onclick="closeNoteModal()">Cancel</button>
@@ -1059,7 +1001,7 @@
         }
 
         // =========================================================================
-        // GAS API CONFIG
+        // GAS API CONFIG - DÁN URL WEB APP CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
 
@@ -1071,16 +1013,10 @@
         let velocityChartInstance = null;
         let radarChartInstance = null;
         let lastRenderedBoardItem = null;
-        
-        let fbCurrentPage = 1;
-        const fbPostsPerPage = 4;
-
         let calCurrentDate = new Date();
-        let calSelectedDateStr = null;
-
+        
         let currentTopicTab = "ALL";
         let currentSubTopicTab = "ALL";
-        
         let currentEditingNoteLang = null;
         let currentNotes = { EN: "", ES: "", KO: "" };
         let currentConjData = {};
@@ -1223,9 +1159,9 @@
             renderLogTable();
             renderTab2();
             renderGrammarSidebar();
-            renderFbFeed();
+            renderBlogFeed(1);
             renderAnalyticsDashboard();
-            renderCalendar();
+            renderCalendarTab();
             renderReportTab();
         }
 
@@ -1249,13 +1185,24 @@
         }
 
         function toggleGoalEditLock() {
-            const inputs = [document.getElementById('inputGoalEN'), document.getElementById('inputGoalES'), document.getElementById('inputGoalKO')];
+            const inputEN = document.getElementById('inputGoalEN');
+            const inputES = document.getElementById('inputGoalES');
+            const inputKO = document.getElementById('inputGoalKO');
             const btn = document.getElementById('toggleGoalEditBtn');
-            const isCurrentlyDisabled = inputs[0].disabled;
 
-            inputs.forEach(inp => inp.disabled = !isCurrentlyDisabled);
-            btn.innerText = isCurrentlyDisabled ? "🔒 Lock Goals" : "✏️ Edit Goals";
-            btn.style.background = isCurrentlyDisabled ? "var(--primary)" : "var(--edit)";
+            const isLocked = inputEN.disabled;
+            inputEN.disabled = !isLocked;
+            inputES.disabled = !isLocked;
+            inputKO.disabled = !isLocked;
+
+            if (isLocked) {
+                btn.innerText = "🔒 Save & Lock";
+                btn.className = "btn btn-sm btn-warning";
+            } else {
+                btn.innerText = "Edit Goals";
+                btn.className = "btn btn-sm btn-edit";
+                saveCustomGoals();
+            }
         }
 
         function saveCustomGoals() {
@@ -1299,10 +1246,10 @@
                     renderLogTable();
                     renderTab2();
                     renderGrammarSidebar();
-                    renderFbFeed();
+                    renderBlogFeed(1);
                     startQuiz();
                     renderAnalyticsDashboard();
-                    renderCalendar();
+                    renderCalendarTab();
                     renderReportTab();
                     showToast("✅ Synchronized successfully!");
                 }
@@ -1316,9 +1263,9 @@
             document.getElementById(tabId).classList.add('active');
             if(tabId === 'tab1') renderLogTable();
             if(tabId === 'tab2') renderTab2();
-            if(tabId === 'tab3') { renderGrammarSidebar(); renderFbFeed(); }
+            if(tabId === 'tab3') { renderGrammarSidebar(); renderBlogFeed(1); closeWriteBlogForm(); }
             if(tabId === 'tab4') { startQuiz(); renderAnalyticsDashboard(); }
-            if(tabId === 'tab6') { renderCalendar(); }
+            if(tabId === 'tab6') { renderCalendarTab(); }
             if(tabId === 'tab7') { renderReportTab(); }
         }
 
@@ -1355,80 +1302,37 @@
         }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
-        function applyCustomFontSize(pxVal) {
-            const sel = window.getSelection();
-            if (!sel.rangeCount) return;
-            const span = document.createElement('span');
-            span.style.fontSize = pxVal;
-            const range = sel.getRangeAt(0);
-            range.surroundContents(span);
-        }
-
-        function insert3x2BoxTable(editorId) {
+        
+        /* SMART TABLE 3x2 WITH BUILT-IN BUTTONS */
+        function insertSmartTable(editorId) {
             const editor = document.getElementById(editorId);
             const tableHTML = `
-                <table style="width:100%; border-collapse:collapse; margin:10px 0; border:2px solid var(--border);">
-                    <tr><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
-                    <tr><td>Cell A</td><td>Cell B</td><td>Cell C</td></tr>
-                </table><p><br></p>
+                <div class="smart-table-wrapper" contenteditable="false">
+                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <table class="smart-table">
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
+                    </table>
+                </div><p><br></p>
             `;
             editor.focus();
             document.execCommand('insertHTML', false, tableHTML);
         }
 
-        function getParentTableAndCell() {
-            const sel = window.getSelection();
-            if (!sel.rangeCount) return null;
-            let node = sel.getRangeAt(0).startContainer;
-            let td = null, tr = null, table = null;
-            while (node && node.nodeName !== 'BODY') {
-                if (node.nodeName === 'TD' || node.nodeName === 'TH') td = node;
-                if (node.nodeName === 'TR') tr = node;
-                if (node.nodeName === 'TABLE') { table = node; break; }
-                node = node.parentNode;
-            }
-            if (table && tr && td) return { table, tr, td };
-            return null;
+        function addSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            const cols = table.rows[0].cells.length;
+            const newTr = table.insertRow();
+            newTr.contentEditable = "true";
+            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
         }
 
-        function addTableRow(editorId) {
-            const info = getParentTableAndCell();
-            if (!info) { alert("Please click inside a table cell first!"); return; }
-            const colCount = info.tr.cells.length;
-            const newTr = document.createElement('tr');
-            for (let i = 0; i < colCount; i++) {
-                const newTd = document.createElement('td');
-                newTd.innerText = "New cell";
-                newTr.appendChild(newTd);
-            }
-            info.tr.parentNode.insertBefore(newTr, info.tr.nextSibling);
-        }
-
-        function addTableCol(editorId) {
-            const info = getParentTableAndCell();
-            if (!info) { alert("Please click inside a table cell first!"); return; }
-            const cellIndex = info.td.cellIndex;
-            for (let i = 0; i < info.table.rows.length; i++) {
-                const row = info.table.rows[i];
-                const newTd = document.createElement('td');
-                newTd.innerText = "New cell";
-                row.insertBefore(newTd, row.cells[cellIndex + 1] || null);
-            }
-        }
-
-        function deleteTableRow(editorId) {
-            const info = getParentTableAndCell();
-            if (!info) { alert("Please click inside a table cell first!"); return; }
-            info.tr.remove();
-        }
-
-        function deleteTableCol(editorId) {
-            const info = getParentTableAndCell();
-            if (!info) { alert("Please click inside a table cell first!"); return; }
-            const cellIndex = info.td.cellIndex;
-            for (let i = 0; i < info.table.rows.length; i++) {
-                const row = info.table.rows[i];
-                if (row.cells[cellIndex]) row.cells[cellIndex].remove();
+        function addSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            for(let i=0; i<table.rows.length; i++) {
+                const cell = table.rows[i].insertCell();
+                cell.innerText = "New cell";
             }
         }
 
@@ -1825,7 +1729,7 @@
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.es && (i.pos === 'phrasal verb' || i.noteES.toLowerCase().includes('phrasal') || i.es.split(' ').length > 1)).forEach(item => {
+            userVocabList.filter(i => i.es && (i.pos === 'phrasal verb' || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1)).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -1953,18 +1857,37 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG (FB FEED + COLLAPSED FOLDERS A-Z + NOTE CATEGORY) ---
+        // --- TAB 3: GRAMMAR BLOG (FACEBOOK TIMELINE FEED & ACCORDION TREE FOLDERS) ---
         let pinnedPostIds = JSON.parse(localStorage.getItem("trilingua_pinned_posts") || "[]");
+        let feedCurrentPage = 1;
 
-        function openGrammarEditorMode() {
-            document.getElementById('grammarFeedContainer').style.display = "none";
-            document.getElementById('grammarEditorContainer').style.display = "block";
+        function openWriteBlogForm(editId = null) {
+            document.getElementById('blogFeedContainer').style.display = "none";
+            document.getElementById('blogFormCard').style.display = "block";
+            if (editId) {
+                loadGrammarPost(editId);
+            } else {
+                resetGrammarForm();
+            }
         }
 
-        function closeGrammarEditorMode() {
-            document.getElementById('grammarEditorContainer').style.display = "none";
-            document.getElementById('grammarFeedContainer').style.display = "block";
-            resetGrammarForm();
+        function closeWriteBlogForm() {
+            document.getElementById('blogFeedContainer').style.display = "block";
+            document.getElementById('blogFormCard').style.display = "none";
+            renderBlogFeed(feedCurrentPage);
+        }
+
+        function handleGramLangChange(langVal) {
+            const tagSelect = document.getElementById('gramTag');
+            tagSelect.innerHTML = "";
+            
+            if (langVal === 'Note') {
+                const noteTags = ['English', 'Espanol', '한국어', 'Jottings'];
+                noteTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t}</option>`; });
+            } else {
+                const defaultTags = ['', 'A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
+                defaultTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t ? '#' + t : '-- None --'}</option>`; });
+            }
         }
 
         function togglePinPost(e, id) {
@@ -1976,185 +1899,165 @@
             }
             localStorage.setItem("trilingua_pinned_posts", JSON.stringify(pinnedPostIds));
             renderGrammarSidebar();
-            renderFbFeed();
+            renderBlogFeed(feedCurrentPage);
         }
 
+        /* Render Facebook-style Timeline Feed */
+        function renderBlogFeed(page = 1) {
+            feedCurrentPage = page;
+            const container = document.getElementById('feedPostsList');
+            const pagination = document.getElementById('feedPagination');
+            container.innerHTML = "";
+            pagination.innerHTML = "";
+
+            if (grammarList.length === 0) {
+                container.innerHTML = `<div class="card" style="text-align:center; padding:30px;">No blog posts created yet! Click "+ Write New Post" to start.</div>`;
+                return;
+            }
+
+            const sortedList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            const pageSize = 4;
+            const totalPages = Math.ceil(sortedList.length / pageSize);
+            const pagedList = sortedList.slice((page - 1) * pageSize, page * pageSize);
+
+            pagedList.forEach(post => {
+                const langIcons = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
+                const isPinned = pinnedPostIds.includes(post.id);
+
+                const postCard = document.createElement('div');
+                postCard.className = "feed-post";
+                postCard.innerHTML = `
+                    <div class="feed-post-header">
+                        <div>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--grammar);">${langIcons[post.lang] || '📝'} ${post.lang} • ${post.topic || 'General'}</span>
+                            <div class="feed-post-title">${isPinned ? '⭐ ' : ''}${post.title || 'Untitled Note'}</div>
+                        </div>
+                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin Post">${isPinned ? '★ Pinned' : '☆ Pin'}</span>
+                    </div>
+                    <div class="feed-post-body">${post.content || ''}</div>
+                    <div class="feed-post-footer">
+                        <div>
+                            <span>📅 Published: ${post.timestamp || '2026-07-28'}</span>
+                            ${post.keywords ? ` | 🏷️ <i>${post.keywords}</i>` : ''}
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-edit" onclick="openWriteBlogForm('${post.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteGrammarFromFeed('${post.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(postCard);
+            });
+
+            // Pagination Controls
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `btn btn-sm ${i === page ? '' : 'btn-fmt'}`;
+                    pageBtn.innerText = i;
+                    pageBtn.onclick = () => renderBlogFeed(i);
+                    pagination.appendChild(pageBtn);
+                }
+            }
+        }
+
+        function deleteGrammarFromFeed(id) {
+            document.getElementById('grammarId').value = id;
+            deleteGrammar();
+        }
+
+        /* Render Left Sidebar Folder Accordions */
         function renderGrammarSidebar() {
             const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
             const selectedTag = document.getElementById('tagFilterSelect').value;
             const container = document.getElementById('grammarTreeContainer');
             container.innerHTML = "";
 
-            const currentEditId = document.getElementById('grammarId').value;
-            const categories = ["English", "Español", "한국어", "Note"];
-            const catFlags = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
+            const languages = ["English", "Español", "한국어", "Note"];
+            const langFlags = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
 
-            categories.forEach(cat => {
-                let catPosts = grammarList.filter(g => {
-                    const matchCat = (cat === "Note") ? (g.lang === "Note") : (g.lang === cat);
+            languages.forEach(lang => {
+                let langPosts = grammarList.filter(g => {
+                    const matchLang = g.lang === lang;
                     const matchQuery = !query || 
                         (g.title && g.title.toLowerCase().includes(query)) ||
                         (g.topic && g.topic.toLowerCase().includes(query)) ||
-                        (g.keywords && g.keywords.toLowerCase().includes(query)) ||
                         (g.content && g.content.toLowerCase().includes(query));
                     
                     const matchTag = (selectedTag === "ALL") || (g.content && g.content.includes(`#${selectedTag}`)) || (g.topic && g.topic.includes(selectedTag));
-                    return matchCat && matchQuery && matchTag;
+                    return matchLang && matchQuery && matchTag;
                 });
 
-                // Sort Alphabetically A-Z by Title
-                catPosts.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
-
-                const catEl = document.createElement('div');
-                catEl.className = `tree-lang ${query || selectedTag !== 'ALL' ? 'open' : ''}`; // DEFAULT COLLAPSED
+                const langEl = document.createElement('div');
+                langEl.className = `tree-lang ${query || selectedTag !== 'ALL' || langPosts.length > 0 ? 'open' : ''}`;
                 
-                const catHeader = document.createElement('div');
-                catHeader.className = "tree-lang-header";
-                catHeader.innerHTML = `<span>📁 ${catFlags[cat]} ${cat}</span> <span>(${catPosts.length})</span>`;
-                catHeader.onclick = () => catEl.classList.toggle('open');
+                const langHeader = document.createElement('div');
+                langHeader.className = "tree-lang-header";
+                langHeader.innerHTML = `<span>${langFlags[lang]} ${lang}</span> <span>(${langPosts.length})</span>`;
+                langHeader.onclick = () => langEl.classList.toggle('open');
 
-                const catBody = document.createElement('div');
-                catBody.className = "tree-lang-body";
+                const langBody = document.createElement('div');
+                langBody.className = "tree-lang-body";
 
-                catPosts.forEach(post => {
-                    const isPinned = pinnedPostIds.includes(post.id);
-                    const postDateStr = post.timestamp || '2026-07-28';
-                    const postEl = document.createElement('div');
-                    postEl.className = `post-item ${String(post.id) === String(currentEditId) ? 'active' : ''}`;
-                    postEl.innerHTML = `
-                        <div>
-                            <div>${isPinned ? '⭐ ' : ''}<b>${post.title || "Untitled Note"}</b></div>
-                            <span class="post-date">📅 ${postDateStr}</span>
-                        </div>
-                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin / Unpin">${isPinned ? '★' : '☆'}</span>
-                    `;
-                    postEl.onclick = (e) => {
-                        e.stopPropagation();
-                        // Open Post in Read-Only FB Feed View Mode
-                        renderSingleFbPost(post.id);
-                    };
-                    catBody.appendChild(postEl);
+                // Group by Category Folders (Sorted Alphabetically)
+                const foldersMap = {};
+                langPosts.forEach(p => {
+                    const cat = p.topic || "General";
+                    if (!foldersMap[cat]) foldersMap[cat] = [];
+                    foldersMap[cat].push(p);
                 });
 
-                catEl.appendChild(catHeader);
-                catEl.appendChild(catBody);
-                container.appendChild(catEl);
+                const sortedFolderKeys = Object.keys(foldersMap).sort();
+
+                sortedFolderKeys.forEach(cat => {
+                    const folderPosts = foldersMap[cat].sort((a,b) => (a.title || '').localeCompare(b.title || ''));
+
+                    const folderEl = document.createElement('div');
+                    folderEl.className = `tree-folder ${query ? 'open' : ''}`;
+
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = "tree-folder-header";
+                    folderHeader.innerHTML = `<span>📁 ${cat}</span> <span>(${folderPosts.length})</span>`;
+                    folderHeader.onclick = () => folderEl.classList.toggle('open');
+
+                    const folderBody = document.createElement('div');
+                    folderBody.className = "tree-folder-body";
+
+                    folderPosts.forEach(post => {
+                        const isPinned = pinnedPostIds.includes(post.id);
+                        const postEl = document.createElement('div');
+                        postEl.className = "post-item";
+                        postEl.innerHTML = `
+                            <div>
+                                <div>${isPinned ? '⭐ ' : ''}<b>${post.title || "Untitled Note"}</b></div>
+                                <span class="post-date">📅 ${post.timestamp || '2026-07-28'}</span>
+                            </div>
+                            <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')">${isPinned ? '★' : '☆'}</span>
+                        `;
+                        postEl.onclick = (e) => {
+                            e.stopPropagation();
+                            openWriteBlogForm(post.id);
+                        };
+                        folderBody.appendChild(postEl);
+                    });
+
+                    folderEl.appendChild(folderHeader);
+                    folderEl.appendChild(folderBody);
+                    langBody.appendChild(folderEl);
+                });
+
+                langEl.appendChild(langHeader);
+                langEl.appendChild(langBody);
+                container.appendChild(langEl);
             });
         }
 
-        /* RENDER FB WALL FEED RECENT POSTS FIRST (3-5 items/page) */
-        function renderFbFeed() {
-            const feedContainer = document.getElementById('fbPostsList');
-            const paginationContainer = document.getElementById('fbPagination');
-            feedContainer.innerHTML = "";
-            paginationContainer.innerHTML = "";
-
-            if (grammarList.length === 0) {
-                feedContainer.innerHTML = `<div class="card" style="text-align:center; padding:30px;">No grammar posts created yet!</div>`;
-                return;
-            }
-
-            // Sort posts by date DESC (Most recent first)
-            const sortedPosts = [...grammarList].sort((a,b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
-
-            const totalPages = Math.ceil(sortedPosts.length / fbPostsPerPage);
-            if (fbCurrentPage > totalPages) fbCurrentPage = 1;
-
-            const startIndex = (fbCurrentPage - 1) * fbPostsPerPage;
-            const currentPosts = sortedPosts.slice(startIndex, startIndex + fbPostsPerPage);
-
-            currentPosts.forEach(post => {
-                const isPinned = pinnedPostIds.includes(post.id);
-                const card = document.createElement('div');
-                card.className = "fb-post-card";
-                card.innerHTML = `
-                    <div class="fb-post-header">
-                        <div>
-                            <span style="font-size:0.8rem; padding:2px 8px; border-radius:4px; background:var(--grammar); color:#fff; font-weight:bold; margin-right:6px;">${post.lang || 'General'}</span>
-                            <span class="fb-post-title">${isPinned ? '⭐ ' : ''}${post.title || 'Untitled Note'}</span>
-                        </div>
-                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')">${isPinned ? '★ Pinned' : '☆ Pin'}</span>
-                    </div>
-                    <div class="fb-post-body">${post.content || ''}</div>
-                    <div class="fb-post-footer">
-                        <div>
-                            <span>📂 Category: <b>${post.topic || 'General'}</b></span> | 
-                            <span>🏷️ Keywords: <i>${post.keywords || 'None'}</i></span>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span>📅 Published: ${post.timestamp || '2026-07-28'}</span>
-                            <button class="btn btn-sm btn-edit" onclick="loadGrammarPostForEdit('${post.id}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteGrammarById('${post.id}')">Delete</button>
-                        </div>
-                    </div>
-                `;
-                feedContainer.appendChild(card);
-            });
-
-            // Build Pagination Buttons: Prev, 1, 2, 3... Next, Last
-            if (totalPages > 1) {
-                let pageBtnsHTML = `<button class="page-btn" onclick="setFbPage(1)">First</button>`;
-                pageBtnsHTML += `<button class="page-btn" onclick="setFbPage(${Math.max(1, fbCurrentPage - 1)})">◀ Prev</button>`;
-
-                for (let i = 1; i <= totalPages; i++) {
-                    pageBtnsHTML += `<button class="page-btn ${i === fbCurrentPage ? 'active' : ''}" onclick="setFbPage(${i})">${i}</button>`;
-                }
-
-                pageBtnsHTML += `<button class="page-btn" onclick="setFbPage(${Math.min(totalPages, fbCurrentPage + 1)})">Next ▶</button>`;
-                pageBtnsHTML += `<button class="page-btn" onclick="setFbPage(${totalPages})">Last</button>`;
-                paginationContainer.innerHTML = pageBtnsHTML;
-            }
-        }
-
-        function setFbPage(page) {
-            fbCurrentPage = page;
-            renderFbFeed();
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function renderSingleFbPost(id) {
-            const post = grammarList.find(i => String(i.id) === String(id));
-            if (!post) return;
-            document.getElementById('grammarEditorContainer').style.display = "none";
-            document.getElementById('grammarFeedContainer').style.display = "block";
-
-            const feedContainer = document.getElementById('fbPostsList');
-            document.getElementById('fbPagination').innerHTML = "";
-            feedContainer.innerHTML = "";
-
-            const isPinned = pinnedPostIds.includes(post.id);
-            const card = document.createElement('div');
-            card.className = "fb-post-card";
-            card.innerHTML = `
-                <div class="fb-post-header">
-                    <div>
-                        <span style="font-size:0.8rem; padding:2px 8px; border-radius:4px; background:var(--grammar); color:#fff; font-weight:bold; margin-right:6px;">${post.lang || 'General'}</span>
-                        <span class="fb-post-title">${isPinned ? '⭐ ' : ''}${post.title || 'Untitled Note'}</span>
-                    </div>
-                    <button class="btn btn-sm btn-fmt" onclick="renderFbFeed()">Show All Posts</button>
-                </div>
-                <div class="fb-post-body">${post.content || ''}</div>
-                <div class="fb-post-footer">
-                    <div>
-                        <span>📂 Category: <b>${post.topic || 'General'}</b></span> | 
-                        <span>🏷️ Keywords: <i>${post.keywords || 'None'}</i></span>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <span>📅 ${post.timestamp || '2026-07-28'}</span>
-                        <button class="btn btn-sm btn-edit" onclick="loadGrammarPostForEdit('${post.id}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteGrammarById('${post.id}')">Delete</button>
-                    </div>
-                </div>
-            `;
-            feedContainer.appendChild(card);
-        }
-
-        function loadGrammarPostForEdit(id) {
+        function loadGrammarPost(id) {
             const g = grammarList.find(i => String(i.id) === String(id));
             if (!g) return;
-            openGrammarEditorMode();
             document.getElementById('grammarId').value = g.id;
             document.getElementById('gramLang').value = g.lang || "English";
+            handleGramLangChange(g.lang || "English");
             document.getElementById('gramTopic').value = g.topic || "";
             document.getElementById('gramTitle').value = g.title || "";
             document.getElementById('gramKeywords').value = g.keywords || "";
@@ -2168,6 +2071,7 @@
             document.getElementById('grammarForm').reset();
             document.getElementById('grammarId').value = "";
             document.getElementById('gramContentEditor').innerHTML = "";
+            handleGramLangChange('English');
             document.getElementById('grammarHeader').innerText = "Create Grammar Note";
             document.getElementById('gramSubmitBtn').innerText = "Save Grammar Note";
             document.getElementById('gramDeleteBtn').style.display = "none";
@@ -2203,9 +2107,7 @@
             }
 
             saveToLocalStorage();
-            closeGrammarEditorMode();
-            renderGrammarSidebar();
-            renderFbFeed();
+            closeWriteBlogForm();
             showToast("⏳ Saving grammar post...");
 
             const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
@@ -2217,16 +2119,17 @@
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData }),
                     redirect: "follow"
                 });
-                showToast("✅ Saved to Google Sheet!");
+                const resData = await response.json();
+                if(resData.status === "success") showToast("✅ Saved to Google Sheet!");
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        async function deleteGrammarById(id) {
+        async function deleteGrammar() {
+            const id = document.getElementById('grammarId').value;
             if (!id || !confirm("Are you sure you want to delete this grammar note?")) return;
             grammarList = grammarList.filter(item => String(item.id) !== String(id));
             saveToLocalStorage();
-            renderGrammarSidebar();
-            renderFbFeed();
+            closeWriteBlogForm();
             showToast("⏳ Deleting...");
 
             try {
@@ -2491,7 +2394,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (STRONG, MEDIUM, WEAK) ---
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2499,7 +2402,7 @@
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
-            // 1. Calculate 3 Groups: Strong, Medium, Weak
+            // Categorization Groups: Strong, Medium, Weak
             const vocabRecordMap = {};
             flashcardHist.forEach(h => {
                 if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
@@ -2519,7 +2422,7 @@
             document.getElementById('groupMediumCount').innerText = `${mediumCount} words`;
             document.getElementById('groupWeakCount').innerText = `${weakCount} words`;
 
-            // 2. POS Chart
+            // POS Chart
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
             const posLearning = {};
@@ -2546,7 +2449,7 @@
                 options: { responsive: true, scales: { x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
 
-            // 3. Top 10 Mistakes
+            // Top 10 Mistakes
             const mistakeMap = {};
             typingHist.filter(h => !h.remembered).forEach(h => {
                 const key = `${h.wordEN || 'Unknown'}_${h.lang}`;
@@ -2574,81 +2477,117 @@
         }
 
         // --- TAB 6: CALENDAR ---
-        function changeCalMonth(offset) {
-            calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
-            renderCalendar();
+        function changeCalDate(offset) {
+            const mode = document.getElementById('calViewMode').value;
+            if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
+            else if (mode === 'week') calCurrentDate.setDate(calCurrentDate.getDate() + offset * 7);
+            else if (mode === 'year') calCurrentDate.setFullYear(calCurrentDate.getFullYear() + offset);
+            renderCalendarTab();
         }
 
-        function renderCalendar() {
+        function renderCalendarTab() {
+            const mode = document.getElementById('calViewMode').value;
             const grid = document.getElementById('calendarGrid');
+            const label = document.getElementById('calCurrentLabel');
             grid.innerHTML = "";
 
-            const year = calCurrentDate.getFullYear();
-            const month = calCurrentDate.getMonth();
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             
-            document.getElementById('calMonthYearTitle').innerText = `${monthNames[month]} ${year}`;
+            // Build Study Dates Sets
+            const studyDatesVocab = new Set(userVocabList.map(v => v.timestamp));
+            const studyDatesBlog = new Set(grammarList.map(g => g.timestamp));
 
-            // Render Day Names
-            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            dayNames.forEach(d => {
-                grid.innerHTML += `<div class="cal-day-name">${d}</div>`;
-            });
+            if (mode === 'month') {
+                const year = calCurrentDate.getFullYear();
+                const month = calCurrentDate.getMonth();
+                label.innerText = `${months[month]} ${year}`;
 
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // Blank spaces
-            for (let i = 0; i < firstDay; i++) {
-                grid.innerHTML += `<div></div>`;
-            }
+                const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                dayHeaders.forEach(dh => { grid.innerHTML += `<div class="cal-day-header">${dh}</div>`; });
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                
-                // Check active study per language for dots
-                const hasEN = userVocabList.some(v => v.timestamp === dateStr && v.en);
-                const hasES = userVocabList.some(v => v.timestamp === dateStr && v.es);
-                const hasKO = userVocabList.some(v => v.timestamp === dateStr && v.ko);
+                for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div></div>`; }
 
-                const cell = document.createElement('div');
-                cell.className = `cal-day-cell ${calSelectedDateStr === dateStr ? 'selected' : ''}`;
-                cell.innerHTML = `
-                    <span style="font-weight:700; font-size:0.9rem;">${day}</span>
-                    <div class="cal-dots-row">
-                        <div class="cal-dot en ${hasEN ? 'active' : ''}"></div>
-                        <div class="cal-dot es ${hasES ? 'active' : ''}"></div>
-                        <div class="cal-dot ko ${hasKO ? 'active' : ''}"></div>
-                    </div>
-                `;
-                cell.onclick = () => selectCalDate(dateStr);
-                grid.appendChild(cell);
+                for (let d = 1; u = d <= daysInMonth; d++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    const hasVocab = studyDatesVocab.has(dateStr);
+                    const hasBlog = studyDatesBlog.has(dateStr);
+                    const isStudy = hasVocab || hasBlog;
+
+                    const cell = document.createElement('div');
+                    cell.className = `cal-cell ${isStudy ? 'active-study' : ''}`;
+                    cell.onclick = () => selectCalDate(dateStr);
+                    cell.innerHTML = `
+                        <span class="cal-num">${d}</span>
+                        <div class="cal-dots">
+                            ${hasVocab ? '<span class="dot-vocab" title="Vocabulary Added"></span>' : ''}
+                            ${hasBlog ? '<span class="dot-blog" title="Blog Post Created"></span>' : ''}
+                        </div>
+                    `;
+                    grid.appendChild(cell);
+                }
+            } else if (mode === 'week') {
+                label.innerText = `Week of ${calCurrentDate.toISOString().split('T')[0]}`;
+                const curr = new Date(calCurrentDate);
+                const first = curr.getDate() - curr.getDay();
+
+                const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                dayHeaders.forEach(dh => { grid.innerHTML += `<div class="cal-day-header">${dh}</div>`; });
+
+                for (let i = 0; i < 7; i++) {
+                    const next = new Date(curr.setDate(first + i));
+                    const dateStr = next.toISOString().split('T')[0];
+                    const hasVocab = studyDatesVocab.has(dateStr);
+                    const hasBlog = studyDatesBlog.has(dateStr);
+                    const isStudy = hasVocab || hasBlog;
+
+                    const cell = document.createElement('div');
+                    cell.className = `cal-cell ${isStudy ? 'active-study' : ''}`;
+                    cell.onclick = () => selectCalDate(dateStr);
+                    cell.innerHTML = `
+                        <span class="cal-num">${next.getDate()}</span>
+                        <div class="cal-dots">
+                            ${hasVocab ? '<span class="dot-vocab"></span>' : ''}
+                            ${hasBlog ? '<span class="dot-blog"></span>' : ''}
+                        </div>
+                    `;
+                    grid.appendChild(cell);
+                }
+            } else if (mode === 'year') {
+                const year = calCurrentDate.getFullYear();
+                label.innerText = `Year ${year}`;
+                grid.style.gridTemplateColumns = "repeat(4, 1fr)";
+
+                months.forEach((mName, mIdx) => {
+                    const monthCell = document.createElement('div');
+                    monthCell.className = "card";
+                    monthCell.style.padding = "10px";
+                    monthCell.style.textAlign = "center";
+                    monthCell.innerHTML = `<h4 style="color:var(--primary);">${mName}</h4>`;
+                    grid.appendChild(monthCell);
+                });
             }
         }
 
         function selectCalDate(dateStr) {
-            calSelectedDateStr = dateStr;
-            renderCalendar();
+            document.getElementById('daySummaryCard').style.display = "block";
+            document.getElementById('selectedDateTitle').innerText = `📅 Summary for ${dateStr}`;
 
-            const summaryPanel = document.getElementById('calDailySummary');
-            summaryPanel.style.display = "block";
-            document.getElementById('calSummaryDateTitle').innerText = `📅 Activity Details for ${dateStr}`;
+            const dayVocabs = userVocabList.filter(v => v.timestamp === dateStr);
+            const dayBlogs = grammarList.filter(g => g.timestamp === dateStr);
 
-            // Filter Vocab and Grammar created on dateStr
-            const dayVocab = userVocabList.filter(v => v.timestamp === dateStr);
-            const dayGrammar = grammarList.filter(g => g.timestamp === dateStr);
-
-            const vocabListEl = document.getElementById('calVocabSummaryList');
-            const gramListEl = document.getElementById('calGrammarSummaryList');
-
-            if (dayVocab.length === 0) vocabListEl.innerHTML = `<em>No words learned on this date.</em>`;
+            const vList = document.getElementById('dayVocabList');
+            if (dayVocabs.length === 0) vList.innerText = "No vocabulary added on this day.";
             else {
-                vocabListEl.innerHTML = dayVocab.map(v => `• <b>${v.en || '-'}</b> (${v.es || '-'} / ${v.ko || '-'}) - <i>${v.vi}</i>`).join('<br>');
+                vList.innerHTML = dayVocabs.map(v => `• <b>${v.en}</b> (${v.es} / ${v.ko}) - <i>${v.vi}</i>`).join('<br>');
             }
 
-            if (dayGrammar.length === 0) gramListEl.innerHTML = `<em>No grammar posts published on this date.</em>`;
+            const bList = document.getElementById('dayBlogList');
+            if (dayBlogs.length === 0) bList.innerText = "No blog posts published on this day.";
             else {
-                gramListEl.innerHTML = dayGrammar.map(g => `• [<b>${g.lang}</b>] ${g.title || 'Untitled'} (<i>${g.topic}</i>)`).join('<br>');
+                bList.innerHTML = dayBlogs.map(g => `• [<b>${g.lang}</b>] ${g.title || 'Untitled Note'} (${g.topic})`).join('<br>');
             }
         }
 
@@ -2791,7 +2730,7 @@
             });
         }
 
-        // --- TAB 5: BOARD ---
+        // --- TAB 5: BOARD (MIND-MAP) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
