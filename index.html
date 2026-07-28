@@ -166,14 +166,14 @@
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.80rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* CALENDAR WITH YELLOW HIGHLIGHT FOR BLOG POST DATES */
+        /* CALENDAR */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
         .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; min-height: 48px; }
         .cal-cell:hover { border-color: var(--primary); }
         .cal-cell.active-vocab { background: rgba(16, 185, 129, 0.18); border-color: var(--primary); }
-        .cal-cell.active-blog { background: rgba(245, 158, 11, 0.25) !important; border-color: var(--warning) !important; } /* YELLOW COLOR FOR BLOG POSTS */
+        .cal-cell.active-blog { background: rgba(245, 158, 11, 0.25) !important; border-color: var(--warning) !important; }
         .cal-cell.active-blog .cal-num { color: var(--warning) !important; font-weight: 800; }
         .cal-num { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
         
@@ -183,7 +183,7 @@
         .dot-blog-ko { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ko); }
         .dot-blog-note { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
-        /* BOARD (TAB 5) - SEARCH DROPDOWN AND AUTOCOMPLETE */
+        /* BOARD (TAB 5) */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -418,7 +418,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with 15-item Pagination -->
+            <!-- Vocabulary Log Table with Filters -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -453,7 +453,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH & TOPICS (AUTOCOMPLETE DROPDOWN + 30 ITEMS PER PAGE) -->
+        <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -544,7 +544,6 @@
                     </div>
                 </div>
 
-                <!-- REMOVED EXAMPLE [EN] COLUMN -->
                 <div id="searchIrregView" style="display: none;">
                     <h3 style="margin-bottom: 12px; color: var(--color-en);">Irregular Verbs Directory</h3>
                     <div class="table-container">
@@ -563,7 +562,6 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN (1 VERB PER PAGE WITH PAGINATION) -->
                 <div id="searchConjView" style="display: none;">
                     <h3 style="margin-bottom: 12px; color: var(--color-es);">Conjugación</h3>
                     <div id="conjDirectoryContainer"></div>
@@ -795,7 +793,7 @@
                 </div>
             </div>
 
-            <!-- MULTIPLE CHOICE VIEW (PHRASAL, IDIOM, COLLOCATION) -->
+            <!-- MULTIPLE CHOICE VIEW -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
@@ -857,7 +855,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD -->
+        <!-- TAB 5: BOARD (STRICTLY NO IDIOMS) -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
@@ -886,7 +884,7 @@
             </div>
         </div>
 
-        <!-- TAB 6: CALENDAR (YELLOW HIGHLIGHT FOR BLOG POST DATES) -->
+        <!-- TAB 6: CALENDAR -->
         <div id="tab6" class="tab-content">
             <div class="card">
                 <div class="calendar-header">
@@ -1129,7 +1127,7 @@
         let currentEnIrregData = { base: "", past: "", part: "" };
 
         let searchPage = 1;
-        const searchPageSize = 30; // UPDATED MAX 30 ITEMS PER PAGE
+        const searchPageSize = 30;
         let conjPage = 1;
 
         let logPage = 1;
@@ -1287,13 +1285,21 @@
             }
         }
 
+        /* LOCAL STORAGE LOADING WITH GOALS CONFIG FILTER */
         function loadFromLocalStorage() {
             const savedVocab = localStorage.getItem("trilingua_vocab");
             const savedGrammar = localStorage.getItem("trilingua_grammar");
             const savedQuiz = localStorage.getItem("trilingua_quiz_hist");
             
             if (savedVocab) {
-                userVocabList = JSON.parse(savedVocab).map(item => ({
+                const rawVocab = JSON.parse(savedVocab);
+                const goalsItem = rawVocab.find(i => String(i.id) === "GOALS_CONFIG");
+                if (goalsItem) {
+                    localStorage.setItem("goal_EN", goalsItem.en);
+                    localStorage.setItem("goal_ES", goalsItem.es);
+                    localStorage.setItem("goal_KO", goalsItem.ko);
+                }
+                userVocabList = rawVocab.filter(item => String(item.id) !== "GOALS_CONFIG").map(item => ({
                     ...item,
                     timestamp: formatDateYYYYMMDD(item.timestamp),
                     conjData: item.conjData || {},
@@ -1358,17 +1364,38 @@
             }
         }
 
-        function saveCustomGoals() {
+        /* CUSTOM GOALS SYNCED DIRECTLY TO GOOGLE SHEETS AS WELL */
+        async function saveCustomGoals() {
             const gEN = document.getElementById('inputGoalEN').value;
             const gES = document.getElementById('inputGoalES').value;
             const gKO = document.getElementById('inputGoalKO').value;
+            
             localStorage.setItem("goal_EN", gEN);
             localStorage.setItem("goal_ES", gES);
             localStorage.setItem("goal_KO", gKO);
             loadCustomGoals();
             renderReportTab();
+
+            showToast("⏳ Syncing Goals with Google Sheets...");
+
+            const rowDataGoals = [
+                "GOALS_CONFIG", formatDateYYYYMMDD(new Date()), "SYSTEM_GOALS", "SYSTEM", gEN, gES, gKO, "GOALS_CONFIG",
+                "", "system", "", "", "", "", "",
+                "", "", "", "", "",
+                "{}", "{}"
+            ];
+
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "update", type: "vocab", id: "GOALS_CONFIG", row: rowDataGoals }),
+                    redirect: "follow"
+                });
+                showToast("✅ Goals Synced to Cloud!");
+            } catch(err) { showToast("⚠️ Goals Saved Locally!", true); }
         }
 
+        /* FETCH DATA FROM GAS AND EXTRACT CLOUD GOALS CONFIG */
         async function fetchDataFromGAS() {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1380,7 +1407,14 @@
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
-                        userVocabList = data.userVocab.map(row => ({
+                        const goalsRow = data.userVocab.find(row => String(row[0]) === "GOALS_CONFIG");
+                        if (goalsRow) {
+                            localStorage.setItem("goal_EN", goalsRow[4]);
+                            localStorage.setItem("goal_ES", goalsRow[5]);
+                            localStorage.setItem("goal_KO", goalsRow[6]);
+                            loadCustomGoals();
+                        }
+                        userVocabList = data.userVocab.filter(row => String(row[0]) !== "GOALS_CONFIG").map(row => ({
                             id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
                             en: row[4], es: row[5], ko: row[6], vi: row[7], familyEN: row[8],
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
@@ -1575,7 +1609,7 @@
             showToast("✅ Saved Spanish Conjugations!");
         }
 
-        // --- SAVE VOCABULARY (INSTANT REALTIME SYNC FIX) ---
+        // --- SAVE VOCABULARY ---
         async function saveVocab(e) {
             e.preventDefault();
             const editId = document.getElementById('editId').value;
@@ -1613,7 +1647,7 @@
             } else {
                 userVocabList.push(newEntry);
             }
-
+            
             saveToLocalStorage();
             resetForm();
             renderLogTable();
@@ -1634,6 +1668,7 @@
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
                     redirect: "follow"
                 });
+
                 showToast("✅ Saved & Synced successfully!");
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
@@ -2015,7 +2050,6 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">No idioms found. Add items with POS = 'idiom'.</td></tr>`;
         }
 
-        /* REMOVED EXAMPLE EN COLUMN FROM IRREGULAR VERBS DIRECTORY */
         function renderIrregDirectory() {
             const tbody = document.getElementById('irregDirectoryBody');
             tbody.innerHTML = "";
@@ -2042,7 +2076,6 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY (1 VERB PER PAGE WITH PREV/NEXT PAGINATION) */
         function renderConjDirectory() {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2098,7 +2131,6 @@
             card.innerHTML = conjHTML;
             container.appendChild(card);
 
-            // Pagination Controls for Conjugación
             if (totalPages > 1) {
                 const prevBtn = document.createElement('button');
                 prevBtn.className = "btn btn-sm btn-fmt";
@@ -2401,7 +2433,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: REVIEW (STRICT POS FILTER FOR FLASHCARDS 1 & 2 + COLLOCATION TEST) ---
+        // --- TAB 4: REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2432,7 +2464,7 @@
             const subTopic = document.getElementById('quizSubTopic').value;
             const mode = document.getElementById('quizMode').value;
             
-            const allowedFlashcardPos = ['noun', 'verb', 'adj', 'adv', 'phrase', 'collocation'];
+            const allowedFlashcardPos = ['noun', 'verb', 'adj', 'adv', 'phrase'];
 
             quizList = userVocabList.filter(i => {
                 const matchTop = (topic === "ALL" || i.topic === topic);
@@ -2444,7 +2476,7 @@
                 
                 // FLASHCARD 1 & 2: STRICTLY ALLOW ONLY NOUN, VERB, ADJ, ADV, PHRASE
                 if (mode === 'flashcard' || mode === 'reverse') {
-                    return matchTop && matchSub && allowedFlashcardPos.includes(i.pos) && i.pos !== 'phrasal verb' && i.pos !== 'idiom';
+                    return matchTop && matchSub && allowedFlashcardPos.includes(i.pos);
                 }
 
                 return matchTop && matchSub;
@@ -2580,7 +2612,6 @@
                     const btn = document.createElement('div');
                     btn.className = "mc-option";
                     btn.style.fontSize = "0.95rem";
-                    // 3 lines for 3 languages
                     btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
                     btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
@@ -2757,7 +2788,7 @@
             }
         }
 
-        /* POS CHART WITH SINGLE COMBINED YELLOW BAR FOR PHRASAL & IDIOMS */
+        /* POS CHART WITH COMBINED SINGLE YELLOW BAR FOR PHRASAL & IDIOMS */
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2817,7 +2848,6 @@
                         { label: 'English (EN)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredEN[p]), backgroundColor: '#4e90c0', borderRadius: 4 },
                         { label: 'Spanish (ES)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredES[p]), backgroundColor: '#10b981', borderRadius: 4 },
                         { label: 'Korean (KO)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredKO[p]), backgroundColor: '#d57c91', borderRadius: 4 },
-                        // COMBINED SINGLE YELLOW BAR FOR PHRASAL VERBS & IDIOMS
                         { label: 'Phrasal & Idioms (All Languages)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? (posMasteredEN[p] + posMasteredES[p] + posMasteredKO[p]) : 0), backgroundColor: '#f59e0b', borderRadius: 4 }
                     ]
                 },
@@ -2883,7 +2913,7 @@
             canvas.innerHTML = "";
 
             if (!item || item.pos === 'idiom') {
-                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; font-weight:600;">Item not found in database!</div>`;
+                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:200px; font-weight:600;">Item not found in database!</div>`;
                 bottomGrid.style.display = "none";
                 return;
             }
@@ -2934,7 +2964,7 @@
             bottomGrid.style.display = "grid";
         }
 
-        // --- TAB 6: CALENDAR (YELLOW HIGHLIGHT FOR DATES WITH GRAMMAR BLOG POSTS) ---
+        // --- TAB 6: CALENDAR (YELLOW HIGHLIGHT FOR BLOG POST DATES) ---
         function changeCalDate(offset) {
             const mode = document.getElementById('calViewMode').value;
             if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
@@ -2986,7 +3016,6 @@
                     if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note" title="Note"></span>`;
 
                     const cell = document.createElement('div');
-                    // IF DATE HAS BLOG POSTS, HIGHLIGHT CELL IN YELLOW!
                     cell.className = `cal-cell ${hasBlog ? 'active-blog' : (hasVocab ? 'active-vocab' : '')}`;
                     cell.onclick = () => selectCalDate(dateStr);
                     cell.innerHTML = `
