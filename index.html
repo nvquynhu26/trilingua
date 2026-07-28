@@ -166,7 +166,7 @@
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.80rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* CALENDAR WITH GRAMMAR BLOG DOTS ONLY */
+        /* CALENDAR */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
@@ -182,7 +182,7 @@
         .dot-blog-ko { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ko); }
         .dot-blog-note { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
-        /* BOARD (TAB 5) - ABSOLUTE CENTERED */
+        /* BOARD (TAB 5) */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <!-- QUICK BLOG PREVIEW & NAVIGATOR MODAL -->
+    <!-- QUICK BLOG PREVIEW MODAL -->
     <div id="quickBlogModal" class="modal-overlay">
         <div class="modal-card" style="max-width: 700px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px;">
@@ -417,7 +417,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with 15-item Pagination -->
+            <!-- Vocabulary Log Table with Filters -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -657,7 +657,7 @@
                                 <label>Lesson Content & Usage Notes *</label>
                                 <div class="editor-toolbar">
                                     <button type="button" id="btnBold" class="btn-fmt" onclick="toggleStyle('bold')"><b>B</b> Bold</button>
-                                    <button type="button" id="btnItalic" class="btn-fmt" onclick="toggleStyle('italic')"><i>I</i> Italic</button>
+                                    <button type="button" id="btnItalic" class="btn-fmt" onclick="toggleStyle('italic')"><i>I</i> Light</button>
                                     
                                     <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
                                         <option value="1">12px</option>
@@ -845,11 +845,11 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD -->
+        <!-- TAB 5: BOARD (STRICTLY NO IDIOMS) -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
-                    <input type="text" id="boardSearchInput" placeholder="🔍 Type keyword to filter alphabet..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
+                    <input type="text" id="boardSearchInput" placeholder="🔍 Type keyword to filter vocabularies (A-Z)..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
                     <div id="boardDropdown" class="board-dropdown"></div>
                 </div>
 
@@ -1116,19 +1116,14 @@
         let currentConjData = {};
         let currentEnIrregData = { base: "", past: "", part: "" };
 
-        // SEARCH & LOG PAGINATION STATE
         let searchPage = 1;
         const searchPageSize = 50;
         let logPage = 1;
         const logPageSize = 15;
 
-        // FLASHCARD 3-LANG STATUS TRACKING STATE
         let currentFlashcardStatus = { EN: null, ES: null, KO: null };
-
-        // REVERSE FLASHCARD STATE
         let currentReverseItem = null;
 
-        // QUICK BLOG POPUP NAVIGATION STATE
         let activeQuickBlogIndex = 0;
         let activeQuickBlogList = [];
 
@@ -1286,7 +1281,9 @@
             if (savedVocab) {
                 userVocabList = JSON.parse(savedVocab).map(item => ({
                     ...item,
-                    timestamp: formatDateYYYYMMDD(item.timestamp)
+                    timestamp: formatDateYYYYMMDD(item.timestamp),
+                    conjData: item.conjData || {},
+                    enIrregData: item.enIrregData || { base: "", past: "", part: "" }
                 }));
             }
             if (savedGrammar) {
@@ -1375,8 +1372,8 @@
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
                             familyES: row[15] || "", familyKO: row[16] || "",
                             noteEN: row[17] || "", noteES: row[18] || "", noteKO: row[19] || "",
-                            conjData: row[20] ? JSON.parse(row[20]) : {},
-                            enIrregData: row[21] ? JSON.parse(row[21]) : { base: "", past: "", part: "" }
+                            conjData: row[20] ? (typeof row[20] === 'string' ? JSON.parse(row[20]) : row[20]) : {},
+                            enIrregData: row[21] ? (typeof row[21] === 'string' ? JSON.parse(row[21]) : row[21]) : { base: "", past: "", part: "" }
                         }));
                     }
                     if (data.grammarBlog && data.grammarBlog.length > 0) {
@@ -1564,7 +1561,7 @@
             showToast("✅ Saved Spanish Conjugations!");
         }
 
-        // --- SAVE VOCABULARY ---
+        // --- SAVE VOCABULARY (INSTANT LOCAL STATE UPDATE) ---
         async function saveVocab(e) {
             e.preventDefault();
             const editId = document.getElementById('editId').value;
@@ -1603,13 +1600,12 @@
                 userVocabList.push(newEntry);
             }
             
-            // INSTANT LOCAL SAVE TO PREVENT LOSS
             saveToLocalStorage();
             resetForm();
             renderLogTable();
             renderCalendarTab();
             renderTab2();
-            showToast("⏳ Saving to Google Sheets...");
+            showToast("⏳ Syncing with Google Sheets...");
 
             const rowDataVocab = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
@@ -1624,7 +1620,6 @@
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
                     redirect: "follow"
                 });
-
                 showToast("✅ Saved & Synced successfully!");
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
@@ -1697,7 +1692,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        /* VOCABULARY LOG WITH TIMEFRAME FILTERS AND 15-ITEM PAGINATION */
+        /* VOCABULARY LOG FILTERING */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -1976,14 +1971,13 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">No idioms found. Add items with POS = 'idiom'.</td></tr>`;
         }
 
-        /* FIXED IRREGULAR VERBS DIRECTORY FILTERING */
         function renderIrregDirectory() {
             const tbody = document.getElementById('irregDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
             userVocabList.forEach(item => {
-                if (item.enIrregData && (item.enIrregData.past || item.enIrregData.part)) {
+                if (item.enIrregData && (item.enIrregData.past || item.enIrregData.part || item.enIrregData.base)) {
                     count++;
                     tbody.innerHTML += `
                         <tr>
@@ -2004,7 +1998,6 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* FIXED CONJUGACIÓN DIRECTORY FILTERING */
         function renderConjDirectory() {
             const container = document.getElementById('conjDirectoryContainer');
             container.innerHTML = "";
@@ -2728,7 +2721,7 @@
             });
         }
 
-        // --- TAB 5: BOARD ---
+        // --- TAB 5: BOARD (STRICTLY NO IDIOMS) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2737,10 +2730,13 @@
             }
             const q = val.toLowerCase().trim();
             
+            // STRICTLY FILTER OUT IDIOMS
             const matches = userVocabList.filter(i => 
-                (i.en && i.en.toLowerCase().includes(q)) ||
-                (i.es && i.es.toLowerCase().includes(q)) ||
-                (i.ko && i.ko.toLowerCase().includes(q))
+                i.pos !== 'idiom' && (
+                    (i.en && i.en.toLowerCase().includes(q)) ||
+                    (i.es && i.es.toLowerCase().includes(q)) ||
+                    (i.ko && i.ko.toLowerCase().includes(q))
+                )
             ).sort((a,b) => (a.en || '').localeCompare(b.en || ''));
 
             if(matches.length === 0) {
@@ -2783,7 +2779,7 @@
             
             canvas.innerHTML = "";
 
-            if (!item) {
+            if (!item || item.pos === 'idiom') {
                 canvas.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:200px; font-weight:600;">Item not found in database!</div>`;
                 bottomGrid.style.display = "none";
                 return;
@@ -2835,7 +2831,7 @@
             bottomGrid.style.display = "grid";
         }
 
-        // --- TAB 6: CALENDAR (DOTS FOR GRAMMAR BLOG LANGUAGE PER DATE) ---
+        // --- TAB 6: CALENDAR ---
         function changeCalDate(offset) {
             const mode = document.getElementById('calViewMode').value;
             if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
@@ -2854,7 +2850,6 @@
             
             const studyDatesVocab = new Set(userVocabList.map(v => formatDateYYYYMMDD(v.timestamp)));
 
-            // Map blog languages per date
             const blogLangDateMap = {};
             grammarList.forEach(g => {
                 const dateKey = formatDateYYYYMMDD(g.timestamp);
