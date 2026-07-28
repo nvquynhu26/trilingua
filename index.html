@@ -37,7 +37,6 @@
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
         
-        /* LOGO STYLING TO FIT Logo2.png PERFECTLY */
         .logo-container { display: flex; align-items: center; text-decoration: none; }
         .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         
@@ -278,12 +277,10 @@
     </div>
 
     <header>
-        <!-- REPLACED TRILINGUA TEXT WITH LOGO2.PNG -->
         <a href="#" class="logo-container" onclick="switchTab('tab1'); return false;">
             <img src="Logo2.png" alt="Trilingua Logo" class="logo-img">
         </a>
 
-        <!-- PC TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
@@ -483,7 +480,6 @@
                 <div id="searchVocabView">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                         <h3 style="margin: 0;">Filter by Topic</h3>
-                        <!-- SORT BY INSIDE FILTER BY TOPIC -->
                         <div style="display:flex; gap:8px; align-items:center;">
                             <label style="margin:0; font-weight: bold;">Sort by:</label>
                             <select id="searchSortMode" onchange="searchPage = 1; renderTab2()" style="width:auto; padding:6px 10px;">
@@ -1898,13 +1894,6 @@
             });
         }
 
-        function selectSubTopic(sub) {
-            currentSubTopicTab = sub;
-            renderSubTopicNav();
-            searchPage = 1;
-            renderTab2();
-        }
-
         function renderTab2() {
             const query = (document.getElementById('searchInput')?.value || "").toLowerCase();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2180,6 +2169,7 @@
             document.getElementById('blogFeedContainer').style.display = "block";
             document.getElementById('blogFormCard').style.display = "none";
             renderBlogFeed(feedCurrentPage);
+            renderGrammarSidebar(); // RE-RENDER SIDEBAR TREE INSTANTLY
         }
 
         function handleGramLangChange(langVal) {
@@ -2269,8 +2259,9 @@
             deleteGrammar();
         }
 
+        /* STRICT CASE-INSENSITIVE & TRIMMED CATEGORY GROUPING IN SIDEBAR */
         function renderGrammarSidebar() {
-            const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
+            const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase().trim();
             const selectedTag = document.getElementById('tagFilterSelect').value;
             const container = document.getElementById('grammarTreeContainer');
             container.innerHTML = "";
@@ -2301,24 +2292,34 @@
                 const langBody = document.createElement('div');
                 langBody.className = "tree-lang-body";
 
-                const foldersMap = {};
+                // Group by normalized lowerCase category keys
+                const foldersMap = {}; 
                 langPosts.forEach(p => {
-                    const cat = p.topic || "General";
-                    if (!foldersMap[cat]) foldersMap[cat] = [];
-                    foldersMap[cat].push(p);
+                    const rawCat = (p.topic && p.topic.trim()) ? p.topic.trim() : "General";
+                    const normKey = rawCat.toLowerCase();
+                    if (!foldersMap[normKey]) {
+                        foldersMap[normKey] = {
+                            displayName: rawCat,
+                            posts: []
+                        };
+                    }
+                    foldersMap[normKey].posts.push(p);
                 });
 
-                const sortedFolderKeys = Object.keys(foldersMap).sort();
+                const sortedNormKeys = Object.keys(foldersMap).sort((a, b) => 
+                    foldersMap[a].displayName.localeCompare(foldersMap[b].displayName)
+                );
 
-                sortedFolderKeys.forEach(cat => {
-                    const folderPosts = foldersMap[cat].sort((a,b) => (a.title || '').localeCompare(b.title || ''));
+                sortedNormKeys.forEach(normKey => {
+                    const folderObj = foldersMap[normKey];
+                    const folderPosts = folderObj.posts.sort((a,b) => (a.title || '').localeCompare(b.title || ''));
 
                     const folderEl = document.createElement('div');
                     folderEl.className = `tree-folder ${query ? 'open' : ''}`;
 
                     const folderHeader = document.createElement('div');
                     folderHeader.className = "tree-folder-header";
-                    folderHeader.innerHTML = `<span>📁 ${cat}</span> <span>(${folderPosts.length})</span>`;
+                    folderHeader.innerHTML = `<span>📁 ${folderObj.displayName}</span> <span>(${folderPosts.length})</span>`;
                     folderHeader.onclick = () => folderEl.classList.toggle('open');
 
                     const folderBody = document.createElement('div');
@@ -2378,16 +2379,23 @@
             document.getElementById('gramDeleteBtn').style.display = "none";
         }
 
+        /* SAVE GRAMMAR (AUTOMATIC CATEGORY TRANSFER & CLEAN TAG BADGES) */
         async function saveGrammar(e) {
             e.preventDefault();
             const editId = document.getElementById('grammarId').value;
             const isEdit = !!editId;
             const id = editId ? editId : 'GRAM_' + Date.now();
-            const timestamp = formatDateYYYYMMDD(isEdit ? (grammarList.find(i => String(i.id) === String(editId)).timestamp || new Date()) : new Date());
+            
+            let existingPost = grammarList.find(i => String(i.id) === String(editId));
+            const timestamp = formatDateYYYYMMDD(isEdit && existingPost ? existingPost.timestamp : new Date());
 
             let contentHTML = document.getElementById('gramContentEditor').innerHTML.trim();
+            
+            // Clean up old auto-generated tag badges before adding new tag
+            contentHTML = contentHTML.replace(/<span style="background:var\(--primary\); color:#fff; padding:2px 6px; border-radius:4px; font-size:0\.75rem;">#[^<]+<\/span>/gi, '').trim();
+
             const selectedTag = document.getElementById('gramTag').value;
-            if (selectedTag && !contentHTML.includes(`#${selectedTag}`)) {
+            if (selectedTag) {
                 contentHTML += ` <span style="background:var(--primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.75rem;">#${selectedTag}</span>`;
             }
 
@@ -2408,7 +2416,7 @@
             }
 
             saveToLocalStorage();
-            closeWriteBlogForm();
+            closeWriteBlogForm(); // Updates both feed & category sidebar instantly!
             renderCalendarTab();
             showToast("⏳ Saving grammar post...");
 
@@ -2436,7 +2444,7 @@
             showToast("⏳ Deleting...");
 
             try {
-                const response = await fetch(GAS_WEB_APP_URL, {
+                await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -2800,7 +2808,6 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3158,8 +3165,8 @@
             document.getElementById('reportCountKO').innerText = `${countKO} words`;
 
             const gEN = parseInt(localStorage.getItem("goal_EN") || "500");
-            const gES = localStorage.getItem("goal_ES") || "300";
-            const gKO = localStorage.getItem("goal_KO") || "300";
+            const gES = parseInt(localStorage.getItem("goal_ES") || "300");
+            const gKO = parseInt(localStorage.getItem("goal_KO") || "300");
 
             const pEN = Math.min(Math.round((countEN / gEN) * 100), 100);
             const pES = Math.min(Math.round((countES / gES) * 100), 100);
