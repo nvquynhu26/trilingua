@@ -166,20 +166,23 @@
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.80rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* Calendar */
+        /* CALENDAR WITH GRAMMAR BLOG DOTS ONLY */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
         .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; min-height: 48px; }
         .cal-cell:hover { border-color: var(--primary); }
-        .cal-cell.active-study { background: rgba(16, 185, 129, 0.15); border-color: var(--primary); }
+        .cal-cell.active-study { background: rgba(16, 185, 129, 0.18); border-color: var(--primary); }
         .cal-cell.active-study .cal-num { color: var(--primary); font-weight: 800; }
         .cal-num { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
-        .cal-dots { display: flex; justify-content: center; gap: 2px; }
-        .dot-vocab { width: 5px; height: 5px; border-radius: 50%; background: var(--color-en); }
-        .dot-blog { width: 5px; height: 5px; border-radius: 50%; background: var(--grammar); }
+        
+        .cal-dots { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; }
+        .dot-blog-en { width: 6px; height: 6px; border-radius: 50%; background: var(--color-en); }
+        .dot-blog-es { width: 6px; height: 6px; border-radius: 50%; background: var(--color-es); }
+        .dot-blog-ko { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ko); }
+        .dot-blog-note { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
-        /* BOARD (TAB 5) */
+        /* BOARD (TAB 5) - ABSOLUTE CENTERED */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -272,7 +275,6 @@
 
     <header>
         <div class="logo">Trilingua.</div>
-        <!-- PC TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
@@ -282,7 +284,6 @@
             <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--edit); color: white;">6. Calendar</button>
             <button class="tab-btn" onclick="switchTab('tab7')" style="background: var(--grammar); color: white;">7. Report</button>
         </div>
-        <!-- MOBILE / COLLAPSIBLE MENU BUTTON -->
         <button class="menu-toggle-btn" onclick="toggleMobileMenu()">☰ Menu</button>
         <div id="mobileDropdownMenu" class="dropdown-menu-mobile">
             <button class="tab-btn active" onclick="switchTab('tab1'); toggleMobileMenu();">1. Vocabulary</button>
@@ -416,18 +417,19 @@
                 </form>
             </div>
 
-            <!-- Log Table with 15-item daily pagination -->
+            <!-- Vocabulary Log Table with 15-item Pagination -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                    <h3>Vocabulary Log (Today's Entries)</h3>
+                    <h3>Vocabulary Log</h3>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="logFilter" style="margin:0;">Filter period:</label>
                         <select id="logFilter" onchange="logPage = 1; renderLogTable()" style="width: auto; padding: 6px 10px;">
                             <option value="today">Today</option>
-                            <option value="1day">Yesterday & Today (2 days)</option>
-                            <option value="3days">Last 3 Days</option>
-                            <option value="7days">Last 7 Days (1 Week)</option>
-                            <option value="all">All Time</option>
+                            <option value="3days">Last 3 days</option>
+                            <option value="5days">Last 5 days</option>
+                            <option value="7days">1 week</option>
+                            <option value="30days">1 month</option>
+                            <option value="all">All time</option>
                         </select>
                     </div>
                 </div>
@@ -446,7 +448,6 @@
                         <tbody id="logTableBody"></tbody>
                     </table>
                 </div>
-                <!-- LOG PAGINATION FOOTER -->
                 <div id="logPagination" style="display:flex; justify-content:center; gap:6px; margin-top:16px;"></div>
             </div>
         </div>
@@ -719,10 +720,8 @@
                 </div>
             </div>
 
-            <!-- TRI-FLASHCARD VIEW (REQUIRE ALL 3 LANGUAGES TO RATE BEFORE NEXT) -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
-                    <!-- EN Card -->
                     <div class="card-box en" onclick="flipTriCard('EN')">
                         <div id="cardFlagEN" class="card-flag">🇺🇸</div>
                         <div id="cardTextEN" class="card-text-lang">EN</div>
@@ -732,7 +731,6 @@
                         </div>
                     </div>
 
-                    <!-- ES Card -->
                     <div class="card-box es" onclick="flipTriCard('ES')">
                         <div id="cardFlagES" class="card-flag">🇪🇸</div>
                         <div id="cardTextES" class="card-text-lang">ES</div>
@@ -742,7 +740,6 @@
                         </div>
                     </div>
 
-                    <!-- KO Card -->
                     <div class="card-box ko" onclick="flipTriCard('KO')">
                         <div id="cardFlagKO" class="card-flag">🇰🇷</div>
                         <div id="cardTextKO" class="card-text-lang">KO</div>
@@ -759,7 +756,6 @@
                 </div>
             </div>
 
-            <!-- REVERSE 3-FLASHCARD VIEW (SHOWS 3 WORDS, CHOOSE VIETNAMESE MEANING) -->
             <div id="reverseView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -797,7 +793,6 @@
                 </div>
             </div>
 
-            <!-- LEARNING ANALYTICS DASHBOARD (3 COLUMNS PER POS BREAKDOWN) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
@@ -810,7 +805,6 @@
                     </select>
                 </div>
 
-                <!-- 3 Categorization Groups -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
                         <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">🟢 STRONG (Mastered ≥80%)</div>
@@ -826,7 +820,6 @@
                     </div>
                 </div>
 
-                <!-- 3 SEPARATE COLUMNS FOR 3 LANGUAGES PROGRESS -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
                         <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">🇺🇸 ENGLISH PROGRESS</div>
@@ -861,7 +854,7 @@
                 </div>
 
                 <div id="mindmapCanvas" class="mindmap-canvas">
-                    <div style="color:var(--text-secondary); text-align:center; margin-top:200px;">Type or select a word above to build Mind-map.</div>
+                    <div style="color:var(--text-secondary); text-align:center;">Type or select a word above to build Mind-map.</div>
                 </div>
 
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
@@ -979,7 +972,6 @@
                     </div>
                 </div>
 
-                <!-- LEARNING VELOCITY WITH WEEKLY/MONTHLY/YEARLY FILTER -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
                         <h4 style="font-size: 1rem; color: var(--edit); margin: 0;">📈 Learning Velocity</h4>
@@ -1214,9 +1206,15 @@
         function formatDateYYYYMMDD(dateObjOrString) {
             if (!dateObjOrString) return new Date().toISOString().split('T')[0];
             try {
+                if (typeof dateObjOrString === 'string' && dateObjOrString.length === 10 && dateObjOrString.includes('-')) {
+                    return dateObjOrString;
+                }
                 const d = new Date(dateObjOrString);
                 if (isNaN(d.getTime())) return String(dateObjOrString).split('T')[0];
-                return d.toISOString().split('T')[0];
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
             } catch (e) {
                 return new Date().toISOString().split('T')[0];
             }
@@ -1604,10 +1602,13 @@
             } else {
                 userVocabList.push(newEntry);
             }
+            
+            // INSTANT LOCAL SAVE TO PREVENT LOSS
             saveToLocalStorage();
             resetForm();
             renderLogTable();
             renderCalendarTab();
+            renderTab2();
             showToast("⏳ Saving to Google Sheets...");
 
             const rowDataVocab = [
@@ -1696,6 +1697,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
+        /* VOCABULARY LOG WITH TIMEFRAME FILTERS AND 15-ITEM PAGINATION */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -1710,7 +1712,16 @@
                 if (filterVal === 'all') return true;
                 if (!item.timestamp) return false;
                 const itemDateStr = formatDateYYYYMMDD(item.timestamp);
+                
+                const itemDate = new Date(itemDateStr);
+                const diffTime = Math.abs(now - itemDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
                 if (filterVal === 'today') return itemDateStr === todayStr;
+                if (filterVal === '3days') return diffDays <= 3;
+                if (filterVal === '5days') return diffDays <= 5;
+                if (filterVal === '7days') return diffDays <= 7;
+                if (filterVal === '30days') return diffDays <= 30;
                 return true;
             }).reverse();
 
@@ -1720,7 +1731,7 @@
             const pagedItems = filtered.slice((logPage - 1) * logPageSize, logPage * logPageSize);
 
             if (pagedItems.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No entries found for today.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No vocabulary entries found for this period.</td></tr>`;
                 return;
             }
 
@@ -1965,6 +1976,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">No idioms found. Add items with POS = 'idiom'.</td></tr>`;
         }
 
+        /* FIXED IRREGULAR VERBS DIRECTORY FILTERING */
         function renderIrregDirectory() {
             const tbody = document.getElementById('irregDirectoryBody');
             tbody.innerHTML = "";
@@ -1992,6 +2004,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
+        /* FIXED CONJUGACIÓN DIRECTORY FILTERING */
         function renderConjDirectory() {
             const container = document.getElementById('conjDirectoryContainer');
             container.innerHTML = "";
@@ -2314,7 +2327,7 @@
             showToast("⏳ Deleting...");
 
             try {
-                const response = await fetch(GAS_WEB_APP_URL, {
+                await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -2324,7 +2337,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: REVIEW (STRICT INDEPENDENT 3-LANG FLASHCARDS & REVERSE MODE) ---
+        // --- TAB 4: REVIEW ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2552,14 +2565,12 @@
             }
         }
 
-        /* REQUIRE ALL 3 LANGUAGES TO BE RATED BEFORE ADVANCING */
         function markCardLang(lang, remembered) {
             if (quizList.length === 0) return;
             const item = quizList[currentQuizIndex];
             
             currentFlashcardStatus[lang] = remembered;
 
-            // Visual feedback on clicked buttons
             const btnS = document.getElementById(`btnStill${lang}`);
             const btnM = document.getElementById(`btnMaster${lang}`);
             if (remembered) {
@@ -2584,7 +2595,6 @@
 
             showToast(`✔ Recorded [${lang}]: ${remembered ? 'Mastered' : 'Learning'}`);
 
-            // Check if all 3 languages have been evaluated
             if (currentFlashcardStatus.EN !== null && currentFlashcardStatus.ES !== null && currentFlashcardStatus.KO !== null) {
                 setTimeout(() => {
                     currentQuizIndex++;
@@ -2652,14 +2662,13 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (3 SEPARATE COLUMNS FOR 3 LANGUAGES + POS BREAKDOWN) ---
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
 
-            // 1. 3 Categorization Groups: Strong, Medium, Weak
             const vocabRecordMap = {};
             flashcardHist.forEach(h => {
                 if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
@@ -2679,7 +2688,6 @@
             document.getElementById('groupMediumCount').innerText = `${mediumCount} words`;
             document.getElementById('groupWeakCount').innerText = `${weakCount} words`;
 
-            // 2. 3 Separate Language Columns Progress
             ['EN', 'ES', 'KO'].forEach(lang => {
                 const langHist = flashcardHist.filter(h => h.lang === lang);
                 const mastered = langHist.filter(h => h.remembered).length;
@@ -2690,7 +2698,6 @@
                 document.getElementById(`langBar${lang}`).style.width = `${pct}%`;
             });
 
-            // 3. Flashcard Progress by POS (3 Separate Bars for EN, ES, KO per POS)
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMasteredEN = {}, posMasteredES = {}, posMasteredKO = {};
             posList.forEach(p => { posMasteredEN[p] = 0; posMasteredES[p] = 0; posMasteredKO[p] = 0; });
@@ -2828,7 +2835,7 @@
             bottomGrid.style.display = "grid";
         }
 
-        // --- TAB 6: CALENDAR ---
+        // --- TAB 6: CALENDAR (DOTS FOR GRAMMAR BLOG LANGUAGE PER DATE) ---
         function changeCalDate(offset) {
             const mode = document.getElementById('calViewMode').value;
             if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
@@ -2846,7 +2853,14 @@
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             
             const studyDatesVocab = new Set(userVocabList.map(v => formatDateYYYYMMDD(v.timestamp)));
-            const studyDatesBlog = new Set(grammarList.map(g => formatDateYYYYMMDD(g.timestamp)));
+
+            // Map blog languages per date
+            const blogLangDateMap = {};
+            grammarList.forEach(g => {
+                const dateKey = formatDateYYYYMMDD(g.timestamp);
+                if (!blogLangDateMap[dateKey]) blogLangDateMap[dateKey] = new Set();
+                blogLangDateMap[dateKey].add(g.lang);
+            });
 
             if (mode === 'month') {
                 const year = calCurrentDate.getFullYear();
@@ -2864,18 +2878,20 @@
                 for (let d = 1; d <= daysInMonth; d++) {
                     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
                     const hasVocab = studyDatesVocab.has(dateStr);
-                    const hasBlog = studyDatesBlog.has(dateStr);
-                    const isStudy = hasVocab || hasBlog;
+                    const blogLangs = blogLangDateMap[dateStr] || new Set();
+
+                    let dotsHTML = "";
+                    if (blogLangs.has('English')) dotsHTML += `<span class="dot-blog-en" title="English Blog"></span>`;
+                    if (blogLangs.has('Español')) dotsHTML += `<span class="dot-blog-es" title="Español Blog"></span>`;
+                    if (blogLangs.has('한국어')) dotsHTML += `<span class="dot-blog-ko" title="Korean Blog"></span>`;
+                    if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note" title="Note"></span>`;
 
                     const cell = document.createElement('div');
-                    cell.className = `cal-cell ${isStudy ? 'active-study' : ''}`;
+                    cell.className = `cal-cell ${hasVocab ? 'active-study' : ''}`;
                     cell.onclick = () => selectCalDate(dateStr);
                     cell.innerHTML = `
                         <span class="cal-num">${d}</span>
-                        <div class="cal-dots">
-                            ${hasVocab ? '<span class="dot-vocab" title="Vocabulary Added"></span>' : ''}
-                            ${hasBlog ? '<span class="dot-blog" title="Blog Post Created"></span>' : ''}
-                        </div>
+                        <div class="cal-dots">${dotsHTML}</div>
                     `;
                     grid.appendChild(cell);
                 }
@@ -2891,18 +2907,20 @@
                     const next = new Date(curr.setDate(first + i));
                     const dateStr = formatDateYYYYMMDD(next);
                     const hasVocab = studyDatesVocab.has(dateStr);
-                    const hasBlog = studyDatesBlog.has(dateStr);
-                    const isStudy = hasVocab || hasBlog;
+                    const blogLangs = blogLangDateMap[dateStr] || new Set();
+
+                    let dotsHTML = "";
+                    if (blogLangs.has('English')) dotsHTML += `<span class="dot-blog-en"></span>`;
+                    if (blogLangs.has('Español')) dotsHTML += `<span class="dot-blog-es"></span>`;
+                    if (blogLangs.has('한국어')) dotsHTML += `<span class="dot-blog-ko"></span>`;
+                    if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note"></span>`;
 
                     const cell = document.createElement('div');
-                    cell.className = `cal-cell ${isStudy ? 'active-study' : ''}`;
+                    cell.className = `cal-cell ${hasVocab ? 'active-study' : ''}`;
                     cell.onclick = () => selectCalDate(dateStr);
                     cell.innerHTML = `
                         <span class="cal-num">${next.getDate()}</span>
-                        <div class="cal-dots">
-                            ${hasVocab ? '<span class="dot-vocab"></span>' : ''}
-                            ${hasBlog ? '<span class="dot-blog"></span>' : ''}
-                        </div>
+                        <div class="cal-dots">${dotsHTML}</div>
                     `;
                     grid.appendChild(cell);
                 }
@@ -2977,9 +2995,8 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT (BASED STRICTLY ON FLASHCARD FLASHCARD REVIEW HISTORY) ---
+        // --- TAB 7: REPORT ---
         function renderReportTab() {
-            // Count total mastered/learned from Flashcard Review history per language
             let countEN = 0, countES = 0, countKO = 0;
             const flashcardMastered = quizHistory.filter(h => h.source === 'flashcard' && h.remembered);
             
@@ -3033,7 +3050,6 @@
                 }
             });
 
-            // Learning Velocity with Weekly / Monthly / Yearly filter mode
             const velMode = document.getElementById('velocityPeriodMode')?.value || 'weekly';
             const timeBuckets = {};
 
