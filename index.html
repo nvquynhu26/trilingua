@@ -30,23 +30,36 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; width: 100%; max-width: 100vw; }
         
         #authOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); }
+        /* HEADER & COLLAPSIBLE MENU RESPONSIVE */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
         .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.85rem; }
+        
+        .nav-tabs { display: flex; gap: 6px; flex-wrap: nowrap; align-items: center; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.8rem; white-space: nowrap; }
         .tab-btn:hover { background: var(--surface-hover); }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        main { max-width: 1600px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; }
-        .tab-content { display: none; margin-top: 20px; }
+        /* Hamburger Menu Toggle Button for Mobile / Small Screens */
+        .menu-toggle-btn { display: none; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+        .dropdown-menu-mobile { display: none; position: absolute; top: 100%; right: 4%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); z-index: 1000; width: 220px; padding: 10px; flex-direction: column; gap: 6px; }
+        .dropdown-menu-mobile.show { display: flex; }
+        .dropdown-menu-mobile .tab-btn { width: 100%; text-align: left; }
+
+        @media (max-width: 1150px) {
+            .nav-tabs { display: none; }
+            .menu-toggle-btn { display: inline-flex; align-items: center; gap: 6px; }
+        }
+
+        main { max-width: 1600px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; overflow: hidden; }
+        .tab-content { display: none; margin-top: 20px; width: 100%; }
         .tab-content.active { display: block; }
 
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; width: 100%; word-break: break-word; }
         
         .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
@@ -54,7 +67,11 @@
         .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1.5fr 1fr; gap: 10px; margin-bottom: 14px; }
         .grid-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
 
-        .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
+        @media (max-width: 1024px) {
+            .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr; }
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; width: 100%; }
         label { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); }
         input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
@@ -63,7 +80,7 @@
         .rich-editor { width: 100%; min-height: 480px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         
-        .smart-table-wrapper { position: relative; margin: 16px 0; display: inline-block; width: 100%; }
+        .smart-table-wrapper { position: relative; margin: 16px 0; display: inline-block; width: 100%; overflow-x: auto; }
         .smart-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); }
         .smart-table td, .smart-table th { border: 1px solid var(--border); padding: 10px; min-width: 60px; position: relative; }
         .tbl-btn { position: absolute; background: var(--surface); border: 1px solid var(--border); color: var(--text); width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0.7; }
@@ -103,10 +120,10 @@
         .wotd-ko { font-size: 1.4rem; font-weight: 600; color: var(--color-ko); margin-bottom: 6px; }
         .wotd-vi { font-size: 1.1rem; font-weight: 500; color: var(--color-vi); margin-bottom: 20px; }
 
-        .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; }
-        .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; }
+        .quiz-container { max-width: 900px; margin: 0 auto; text-align: center; width: 100%; }
+        .tri-flashcard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 20px auto; justify-content: center; width: 100%; }
         
-        .card-box { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; transition: all 0.3s; cursor: pointer; }
+        .card-box { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; transition: all 0.3s; cursor: pointer; width: 100%; }
         .card-box.en { border-color: var(--color-en); }
         .card-box.es { border-color: var(--color-es); }
         .card-box.ko { border-color: var(--color-ko); }
@@ -117,18 +134,20 @@
         .card-box.es .card-text-lang { color: var(--color-es); }
         .card-box.ko .card-text-lang { color: var(--color-ko); }
 
-        .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; }
-        .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; }
+        .card-actions { display: flex; gap: 8px; width: 100%; justify-content: center; flex-wrap: wrap; }
+        .vi-card-box { max-width: 280px; margin: 0 auto; border-color: var(--color-vi); background: rgba(254, 238, 181, 0.08); border-radius: 12px; padding: 12px 16px; text-align: center; width: 100%; }
 
-        .mc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 600px; margin: 20px auto; }
-        .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; }
+        /* Multiple Choice Grid for Idioms & Phrasal Tests */
+        .mc-grid { display: flex; flex-direction: column; gap: 12px; max-width: 600px; margin: 20px auto; width: 100%; }
+        .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; width: 100%; text-align: left; }
         .mc-option:hover { background: var(--surface-hover); border-color: var(--primary); }
 
         .progress-bar-bg { width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
-        .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; }
-        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; }
+        /* Grammar Blog Layout */
+        .grammar-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; align-items: start; width: 100%; }
+        .sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; max-height: 850px; overflow-y: auto; width: 100%; }
         
         .tree-lang { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
         .tree-lang-header { background: var(--bg); padding: 10px 12px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--grammar); }
@@ -145,15 +164,15 @@
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
         .post-date { font-size: 0.7rem; color: var(--text-secondary); display: block; }
 
-        .feed-post { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
-        .feed-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
+        .feed-post { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); width: 100%; }
+        .feed-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
         .feed-post-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* CALENDAR OPTIMIZATION */
+        /* Calendar */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
         .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; min-height: 48px; }
         .cal-cell:hover { border-color: var(--primary); }
@@ -164,8 +183,8 @@
         .dot-vocab { width: 5px; height: 5px; border-radius: 50%; background: var(--color-en); }
         .dot-blog { width: 5px; height: 5px; border-radius: 50%; background: var(--grammar); }
 
-        /* STYLED BOARD (TAB 5) */
-        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; }
+        /* STYLED BOARD (TAB 5) - FIXED 3 SEPARATE WORD FAMILY BOXES */
+        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
@@ -183,20 +202,35 @@
 
         svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
 
-        .report-grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        /* 3 SEPARATE WORD FAMILY BOXES AT BOARD BOTTOM */
+        .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; width: 100%; }
+        .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; width: 100%; }
+        .wf-box.en { border-color: var(--color-en); }
+        .wf-box.es { border-color: var(--color-es); }
+        .wf-box.ko { border-color: var(--color-ko); }
+
+        .wf-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
+        .wf-box.en .wf-title { color: var(--color-en); }
+        .wf-box.es .wf-title { color: var(--color-es); }
+        .wf-box.ko .wf-title { color: var(--color-ko); }
+
+        .wf-list { list-style: none; padding: 0; margin: 0; font-size: 0.88rem; line-height: 1.6; }
+        .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; word-break: break-word; }
+        .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
+
+        .report-grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; width: 100%; }
 
         /* RESPONSIVE BREAKPOINTS MOBILE OPTIMIZATION */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
             .grammar-layout { grid-template-columns: 1fr; }
-            .grid-row-1, .grid-row-2, .grid-row-3, .grid-row-4 { grid-template-columns: 1fr; }
+            .wf-bottom-grid { grid-template-columns: 1fr; }
             .cal-cell { min-height: 38px; padding: 2px; }
             .cal-num { font-size: 0.75rem; }
-            .mc-grid { grid-template-columns: 1fr; }
             .tri-flashcard-grid { grid-template-columns: 1fr; }
         }
 
-        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); width: 100%; }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
     </style>
 </head>
@@ -226,6 +260,7 @@
 
     <header>
         <div class="logo">Trilingua.</div>
+        <!-- PC TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
@@ -234,6 +269,17 @@
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
             <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--edit); color: white;">6. Calendar</button>
             <button class="tab-btn" onclick="switchTab('tab7')" style="background: var(--grammar); color: white;">7. Report</button>
+        </div>
+        <!-- MOBILE / COLLAPSIBLE MENU BUTTON -->
+        <button class="menu-toggle-btn" onclick="toggleMobileMenu()">☰ Menu</button>
+        <div id="mobileDropdownMenu" class="dropdown-menu-mobile">
+            <button class="tab-btn active" onclick="switchTab('tab1'); toggleMobileMenu();">1. Vocabulary</button>
+            <button class="tab-btn" onclick="switchTab('tab2'); toggleMobileMenu();">2. Search & Topics</button>
+            <button class="tab-btn" onclick="switchTab('tab3'); toggleMobileMenu();">3. Grammar Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4'); toggleMobileMenu();">4. Quizlet Review</button>
+            <button class="tab-btn" onclick="switchTab('tab5'); toggleMobileMenu();">5. Board</button>
+            <button class="tab-btn" onclick="switchTab('tab6'); toggleMobileMenu();" style="background: var(--edit); color: white;">6. Calendar</button>
+            <button class="tab-btn" onclick="switchTab('tab7'); toggleMobileMenu();" style="background: var(--grammar); color: white;">7. Report</button>
         </div>
     </header>
 
@@ -587,20 +633,24 @@
                             <div class="form-group full-width">
                                 <label>Lesson Content & Usage Notes *</label>
                                 <div class="editor-toolbar">
-                                    <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
-                                    <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
+                                    <!-- TOGGLE BOLD & ITALIC BUTTONS -->
+                                    <button type="button" id="btnBold" class="btn-fmt" onclick="toggleStyle('bold')"><b>B</b> Bold</button>
+                                    <button type="button" id="btnItalic" class="btn-fmt" onclick="toggleStyle('italic')"><i>I</i> Italic</button>
                                     
+                                    <!-- FONT SIZE 12-40px -->
                                     <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
-                                        <option value="2">12px</option>
+                                        <option value="1">12px</option>
+                                        <option value="2">14px</option>
                                         <option value="3" selected>16px</option>
-                                        <option value="4">20px</option>
-                                        <option value="5">24px</option>
-                                        <option value="6">32px</option>
-                                        <option value="7">40px</option>
+                                        <option value="4">18px</option>
+                                        <option value="5">20px</option>
+                                        <option value="6">24px</option>
+                                        <option value="7">32px</option>
                                     </select>
 
-                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
-                                    <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. List</button>
+                                    <!-- BULLETS & NUMBERS -->
+                                    <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- Bullet</button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. Number</button>
                                     <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('gramContentEditor')">+ Table 3x2</button>
 
                                     <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
@@ -709,6 +759,7 @@
                 </div>
             </div>
 
+            <!-- DASHBOARD STATISTICS (REMOVED MISTAKES TABLE, FULL WIDTH POS CHART) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -736,27 +787,9 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
-                    <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
-                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (Mastered vs Learning)</h4>
-                        <canvas id="posChart" style="max-height: 300px;"></canvas>
-                    </div>
-
-                    <div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--danger);">⚠️ Top 10 Typing Test Mistakes</h4>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Word [EN]</th>
-                                        <th>Language</th>
-                                        <th>Mistakes</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="topMistakesBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS</h4>
+                    <canvas id="posChart" style="max-height: 320px; width: 100%;"></canvas>
                 </div>
             </div>
         </div>
@@ -773,6 +806,7 @@
                     <div style="color:var(--text-secondary); text-align:center; margin-top:200px;">Type or select a word above to build Mind-map.</div>
                 </div>
 
+                <!-- 3 SEPARATE WORD FAMILY BOXES AT BOARD BOTTOM -->
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
                     <div class="wf-box en">
                         <div class="wf-title">🇺🇸 WORD FAMILY [EN]</div>
@@ -848,7 +882,6 @@
                     </div>
                 </div>
 
-                <!-- REPORT MOBILE-OPTIMIZED GRID (GOALS + RADAR) -->
                 <div class="report-grid-two">
                     <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); position: relative;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -1097,7 +1130,6 @@
             }
         };
 
-        /* DATE FORMATTER HELPER YYYY-MM-DD */
         function formatDateYYYYMMDD(dateObjOrString) {
             if (!dateObjOrString) return new Date().toISOString().split('T')[0];
             try {
@@ -1139,6 +1171,11 @@
         }
 
         function closeWotdModal() { document.getElementById('wotdModal').style.display = "none"; }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileDropdownMenu');
+            menu.classList.toggle('show');
+        }
 
         function handleTopicChange(topicVal) {
             const subSelect = document.getElementById('subTopic');
@@ -1285,7 +1322,11 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Activate Desktop Tab buttons
+            const activeDesktopBtn = document.querySelector(`.nav-tabs button[onclick*="${tabId}"]`);
+            if (activeDesktopBtn) activeDesktopBtn.classList.add('active');
+
             document.getElementById(tabId).classList.add('active');
             if(tabId === 'tab1') renderLogTable();
             if(tabId === 'tab2') renderTab2();
@@ -1328,6 +1369,10 @@
         }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
+
+        function toggleStyle(styleName) {
+            document.execCommand(styleName, false, null);
+        }
         
         function insertSmartTable(editorId) {
             const editor = document.getElementById(editorId);
@@ -2150,17 +2195,17 @@
             showToast("⏳ Deleting...");
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
                     redirect: "follow"
                 });
                 showToast("✅ Deleted successfully!");
-            } catch(err) { showToast("⚠️ Deleted locally!", true); }
+            } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW ---
+        // --- TAB 4: QUIZLET REVIEW (STRICTLY SEPARATED IDIOMS & PHRASAL) ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2250,11 +2295,12 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                const distractors = userVocabList.filter(x => x.id !== item.id && x.en).sort(() => Math.random() - 0.5).slice(0, 3);
+                // STRICTLY PHRASAL VERBS DISTRACTORS
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'phrasal verb').sort(() => Math.random() - 0.5).slice(0, 3);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
-                grid.style.gridTemplateColumns = "repeat(2, 1fr)";
+                grid.style.gridTemplateColumns = "1fr"; // Stack vertically per requirement
                 grid.innerHTML = "";
 
                 options.forEach(opt => {
@@ -2269,18 +2315,19 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                const distractors = userVocabList.filter(x => x.id !== item.id && x.en).sort(() => Math.random() - 0.5).slice(0, 2);
+                // STRICTLY IDIOMS DISTRACTORS
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'idiom').sort(() => Math.random() - 0.5).slice(0, 2);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
-                grid.style.gridTemplateColumns = "1fr";
+                grid.style.gridTemplateColumns = "1fr"; // Stack vertically per requirement
                 grid.innerHTML = "";
 
                 options.forEach(opt => {
                     const btn = document.createElement('div');
                     btn.className = "mc-option";
                     btn.style.fontSize = "0.95rem";
-                    btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b> | 🇪🇸 <b>${opt.es || '---'}</b> | 🇰🇷 <b>${opt.ko || '---'}</b>`;
+                    btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
                     btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
                     grid.appendChild(btn);
                 });
