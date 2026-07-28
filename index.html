@@ -70,11 +70,9 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* Expanded Rich Editor */
         .rich-editor { width: 100%; min-height: 480px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         
-        /* Smart Table with Built-in Add/Delete Controls */
         .smart-table-wrapper { position: relative; margin: 16px 0; display: inline-block; width: 100%; }
         .smart-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); }
         .smart-table td, .smart-table th { border: 1px solid var(--border); padding: 10px; min-width: 60px; position: relative; }
@@ -138,7 +136,6 @@
         .mc-option { background: var(--surface); border: 2px solid var(--border); padding: 16px; border-radius: var(--radius); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: all 0.2s; }
         .mc-option:hover { background: var(--surface-hover); border-color: var(--primary); }
 
-        /* Progress Bar Gray Background Unlearned */
         .progress-bar-bg { width: 100%; height: 12px; background: #334155; border-radius: 6px; overflow: hidden; margin-top: 6px; display: flex; }
         .progress-bar-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
 
@@ -162,7 +159,6 @@
         .post-item.active { background: var(--grammar); color: white; font-weight: 600; }
         .post-date { font-size: 0.7rem; color: var(--text-secondary); display: block; }
 
-        /* Facebook-style Blog Post Feed */
         .feed-post { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
         .feed-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; }
         .feed-post-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
@@ -182,13 +178,47 @@
         .dot-vocab { width: 6px; height: 6px; border-radius: 50%; background: var(--color-en); }
         .dot-blog { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
+        /* TAB 5 BOARD - STYLES FIXED FOR BALLS & SVG */
+        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; }
+        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 100; display: none; box-shadow: var(--shadow); }
+        .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .board-dropdown-item:hover { background: var(--primary); color: white; }
+
+        .mindmap-canvas { width: 100%; height: 420px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
+        
+        .board-node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 12px; box-shadow: var(--shadow); transition: all 0.3s ease; animation: popIn 0.4s ease-out; z-index: 5; }
+        .board-node-main { width: 150px; height: 150px; background: var(--color-en); color: #fff; font-weight: 800; font-size: 1.2rem; }
+        .board-node-main .pos-tag { font-size: 0.8rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+
+        .board-node-l2 { width: 120px; height: 120px; color: #fff; font-weight: 700; font-size: 0.95rem; }
+        .board-node-l2.es { background: var(--color-es); color: #fff; }
+        .board-node-l2.ko { background: var(--color-ko); color: #fff; }
+        .board-node-l2.vi { background: var(--color-vi); color: #0f172a; }
+
+        .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; }
+        @media (max-width: 800px) { .wf-bottom-grid { grid-template-columns: 1fr; } }
+        
+        .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; }
+        .wf-box.en { border-color: var(--color-en); }
+        .wf-box.es { border-color: var(--color-es); }
+        .wf-box.ko { border-color: var(--color-ko); }
+
+        .wf-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
+        .wf-box.en .wf-title { color: var(--color-en); }
+        .wf-box.es .wf-title { color: var(--color-es); }
+        .wf-box.ko .wf-title { color: var(--color-ko); }
+
+        .wf-list { list-style: none; padding: 0; margin: 0; font-size: 0.88rem; line-height: 1.6; }
+        .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; }
+        .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
+
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); }
         #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
     </style>
 </head>
 <body>
 
-    <!-- Security Access PIN -->
+    <!-- Access PIN Protection -->
     <div id="authOverlay">
         <div class="auth-card">
             <h2 style="margin-bottom: 12px; color: var(--primary);">Security Verification</h2>
@@ -500,7 +530,7 @@
             </div>
         </div>
 
-        <!-- TAB 3: GRAMMAR BLOG (TIMELINE FEED & ACCORDION TREE + NOTE CATEGORY) -->
+        <!-- TAB 3: GRAMMAR BLOG -->
         <div id="tab3" class="tab-content">
             <div class="grammar-layout">
                 <!-- LEFT SIDEBAR -->
@@ -521,9 +551,8 @@
                     <div id="grammarTreeContainer"></div>
                 </div>
 
-                <!-- RIGHT MAIN CONTENT: TIMELINE FEED OR EDIT FORM -->
+                <!-- RIGHT MAIN CONTENT -->
                 <div>
-                    <!-- FEED CONTAINER (DEFAULT VIEW) -->
                     <div id="blogFeedContainer">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h3 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h3>
@@ -533,7 +562,6 @@
                         <div id="feedPagination" style="display: flex; justify-content: center; gap: 6px; margin-top: 20px;"></div>
                     </div>
 
-                    <!-- FORM CONTAINER (SHOWS WHEN EDITING/WRITING) -->
                     <div id="blogFormCard" class="card" style="display: none; margin-bottom: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h2 id="grammarHeader" style="color: var(--grammar);">Create Grammar Note</h2>
@@ -699,7 +727,6 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS (3 GROUPS: STRONG, MEDIUM, WEAK) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
@@ -752,7 +779,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD -->
+        <!-- TAB 5: BOARD (PERFECTED CIRCLES & CONNECTOR LINES) -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
@@ -781,7 +808,7 @@
             </div>
         </div>
 
-        <!-- TAB 6: CALENDAR (LỊCH HỌC TẬP TỔNG HỢP) -->
+        <!-- TAB 6: CALENDAR -->
         <div id="tab6" class="tab-content">
             <div class="card">
                 <div class="calendar-header">
@@ -798,10 +825,8 @@
                     </div>
                 </div>
 
-                <!-- CALENDAR GRID -->
                 <div id="calendarGrid" class="calendar-grid"></div>
 
-                <!-- DAILY SUMMARY BOARD -->
                 <div id="daySummaryCard" class="card" style="margin-top: 20px; background: var(--bg); display: none;">
                     <h3 id="selectedDateTitle" style="color: var(--warning); margin-bottom: 12px;">Summary for YYYY-MM-DD</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -823,7 +848,6 @@
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- THREE LANGUAGE CARDS ROW -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
                         <div style="font-size: 1.5rem; margin-bottom: 4px;">🇺🇸</div>
@@ -842,7 +866,6 @@
                     </div>
                 </div>
 
-                <!-- CUSTOM GOALS (LOCKED WITH SHARED EDIT BUTTON) & RADAR -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); position: relative;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -883,7 +906,6 @@
                     </div>
                 </div>
 
-                <!-- VELOCITY LINE CHART -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <h4 style="font-size: 1rem; color: var(--edit); margin-bottom: 14px;">📈 Learning Velocity (Weekly New Words Added)</h4>
                     <div style="position: relative; height: 260px; width: 100%;">
@@ -891,7 +913,6 @@
                     </div>
                 </div>
 
-                <!-- FULL-WIDTH BOOK HORIZONTAL BAR CHART & TABLE -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
                     <h4 style="font-size: 1rem; color: var(--warning); margin-bottom: 14px;">📚 Book Source Units Completion Tracker</h4>
                     <div style="position: relative; height: 350px; width: 100%;">
@@ -1302,122 +1323,6 @@
         }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
-        
-        /* SMART TABLE 3x2 WITH BUILT-IN BUTTONS */
-        function insertSmartTable(editorId) {
-            const editor = document.getElementById(editorId);
-            const tableHTML = `
-                <div class="smart-table-wrapper" contenteditable="false">
-                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
-                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="addSmartCol(this)" title="Add Column">+</button>
-                    <table class="smart-table">
-                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
-                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
-                    </table>
-                </div><p><br></p>
-            `;
-            editor.focus();
-            document.execCommand('insertHTML', false, tableHTML);
-        }
-
-        function addSmartRow(btn) {
-            const table = btn.parentNode.querySelector('table');
-            const cols = table.rows[0].cells.length;
-            const newTr = table.insertRow();
-            newTr.contentEditable = "true";
-            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
-        }
-
-        function addSmartCol(btn) {
-            const table = btn.parentNode.querySelector('table');
-            for(let i=0; i<table.rows.length; i++) {
-                const cell = table.rows[i].insertCell();
-                cell.innerText = "New cell";
-            }
-        }
-
-        // --- MODALS ---
-        function openNoteModal(lang) {
-            currentEditingNoteLang = lang;
-            document.getElementById('noteModalTitle').innerText = `Edit Note [${lang}]`;
-            document.getElementById('tempNoteContentEditor').innerHTML = currentNotes[lang] || "";
-            document.getElementById('noteModal').style.display = "flex";
-        }
-        function closeNoteModal() { document.getElementById('noteModal').style.display = "none"; }
-        function saveNoteModal() {
-            if (currentEditingNoteLang) currentNotes[currentEditingNoteLang] = document.getElementById('tempNoteContentEditor').innerHTML.trim();
-            closeNoteModal();
-            showToast(`✅ Saved Note [${currentEditingNoteLang}]`);
-        }
-
-        function openEnIrregModal() {
-            document.getElementById('irregBase').value = currentEnIrregData.base || document.getElementById('wordEN').value.trim();
-            document.getElementById('irregPast').value = currentEnIrregData.past || "";
-            document.getElementById('irregPart').value = currentEnIrregData.part || "";
-            document.getElementById('enIrregModal').style.display = "flex";
-        }
-        function closeEnIrregModal() { document.getElementById('enIrregModal').style.display = "none"; }
-        function saveEnIrregModal() {
-            currentEnIrregData = {
-                base: document.getElementById('irregBase').value.trim(),
-                past: document.getElementById('irregPast').value.trim(),
-                part: document.getElementById('irregPart').value.trim()
-            };
-            closeEnIrregModal();
-            showToast("✅ Saved English Irregular Verb!");
-        }
-
-        function buildConjModalHTML() {
-            const container = document.getElementById('conjTablesContainer');
-            container.innerHTML = "";
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                const sectionEl = document.createElement('div');
-                sectionEl.innerHTML = `<div class="conj-section-title">${sec.title}</div>`;
-                const table = document.createElement('table');
-                table.className = "conj-table";
-                let headerRow = `<tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr>`;
-                let bodyRows = "";
-                PRONOUNS.forEach((p, pIdx) => {
-                    bodyRows += `<tr><td><strong>${p}</strong></td>`;
-                    sec.tenses.forEach((t, tIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        bodyRows += `<td><input type="text" id="conj_${key}" placeholder="..."></td>`;
-                    });
-                    bodyRows += `</tr>`;
-                });
-                table.innerHTML = headerRow + bodyRows;
-                sectionEl.appendChild(table);
-                container.appendChild(sectionEl);
-            });
-        }
-
-        function openConjModal() {
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                sec.tenses.forEach((t, tIdx) => {
-                    PRONOUNS.forEach((p, pIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        const input = document.getElementById(`conj_${key}`);
-                        if(input) input.value = currentConjData[key] || "";
-                    });
-                });
-            });
-            document.getElementById('conjModal').style.display = "flex";
-        }
-        function closeConjModal() { document.getElementById('conjModal').style.display = "none"; }
-        function saveConjModal() {
-            currentConjData = {};
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                sec.tenses.forEach((t, tIdx) => {
-                    PRONOUNS.forEach((p, pIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        const input = document.getElementById(`conj_${key}`);
-                        if(input && input.value.trim()) { currentConjData[key] = input.value.trim(); }
-                    });
-                });
-            });
-            closeConjModal();
-            showToast("✅ Saved Spanish Conjugations!");
-        }
 
         // --- SAVE VOCABULARY ---
         async function saveVocab(e) {
@@ -1857,7 +1762,7 @@
             });
         }
 
-        // --- TAB 3: GRAMMAR BLOG (FACEBOOK TIMELINE FEED & ACCORDION TREE FOLDERS) ---
+        // --- TAB 3: GRAMMAR BLOG ---
         let pinnedPostIds = JSON.parse(localStorage.getItem("trilingua_pinned_posts") || "[]");
         let feedCurrentPage = 1;
 
@@ -1902,7 +1807,6 @@
             renderBlogFeed(feedCurrentPage);
         }
 
-        /* Render Facebook-style Timeline Feed */
         function renderBlogFeed(page = 1) {
             feedCurrentPage = page;
             const container = document.getElementById('feedPostsList');
@@ -1949,7 +1853,6 @@
                 container.appendChild(postCard);
             });
 
-            // Pagination Controls
             if (totalPages > 1) {
                 for (let i = 1; i <= totalPages; i++) {
                     const pageBtn = document.createElement('button');
@@ -1966,7 +1869,6 @@
             deleteGrammar();
         }
 
-        /* Render Left Sidebar Folder Accordions */
         function renderGrammarSidebar() {
             const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
             const selectedTag = document.getElementById('tagFilterSelect').value;
@@ -1999,7 +1901,6 @@
                 const langBody = document.createElement('div');
                 langBody.className = "tree-lang-body";
 
-                // Group by Category Folders (Sorted Alphabetically)
                 const foldersMap = {};
                 langPosts.forEach(p => {
                     const cat = p.topic || "General";
@@ -2402,7 +2303,7 @@
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
             const typingHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'typing');
 
-            // Categorization Groups: Strong, Medium, Weak
+            // Strong, Medium, Weak Group Calculation
             const vocabRecordMap = {};
             flashcardHist.forEach(h => {
                 if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
@@ -2493,7 +2394,6 @@
 
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             
-            // Build Study Dates Sets
             const studyDatesVocab = new Set(userVocabList.map(v => v.timestamp));
             const studyDatesBlog = new Set(grammarList.map(g => g.timestamp));
 
@@ -2510,7 +2410,7 @@
 
                 for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div></div>`; }
 
-                for (let d = 1; u = d <= daysInMonth; d++) {
+                for (let d = 1; d <= daysInMonth; d++) {
                     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
                     const hasVocab = studyDatesVocab.has(dateStr);
                     const hasBlog = studyDatesBlog.has(dateStr);
@@ -2730,7 +2630,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (MIND-MAP) ---
+        // --- TAB 5: BOARD (FIXED ABSOLUTE POSITIONING & CANVAS RENDER) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -2786,7 +2686,7 @@
             canvas.innerHTML = "";
 
             if (!item) {
-                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; font-weight:600;">Item not found in database!</div>`;
+                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; font-weight:600; margin-top:180px;">Item not found in database!</div>`;
                 bottomGrid.style.display = "none";
                 return;
             }
@@ -2803,10 +2703,10 @@
             ];
 
             let nodesHTML = "";
-            let svgLinesHTML = `<svg class="mindmap-lines" style="width:100%; height:100%;">`;
+            let svgLinesHTML = `<svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;">`;
 
             nodesHTML += `
-                <div class="node node-main" style="left:${cx - 75}px; top:${cy - 75}px;">
+                <div class="board-node board-node-main" style="left:${cx - 75}px; top:${cy - 75}px;">
                     <div>${item.en || "---"}</div>
                     ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
                 </div>
@@ -2822,7 +2722,7 @@
                 svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
 
                 nodesHTML += `
-                    <div class="node node-level2 ${lang.class}" style="left:${l2x - 60}px; top:${l2y - 60}px;">
+                    <div class="board-node board-node-l2 ${lang.class}" style="left:${l2x - 60}px; top:${l2y - 60}px;">
                         ${lang.val}
                     </div>
                 `;
