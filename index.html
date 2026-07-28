@@ -36,7 +36,10 @@
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
-        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        
+        /* LOGO STYLING TO FIT Logo2.png PERFECTLY */
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         
         .nav-tabs { display: flex; gap: 6px; flex-wrap: nowrap; align-items: center; }
         .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.8rem; white-space: nowrap; }
@@ -275,7 +278,12 @@
     </div>
 
     <header>
-        <div class="logo">Trilingua.</div>
+        <!-- REPLACED TRILINGUA TEXT WITH LOGO2.PNG -->
+        <a href="#" class="logo-container" onclick="switchTab('tab1'); return false;">
+            <img src="Logo2.png" alt="Trilingua Logo" class="logo-img">
+        </a>
+
+        <!-- PC TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
@@ -418,7 +426,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Filters -->
+            <!-- Vocabulary Log Table -->
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -475,7 +483,7 @@
                 <div id="searchVocabView">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                         <h3 style="margin: 0;">Filter by Topic</h3>
-                        <!-- SORT BY MOVED HERE (INSIDE FILTER BY TOPIC) -->
+                        <!-- SORT BY INSIDE FILTER BY TOPIC -->
                         <div style="display:flex; gap:8px; align-items:center;">
                             <label style="margin:0; font-weight: bold;">Sort by:</label>
                             <select id="searchSortMode" onchange="searchPage = 1; renderTab2()" style="width:auto; padding:6px 10px;">
@@ -856,7 +864,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: BOARD (STRICTLY NO IDIOMS) -->
+        <!-- TAB 5: BOARD -->
         <div id="tab5" class="tab-content">
             <div class="card">
                 <div class="board-search-container">
@@ -1890,6 +1898,13 @@
             });
         }
 
+        function selectSubTopic(sub) {
+            currentSubTopicTab = sub;
+            renderSubTopicNav();
+            searchPage = 1;
+            renderTab2();
+        }
+
         function renderTab2() {
             const query = (document.getElementById('searchInput')?.value || "").toLowerCase();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2421,7 +2436,7 @@
             showToast("⏳ Deleting...");
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -2785,7 +2800,7 @@
             }
         }
 
-        /* POS CHART WITH COMBINED SINGLE YELLOW BAR FOR PHRASAL & IDIOMS */
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3143,8 +3158,8 @@
             document.getElementById('reportCountKO').innerText = `${countKO} words`;
 
             const gEN = parseInt(localStorage.getItem("goal_EN") || "500");
-            const gES = parseInt(localStorage.getItem("goal_ES") || "300");
-            const gKO = parseInt(localStorage.getItem("goal_KO") || "300");
+            const gES = localStorage.getItem("goal_ES") || "300";
+            const gKO = localStorage.getItem("goal_KO") || "300";
 
             const pEN = Math.min(Math.round((countEN / gEN) * 100), 100);
             const pES = Math.min(Math.round((countES / gES) * 100), 100);
