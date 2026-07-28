@@ -277,7 +277,7 @@
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search & Topics</button>
             <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
-            <button class="tab-btn" onclick="switchTab('tab4')">4. Quizlet Review</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Review</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
             <button class="tab-btn" onclick="switchTab('tab6')" style="background: var(--edit); color: white;">6. Calendar</button>
             <button class="tab-btn" onclick="switchTab('tab7')" style="background: var(--grammar); color: white;">7. Report</button>
@@ -288,7 +288,7 @@
             <button class="tab-btn active" onclick="switchTab('tab1'); toggleMobileMenu();">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2'); toggleMobileMenu();">2. Search & Topics</button>
             <button class="tab-btn" onclick="switchTab('tab3'); toggleMobileMenu();">3. Grammar Blog</button>
-            <button class="tab-btn" onclick="switchTab('tab4'); toggleMobileMenu();">4. Quizlet Review</button>
+            <button class="tab-btn" onclick="switchTab('tab4'); toggleMobileMenu();">4. Review</button>
             <button class="tab-btn" onclick="switchTab('tab5'); toggleMobileMenu();">5. Board</button>
             <button class="tab-btn" onclick="switchTab('tab6'); toggleMobileMenu();" style="background: var(--edit); color: white;">6. Calendar</button>
             <button class="tab-btn" onclick="switchTab('tab7'); toggleMobileMenu();" style="background: var(--grammar); color: white;">7. Report</button>
@@ -470,7 +470,6 @@
                     <button class="btn btn-sm btn-lang-en" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIdiomBtn" onclick="switchSearchSubTab('idiom')">Idioms</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabIrregBtn" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
-                    <!-- UPDATED SPANISH TAB NAME: Conjugación -->
                     <button class="btn btn-sm btn-lang-es" id="subTabConjBtn" onclick="switchSearchSubTab('conj')">Conjugación</button>
                     <button class="btn btn-sm btn-lang-es" id="subTabEsPhrasalBtn" onclick="switchSearchSubTab('esPhrasal')">Spanish Phrasal Verbs</button>
                 </div>
@@ -562,7 +561,6 @@
                     <div id="conjDirectoryContainer"></div>
                 </div>
 
-                <!-- STRICT SPANISH PHRASAL VERBS VIEW -->
                 <div id="searchEsPhrasalView" style="display: none;">
                     <h3 style="margin-bottom: 12px; color: var(--color-es);">Spanish Phrasal Verbs</h3>
                     <div class="table-container">
@@ -693,7 +691,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: QUIZLET REVIEW -->
+        <!-- TAB 4: REVIEW (SEPARATE 3-LANG RESULTS & REVERSE TRI-GRID) -->
         <div id="tab4" class="tab-content">
             <div class="card" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -710,6 +708,7 @@
                     <label style="margin-left: 6px;">Mode:</label>
                     <select id="quizMode" onchange="startQuiz()" style="width: auto;">
                         <option value="flashcard">3-Flashcard Grid</option>
+                        <option value="reverse">Reverse Tri-Grid (Find VI Meaning)</option>
                         <option value="typing">Typing Test</option>
                         <option value="phrasal">Phrasal Verbs Test</option>
                         <option value="idiom">Idioms Test</option>
@@ -720,6 +719,7 @@
                 </div>
             </div>
 
+            <!-- NORMAL TRI-FLASHCARD VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -756,6 +756,20 @@
                 </div>
             </div>
 
+            <!-- REVERSE TRI-GRID VIEW (3 WORDS -> 4 VI MEANING CHOICES) -->
+            <div id="reverseView" class="quiz-container" style="display: none;">
+                <div class="card">
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT VIETNAMESE MEANING</div>
+                    <div style="display:flex; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+                        <span style="background:var(--color-en); padding:6px 12px; border-radius:6px; font-weight:bold; color:#fff;" id="revWordEN">EN</span>
+                        <span style="background:var(--color-es); padding:6px 12px; border-radius:6px; font-weight:bold; color:#fff;" id="revWordES">ES</span>
+                        <span style="background:var(--color-ko); padding:6px 12px; border-radius:6px; font-weight:bold; color:#fff;" id="revWordKO">KO</span>
+                    </div>
+                    <div id="revGridContainer" class="mc-grid"></div>
+                    <div id="revResult" style="margin-top: 16px; font-weight: bold; display: none;"></div>
+                </div>
+            </div>
+
             <div id="typingView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <h3 id="typePrompt" style="font-size: 1.8rem; margin-bottom: 16px;">---</h3>
@@ -780,10 +794,10 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD STATISTICS (REMOVED MISTAKES TABLE) -->
+            <!-- DASHBOARD STATISTICS (3 COLUMNS FOR 3 LANGUAGES) -->
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
-                    <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard</h3>
+                    <h3 style="color: var(--primary);">📊 Learning Analytics Dashboard (3 Languages Breakdown)</h3>
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
                         <option value="7">1 Week (7 Days)</option>
                         <option value="30">1 Month (30 Days)</option>
@@ -793,18 +807,19 @@
                     </select>
                 </div>
 
+                <!-- 3 SEPARATE COLUMNS FOR EN, ES, KO -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
-                        <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">🟢 STRONG (Mastered ≥80%)</div>
-                        <div id="groupStrongCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
+                        <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">🇺🇸 ENGLISH STATUS</div>
+                        <div id="statColEN" style="font-size: 0.9rem; margin-top: 8px; line-height: 1.5;">Strong: 0<br>Medium: 0<br>Weak: 0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
-                        <div style="color: var(--warning); font-weight: 700; font-size: 0.9rem;">🟡 MEDIUM (40% - 79%)</div>
-                        <div id="groupMediumCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--color-es); text-align: center;">
+                        <div style="color: var(--color-es); font-weight: 700; font-size: 0.9rem;">🇪🇸 SPANISH STATUS</div>
+                        <div id="statColES" style="font-size: 0.9rem; margin-top: 8px; line-height: 1.5;">Strong: 0<br>Medium: 0<br>Weak: 0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
-                        <div style="color: var(--danger); font-weight: 700; font-size: 0.9rem;">🔴 WEAK (Risk <40%)</div>
-                        <div id="groupWeakCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--color-ko); text-align: center;">
+                        <div style="color: var(--color-ko); font-weight: 700; font-size: 0.9rem;">🇰🇷 KOREAN STATUS</div>
+                        <div id="statColKO" style="font-size: 0.9rem; margin-top: 8px; line-height: 1.5;">Strong: 0<br>Medium: 0<br>Weak: 0</div>
                     </div>
                 </div>
 
@@ -827,6 +842,7 @@
                     <div style="color:var(--text-secondary); text-align:center; margin-top:200px;">Type or select a word above to build Mind-map.</div>
                 </div>
 
+                <!-- 3 SEPARATE WORD FAMILY BOXES WITH STRICT LANGUAGE ASSIGNMENT -->
                 <div id="wfBottomContainer" class="wf-bottom-grid" style="display: none;">
                     <div class="wf-box en">
                         <div class="wf-title">🇺🇸 WORD FAMILY [EN]</div>
@@ -942,8 +958,16 @@
                     </div>
                 </div>
 
+                <!-- LEARNING VELOCITY WITH WEEKLY / MONTHLY / YEARLY SELECTOR -->
                 <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
-                    <h4 style="font-size: 1rem; color: var(--edit); margin-bottom: 14px;">📈 Learning Velocity (Weekly New Words Added)</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                        <h4 style="font-size: 1rem; color: var(--edit); margin: 0;">📈 Learning Velocity</h4>
+                        <select id="velocityModeSelect" onchange="renderReportTab()" style="width: auto; padding: 4px 10px; font-size: 0.85rem;">
+                            <option value="weekly">Weekly View</option>
+                            <option value="monthly">Monthly View</option>
+                            <option value="yearly">Yearly View</option>
+                        </select>
+                    </div>
                     <div style="position: relative; height: 260px; width: 100%;">
                         <canvas id="velocityChart"></canvas>
                     </div>
@@ -1079,13 +1103,11 @@
         let currentConjData = {};
         let currentEnIrregData = { base: "", past: "", part: "" };
 
-        // SEARCH PAGINATION STATE (15 items for Log, 50 items for Search)
         let searchPage = 1;
         const searchPageSize = 50;
         let logPage = 1;
         const logPageSize = 15;
 
-        // QUICK BLOG POPUP NAVIGATION STATE
         let activeQuickBlogIndex = 0;
         let activeQuickBlogList = [];
 
@@ -1663,7 +1685,6 @@
                 return true;
             }).reverse();
 
-            // Default to today's entries or latest entries (up to 15 per page)
             const totalPages = Math.ceil(filtered.length / logPageSize) || 1;
             if (logPage > totalPages) logPage = totalPages;
 
@@ -1690,7 +1711,6 @@
                 `;
             });
 
-            // Log Pagination ◄ Prev / Next ►
             if (totalPages > 1) {
                 for (let i = 1; i <= totalPages; i++) {
                     const btn = document.createElement('button');
@@ -2276,7 +2296,7 @@
             } catch(err) { showToast("⚠️ Saved locally!", true); }
         }
 
-        // --- TAB 4: QUIZLET REVIEW (STRICTLY SEPARATED IDIOMS & PHRASAL) ---
+        // --- TAB 4: REVIEW (SEPARATE 3-LANG RESULTS & REVERSE TRI-GRID) ---
         let quizList = [];
         let currentQuizIndex = 0;
 
@@ -2320,6 +2340,7 @@
             currentQuizIndex = 0;
 
             document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'block' : 'none';
+            document.getElementById('reverseView').style.display = mode === 'reverse' ? 'block' : 'none';
             document.getElementById('typingView').style.display = mode === 'typing' ? 'block' : 'none';
             document.getElementById('mcView').style.display = (mode === 'phrasal' || mode === 'idiom') ? 'block' : 'none';
             
@@ -2354,6 +2375,26 @@
                 document.getElementById('cardTextEN').style.display = 'none';
                 document.getElementById('cardTextES').style.display = 'none';
                 document.getElementById('cardTextKO').style.display = 'none';
+            }
+            else if (mode === 'reverse') {
+                document.getElementById('revWordEN').innerText = item.en || "---";
+                document.getElementById('revWordES').innerText = item.es || "---";
+                document.getElementById('revWordKO').innerText = item.ko || "---";
+                document.getElementById('revResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.vi).sort(() => Math.random() - 0.5).slice(0, 3);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('revGridContainer');
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.innerText = opt.vi || "---";
+                    btn.onclick = () => checkReverseAnswer(opt.id === item.id, item);
+                    grid.appendChild(btn);
+                });
             }
             else if (mode === 'typing') {
                 document.getElementById('typePrompt').innerText = item.vi || "---";
@@ -2403,6 +2444,26 @@
             }
         }
 
+        function checkReverseAnswer(isCorrect, item) {
+            const resEl = document.getElementById('revResult');
+            resEl.style.display = 'block';
+
+            if (isCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Correct Meaning! Moving to next...`;
+                if (item.en) speak(item.en, 'en-US');
+
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) { alert("🎉 Session completed!"); startQuiz(); }
+                    else { renderQuizCard(); }
+                }, 1200);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `❌ Incorrect! The correct meaning is: <b>${item.vi}</b>`;
+            }
+        }
+
         function checkMcAnswer(isCorrect, item) {
             const resEl = document.getElementById('mcResult');
             resEl.style.display = 'block';
@@ -2447,6 +2508,7 @@
             }
         }
 
+        /* STRICT SEPARATED 3-LANG FLASHCARD SCORING */
         function markCardLang(lang, remembered) {
             if (quizList.length === 0) return;
             const item = quizList[currentQuizIndex];
@@ -2528,31 +2590,32 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (FULL WIDTH POS CHART) ---
+        // --- ANALYTICS DASHBOARD (3 SEPARATE COLUMNS FOR EN, ES, KO) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
 
-            const vocabRecordMap = {};
-            flashcardHist.forEach(h => {
-                if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
-                vocabRecordMap[h.vocabId].total++;
-                if (h.remembered) vocabRecordMap[h.vocabId].mastered++;
-            });
+            ['EN', 'ES', 'KO'].forEach(lang => {
+                const langHist = flashcardHist.filter(h => h.lang === lang);
+                const itemScores = {};
+                langHist.forEach(h => {
+                    if (!itemScores[h.vocabId]) itemScores[h.vocabId] = { total: 0, mastered: 0 };
+                    itemScores[h.vocabId].total++;
+                    if (h.remembered) itemScores[h.vocabId].mastered++;
+                });
 
-            let strongCount = 0, mediumCount = 0, weakCount = 0;
-            Object.values(vocabRecordMap).forEach(rec => {
-                const ratio = rec.total > 0 ? (rec.mastered / rec.total) * 100 : 0;
-                if (ratio >= 80) strongCount++;
-                else if (ratio >= 40) mediumCount++;
-                else weakCount++;
-            });
+                let s = 0, m = 0, w = 0;
+                Object.values(itemScores).forEach(rec => {
+                    const ratio = rec.total > 0 ? (rec.mastered / rec.total) * 100 : 0;
+                    if (ratio >= 80) s++;
+                    else if (ratio >= 40) m++;
+                    else w++;
+                });
 
-            document.getElementById('groupStrongCount').innerText = `${strongCount} words`;
-            document.getElementById('groupMediumCount').innerText = `${mediumCount} words`;
-            document.getElementById('groupWeakCount').innerText = `${weakCount} words`;
+                document.getElementById(`statCol${lang}`).innerHTML = `Strong: ${s}<br>Medium: ${m}<br>Weak: ${w}`;
+            });
 
             const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
             const posMastered = {};
@@ -2682,6 +2745,7 @@
             svgLinesHTML += `</svg>`;
             canvas.innerHTML = svgLinesHTML + nodesHTML;
 
+            // STRICT 3 SEPARATE WORD FAMILY BOXES
             document.getElementById('wfListEN').innerHTML = formatWordFamilyList(item.familyEN);
             document.getElementById('wfListES').innerHTML = formatWordFamilyList(item.familyES);
             document.getElementById('wfListKO').innerHTML = formatWordFamilyList(item.familyKO);
@@ -2837,25 +2901,46 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT ---
+        // --- TAB 7: REPORT (BASED ON FLASHCARD REVIEW RESULTS & VELOCITY MODES) ---
         function renderReportTab() {
+            // Count unique mastered words per language from quiz history or total vocab list if reviewed
             let countEN = 0, countES = 0, countKO = 0;
+            
+            // Base count on flashcard flash history / vocabulary volume
+            const reviewedEN = new Set();
+            const reviewedES = new Set();
+            const reviewedKO = new Set();
+
+            quizHistory.forEach(h => {
+                if (h.remembered) {
+                    if (h.lang === 'EN') reviewedEN.add(h.vocabId);
+                    if (h.lang === 'ES') reviewedES.add(h.vocabId);
+                    if (h.lang === 'KO') reviewedKO.add(h.vocabId);
+                }
+            });
+
+            // Fallback if no quiz records yet, count total vocab entries with words in that language
             userVocabList.forEach(i => {
                 if (i.en) countEN++;
                 if (i.es) countES++;
                 if (i.ko) countKO++;
             });
-            document.getElementById('reportCountEN').innerText = `${countEN} words`;
-            document.getElementById('reportCountES').innerText = `${countES} words`;
-            document.getElementById('reportCountKO').innerText = `${countKO} words`;
+
+            const finalEN = reviewedEN.size > 0 ? reviewedEN.size : countEN;
+            const finalES = reviewedES.size > 0 ? reviewedES.size : countES;
+            const finalKO = reviewedKO.size > 0 ? reviewedKO.size : countKO;
+
+            document.getElementById('reportCountEN').innerText = `${finalEN} words`;
+            document.getElementById('reportCountES').innerText = `${finalES} words`;
+            document.getElementById('reportCountKO').innerText = `${finalKO} words`;
 
             const gEN = parseInt(localStorage.getItem("goal_EN") || "500");
             const gES = parseInt(localStorage.getItem("goal_ES") || "300");
             const gKO = parseInt(localStorage.getItem("goal_KO") || "300");
 
-            const pEN = Math.min(Math.round((countEN / gEN) * 100), 100);
-            const pES = Math.min(Math.round((countES / gES) * 100), 100);
-            const pKO = Math.min(Math.round((countKO / gKO) * 100), 100);
+            const pEN = Math.min(Math.round((finalEN / gEN) * 100), 100);
+            const pES = Math.min(Math.round((finalES / gES) * 100), 100);
+            const pKO = Math.min(Math.round((finalKO / gKO) * 100), 100);
 
             document.getElementById('goalBarEN').style.width = `${pEN}%`;
             document.getElementById('goalBarES').style.width = `${pES}%`;
@@ -2870,7 +2955,7 @@
                     labels: ['English (EN)', 'Spanish (ES)', 'Korean (KO)'],
                     datasets: [{
                         label: 'Vocabulary Volume',
-                        data: [countEN, countES, countKO],
+                        data: [finalEN, finalES, finalKO],
                         backgroundColor: 'rgba(16, 185, 129, 0.2)',
                         borderColor: '#10b981',
                         pointBackgroundColor: '#10b981'
@@ -2884,18 +2969,29 @@
                 }
             });
 
-            const weeksMap = {};
+            // LEARNING VELOCITY WITH WEEKLY / MONTHLY / YEARLY SELECTOR
+            const velMode = document.getElementById('velocityModeSelect')?.value || "weekly";
+            const timeMap = {};
+
             userVocabList.forEach(i => {
                 if (i.timestamp) {
                     const date = new Date(i.timestamp);
-                    const weekNum = Math.floor(date.getTime() / (7 * 24 * 60 * 60 * 1000));
-                    weeksMap[weekNum] = (weeksMap[weekNum] || 0) + 1;
+                    let key = "";
+                    if (velMode === 'weekly') {
+                        const wNum = Math.floor(date.getTime() / (7 * 24 * 60 * 60 * 1000));
+                        key = `W${wNum}`;
+                    } else if (velMode === 'monthly') {
+                        key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    } else {
+                        key = `${date.getFullYear()}`;
+                    }
+                    timeMap[key] = (timeMap[key] || 0) + 1;
                 }
             });
 
-            const sortedWeeks = Object.keys(weeksMap).sort();
-            const velocityLabels = sortedWeeks.map((w, idx) => `Week ${idx + 1}`);
-            const velocityData = sortedWeeks.map(w => weeksMap[w]);
+            const sortedKeys = Object.keys(timeMap).sort();
+            const velLabels = sortedKeys.map((k, idx) => velMode === 'weekly' ? `Period ${idx + 1}` : k);
+            const velData = sortedKeys.map(k => timeMap[k]);
 
             const velCtx = document.getElementById('velocityChart').getContext('2d');
             if (velocityChartInstance) velocityChartInstance.destroy();
@@ -2903,10 +2999,10 @@
             velocityChartInstance = new Chart(velCtx, {
                 type: 'line',
                 data: {
-                    labels: velocityLabels.length > 0 ? velocityLabels : ['Week 1'],
+                    labels: velLabels.length > 0 ? velLabels : ['Period 1'],
                     datasets: [{
                         label: 'New Words Added',
-                        data: velocityData.length > 0 ? velocityData : [0],
+                        data: velData.length > 0 ? velData : [0],
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         fill: true,
