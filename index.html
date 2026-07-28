@@ -456,18 +456,9 @@
         <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                    <div style="position:relative; flex:1; min-width:250px;">
-                        <input type="text" id="searchInput" placeholder="🔍 Type keyword to search (Alphabet A-Z dropdown)..." oninput="handleSearchAutocomplete(this.value)" autocomplete="off">
-                        <div id="searchDropdown" class="board-dropdown"></div>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <label style="margin:0;">Sort by:</label>
-                        <select id="searchSortMode" onchange="searchPage = 1; renderTab2()" style="width:auto; padding:6px 10px;">
-                            <option value="date">Date (Newest first)</option>
-                            <option value="alphabet">Alphabet (A-Z)</option>
-                        </select>
-                    </div>
+                <div style="position:relative; width:100%;">
+                    <input type="text" id="searchInput" placeholder="🔍 Type keyword to search (Alphabet A-Z dropdown)..." oninput="handleSearchAutocomplete(this.value)" autocomplete="off">
+                    <div id="searchDropdown" class="board-dropdown"></div>
                 </div>
             </div>
             
@@ -482,7 +473,18 @@
                 </div>
 
                 <div id="searchVocabView">
-                    <h3 style="margin-bottom: 12px;">Filter by Topic</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                        <h3 style="margin: 0;">Filter by Topic</h3>
+                        <!-- SORT BY MOVED HERE (INSIDE FILTER BY TOPIC) -->
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <label style="margin:0; font-weight: bold;">Sort by:</label>
+                            <select id="searchSortMode" onchange="searchPage = 1; renderTab2()" style="width:auto; padding:6px 10px;">
+                                <option value="date">Date (Newest first)</option>
+                                <option value="alphabet">Alphabet (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="sub-nav" id="topicNav"></div>
                     <div class="sub-nav" id="subTopicNav" style="border-top: 1px dashed var(--border); padding-top: 12px;"></div>
                     
@@ -793,7 +795,6 @@
                 </div>
             </div>
 
-            <!-- MULTIPLE CHOICE VIEW -->
             <div id="mcView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">SELECT THE CORRECT MATCH</div>
@@ -1285,7 +1286,6 @@
             }
         }
 
-        /* LOCAL STORAGE LOADING WITH GOALS CONFIG FILTER */
         function loadFromLocalStorage() {
             const savedVocab = localStorage.getItem("trilingua_vocab");
             const savedGrammar = localStorage.getItem("trilingua_grammar");
@@ -1364,7 +1364,6 @@
             }
         }
 
-        /* CUSTOM GOALS SYNCED DIRECTLY TO GOOGLE SHEETS AS WELL */
         async function saveCustomGoals() {
             const gEN = document.getElementById('inputGoalEN').value;
             const gES = document.getElementById('inputGoalES').value;
@@ -1395,7 +1394,6 @@
             } catch(err) { showToast("⚠️ Goals Saved Locally!", true); }
         }
 
-        /* FETCH DATA FROM GAS AND EXTRACT CLOUD GOALS CONFIG */
         async function fetchDataFromGAS() {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -2474,7 +2472,6 @@
                 if (mode === 'idiom') return matchTop && matchSub && i.pos === 'idiom';
                 if (mode === 'collocation') return matchTop && matchSub && i.pos === 'collocation';
                 
-                // FLASHCARD 1 & 2: STRICTLY ALLOW ONLY NOUN, VERB, ADJ, ADV, PHRASE
                 if (mode === 'flashcard' || mode === 'reverse') {
                     return matchTop && matchSub && allowedFlashcardPos.includes(i.pos);
                 }
@@ -2964,7 +2961,7 @@
             bottomGrid.style.display = "grid";
         }
 
-        // --- TAB 6: CALENDAR (YELLOW HIGHLIGHT FOR BLOG POST DATES) ---
+        // --- TAB 6: CALENDAR ---
         function changeCalDate(offset) {
             const mode = document.getElementById('calViewMode').value;
             if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
