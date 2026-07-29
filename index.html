@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- APPLE HOME SCREEN WEB APP META TAGS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="apple-touch-icon" href="Logo1.png">
     <style>
         :root {
             --bg: #0f172a;
@@ -250,14 +252,15 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
-        /* TABLA DE CONJUGACIÓN DE VERBOS (STRICT MOBILE FORMAT & CLEAR HEADERS) */
-        .conj-section-title { font-size: 1.15rem; font-weight: 800; color: var(--color-es); background: rgba(16, 185, 129, 0.12); border-left: 4px solid var(--color-es); padding: 8px 12px; margin: 20px 0 10px 0; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+        /* HIGHLIGHTED CLEAR TITLES FOR TABLA DE CONJUGACIÓN DE VERBOS */
+        .conj-category-title { font-size: 1.3rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+        .conj-section-title { font-size: 1.05rem; font-weight: 800; color: var(--color-es); background: rgba(16, 185, 129, 0.15); border-left: 4px solid var(--color-es); padding: 8px 12px; margin: 14px 0 8px 0; border-radius: 4px; }
         .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; background: var(--bg); }
         .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 10px; font-size: 0.88rem; text-align: center; }
         .conj-table th { background: var(--surface-hover); color: var(--text); }
         .conj-table input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; }
 
-        /* MOBILE SPECIFIC CONJUGATION STACKED VIEW */
+        /* STRICT 2-COLUMN STACKED MOBILE VIEW FOR CONJUGATION */
         @media (max-width: 768px) {
             .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
             .conj-table thead { display: none; }
@@ -473,7 +476,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Vertical Mobile Card View -->
+            <!-- Vocabulary Log Table with Vertical Mobile Cards -->
             <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -508,11 +511,11 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH -->
+        <!-- TAB 2: SEARCH (UPGRADED TAB-AWARE SEARCH & ENTER KEY FILTER) -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="position:relative; width:100%;">
-                    <input type="text" id="searchInput" placeholder="🔍 Type keyword to search (Alphabet A-Z dropdown)..." oninput="handleSearchAutocomplete(this.value)" autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="🔍 Type keyword and press Enter or select from dropdown..." oninput="handleSearchAutocomplete(this.value)" onkeydown="handleSearchKeydown(event)" autocomplete="off">
                     <div id="searchDropdown" class="board-dropdown"></div>
                 </div>
             </div>
@@ -618,9 +621,8 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN MOBILE-FRIENDLY VIEW STRUCTURE -->
                 <div id="searchConjView" style="display: none;">
-                    <div id="conjHeaderCard" class="card" style="background:var(--bg); border:1px solid var(--border); margin-bottom:16px; text-align:center; padding:12px;"></div>
+                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Conjugación</h3>
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
                 </div>
@@ -886,11 +888,11 @@
                         <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
@@ -922,7 +924,7 @@
                 </div>
 
                 <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
-                    <!-- UPDATED CHART TITLE -->
+                    <!-- UPDATED CHART TITLE & LEGENDS -->
                     <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress</h4>
                     <canvas id="posChart" style="max-height: 320px; width: 100%;"></canvas>
                 </div>
@@ -1376,7 +1378,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* FETCH DATA WITH AUTO RETRY TO ENSURE ALL-TIME REPORT DATA IS NEVER EMPTY */
+        /* AUTO RETRY FETCH FROM GAS FOR REALTIME ALL-TIME REPORT & REVIEW DATA */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1849,12 +1851,12 @@
             }
         }
 
-        // --- TAB 2: SEARCH ---
+        // --- TAB 2: SEARCH (TAB-AWARE SEARCH & ENTER KEY FILTER) ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
                 dropdown.style.display = 'none';
-                renderTab2();
+                executeTabSearch(false);
                 return;
             }
             const q = val.toLowerCase().trim();
@@ -1878,14 +1880,42 @@
                 el.onclick = () => {
                     document.getElementById('searchInput').value = item.en || item.es || item.ko;
                     dropdown.style.display = 'none';
-                    searchPage = 1;
-                    renderTab2();
+                    executeTabSearch(true, item.en || item.es || item.ko);
                 };
                 dropdown.appendChild(el);
             });
 
             dropdown.style.display = 'block';
-            renderTab2();
+        }
+
+        function handleSearchKeydown(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchDropdown').style.display = 'none';
+                executeTabSearch(true);
+            }
+        }
+
+        function executeTabSearch(isSpecificQuery = false, specificWord = "") {
+            const query = specificWord || (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
+            
+            // CHECK WHICH SEARCH SUB-TAB IS ACTIVE AND RE-RENDER ACCORDINGLY
+            const isVocabVisible = document.getElementById('searchVocabView').style.display !== 'none';
+            const isPhrasalVisible = document.getElementById('searchPhrasalView').style.display !== 'none';
+            const isIdiomVisible = document.getElementById('searchIdiomView').style.display !== 'none';
+            const isIrregVisible = document.getElementById('searchIrregView').style.display !== 'none';
+            const isConjVisible = document.getElementById('searchConjView').style.display !== 'none';
+            const isEsPhrasalVisible = document.getElementById('searchEsPhrasalView').style.display !== 'none';
+
+            if (isVocabVisible) renderTab2();
+            if (isPhrasalVisible) renderPhrasalDirectory(query);
+            if (isIdiomVisible) renderIdiomDirectory(query);
+            if (isIrregVisible) renderIrregDirectory(query);
+            if (isConjVisible) renderConjDirectory(query);
+            if (isEsPhrasalVisible) renderEsPhrasalDirectory(query);
+
+            if (isSpecificQuery && query) {
+                showToast(`Searched for "${query}"`);
+            }
         }
 
         function switchSearchSubTab(sub) {
@@ -1896,11 +1926,7 @@
             document.getElementById('searchConjView').style.display = sub === 'conj' ? 'block' : 'none';
             document.getElementById('searchEsPhrasalView').style.display = sub === 'esPhrasal' ? 'block' : 'none';
 
-            if (sub === 'phrasal') renderPhrasalDirectory();
-            if (sub === 'idiom') renderIdiomDirectory();
-            if (sub === 'irreg') renderIrregDirectory();
-            if (sub === 'conj') renderConjDirectory();
-            if (sub === 'esPhrasal') renderEsPhrasalDirectory();
+            executeTabSearch(false);
         }
 
         function renderTopicNav() {
@@ -1936,15 +1962,8 @@
             });
         }
 
-        function selectSubTopic(sub) {
-            currentSubTopicTab = sub;
-            renderSubTopicNav();
-            searchPage = 1;
-            renderTab2();
-        }
-
         function renderTab2() {
-            const query = (document.getElementById('searchInput')?.value || "").toLowerCase();
+            const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
             const tbody = document.getElementById('tab2TableBody');
             const paginationEl = document.getElementById('searchPagination');
@@ -2021,12 +2040,12 @@
             }
         }
 
-        function renderPhrasalDirectory() {
+        function renderPhrasalDirectory(searchQuery = "") {
             const tbody = document.getElementById('phrasalDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.pos === 'phrasal verb').forEach(item => {
+            userVocabList.filter(i => i.pos === 'phrasal verb' && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2046,12 +2065,12 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No English phrasal verbs found.</td></tr>`;
         }
 
-        function renderEsPhrasalDirectory() {
+        function renderEsPhrasalDirectory(searchQuery = "") {
             const tbody = document.getElementById('esPhrasalDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.es && i.pos !== 'idiom' && (i.pos === 'phrasal verb' || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1)).forEach(item => {
+            userVocabList.filter(i => i.es && i.pos !== 'idiom' && (i.pos === 'phrasal verb' || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1) && (!searchQuery || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2071,12 +2090,12 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No Spanish phrasal verbs found.</td></tr>`;
         }
 
-        function renderIdiomDirectory() {
+        function renderIdiomDirectory(searchQuery = "") {
             const tbody = document.getElementById('idiomDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.pos === 'idiom').forEach(item => {
+            userVocabList.filter(i => i.pos === 'idiom' && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.ko && i.ko.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2101,17 +2120,19 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">No idioms found. Add items with POS = 'idiom'.</td></tr>`;
         }
 
-        function renderIrregDirectory() {
+        function renderIrregDirectory(searchQuery = "") {
             const tbody = document.getElementById('irregDirectoryBody');
             tbody.innerHTML = "";
             let count = 0;
 
             userVocabList.forEach(item => {
                 if (item.enIrregData && (item.enIrregData.past || item.enIrregData.part || item.enIrregData.base)) {
+                    const baseWord = item.enIrregData.base || item.en;
+                    if (searchQuery && !baseWord.toLowerCase().includes(searchQuery) && !item.vi.toLowerCase().includes(searchQuery)) return;
                     count++;
                     tbody.innerHTML += `
                         <tr>
-                            <td data-label="Base Form: "><strong style="color:var(--color-en);">${item.enIrregData.base || item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
+                            <td data-label="Base Form: "><strong style="color:var(--color-en);">${baseWord}</strong> <button class="tts-btn" onclick="speak('${baseWord}', 'en-US')">🔊</button></td>
                             <td data-label="Past Simple: " style="color:var(--primary); font-weight:bold;">${item.enIrregData.past || '---'}</td>
                             <td data-label="Past Participle: " style="color:var(--grammar); font-weight:bold;">${item.enIrregData.part || '---'}</td>
                             <td data-label="Vietnamese: " style="color:var(--color-vi);">${item.vi || '---'}</td>
@@ -2127,13 +2148,17 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        function renderConjDirectory() {
+        function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
             container.innerHTML = "";
             paginationEl.innerHTML = "";
 
-            const verbsWithConj = userVocabList.filter(i => i.conjData && Object.keys(i.conjData).length > 0);
+            let verbsWithConj = userVocabList.filter(i => i.conjData && Object.keys(i.conjData).length > 0);
+
+            if (searchQuery) {
+                verbsWithConj = verbsWithConj.filter(i => (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.en && i.en.toLowerCase().includes(searchQuery)));
+            }
 
             if(verbsWithConj.length === 0) {
                 container.innerHTML = `<p style="padding:20px; text-align:center; color:var(--text-secondary);">No verb conjugations recorded yet.</p>`;
@@ -2145,36 +2170,47 @@
 
             const item = verbsWithConj[conjPage - 1];
 
-            // RENDER HEADER WITH SPANISH, ENGLISH, KOREAN, VIETNAMESE COLORS
-            const headerCard = document.getElementById('conjHeaderCard');
-            headerCard.innerHTML = `
-                <div style="font-size:1.6rem; font-weight:800; color:var(--color-es);">${item.es || "---"}</div>
-                <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">English: ${item.en || "---"} | Korean: ${item.ko || "---"}</div>
-                <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">Meaning [VI]: ${item.vi || "---"}</div>
-            `;
-
             const card = document.createElement('div');
             card.className = "card";
             card.style.marginBottom = "16px";
             
-            let conjHTML = ``;
+            let conjHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div>
+                        <h3 style="color:var(--color-es); font-size:1.6rem;">${item.es || "---"}</h3>
+                        <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">English: ${item.en || "---"} | Korean: ${item.ko || "---"}</div>
+                        <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">Meaning [VI]: ${item.vi || "---"}</div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
             
             CONJ_STRUCTURE.forEach((sec, sIdx) => {
                 let sectionHasData = false;
-                let secHTML = `<div class="conj-section-title">${sec.title}</div><table class="conj-table"><thead><tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr></thead><tbody>`;
+                let secHTML = `<div class="conj-category-title">${sec.title}</div>`;
 
-                PRONOUNS.forEach((p, pIdx) => {
-                    let rowHTML = `<tr><td><strong>${p}</strong></td>`;
-                    sec.tenses.forEach((t, tIdx) => {
+                sec.tenses.forEach((t, tIdx) => {
+                    let tenseHasData = false;
+                    let tenseTableHTML = `<div class="conj-section-title">${t.toUpperCase()}</div><table class="conj-table"><thead><tr><th>Pronombres</th><th>Conjugación</th></tr></thead><tbody>`;
+
+                    PRONOUNS.forEach((p, pIdx) => {
                         const key = `${sIdx}_${tIdx}_${pIdx}`;
                         const val = item.conjData[key] || "";
-                        if(val) sectionHasData = true;
-                        rowHTML += `<td data-tense="${t}">${val}</td>`;
+                        if (val) {
+                            tenseHasData = true;
+                            sectionHasData = true;
+                        }
+                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
                     });
-                    rowHTML += `</tr>`;
-                    secHTML += rowHTML;
+                    tenseTableHTML += `</tbody></table>`;
+
+                    if (tenseHasData) {
+                        secHTML += tenseTableHTML;
+                    }
                 });
-                secHTML += `</tbody></table>`;
 
                 if(sectionHasData) conjHTML += secHTML;
             });
@@ -2570,7 +2606,7 @@
             showToast("Saved");
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -2934,7 +2970,7 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS (RENAMED EN, ES, KO, ALL LANGUAGES LEGENDS) ---
+        // --- DASHBOARD ANALYTICS (RENAMED LEGENDS: EN, ES, KO, All languages) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
