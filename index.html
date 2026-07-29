@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- APPLE HOME SCREEN WEB APP META TAGS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -117,7 +117,6 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -135,7 +134,7 @@
         .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
+        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 950px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
 
         .wotd-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 30px; text-align: center; max-width: 480px; width: 100%; box-shadow: var(--shadow); }
         .wotd-en { font-size: 2.2rem; font-weight: 800; color: var(--color-en); margin-bottom: 6px; }
@@ -252,15 +251,31 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
-        /* CONJUGACIÓN TABLE - EXACT MATCH WITH USER SCREENSHOT SPECIFICATIONS */
-        .conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+        /* CONJUGACIÓN INPUT MODAL TABLE - BALANCED EQUAL COLUMNS */
+        .modal-conj-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 16px; }
+        .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
+        .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
+        .modal-conj-table th { background: var(--surface-hover); color: var(--primary); }
+        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
+        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
+
+        /* CONJUGACIÓN SEARCH VIEW - EXACT IMAGE SCREENSHOT MATCH */
+        .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
         .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
         .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; }
         .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
         .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
-        .conj-table input { width: 100%; padding: 6px; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: left; }
+
+        @media (max-width: 768px) {
+            .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
+            .conj-table thead { display: none; }
+            .conj-table tr { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface); }
+            .conj-table td { border: none; padding: 6px 4px; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+            .conj-table td:first-child { font-weight: bold; color: var(--primary); text-align: left; }
+            .conj-table td::before { content: attr(data-tense); font-weight: 700; color: var(--text-secondary); text-align: left; margin-right: 10px; }
+        }
 
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
@@ -467,7 +482,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Vertical Mobile Cards -->
+            <!-- Vocabulary Log Table -->
             <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -502,7 +517,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH & TOPICS -->
+        <!-- TAB 2: SEARCH -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="position:relative; width:100%;">
@@ -544,7 +559,10 @@
                                     <th>Spanish</th>
                                     <th>Korean</th>
                                     <th>Vietnamese</th>
-                                    <th>POS / Family</th>
+                                    <th>POS</th>
+                                    <th>Family EN</th>
+                                    <th>Family ES</th>
+                                    <th>Family KO</th>
                                     <th>Examples & Notes</th>
                                     <th>Actions</th>
                                 </tr>
@@ -612,7 +630,7 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
+                <!-- CONJUGACIÓN MOBILE & PC VIEW STRUCTURE WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -1086,9 +1104,9 @@
         </div>
     </div>
 
-    <!-- MODAL 2: SPANISH CONJUGATION MODAL -->
+    <!-- MODAL 2: SPANISH CONJUGATION MODAL (EQUAL BALANCED INPUT COLUMNS) -->
     <div id="conjModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 1000px;">
+        <div class="modal-card">
             <h2 style="margin-bottom: 12px; color: var(--color-es);">Tabla de Conjugación de Verbos</h2>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned.</p>
             <div id="conjTablesContainer"></div>
@@ -1368,7 +1386,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* AUTO RETRY FETCH FROM GAS FOR REALTIME ALL-TIME REPORT & REVIEW DATA */
+        /* ACCURATE REALTIME CLOUD SYNC FOR VOCABULARY, BLOGS AND CONJUGATIONS */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1593,18 +1611,24 @@
             showToast("Saved");
         }
 
+        /* CONJUGATION INPUT MODAL BUILDER WITH BALANCED EQUAL COLUMN WIDTHS */
         function buildConjModalHTML() {
             const container = document.getElementById('conjTablesContainer');
             container.innerHTML = "";
             CONJ_STRUCTURE.forEach((sec, sIdx) => {
                 const sectionEl = document.createElement('div');
-                sectionEl.innerHTML = `<div class="conj-section-title">${sec.title}</div>`;
+                sectionEl.innerHTML = `<div class="conj-category-title">${sec.title}</div>`;
+                
+                const tableWrap = document.createElement('div');
+                tableWrap.className = "modal-conj-table-wrapper";
+                
                 const table = document.createElement('table');
-                table.className = "conj-table";
-                let headerRow = `<tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr>`;
+                table.className = "modal-conj-table";
+                
+                let headerRow = `<tr><th class="col-pronoun">Pronombres</th>` + sec.tenses.map(t => `<th>${t.toUpperCase()}</th>`).join('') + `</tr>`;
                 let bodyRows = "";
                 PRONOUNS.forEach((p, pIdx) => {
-                    bodyRows += `<tr><td><strong>${p}</strong></td>`;
+                    bodyRows += `<tr><td class="col-pronoun"><strong>${p}</strong></td>`;
                     sec.tenses.forEach((t, tIdx) => {
                         const key = `${sIdx}_${tIdx}_${pIdx}`;
                         bodyRows += `<td><input type="text" id="conj_${key}" placeholder="..."></td>`;
@@ -1612,7 +1636,8 @@
                     bodyRows += `</tr>`;
                 });
                 table.innerHTML = headerRow + bodyRows;
-                sectionEl.appendChild(table);
+                tableWrap.appendChild(table);
+                sectionEl.appendChild(tableWrap);
                 container.appendChild(sectionEl);
             });
         }
@@ -1661,10 +1686,10 @@
                 es: document.getElementById('wordES').value.trim(),
                 ko: document.getElementById('wordKO').value.trim(),
                 vi: document.getElementById('meaningVI').value.trim(),
+                pos: document.getElementById('pos').value.trim(),
                 familyEN: document.getElementById('wordFamilyEN').value.trim(),
                 familyES: document.getElementById('wordFamilyES').value.trim(),
                 familyKO: document.getElementById('wordFamilyKO').value.trim(),
-                pos: document.getElementById('pos').value.trim(),
                 exEN: document.getElementById('exEN').value.trim(),
                 exES: document.getElementById('exES').value.trim(),
                 exKO: document.getElementById('exKO').value.trim(),
@@ -3335,7 +3360,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT ---
+        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             
@@ -3477,4 +3502,4 @@
         }
     </script>
 </body>
-</html>
+</html>ㄹ
