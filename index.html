@@ -163,8 +163,6 @@ th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
 .feed-post-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
 .feed-post-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
 .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.80rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
-
-/* CALENDAR */
 .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
 .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
 .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
@@ -183,8 +181,6 @@ th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
 .year-mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 0.68rem; }
 .year-mini-num { padding: 2px 0; color: #64748b; border-radius: 3px; cursor: pointer; }
 .year-mini-num.active-vocab { color: #ffffff !important; font-weight: 800; background: rgba(245, 158, 11, 0.3); }
-
-/* BOARD (TAB 5) */
 .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
 .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
 .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -237,7 +233,7 @@ svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height
 
 /* MOBILE OPTIMIZATION FOR CONJUGATION TABLES */
 @media (max-width: 768px) {
-  .conj-table { width: 100% !important; display: table !important; table-layout: fixed !important; }
+  .conj-table { width: 100% !important; display: table !important; }
   .conj-table th, .conj-table td { padding: 8px 6px !important; font-size: 0.8rem !important; }
   .conj-table th:first-child, .conj-table td:first-child { width: 40% !important; }
   .conj-table th:last-child, .conj-table td:last-child { width: 60% !important; }
@@ -693,7 +689,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                 <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width: 28px; height:26px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left: 4px;">Bg:</label>
-                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
+                <input type="color" onchange="execCmd('hiliteColor', this.value)" title="Background Color" style="width: 28px; height:26px; padding:1px; cursor:pointer;">
               </div>
               <div id="gramContentEditor" class="rich-editor" contenteditable="true"></div>
             </div>
@@ -1107,8 +1103,6 @@ let activeQuickBlogList = [];
 let filterPinnedFeedOnly = false;
 
 const PRONOUNS = ["Yo", "tú", "Él/Ella/usted", "Nosotros/as", "Vosotros/as", "Ellos/Ellas/Ustedes", "Vos"];
-
-/* ĐÃ SỬA: Cấu trúc chuẩn 18 thì thuộc 6 danh mục */
 const CONJ_STRUCTURE = [
   {title: "Indicativo", tenses: ["presente", "imperfecto", "pretérito", "futuro", "condicional"] },
   {title: "Formas compuestas comunes", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto", "condicional perfecto"] },
@@ -1572,14 +1566,14 @@ async function saveVocab(e) {
     ko: document.getElementById('wordKO').value.trim(),
     vi: document.getElementById('meaningVI').value.trim(),
     familyEN: document.getElementById('wordFamilyEN').value.trim(),
-    familyES: document.getElementById('wordFamilyES').value.trim(),
-    familyKO: document.getElementById('wordFamilyKO').value.trim(),
     pos: document.getElementById('pos').value.trim(),
     exEN: document.getElementById('exEN').value.trim(),
     exES: document.getElementById('exES').value.trim(),
     exKO: document.getElementById('exKO').value.trim(),
     book: document.getElementById('book').value.trim(),
     unit: document.getElementById('unit').value.trim(),
+    familyES: document.getElementById('wordFamilyES').value.trim(),
+    familyKO: document.getElementById('wordFamilyKO').value.trim(),
     noteEN: currentNotes.EN,
     noteES: currentNotes.ES,
     noteKO: currentNotes.KO,
@@ -1859,7 +1853,7 @@ function selectSubTopic(sub) {
   renderTab2();
 }
 
-/* ĐÃ SỬA: TÁCH CỘT POS VÀ FAMILY RIÊNG BIỆT, ĐỒNG BỘ NGHĨA VỚI MOBILE CARD */
+/* SEARCH TAB RENDERER WITH POS & FAMILY SEPARATED IN STANDALONE ROWS/COLUMNS */
 function renderTab2() {
   const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
   const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2036,7 +2030,7 @@ function renderIrregDirectory(searchQuery = "") {
   if(count === 0) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No irregular verbs recorded yet.</td></tr>';
 }
 
-/* ĐÃ SỬA: HIỂN THỊ ĐẦY ĐỦ 18 THÌ ĐỘNG TỪ TRONG MỌI CHẾ ĐỘ MÀN HÌNH */
+/* CONJUGACIÓN DIRECTORY WITH FULL 18 TENSES IN DISPLAY */
 function renderConjDirectory(searchQuery = "") {
   const container = document.getElementById('conjDirectoryContainer');
   const paginationEl = document.getElementById('conjPagination');
