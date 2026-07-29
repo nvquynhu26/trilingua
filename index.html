@@ -98,7 +98,7 @@ th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9re
 th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
 .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-/* MOBILE CARD VIEW WITH SEPARATE POS & FAMILY LINES */
+/* MOBILE CARD VIEW FOR SEARCH TAB & TABLES */
 @media (max-width: 768px) {
   .responsive-card-table table, 
   .responsive-card-table thead, 
@@ -110,9 +110,9 @@ th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
   }
   .responsive-card-table thead tr { position: absolute; top: -9999px; left: -9999px; }
   .responsive-card-table tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
-  .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
+  .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 125px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
   .responsive-card-table td:last-child { border-bottom: none; }
-  .responsive-card-table td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
+  .responsive-card-table td::before { position: absolute; left: 8px; width: 110px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
 }
 
 .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -210,14 +210,14 @@ svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height
 .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
 .tag-checkbox-item input { width: auto; cursor: pointer; }
 
-/* CONJUGACIÓN TABLE & CLEAR SECTION TITLES */
+/* CONJUGACIÓN TABLE STYLES & MOBILE FIT */
 .conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
 .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
-.conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; table-layout: fixed; }
+.conj-table { width: 100% !important; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; table-layout: fixed; }
 .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; word-break: break-word; }
 .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
 .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
-.conj-table td:last-child { color: #f8fafc; font-weight: 500; }
+.conj-table td:last-child { color: #f8fafc; font-weight: 500; width: 55%; }
 .conj-table input { width: 100%; padding: 6px; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: left; }
 
 @media (max-width: 900px) {
@@ -230,7 +230,6 @@ svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height
   .dash-metric-title { font-size: 0.75rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
 
-/* MOBILE OPTIMIZATION FOR CONJUGATION TABLES */
 @media (max-width: 768px) {
   .conj-table { width: 100% !important; display: table !important; }
   .conj-table th, .conj-table td { padding: 8px 6px !important; font-size: 0.8rem !important; }
@@ -1852,7 +1851,7 @@ function selectSubTopic(sub) {
   renderTab2();
 }
 
-/* SEARCH TAB RENDERER WITH POS & FAMILY SEPARATED PERFECTLY FOR MOBILE/PC */
+/* RENDER TAB 2 SEARCH - POS & FAMILY FULLY SEPARATED */
 function renderTab2() {
   const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
   const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2029,7 +2028,7 @@ function renderIrregDirectory(searchQuery = "") {
   if(count === 0) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No irregular verbs recorded yet.</td></tr>';
 }
 
-/* CONJUGACIÓN DIRECTORY WITH FIXED FULL TENSES DISPLAY & MOBILE HYBRID */
+/* RENDER CONJUGATION DIRECTORY - ALL TENSES FULLY ACCESSIBLE & RESPONSIVE */
 function renderConjDirectory(searchQuery = "") {
   const container = document.getElementById('conjDirectoryContainer');
   const paginationEl = document.getElementById('conjPagination');
