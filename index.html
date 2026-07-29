@@ -110,8 +110,8 @@ th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
 .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; transition: all 0.2s; }
 .sub-btn:hover { background: var(--surface-hover); }
 .sub-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 700; }
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
-.modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; overflow-y: auto; }
+.modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 900px; width: 100%; box-shadow: var(--shadow); position: relative; margin: auto; }
 .wotd-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 30px; text-align: center; max-width: 480px; width: 100%; box-shadow: var(--shadow); }
 .wotd-en { font-size: 2.2rem; font-weight: 800; color: var(--color-en); margin-bottom: 6px; }
 .wotd-es { font-size: 1.7rem; font-weight: 700; color: var(--color-es); margin-bottom: 6px; }
@@ -200,14 +200,15 @@ svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height
 .tag-checkbox-container { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
 .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
 .tag-checkbox-item input { width: auto; cursor: pointer; }
-.conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
-.conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
-.conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
-.conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; }
-.conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
-.conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
-.conj-table td:last-child { color: #f8fafc; font-weight: 500; }
-.conj-table input { width: 100%; padding: 6px; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: left; }
+
+/* CSS cho Conjugation Matrix */
+.conj-matrix-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.85rem; background: #182232; }
+.conj-matrix-table th { background: rgba(0,0,0,0.2); color: var(--text); padding: 8px; text-align: center; border: 1px solid var(--border); font-weight: 700; }
+.conj-matrix-table td { padding: 4px; border: 1px solid var(--border); }
+.conj-matrix-table td:first-child { font-weight: 700; text-align: right; padding-right: 12px; width: 130px; color: var(--text-secondary); background: rgba(0,0,0,0.1); }
+.conj-matrix-table input { width: 100%; padding: 6px; font-size: 0.85rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 4px; }
+.conj-matrix-table span { display: block; padding: 6px; }
+
 @media (max-width: 900px) {
   .report-grid-two { grid-template-columns: 1fr; }
   .grammar-layout { grid-template-columns: 1fr; }
@@ -295,7 +296,6 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
       <h2 style="margin-bottom: 16px;">Add New</h2>
       <form id="vocabForm" onsubmit="saveVocab(event)">
         <input type="hidden" id="editId" value="">
-        <!-- Row 1: EN -->
         <div class="grid-row-1">
           <div class="form-group">
             <label>Word [EN]</label>
@@ -322,7 +322,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
           <button type="button" class="btn btn-warning" id="enIrregBtn" style="display: none;" onclick="openEnIrregModal()">Irregular</button>
           <button type="button" class="btn btn-grammar" onclick="openNoteModal('EN')">Note [EN]</button>
         </div>
-        <!-- Row 2: ES -->
+        
         <div class="grid-row-2">
           <div class="form-group">
             <label>Word [ES]</label>
@@ -335,7 +335,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
           <button type="button" class="btn btn-warning" id="esConjBtn" style="display: none;" onclick="openConjModal()">Conjugación</button>
           <button type="button" class="btn btn-grammar" onclick="openNoteModal('ES')">Note [ES]</button>
         </div>
-        <!-- Row 3: KO & VI -->
+        
         <div class="grid-row-3">
           <div class="form-group">
             <label>Word [KO]</label>
@@ -351,7 +351,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
           </div>
           <button type="button" class="btn btn-grammar" onclick="openNoteModal('KO')">Note [KO]</button>
         </div>
-        <!-- Row 4: Topics -->
+        
         <div class="grid-row-4">
           <div class="form-group">
             <label>Main Topic</label>
@@ -381,7 +381,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
             <select id="unit"></select>
           </div>
         </div>
-        <!-- Examples -->
+        
         <div class="grid-examples">
           <div class="form-group">
             <label>Example [EN]</label>
@@ -736,7 +736,7 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
       </div>
     </div>
 
-    <!-- FLASHCARD 2 VIEW (REVERSE) -->
+    <!-- FLASHCARD 2 VIEW -->
     <div id="reverseView" class="quiz-container" style="display: none;">
       <div class="card">
         <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -987,9 +987,9 @@ footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--tex
 
 <!-- MODAL 2: SPANISH CONJUGATION MODAL -->
 <div id="conjModal" class="modal-overlay">
-  <div class="modal-card" style="max-width: 1000px;">
+  <div class="modal-card" style="max-width: 1200px;">
     <h2 style="margin-bottom: 12px; color: var(--color-es);">Tabla de Conjugación de Verbos</h2>
-    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Fill in the verb tenses you have learned (18 Tenses).</p>
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Điền vào các thì bạn đã học.</p>
     <div id="conjTablesContainer"></div>
     <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
       <button type="button" class="btn btn-warning" onclick="saveConjModal()">Save Conjugation</button>
@@ -1041,7 +1041,9 @@ if (localStorage.getItem("trilingua_auth") === "true") {
   setTimeout(triggerWordOfTheDay, 500);
 }
 
-// GAS WEB APP URL
+// ==========================================
+// THAY BẰNG WEB APP URL CỦA BẠN (CẦN DEPLOY LẠI SAU KHI SỬA CODE.GS)
+// ==========================================
 const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSlgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr371_6-_IZsjg/exec";
 
 // Global Variables
@@ -1071,14 +1073,15 @@ let activeQuickBlogIndex = 0;
 let activeQuickBlogList = [];
 let filterPinnedFeedOnly = false;
 
-// 18 Keys Conjugation khớp 100% với Backend
-const TENSE_KEYS = [
-  "IND_Presente", "IND_Imperfecto", "IND_Preterito", "IND_Futuro", "IND_Condicional",
-  "FCC_Preterito_Perfecto", "FCC_Pluscuamperfecto", "FCC_Futuro_Perfecto", "FCC_Condicional_Perfecto",
-  "SUB_Presente", "SUB_Imperfecto", "SUB_Futuro",
-  "TCS_Preterito_Perfecto", "TCS_Pluscuamperfecto", "TCS_Futuro_Perfecto",
-  "IMP_Afirmativo", "IMP_Negativo",
-  "IND_Preterito_Anterior"
+// CONJUGATION STRUCTURE (Y HỆT HÌNH ẢNH YÊU CẦU)
+const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
+const CONJ_STRUCTURE = [
+  {title: "Indicativo", tenses: ["presente", "imperfecto", "pretérito", "futuro", "condicional"]},
+  {title: "Formas compuestas comunes", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto", "condicional perfecto"]},
+  {title: "Subjuntivo", tenses: ["presente", "imperfecto", "futuro"]},
+  {title: "Tiempos compuestos del subjuntivo", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto"]},
+  {title: "Imperativo", tenses: ["afirmativo", "negativo"]},
+  {title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"]}
 ];
 
 const BOOK_UNITS_CONFIG = {
@@ -1445,25 +1448,39 @@ function saveEnIrregModal() {
   showToast("Irregular Verb Saved");
 }
 
-// Build & Handle Conjugation 18 Tenses Modal
+// --- RENDER CONJUGATION MODAL BẢNG MATRẬN ---
 function buildConjModalHTML() {
   const container = document.getElementById('conjTablesContainer');
-  let html = `<table class="conj-table"><tbody>`;
-  TENSE_KEYS.forEach(tense => {
-    html += `
-      <tr>
-        <td>${tense.replace(/_/g, ' ')}</td>
-        <td><input type="text" id="conj_${tense}" placeholder="Nhập thì ${tense}..." /></td>
-      </tr>`;
+  container.innerHTML = "";
+  
+  CONJ_STRUCTURE.forEach((sec, sIdx) => {
+    let html = `<div style="background:var(--surface-hover); font-weight:800; padding:8px 12px; margin: 16px 0 0 0; text-align:center; border:1px solid var(--border); border-bottom:none; border-radius: 6px 6px 0 0;">${sec.title}</div>`;
+    html += `<div style="overflow-x:auto; background:#182232;"><table class="conj-matrix-table">`;
+    html += `<thead><tr><th></th>`;
+    sec.tenses.forEach(t => html += `<th>${t}</th>`);
+    html += `</tr></thead><tbody>`;
+
+    PRONOUNS.forEach((p, pIdx) => {
+      html += `<tr><td>${p}</td>`;
+      sec.tenses.forEach((t, tIdx) => {
+        html += `<td><input type="text" id="conj_${sIdx}_${tIdx}_${pIdx}" autocomplete="off" /></td>`;
+      });
+      html += `</tr>`;
+    });
+    html += `</tbody></table></div>`;
+    container.innerHTML += html;
   });
-  html += `</tbody></table>`;
-  container.innerHTML = html;
 }
 
 function openConjModal() {
-  TENSE_KEYS.forEach(tense => {
-    let input = document.getElementById('conj_' + tense);
-    if (input) input.value = currentConjData[tense] || "";
+  CONJ_STRUCTURE.forEach((sec, sIdx) => {
+    sec.tenses.forEach((t, tIdx) => {
+      PRONOUNS.forEach((p, pIdx) => {
+        const key = `${sIdx}_${tIdx}_${pIdx}`;
+        const input = document.getElementById(`conj_${key}`);
+        if(input) input.value = currentConjData[key] || "";
+      });
+    });
   });
   document.getElementById('conjModal').style.display = 'flex';
 }
@@ -1471,17 +1488,23 @@ function openConjModal() {
 function closeConjModal() { document.getElementById('conjModal').style.display = "none"; }
 
 function saveConjModal() {
-  let conjData = {};
-  TENSE_KEYS.forEach(tense => {
-    let input = document.getElementById('conj_' + tense);
-    conjData[tense] = input ? input.value : "";
+  currentConjData = {};
+  CONJ_STRUCTURE.forEach((sec, sIdx) => {
+    sec.tenses.forEach((t, tIdx) => {
+      PRONOUNS.forEach((p, pIdx) => {
+        const key = `${sIdx}_${tIdx}_${pIdx}`;
+        const input = document.getElementById(`conj_${key}`);
+        if(input && input.value.trim() !== "") {
+          currentConjData[key] = input.value.trim();
+        }
+      });
+    });
   });
-  currentConjData = conjData;
   document.getElementById('conjModal').style.display = 'none';
-  showToast("Đã lưu tạm 18 thì Conjugation!");
+  showToast("Đã lưu tạm Conjugation Matrix!");
 }
 
-// SAVE VOCABULARY (Đồng bộ song song vào User_Vocab và Spanish_Conjugations)
+// SAVE VOCABULARY (Đồng bộ song song)
 async function saveVocab(e) {
   e.preventDefault();
   
@@ -1536,7 +1559,6 @@ async function saveVocab(e) {
   } else {
     userVocabList.push(newEntry);
   }
-
   saveToLocalStorage();
 
   // MẢNG MAP VỚI 22 CỘT CỦA USER_VOCAB
@@ -1550,54 +1572,34 @@ async function saveVocab(e) {
   ];
 
   try {
-    // 1. Post dữ liệu vào Sheet User_Vocab
-    await fetch(GAS_WEB_APP_URL, {
+    let promises = [];
+    
+    // Lưu vào User_Vocab
+    promises.push(fetch(GAS_WEB_APP_URL, {
       method: 'POST',
-      body: JSON.stringify({
-        action: isEdit ? 'update' : 'add',
-        type: 'vocab',
-        id: id,
-        row: vocabRow
-      })
-    });
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: isEdit ? 'update' : 'add', type: 'vocab', id: id, row: vocabRow })
+    }));
 
-    // 2. NẾU LÀ ĐỘNG TỪ TIẾNG TÂY BAN NHA CÓ CONJUGATION -> POST VÀO SHEET THỨ 2
+    // Lưu vào Spanish_Conjugations (5 CỘT NHẰM CHỐNG LỖI ROW LENGTH BẤT ĐỒNG BỘ)
     if (wordES !== "" && Object.keys(currentConjData).length > 0) {
-      let conjRow = [
-        id, timestamp, wordES, wordEN,
-        currentConjData["IND_Presente"] || "", currentConjData["IND_Imperfecto"] || "", 
-        currentConjData["IND_Preterito"] || "", currentConjData["IND_Futuro"] || "", 
-        currentConjData["IND_Condicional"] || "",
-        currentConjData["FCC_Preterito_Perfecto"] || "", currentConjData["FCC_Pluscuamperfecto"] || "", 
-        currentConjData["FCC_Futuro_Perfecto"] || "", currentConjData["FCC_Condicional_Perfecto"] || "",
-        currentConjData["SUB_Presente"] || "", currentConjData["SUB_Imperfecto"] || "", 
-        currentConjData["SUB_Futuro"] || "",
-        currentConjData["TCS_Preterito_Perfecto"] || "", currentConjData["TCS_Pluscuamperfecto"] || "", 
-        currentConjData["TCS_Futuro_Perfecto"] || "",
-        currentConjData["IMP_Afirmativo"] || "", currentConjData["IMP_Negativo"] || "", 
-        currentConjData["IND_Preterito_Anterior"] || "",
-        conjJSON
-      ];
-
-      await fetch(GAS_WEB_APP_URL, {
+      let conjRow = [ id, timestamp, wordES, wordEN, conjJSON ];
+      promises.push(fetch(GAS_WEB_APP_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          action: isEdit ? 'update' : 'add',
-          type: 'conj',
-          id: id,
-          row: conjRow
-        })
-      });
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: isEdit ? 'update' : 'add', type: 'conj', id: id, row: conjRow })
+      }));
     }
 
-    showToast("✅ Đã lưu Vocabulary thành công!");
+    await Promise.all(promises);
+    showToast("✅ Đã đồng bộ dữ liệu thành công!");
+    
     resetForm();
     renderLogTable();
     renderCalendarTab();
     renderTab2();
-    
   } catch (error) {
-    showToast("❌ Lỗi khi lưu: " + error, true);
+    showToast("❌ Lỗi mạng khi lưu: " + error, true);
   } finally {
     submitBtn.innerText = "Save Vocabulary";
     submitBtn.disabled = false;
@@ -1655,13 +1657,14 @@ async function deleteVocab(id) {
   renderLogTable();
   renderTab2();
   renderCalendarTab();
-  showToast("Deleted");
+  showToast("Deleted locally. Syncing...");
   try {
     await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: "delete", type: "vocab", id }),
-      redirect: "follow"
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: "delete", type: "vocab", id })
     });
+    showToast("Deleted on server");
   } catch(err) {}
 }
 
@@ -2002,6 +2005,7 @@ function renderIrregDirectory(searchQuery = "") {
   if(count === 0) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>';
 }
 
+// --- RENDER BẢNG DIRECTORY ĐỒNG BỘ UI MATRIX ---
 function renderConjDirectory(searchQuery = "") {
   const container = document.getElementById('conjDirectoryContainer');
   const paginationEl = document.getElementById('conjPagination');
@@ -2024,7 +2028,7 @@ function renderConjDirectory(searchQuery = "") {
   card.className = "card";
   card.style.marginBottom = "16px";
   
-  let conjTableHTML = `
+  let conjHTML = `
     <div style="display: flex; justify-content:space-between; align-items:center; margin-bottom: 12px; flex-wrap:wrap; gap:10px;">
       <div>
         <h3 style="color:var(--color-es); font-size: 1.6rem; margin:0;">${item.es || "---"}</h3>
@@ -2035,19 +2039,36 @@ function renderConjDirectory(searchQuery = "") {
         <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
         <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
       </div>
-    </div>
-    <table class="conj-table">
-      <thead><tr><th>Thì Conjugation</th><th>Giá trị</th></tr></thead>
-      <tbody>`;
+    </div>`;
 
-  TENSE_KEYS.forEach(tense => {
-    if (item.conjData && item.conjData[tense]) {
-      conjTableHTML += `<tr><td><strong>${tense.replace(/_/g, ' ')}</strong></td><td>${item.conjData[tense]}</td></tr>`;
+  CONJ_STRUCTURE.forEach((sec, sIdx) => {
+    let hasDataForSection = false;
+    let secHTML = `<div style="background:var(--surface-hover); font-weight:800; padding:8px 12px; margin: 16px 0 0 0; text-align:center; border:1px solid var(--border); border-bottom:none; border-radius: 6px 6px 0 0;">${sec.title}</div>`;
+    secHTML += `<div style="overflow-x:auto; background:#182232;"><table class="conj-matrix-table">`;
+    secHTML += `<thead><tr><th></th>`;
+    sec.tenses.forEach(t => secHTML += `<th>${t}</th>`);
+    secHTML += `</tr></thead><tbody>`;
+
+    PRONOUNS.forEach((p, pIdx) => {
+      let rowHTML = `<tr><td>${p}</td>`;
+      sec.tenses.forEach((t, tIdx) => {
+        const key = `${sIdx}_${tIdx}_${pIdx}`;
+        const val = item.conjData[key] || "";
+        if(val !== "") hasDataForSection = true;
+        rowHTML += `<td><span>${val}</span></td>`;
+      });
+      rowHTML += `</tr>`;
+      secHTML += rowHTML;
+    });
+    secHTML += `</tbody></table></div>`;
+    
+    // Nếu section này có bất kỳ 1 ô nào có data thì hiển thị
+    if (hasDataForSection) {
+      conjHTML += secHTML;
     }
   });
 
-  conjTableHTML += `</tbody></table>`;
-  card.innerHTML = conjTableHTML;
+  card.innerHTML = conjHTML;
   container.appendChild(card);
 
   if (totalPages > 1) {
@@ -2400,15 +2421,16 @@ async function saveGrammar(e) {
   saveToLocalStorage();
   closeWriteBlogForm();
   renderCalendarTab();
-  showToast("Grammar Saved");
+  showToast("Grammar Saved locally. Syncing...");
 
   const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
   try {
     await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData }),
-      redirect: "follow"
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData })
     });
+    showToast("Grammar Saved on server");
   } catch(err) {}
 }
 
@@ -2419,13 +2441,14 @@ async function deleteGrammar() {
   saveToLocalStorage();
   closeWriteBlogForm();
   renderCalendarTab();
-  showToast("Deleted");
+  showToast("Deleted locally. Syncing...");
   try {
     await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: "delete", type: "grammar", id }),
-      redirect: "follow"
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: "delete", type: "grammar", id })
     });
+    showToast("Deleted on server");
   } catch(err) {}
 }
 
