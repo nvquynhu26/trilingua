@@ -81,7 +81,6 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* RICH EDITOR & BLOG POST RESPONSIVE AUTO-FIT (NO OVERFLOW ON MOBILE/PC) */
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor img, .feed-post-body img, #quickBlogContent img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px auto; display: block; object-fit: contain; }
@@ -197,8 +196,8 @@
         .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; min-height: 48px; }
         .cal-cell:hover { border-color: var(--primary); }
         .cal-cell.active-vocab { background: rgba(245, 158, 11, 0.25) !important; border-color: var(--warning) !important; }
-        .cal-cell.active-vocab .cal-num { color: var(--warning) !important; font-weight: 800; }
-        .cal-num { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+        .cal-cell.active-vocab .cal-num { color: #ffffff !important; font-weight: 800 !important; }
+        .cal-num { font-size: 0.85rem; font-weight: 600; color: #64748b; }
         
         .cal-dots { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; }
         .dot-blog-en { width: 6px; height: 6px; border-radius: 50%; background: var(--color-en); }
@@ -206,12 +205,11 @@
         .dot-blog-ko { width: 6px; height: 6px; border-radius: 50%; background: var(--color-ko); }
         .dot-blog-note { width: 6px; height: 6px; border-radius: 50%; background: var(--grammar); }
 
-        /* YEAR VIEW MINI CALENDAR CARD (APPLE CALENDAR STYLE) */
         .year-month-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; }
         .year-month-title { color: var(--primary); font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; text-align: center; }
         .year-mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 0.68rem; }
-        .year-mini-num { padding: 2px 0; color: #64748b; border-radius: 3px; }
-        .year-mini-num.active-vocab { color: #ffffff !important; font-weight: 800; background: rgba(16, 185, 129, 0.25); }
+        .year-mini-num { padding: 2px 0; color: #64748b; border-radius: 3px; cursor: pointer; }
+        .year-mini-num.active-vocab { color: #ffffff !important; font-weight: 800; background: rgba(245, 158, 11, 0.3); }
 
         /* BOARD (TAB 5) */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
@@ -315,7 +313,6 @@
             <img src="Logo2.png" alt="Trilingua Logo" class="logo-img">
         </a>
 
-        <!-- NAV TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search</button>
@@ -458,7 +455,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Vertical Cards for Mobile -->
+            <!-- Vocabulary Log Table with Vertical Mobile Card View -->
             <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -777,6 +774,7 @@
                 </div>
             </div>
 
+            <!-- FLASHCARD 1 VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -813,6 +811,7 @@
                 </div>
             </div>
 
+            <!-- FLASHCARD 2 VIEW (REVERSE) -->
             <div id="reverseView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -853,7 +852,6 @@
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
-                    <!-- DEFAULT TO ALL TIME -->
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
                         <option value="36500" selected>All Time</option>
                         <option value="7">1 Week (7 Days)</option>
@@ -864,43 +862,42 @@
                     </select>
                 </div>
 
-                <!-- RENAMED STRONG / MEDIUM / WEAK -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
+                        <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">🟢 STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
+                        <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">🟡 MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
+                        <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">🔴 WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                 </div>
 
-                <!-- 3 PROGRESS BOXES WITH FLAG -> CODE -> PROGRESS ON 3 SEPARATE LINES -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇺🇸</div>
-                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 700;">EN</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 6px;">Progress</div>
-                        <div class="dash-metric-val" id="langColEN" style="font-size: clamp(0.9rem, 2.5vw, 1.1rem); font-weight: 800; margin: 4px 0;">0 / 0</div>
+                <!-- UPDATED 3 PROGRESS BOXES WITH FLAG -> CODE -> PROGRESS ON SEPARATE LINES -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <div style="background: var(--bg); padding: 12px 4px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇺🇸</div>
+                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 800; font-size: 0.85rem;">EN</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 4px;">Progress</div>
+                        <div class="dash-metric-val" id="langColEN" style="font-size: clamp(0.8rem, 2.2vw, 1.05rem); font-weight: 800; margin: 2px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarEN" class="progress-bar-fill" style="width:0%; background:var(--color-en);"></div></div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇪🇸</div>
-                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 700;">ES</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 6px;">Progress</div>
-                        <div class="dash-metric-val" id="langColES" style="font-size: clamp(0.9rem, 2.5vw, 1.1rem); font-weight: 800; margin: 4px 0;">0 / 0</div>
+                    <div style="background: var(--bg); padding: 12px 4px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇪🇸</div>
+                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 800; font-size: 0.85rem;">ES</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 4px;">Progress</div>
+                        <div class="dash-metric-val" id="langColES" style="font-size: clamp(0.8rem, 2.2vw, 1.05rem); font-weight: 800; margin: 2px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarES" class="progress-bar-fill" style="width:0%; background:var(--color-es);"></div></div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇰🇷</div>
-                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 700;">KO</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 6px;">Progress</div>
-                        <div class="dash-metric-val" id="langColKO" style="font-size: clamp(0.9rem, 2.5vw, 1.1rem); font-weight: 800; margin: 4px 0;">0 / 0</div>
+                    <div style="background: var(--bg); padding: 12px 4px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇰🇷</div>
+                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 800; font-size: 0.85rem;">KO</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 4px;">Progress</div>
+                        <div class="dash-metric-val" id="langColKO" style="font-size: clamp(0.8rem, 2.2vw, 1.05rem); font-weight: 800; margin: 2px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarKO" class="progress-bar-fill" style="width:0%; background:var(--color-ko);"></div></div>
                     </div>
                 </div>
@@ -981,29 +978,28 @@
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- 3 REPORT WORDS CARDS WITH FLAG -> CODE -> LEARNED -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;">
-                    <div style="background: var(--bg); padding: 14px 8px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇺🇸</div>
-                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 700; font-size: 0.8rem;">EN</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Learned</div>
-                        <div id="reportCountEN" style="font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 800; margin: 0; color: var(--color-en);">0</div>
+                <!-- RENAMED EN Learned / ES Learned / KO Learned WITH LINES BELOW -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px;">
+                    <div style="background: var(--bg); padding: 14px 4px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇺🇸</div>
+                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 800; font-size: 0.8rem;">EN</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 2px;">Learned</div>
+                        <div id="reportCountEN" style="font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 800; margin: 0; color: var(--color-en);">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 8px; border-radius: var(--radius); border: 2px solid var(--color-es); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇪🇸</div>
-                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 700; font-size: 0.8rem;">ES</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Learned</div>
-                        <div id="reportCountES" style="font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 800; margin: 0; color: var(--color-es);">0</div>
+                    <div style="background: var(--bg); padding: 14px 4px; border-radius: var(--radius); border: 2px solid var(--color-es); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇪🇸</div>
+                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 800; font-size: 0.8rem;">ES</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 2px;">Learned</div>
+                        <div id="reportCountES" style="font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 800; margin: 0; color: var(--color-es);">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 8px; border-radius: var(--radius); border: 2px solid var(--color-ko); text-align: center;">
-                        <div style="font-size: 1.4rem; margin-bottom: 2px;">🇰🇷</div>
-                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 700; font-size: 0.8rem;">KO</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px;">Learned</div>
-                        <div id="reportCountKO" style="font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 800; margin: 0; color: var(--color-ko);">0</div>
+                    <div style="background: var(--bg); padding: 14px 4px; border-radius: var(--radius); border: 2px solid var(--color-ko); text-align: center;">
+                        <div style="font-size: 1.3rem; margin-bottom: 2px;">🇰🇷</div>
+                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 800; font-size: 0.8rem;">KO</div>
+                        <div style="font-size: 0.70rem; color: var(--text-secondary); margin-bottom: 2px;">Learned</div>
+                        <div id="reportCountKO" style="font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 800; margin: 0; color: var(--color-ko);">0</div>
                     </div>
                 </div>
 
-                <!-- PARALLEL GRID: LEFT = RADAR, RIGHT = VELOCITY -->
                 <div class="report-grid-two">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center;">
                         <h4 style="font-size: 0.95rem; color: var(--color-es); margin-bottom: 6px;">🌐 Language Balance Radar</h4>
@@ -1330,7 +1326,6 @@
             }
         }
 
-        /* RESTORE ACTIVE TAB AFTER REFRESH */
         function loadFromLocalStorage() {
             const savedVocab = localStorage.getItem("trilingua_vocab");
             const savedGrammar = localStorage.getItem("trilingua_grammar");
@@ -1352,6 +1347,9 @@
             }
             if (savedQuiz) quizHistory = JSON.parse(savedQuiz);
 
+            loadCustomGoals();
+
+            // PERSIST ACTIVE TAB STATE AFTER REFRESH
             const savedTab = localStorage.getItem("trilingua_active_tab") || "tab1";
             switchTab(savedTab, false);
         }
@@ -1362,7 +1360,72 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        async function fetchDataFromGAS() {
+        function loadCustomGoals() {
+            const gEN = localStorage.getItem("goal_EN") || "500";
+            const gES = localStorage.getItem("goal_ES") || "300";
+            const gKO = localStorage.getItem("goal_KO") || "300";
+
+            document.getElementById('inputGoalEN').value = gEN;
+            document.getElementById('inputGoalES').value = gES;
+            document.getElementById('inputGoalKO').value = gKO;
+            document.getElementById('goalTextEN').innerText = gEN;
+            document.getElementById('goalTextES').innerText = gES;
+            document.getElementById('goalTextKO').innerText = gKO;
+        }
+
+        function toggleGoalEditLock() {
+            const inputEN = document.getElementById('inputGoalEN');
+            const inputES = document.getElementById('inputGoalES');
+            const inputKO = document.getElementById('inputGoalKO');
+            const btn = document.getElementById('toggleGoalEditBtn');
+
+            const isLocked = inputEN.disabled;
+            inputEN.disabled = !isLocked;
+            inputES.disabled = !isLocked;
+            inputKO.disabled = !isLocked;
+
+            if (isLocked) {
+                btn.innerText = "🔒 Save & Lock";
+                btn.className = "btn btn-sm btn-warning";
+            } else {
+                btn.innerText = "Edit Goals";
+                btn.className = "btn btn-sm btn-edit";
+                saveCustomGoals();
+            }
+        }
+
+        async function saveCustomGoals() {
+            const gEN = document.getElementById('inputGoalEN').value;
+            const gES = document.getElementById('inputGoalES').value;
+            const gKO = document.getElementById('inputGoalKO').value;
+            
+            localStorage.setItem("goal_EN", gEN);
+            localStorage.setItem("goal_ES", gES);
+            localStorage.setItem("goal_KO", gKO);
+            loadCustomGoals();
+            renderReportTab();
+
+            showToast("Syncing");
+
+            const rowDataGoals = [
+                "GOALS_CONFIG", formatDateYYYYMMDD(new Date()), "SYSTEM_GOALS", "SYSTEM", gEN, gES, gKO, "GOALS_CONFIG",
+                "", "system", "", "", "", "", "",
+                "", "", "", "", "",
+                "{}", "{}"
+            ];
+
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "update", type: "vocab", id: "GOALS_CONFIG", row: rowDataGoals }),
+                    redirect: "follow"
+                });
+                showToast("Saved");
+            } catch(err) { showToast("Saved"); }
+        }
+
+        /* FETCH DATA WITH AUTO RETRY TO PREVENT EMPTY REPORTS ON REFRESH */
+        async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
                 return;
@@ -1373,7 +1436,14 @@
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
-                        userVocabList = data.userVocab.map(row => ({
+                        const goalsRow = data.userVocab.find(row => String(row[0]) === "GOALS_CONFIG");
+                        if (goalsRow) {
+                            localStorage.setItem("goal_EN", goalsRow[4]);
+                            localStorage.setItem("goal_ES", goalsRow[5]);
+                            localStorage.setItem("goal_KO", goalsRow[6]);
+                            loadCustomGoals();
+                        }
+                        userVocabList = data.userVocab.filter(row => String(row[0]) !== "GOALS_CONFIG").map(row => ({
                             id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
                             en: row[4], es: row[5], ko: row[6], vi: row[7], familyEN: row[8],
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
@@ -1399,7 +1469,19 @@
                     renderReportTab();
                     showToast("Saved");
                 }
-            } catch (err) { showToast("⚠️ Using local browser data.", true); }
+            } catch (err) {
+                if(retryCount < 2) {
+                    setTimeout(() => fetchDataFromGAS(retryCount + 1), 1500);
+                } else {
+                    renderLogTable();
+                    renderTab2();
+                    renderGrammarSidebar();
+                    renderBlogFeed(1);
+                    renderAnalyticsDashboard();
+                    renderCalendarTab();
+                    renderReportTab();
+                }
+            }
         }
 
         function switchTab(tabId, saveState = true) {
@@ -1822,7 +1904,7 @@
             }
         }
 
-        // --- TAB 2: SEARCH ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
@@ -2194,29 +2276,15 @@
         }
 
         function handleGramLangChange(langVal) {
-            const wrapper = document.getElementById('tagCheckboxWrapper');
-            wrapper.innerHTML = "";
-
-            let availableTags = [];
+            const tagSelect = document.getElementById('gramTag');
+            tagSelect.innerHTML = "";
+            
             if (langVal === 'Note') {
-                availableTags = ['English', 'Espanol', '한국어', 'Jottings'];
+                const noteTags = ['English', 'Espanol', '한국어', 'Jottings'];
+                noteTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t}</option>`; });
             } else {
-                availableTags = ['A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
-            }
-
-            availableTags.forEach(tag => {
-                const item = document.createElement('label');
-                item.className = "tag-checkbox-item";
-                item.innerHTML = `<input type="checkbox" name="blogTagCheckbox" value="${tag}" onchange="enforceMaxTwoTags(this)"> #${tag}`;
-                wrapper.appendChild(item);
-            });
-        }
-
-        function enforceMaxTwoTags(changedInput) {
-            const checkedBoxes = document.querySelectorAll('input[name="blogTagCheckbox"]:checked');
-            if (checkedBoxes.length > 2) {
-                changedInput.checked = false;
-                alert("⚠️ You can select a maximum of 2 tags per blog post!");
+                const defaultTags = ['', 'A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
+                defaultTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t ? '#' + t : '-- None --'}</option>`; });
             }
         }
 
@@ -2907,7 +2975,7 @@
             }
         }
 
-        /* DASHBOARD ANALYTICS: ALL-TIME FLASHCARD REVIEW HISTORY DATA */
+        /* ALL-TIME STATS DASHBOARD COMPUTATION */
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -2964,17 +3032,17 @@
                 data: {
                     labels: posList,
                     datasets: [
-                        { label: 'English (EN)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredEN[p]), backgroundColor: '#4e90c0', borderRadius: 4 },
-                        { label: 'Spanish (ES)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredES[p]), backgroundColor: '#10b981', borderRadius: 4 },
-                        { label: 'Korean (KO)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredKO[p]), backgroundColor: '#d57c91', borderRadius: 4 },
-                        { label: 'Phrasal & Idioms (All Languages)', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? (posMasteredEN[p] + posMasteredES[p] + posMasteredKO[p]) : 0), backgroundColor: '#f59e0b', borderRadius: 4 }
+                        { label: 'EN', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredEN[p]), backgroundColor: '#4e90c0', borderRadius: 4 },
+                        { label: 'ES', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredES[p]), backgroundColor: '#10b981', borderRadius: 4 },
+                        { label: 'KO', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredKO[p]), backgroundColor: '#d57c91', borderRadius: 4 },
+                        { label: 'All languages', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? (posMasteredEN[p] + posMasteredES[p] + posMasteredKO[p]) : 0), backgroundColor: '#f59e0b', borderRadius: 4 }
                     ]
                 },
                 options: { responsive: true, scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
             });
         }
 
-        // --- TAB 5: BOARD ---
+        // --- TAB 5: BOARD (STRICTLY NO IDIOMS) ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -3274,37 +3342,19 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT ---
+        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
-            const flashcardMastered = quizHistory.filter(h => h.source === 'flashcard' && h.remembered);
             
-            const uniqueMasteredVocabs = { EN: new Set(), ES: new Set(), KO: new Set() };
-            flashcardMastered.forEach(h => {
-                if (h.lang === 'EN') uniqueMasteredVocabs.EN.add(h.vocabId);
-                if (h.lang === 'ES') uniqueMasteredVocabs.ES.add(h.vocabId);
-                if (h.lang === 'KO') uniqueMasteredVocabs.KO.add(h.vocabId);
+            userVocabList.forEach(i => {
+                if (i.en) countEN++;
+                if (i.es) countES++;
+                if (i.ko) countKO++;
             });
-
-            countEN = uniqueMasteredVocabs.EN.size;
-            countES = uniqueMasteredVocabs.ES.size;
-            countKO = uniqueMasteredVocabs.KO.size;
 
             document.getElementById('reportCountEN').innerText = `${countEN}`;
             document.getElementById('reportCountES').innerText = `${countES}`;
             document.getElementById('reportCountKO').innerText = `${countKO}`;
-
-            const gEN = parseInt(localStorage.getItem("goal_EN") || "500");
-            const gES = parseInt(localStorage.getItem("goal_ES") || "300");
-            const gKO = parseInt(localStorage.getItem("goal_KO") || "300");
-
-            const pEN = Math.min(Math.round((countEN / gEN) * 100), 100);
-            const pES = Math.min(Math.round((countES / gES) * 100), 100);
-            const pKO = Math.min(Math.round((countKO / gKO) * 100), 100);
-
-            document.getElementById('goalBarEN').style.width = `${pEN}%`;
-            document.getElementById('goalBarES').style.width = `${pES}%`;
-            document.getElementById('goalBarKO').style.width = `${pKO}%`;
 
             const radarCtx = document.getElementById('radarChart').getContext('2d');
             if (radarChartInstance) radarChartInstance.destroy();
