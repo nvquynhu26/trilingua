@@ -6,7 +6,7 @@
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-     <link rel="apple-touch-icon" href="Logo1.png">
+    <link rel="apple-touch-icon" href="Logo1.png">
     <style>
         :root {
             --bg: #0f172a;
@@ -78,20 +78,21 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* RICH EDITOR WITH SMART MARGIN & NO HORIZONTAL SCROLLBAR FOR TABLES */
+        /* RICH EDITOR WITH IMAGE UPLOAD SUPPORT */
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor img { max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0; display: block; }
         
-        .smart-table-wrapper { margin: 16px auto; width: 95%; max-width: 100%; position: relative; }
+        .smart-table-wrapper { margin: 16px auto; width: 95%; max-width: 100%; position: relative; padding: 16px 8px 8px 8px; border: 1px dashed var(--border); border-radius: 8px; }
         .smart-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); margin: 0 auto; }
         .smart-table td, .smart-table th { border: 1px solid var(--border); padding: 10px; min-width: 60px; position: relative; word-break: break-word; }
-        .tbl-btn { position: absolute; background: var(--surface); border: 1px solid var(--border); color: var(--text); width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0.7; }
-        .tbl-btn:hover { opacity: 1; background: var(--primary); color: white; }
+        .tbl-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); width: 22px; height: 22px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; margin: 2px; }
+        .tbl-btn:hover { background: var(--primary); color: white; }
+        .tbl-btn-del { background: var(--danger); color: white; border: none; }
 
-        /* COLUMN LAYOUT FOR EDITOR */
-        .column-layout-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; }
-        .column-layout-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; }
+        .column-layout-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; padding: 16px; border: 1px dashed var(--border); border-radius: 8px; position: relative; }
+        .column-layout-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; padding: 16px; border: 1px dashed var(--border); border-radius: 8px; position: relative; }
+        .del-block-btn { position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; border: none; border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; cursor: pointer; z-index: 10; }
 
         .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.88rem; }
         .btn:hover { background: var(--primary-hover); }
@@ -107,11 +108,23 @@
         .btn-lang-es { background: var(--color-es); color: white; }
         .btn-lang-ko { background: var(--color-ko); color: white; }
         
-        .table-container { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        /* TABLE PC VS MOBILE VERTICAL CARDS */
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
+
+        @media (max-width: 768px) {
+            .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
+                display: block; width: 100%;
+            }
+            .responsive-card-table thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .responsive-card-table tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
+            .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 110px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
+            .responsive-card-table td:last-child { border-bottom: none; }
+            .responsive-card-table td::before { position: absolute; left: 8px; width: 95px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
+        }
 
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
         .sub-btn { background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: var(--text); font-weight: 500; transition: all 0.2s; }
@@ -175,17 +188,14 @@
         .feed-post-body { font-size: 1rem; line-height: 1.7; margin-bottom: 16px; color: var(--text); }
         .feed-post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 0.80rem; color: var(--text-secondary); flex-wrap: wrap; gap: 8px; }
 
-        /* CALENDAR: YELLOW HIGHLIGHT FOR DATES WITH VOCABULARY ADDED */
+        /* CALENDAR */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; width: 100%; }
         .cal-day-header { font-weight: 700; color: var(--text-secondary); padding: 6px 2px; font-size: 0.8rem; }
         .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; min-height: 48px; }
         .cal-cell:hover { border-color: var(--primary); }
-        
-        /* CALENDAR ACTIVE YELLOW FOR VOCAB ADDED DATE */
         .cal-cell.active-vocab { background: rgba(245, 158, 11, 0.25) !important; border-color: var(--warning) !important; }
         .cal-cell.active-vocab .cal-num { color: var(--warning) !important; font-weight: 800; }
-        
         .cal-num { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
         
         .cal-dots { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; }
@@ -241,6 +251,9 @@
             .cal-cell { min-height: 38px; padding: 2px; }
             .cal-num { font-size: 0.75rem; }
             .tri-flashcard-grid { grid-template-columns: 1fr; }
+            /* DASHBOARD MOBILE FONT ADJUSTMENTS TO PREVENT WRAPPING */
+            .dash-metric-title { font-size: 0.75rem !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .dash-metric-val { font-size: 1.15rem !important; }
         }
 
         footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-secondary); margin-top: auto; border-top: 1px solid var(--border); width: 100%; }
@@ -301,10 +314,7 @@
             <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
             <button class="tab-btn" onclick="switchTab('tab4')">4. Review</button>
             <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
-
-            <!-- UNIFIED CALENDAR TAB DESIGN -->
             <button class="tab-btn" onclick="switchTab('tab6')">6. Calendar</button>
-
             <button class="tab-btn" onclick="switchTab('tab7')" style="background: var(--grammar); color: white;">7. Report</button>
         </div>
         <button class="menu-toggle-btn" onclick="toggleMobileMenu()">☰ Menu</button>
@@ -440,8 +450,8 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table -->
-            <div class="card">
+            <!-- Vocabulary Log Table with 15-item Pagination & Responsive Card View -->
+            <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -475,7 +485,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH -->
+        <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="position:relative; width:100%;">
@@ -484,7 +494,7 @@
                 </div>
             </div>
             
-            <div class="card">
+            <div class="card responsive-card-table">
                 <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
                     <button class="btn btn-sm btn-warning" id="subTabVocabBtn" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
                     <button class="btn btn-sm btn-lang-en" id="subTabPhrasalBtn" onclick="switchSearchSubTab('phrasal')">Phrasal Verbs</button>
@@ -636,7 +646,6 @@
                     <div id="blogFeedContainer">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h3 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h3>
-                            <!-- TOGGLE PINNED POSTS FILTER BUTTON -->
                             <button id="filterPinnedFeedBtn" class="btn btn-sm btn-warning" onclick="togglePinnedFeedFilter()">⭐ Pinned Only</button>
                         </div>
                         <div id="feedPostsList"></div>
@@ -703,12 +712,16 @@
                                     <button type="button" class="btn-fmt" onclick="execCmd('insertOrderedList')">1. Number</button>
                                     <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('gramContentEditor')">+ Table 3x2</button>
                                     
-                                    <!-- MULTI-COLUMN LAYOUT BUTTONS -->
-                                    <button type="button" class="btn-fmt" onclick="insertColumnLayout(2)">📰 2 Cols</button>
-                                    <button type="button" class="btn-fmt" onclick="insertColumnLayout(3)">📰 3 Cols</button>
+                                    <!-- COMBINED COLUMN DROPDOWN MENU -->
+                                    <select class="btn-fmt" onchange="if(this.value){insertColumnLayout(parseInt(this.value)); this.value='';}" style="width:auto; padding:4px;">
+                                        <option value="">📰 Cols...</option>
+                                        <option value="2">2 Columns</option>
+                                        <option value="3">3 Columns</option>
+                                    </select>
 
-                                    <!-- IMAGE UPLOAD BUTTON -->
-                                    <button type="button" class="btn-fmt btn-edit" onclick="triggerBlogImageUpload()">🖼 Upload Image</button>
+                                    <!-- REAL FILE INPUT FOR IMAGE UPLOAD -->
+                                    <input type="file" id="blogImgFileInput" accept="image/*" style="display:none" onchange="handleBlogImageUpload(this)">
+                                    <button type="button" class="btn-fmt btn-edit" onclick="document.getElementById('blogImgFileInput').click()">🖼 Upload Image</button>
 
                                     <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                                     <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
@@ -758,6 +771,7 @@
                 </div>
             </div>
 
+            <!-- FLASHCARD 1 VIEW -->
             <div id="flashcardView" class="quiz-container">
                 <div class="tri-flashcard-grid">
                     <div class="card-box en" onclick="flipTriCard('EN')">
@@ -794,6 +808,7 @@
                 </div>
             </div>
 
+            <!-- FLASHCARD 2 VIEW (REVERSE) -->
             <div id="reverseView" class="quiz-container" style="display: none;">
                 <div class="card">
                     <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -834,7 +849,9 @@
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
+                    <!-- DEFAULT ALL-TIME TIMEFRAME -->
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
+                        <option value="36500" selected>All Time</option>
                         <option value="7">1 Week (7 Days)</option>
                         <option value="30">1 Month (30 Days)</option>
                         <option value="90">3 Months (90 Days)</option>
@@ -843,35 +860,36 @@
                     </select>
                 </div>
 
+                <!-- RENAMED STRONG / MEDIUM / WEAK WITH MOBILE FONT CLAMP -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
-                        <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">🟢 STRONG (Mastered ≥80%)</div>
-                        <div id="groupStrongCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">🟢 STRONG</div>
+                        <div class="dash-metric-val" id="groupStrongCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
-                        <div style="color: var(--warning); font-weight: 700; font-size: 0.9rem;">🟡 MEDIUM (40% - 79%)</div>
-                        <div id="groupMediumCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--warning); font-weight: 700; font-size: 0.9rem;">🟡 MEDIUM</div>
+                        <div class="dash-metric-val" id="groupMediumCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
-                        <div style="color: var(--danger); font-weight: 700; font-size: 0.9rem;">🔴 WEAK (Risk <40%)</div>
-                        <div id="groupWeakCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--danger); font-weight: 700; font-size: 0.9rem;">🔴 WEAK</div>
+                        <div class="dash-metric-val" id="groupWeakCount" style="font-size: 1.4rem; font-weight: 800; margin: 6px 0;">0 words</div>
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">🇺🇸 ENGLISH PROGRESS</div>
-                        <div id="langColEN" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 700; font-size: 0.85rem;">🇺🇸 ENGLISH PROGRESS</div>
+                        <div class="dash-metric-val" id="langColEN" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarEN" class="progress-bar-fill" style="width:0%; background:var(--color-en);"></div></div>
                     </div>
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="color: var(--color-es); font-weight: 700; font-size: 0.9rem;">🇪🇸 SPANISH PROGRESS</div>
-                        <div id="langColES" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 700; font-size: 0.85rem;">🇪🇸 SPANISH PROGRESS</div>
+                        <div class="dash-metric-val" id="langColES" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarES" class="progress-bar-fill" style="width:0%; background:var(--color-es);"></div></div>
                     </div>
                     <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
-                        <div style="color: var(--color-ko); font-weight: 700; font-size: 0.9rem;">🇰🇷 KOREAN PROGRESS</div>
-                        <div id="langColKO" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
+                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 700; font-size: 0.85rem;">🇰🇷 KOREAN PROGRESS</div>
+                        <div class="dash-metric-val" id="langColKO" style="font-size: 1.1rem; font-weight: 800; margin: 6px 0;">0 / 0</div>
                         <div class="progress-bar-bg"><div id="langBarKO" class="progress-bar-fill" style="width:0%; background:var(--color-ko);"></div></div>
                     </div>
                 </div>
@@ -952,75 +970,49 @@
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
+                <!-- WORD COUNT CARDS WITH WORDS TEXT BELOW NUMBER & CLAMPED SIZE -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
                         <div style="font-size: 1.5rem; margin-bottom: 4px;">🇺🇸</div>
-                        <div style="color: var(--color-en); font-weight: 700; font-size: 0.9rem;">ENGLISH LEARNED</div>
-                        <div id="reportCountEN" style="font-size: 1.6rem; font-weight: 800; margin: 4px 0; color: var(--color-en);">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--color-en); font-weight: 700; font-size: 0.85rem;">ENGLISH LEARNED</div>
+                        <div id="reportCountEN" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 800; margin: 4px 0 0 0; color: var(--color-en);">0</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">words</div>
                     </div>
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 2px solid var(--color-es); text-align: center;">
                         <div style="font-size: 1.5rem; margin-bottom: 4px;">🇪🇸</div>
-                        <div style="color: var(--color-es); font-weight: 700; font-size: 0.9rem;">SPANISH LEARNED</div>
-                        <div id="reportCountES" style="font-size: 1.6rem; font-weight: 800; margin: 4px 0; color: var(--color-es);">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--color-es); font-weight: 700; font-size: 0.85rem;">SPANISH LEARNED</div>
+                        <div id="reportCountES" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 800; margin: 4px 0 0 0; color: var(--color-es);">0</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">words</div>
                     </div>
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 2px solid var(--color-ko); text-align: center;">
                         <div style="font-size: 1.5rem; margin-bottom: 4px;">🇰🇷</div>
-                        <div style="color: var(--color-ko); font-weight: 700; font-size: 0.9rem;">KOREAN LEARNED</div>
-                        <div id="reportCountKO" style="font-size: 1.6rem; font-weight: 800; margin: 4px 0; color: var(--color-ko);">0 words</div>
+                        <div class="dash-metric-title" style="color: var(--color-ko); font-weight: 700; font-size: 0.85rem;">KOREAN LEARNED</div>
+                        <div id="reportCountKO" style="font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 800; margin: 4px 0 0 0; color: var(--color-ko);">0</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">words</div>
                     </div>
                 </div>
 
+                <!-- PARALLEL GRID: LEFT = RADAR, RIGHT = VELOCITY -->
                 <div class="report-grid-two">
-                    <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); position: relative;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="font-size: 0.95rem; color: var(--warning); margin: 0;">🎯 Custom Vocabulary Goals</h4>
-                            <button id="toggleGoalEditBtn" class="btn btn-sm btn-edit" onclick="toggleGoalEditLock()">Edit Goals</button>
-                        </div>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
-                                    <span style="color:var(--color-en)">English Target (<span id="goalTextEN">500</span> words):</span>
-                                    <span><input type="number" id="inputGoalEN" value="500" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
-                                </div>
-                                <div class="progress-bar-bg"><div id="goalBarEN" class="progress-bar-fill" style="width:0%; background:var(--color-en);"></div></div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
-                                    <span style="color:var(--color-es)">Spanish Target (<span id="goalTextES">300</span> words):</span>
-                                    <span><input type="number" id="inputGoalES" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
-                                </div>
-                                <div class="progress-bar-bg"><div id="goalBarES" class="progress-bar-fill" style="width:0%; background:var(--color-es);"></div></div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px;">
-                                    <span style="color:var(--color-ko)">Korean Target (<span id="goalTextKO">300</span> words):</span>
-                                    <span><input type="number" id="inputGoalKO" value="300" disabled style="width:75px; padding:2px 6px; font-size:0.8rem; text-align:center;" onchange="saveCustomGoals()"></span>
-                                </div>
-                                <div class="progress-bar-bg"><div id="goalBarKO" class="progress-bar-fill" style="width:0%; background:var(--color-ko);"></div></div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center;">
-                        <h4 style="font-size: 0.95rem; color: var(--color-es); margin-bottom: 6px;">🌐 Language Balance Radar (EN - ES - KO)</h4>
-                        <div style="position: relative; height: 220px; width: 100%;">
+                        <h4 style="font-size: 0.95rem; color: var(--color-es); margin-bottom: 6px;">🌐 Language Balance Radar</h4>
+                        <div style="position: relative; height: 260px; width: 100%;">
                             <canvas id="radarChart"></canvas>
                         </div>
                     </div>
-                </div>
 
-                <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-                        <h4 style="font-size: 1rem; color: var(--edit); margin: 0;">📈 Learning Velocity</h4>
-                        <select id="velocityPeriodMode" onchange="renderReportTab()" style="width: auto; padding: 4px 10px; font-size: 0.85rem;">
-                            <option value="weekly">View by Week</option>
-                            <option value="monthly">View by Month</option>
-                            <option value="yearly">View by Year</option>
-                        </select>
-                    </div>
-                    <div style="position: relative; height: 260px; width: 100%;">
-                        <canvas id="velocityChart"></canvas>
+                    <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                            <h4 style="font-size: 1rem; color: var(--edit); margin: 0;">📈 Learning Velocity</h4>
+                            <select id="velocityPeriodMode" onchange="renderReportTab()" style="width: auto; padding: 4px 10px; font-size: 0.85rem;">
+                                <option value="weekly">View by Week</option>
+                                <option value="monthly">View by Month</option>
+                                <option value="yearly">View by Year</option>
+                            </select>
+                        </div>
+                        <div style="position: relative; height: 260px; width: 100%;">
+                            <canvas id="velocityChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -1167,7 +1159,6 @@
         let activeQuickBlogIndex = 0;
         let activeQuickBlogList = [];
 
-        // PINNED FILTER STATE FOR BLOG FEED
         let filterPinnedFeedOnly = false;
 
         const PRONOUNS = ["yo", "tú", "él, ella, usted", "nosotros, nosotras", "vosotros, vosotras", "ellos, ellas, ustedes", "vos"];
@@ -1241,7 +1232,6 @@
             }
         };
 
-        /* LOCAL TIMEZONE CALCULATOR YYYY-MM-DD */
         function formatDateYYYYMMDD(dateObjOrString) {
             if (!dateObjOrString) return new Date().toISOString().split('T')[0];
             try {
@@ -1272,17 +1262,14 @@
             });
         };
 
-        /* WORD OF THE DAY NO-REPEAT FOR 30 DAYS ALGORITHM */
         function triggerWordOfTheDay() {
             const today = formatDateYYYYMMDD(new Date());
             const lastShownDate = localStorage.getItem("trilingua_wotd_date");
             
             if (lastShownDate !== today && userVocabList.length > 0) {
                 let history = JSON.parse(localStorage.getItem("trilingua_wotd_history") || "[]");
-                
-                // Filter items not shown in the last 30 entries
                 let candidates = userVocabList.filter(item => !history.includes(item.id));
-                if (candidates.length === 0) candidates = userVocabList; // Reset if all items were shown
+                if (candidates.length === 0) candidates = userVocabList;
 
                 const randomItem = candidates[Math.floor(Math.random() * candidates.length)];
                 
@@ -1294,7 +1281,7 @@
                 document.getElementById('wotdModal').style.display = "flex";
                 
                 history.push(randomItem.id);
-                if (history.length > 30) history.shift(); // Maintain max 30 history limit
+                if (history.length > 30) history.shift();
 
                 localStorage.setItem("trilingua_wotd_history", JSON.stringify(history));
                 localStorage.setItem("trilingua_wotd_date", today);
@@ -1336,14 +1323,7 @@
             const savedQuiz = localStorage.getItem("trilingua_quiz_hist");
             
             if (savedVocab) {
-                const rawVocab = JSON.parse(savedVocab);
-                const goalsItem = rawVocab.find(i => String(i.id) === "GOALS_CONFIG");
-                if (goalsItem) {
-                    localStorage.setItem("goal_EN", goalsItem.en);
-                    localStorage.setItem("goal_ES", goalsItem.es);
-                    localStorage.setItem("goal_KO", goalsItem.ko);
-                }
-                userVocabList = rawVocab.filter(item => String(item.id) !== "GOALS_CONFIG").map(item => ({
+                userVocabList = JSON.parse(savedVocab).map(item => ({
                     ...item,
                     timestamp: formatDateYYYYMMDD(item.timestamp),
                     conjData: item.conjData || {},
@@ -1358,7 +1338,6 @@
             }
             if (savedQuiz) quizHistory = JSON.parse(savedQuiz);
 
-            loadCustomGoals();
             renderLogTable();
             renderTab2();
             renderGrammarSidebar();
@@ -1374,70 +1353,6 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        function loadCustomGoals() {
-            const gEN = localStorage.getItem("goal_EN") || "500";
-            const gES = localStorage.getItem("goal_ES") || "300";
-            const gKO = localStorage.getItem("goal_KO") || "300";
-
-            document.getElementById('inputGoalEN').value = gEN;
-            document.getElementById('inputGoalES').value = gES;
-            document.getElementById('inputGoalKO').value = gKO;
-            document.getElementById('goalTextEN').innerText = gEN;
-            document.getElementById('goalTextES').innerText = gES;
-            document.getElementById('goalTextKO').innerText = gKO;
-        }
-
-        function toggleGoalEditLock() {
-            const inputEN = document.getElementById('inputGoalEN');
-            const inputES = document.getElementById('inputGoalES');
-            const inputKO = document.getElementById('inputGoalKO');
-            const btn = document.getElementById('toggleGoalEditBtn');
-
-            const isLocked = inputEN.disabled;
-            inputEN.disabled = !isLocked;
-            inputES.disabled = !isLocked;
-            inputKO.disabled = !isLocked;
-
-            if (isLocked) {
-                btn.innerText = "🔒 Save & Lock";
-                btn.className = "btn btn-sm btn-warning";
-            } else {
-                btn.innerText = "Edit Goals";
-                btn.className = "btn btn-sm btn-edit";
-                saveCustomGoals();
-            }
-        }
-
-        async function saveCustomGoals() {
-            const gEN = document.getElementById('inputGoalEN').value;
-            const gES = document.getElementById('inputGoalES').value;
-            const gKO = document.getElementById('inputGoalKO').value;
-            
-            localStorage.setItem("goal_EN", gEN);
-            localStorage.setItem("goal_ES", gES);
-            localStorage.setItem("goal_KO", gKO);
-            loadCustomGoals();
-            renderReportTab();
-
-            showToast("⏳ Syncing Goals...");
-
-            const rowDataGoals = [
-                "GOALS_CONFIG", formatDateYYYYMMDD(new Date()), "SYSTEM_GOALS", "SYSTEM", gEN, gES, gKO, "GOALS_CONFIG",
-                "", "system", "", "", "", "", "",
-                "", "", "", "", "",
-                "{}", "{}"
-            ];
-
-            try {
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "update", type: "vocab", id: "GOALS_CONFIG", row: rowDataGoals }),
-                    redirect: "follow"
-                });
-                showToast("Saved");
-            } catch(err) { showToast("Saved"); }
-        }
-
         async function fetchDataFromGAS() {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1449,14 +1364,7 @@
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
-                        const goalsRow = data.userVocab.find(row => String(row[0]) === "GOALS_CONFIG");
-                        if (goalsRow) {
-                            localStorage.setItem("goal_EN", goalsRow[4]);
-                            localStorage.setItem("goal_ES", goalsRow[5]);
-                            localStorage.setItem("goal_KO", goalsRow[6]);
-                            loadCustomGoals();
-                        }
-                        userVocabList = data.userVocab.filter(row => String(row[0]) !== "GOALS_CONFIG").map(row => ({
+                        userVocabList = data.userVocab.map(row => ({
                             id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
                             en: row[4], es: row[5], ko: row[6], vi: row[7], familyEN: row[8],
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
@@ -1541,7 +1449,10 @@
             const tableHTML = `
                 <div class="smart-table-wrapper" contenteditable="false">
                     <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
-                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <button class="tbl-btn" style="top:-12px; left:14px;" onclick="removeSmartRow(this)" title="Remove Row">-</button>
+                    <button class="tbl-btn" style="top:-12px; right:18px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="removeSmartCol(this)" title="Remove Column">-</button>
+                    <button class="tbl-btn tbl-btn-del" style="top:4px; right:4px;" onclick="deleteBlockElement(this)" title="Delete Table">🗑</button>
                     <table class="smart-table">
                         <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
                         <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
@@ -1560,6 +1471,11 @@
             for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
         }
 
+        function removeSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows.length > 1) table.deleteRow(table.rows.length - 1);
+        }
+
         function addSmartCol(btn) {
             const table = btn.parentNode.querySelector('table');
             for(let i=0; i<table.rows.length; i++) {
@@ -1568,27 +1484,51 @@
             }
         }
 
-        /* MULTI-COLUMN LAYOUT INSERTION FOR BLOG EDITOR */
+        function removeSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows[0].cells.length > 1) {
+                for(let i=0; i<table.rows.length; i++) {
+                    table.rows[i].deleteCell(table.rows[i].cells.length - 1);
+                }
+            }
+        }
+
         function insertColumnLayout(cols) {
             const editor = document.getElementById('gramContentEditor');
             let colsHTML = "";
             for (let i = 1; i <= cols; i++) {
-                colsHTML += `<div contenteditable="true" style="padding:8px; background:rgba(255,255,255,0.03); border-radius:4px;"><p>Column ${i} content...</p></div>`;
+                colsHTML += `<div contenteditable="true" style="padding:10px; background:rgba(255,255,255,0.03); border-radius:6px; min-height:60px;"><p>Col ${i} content...</p></div>`;
             }
-            const wrapperHTML = `<div class="column-layout-${cols}" contenteditable="false">${colsHTML}</div><p><br></p>`;
+            const wrapperHTML = `
+                <div class="column-layout-${cols}" contenteditable="false">
+                    <button class="del-block-btn" onclick="deleteBlockElement(this)" title="Delete Layout">🗑</button>
+                    ${colsHTML}
+                </div><p><br></p>
+            `;
             editor.focus();
             document.execCommand('insertHTML', false, wrapperHTML);
         }
 
-        /* IMAGE UPLOAD VIA IMGUR OR DIRECT LINK FOR BLOG */
-        function triggerBlogImageUpload() {
-            const url = prompt("Please enter or paste the direct Image URL (e.g. Imgur / Cloudinary link):");
-            if (url && url.trim()) {
+        function deleteBlockElement(btn) {
+            if(confirm("Delete this table/column block?")) {
+                btn.parentNode.remove();
+            }
+        }
+
+        /* IMAGE UPLOAD FUNCTION FOR BLOG EDITOR VIA FILE INPUT */
+        function handleBlogImageUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
                 const editor = document.getElementById('gramContentEditor');
-                const imgHTML = `<img src="${url.trim()}" alt="Uploaded Image"><p><br></p>`;
+                const imgHTML = `<div contenteditable="false" style="margin:16px 0; text-align:center;"><img src="${base64Img}" alt="Uploaded Image" style="max-width:100%; border-radius:8px; display:inline-block;"></div><p><br></p>`;
                 editor.focus();
                 document.execCommand('insertHTML', false, imgHTML);
-            }
+            };
+            reader.readAsDataURL(file);
+            input.value = "";
         }
 
         // --- MODALS ---
@@ -1718,7 +1658,7 @@
             renderLogTable();
             renderCalendarTab();
             renderTab2();
-            showToast("Syncing");
+            showToast("Saved");
 
             const rowDataVocab = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
@@ -1733,7 +1673,6 @@
                     body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
                     redirect: "follow"
                 });
-
                 showToast("Saved");
             } catch(err) { showToast("Saved"); }
         }
@@ -1846,12 +1785,12 @@
             pagedItems.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
-                        <td>${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
-                        <td>${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
-                        <td>${item.vi}</td>
-                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.topic}<br><em>${item.book} (${item.unit})</em></td>
-                        <td>
+                        <td data-label="English: "><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td data-label="Spanish: ">${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
+                        <td data-label="Korean: ">${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
+                        <td data-label="Vietnamese: ">${item.vi}</td>
+                        <td data-label="Topic: " style="font-size:0.8rem; color:var(--text-secondary);">${item.topic}<br><em>${item.book} (${item.unit})</em></td>
+                        <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
@@ -1870,7 +1809,7 @@
             }
         }
 
-        // --- TAB 2: SEARCH ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
@@ -2005,17 +1944,17 @@
             pagedItems.forEach(item => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
-                        <td>${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
-                        <td>${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
-                        <td>${item.vi}</td>
-                        <td style="font-size:0.85rem;">
+                        <td data-label="English: "><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td data-label="Spanish: ">${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
+                        <td data-label="Korean: ">${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
+                        <td data-label="Vietnamese: ">${item.vi}</td>
+                        <td data-label="POS: " style="font-size:0.85rem;">
                             <em>${item.pos}</em><br>
                             ${item.familyEN ? `EN: ${item.familyEN}<br>` : ''}
                             ${item.familyES ? `ES: ${item.familyES}<br>` : ''}
                             ${item.familyKO ? `KO: ${item.familyKO}` : ''}
                         </td>
-                        <td style="font-size:0.85rem; color:var(--text-secondary);">
+                        <td data-label="Examples: " style="font-size:0.85rem; color:var(--text-secondary);">
                             ${item.exEN ? `🇺🇸 ${item.exEN}<br>` : ''}
                             ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
                             ${item.exKO ? `🇰🇷 ${item.exKO}<br>` : ''}
@@ -2023,7 +1962,7 @@
                             ${item.noteES ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note [ES]:</b> ${item.noteES}</div>` : ''}
                             ${item.noteKO ? `<div style="margin-top:4px; padding:4px; background:var(--bg); border-radius:4px;">📌 <b>Note [KO]:</b> ${item.noteKO}</div>` : ''}
                         </td>
-                        <td>
+                        <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
@@ -2051,12 +1990,12 @@
                 count++;
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.en}</strong></td>
-                        <td style="color:var(--color-en); font-weight:bold;">${item.en}</td>
-                        <td>${item.exEN || '---'}</td>
-                        <td>${item.vi || '---'}</td>
-                        <td style="font-size:0.85rem; color:var(--text-secondary);">${item.exEN || '---'}</td>
-                        <td>
+                        <td data-label="English: "><strong>${item.en}</strong></td>
+                        <td data-label="Phrasal: " style="color:var(--color-en); font-weight:bold;">${item.en}</td>
+                        <td data-label="Meaning EN: ">${item.exEN || '---'}</td>
+                        <td data-label="Meaning VI: ">${item.vi || '---'}</td>
+                        <td data-label="Example: " style="font-size:0.85rem; color:var(--text-secondary);">${item.exEN || '---'}</td>
+                        <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
@@ -2076,12 +2015,12 @@
                 count++;
                 tbody.innerHTML += `
                     <tr>
-                        <td style="color:var(--color-es); font-weight:bold;"><strong>${item.es}</strong> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
-                        <td>${item.en || '---'}</td>
-                        <td>${item.vi || '---'}</td>
-                        <td style="font-size:0.85rem; color:var(--text-secondary);">${item.exES || '---'}</td>
-                        <td style="font-size:0.8rem; color:var(--text-secondary);">${item.noteES || '---'}</td>
-                        <td>
+                        <td data-label="Spanish: " style="color:var(--color-es); font-weight:bold;"><strong>${item.es}</strong> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button></td>
+                        <td data-label="English: ">${item.en || '---'}</td>
+                        <td data-label="Vietnamese: ">${item.vi || '---'}</td>
+                        <td data-label="Example: " style="font-size:0.85rem; color:var(--text-secondary);">${item.exES || '---'}</td>
+                        <td data-label="Notes: " style="font-size:0.8rem; color:var(--text-secondary);">${item.noteES || '---'}</td>
+                        <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
@@ -2101,17 +2040,17 @@
                 count++;
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong style="color:var(--color-en);">${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
-                        <td style="color:var(--color-es);">${item.es || '---'} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
-                        <td style="color:var(--color-ko);">${item.ko || '---'} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
-                        <td style="color:var(--color-vi);">${item.vi || '---'}</td>
-                        <td style="font-size:0.85rem;"><em>${item.pos}</em></td>
-                        <td style="font-size:0.8rem; color:var(--text-secondary);">
+                        <td data-label="English: "><strong style="color:var(--color-en);">${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
+                        <td data-label="Spanish: " style="color:var(--color-es);">${item.es || '---'} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
+                        <td data-label="Korean: " style="color:var(--color-ko);">${item.ko || '---'} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
+                        <td data-label="Vietnamese: " style="color:var(--color-vi);">${item.vi || '---'}</td>
+                        <td data-label="POS: " style="font-size:0.85rem;"><em>${item.pos}</em></td>
+                        <td data-label="Notes: " style="font-size:0.8rem; color:var(--text-secondary);">
                             ${item.noteEN ? `EN Note: ${item.noteEN}<br>` : ''}
                             ${item.noteES ? `ES Note: ${item.noteES}<br>` : ''}
                             ${item.noteKO ? `KO Note: ${item.noteKO}` : ''}
                         </td>
-                        <td>
+                        <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                         </td>
@@ -2132,11 +2071,11 @@
                     count++;
                     tbody.innerHTML += `
                         <tr>
-                            <td><strong style="color:var(--color-en);">${item.enIrregData.base || item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
-                            <td style="color:var(--primary); font-weight:bold;">${item.enIrregData.past || '---'}</td>
-                            <td style="color:var(--grammar); font-weight:bold;">${item.enIrregData.part || '---'}</td>
-                            <td style="color:var(--color-vi);">${item.vi || '---'}</td>
-                            <td>
+                            <td data-label="Base Form: "><strong style="color:var(--color-en);">${item.enIrregData.base || item.en}</strong> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button></td>
+                            <td data-label="Past Simple: " style="color:var(--primary); font-weight:bold;">${item.enIrregData.past || '---'}</td>
+                            <td data-label="Past Participle: " style="color:var(--grammar); font-weight:bold;">${item.enIrregData.part || '---'}</td>
+                            <td data-label="Vietnamese: " style="color:var(--color-vi);">${item.vi || '---'}</td>
+                            <td data-label="Actions: ">
                                 <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
                             </td>
@@ -2279,7 +2218,6 @@
             renderBlogFeed(feedCurrentPage);
         }
 
-        /* RENDER TIMELINE FEED (5-7 POSTS PER PAGE & PINNED FILTER SUPPORT) */
         function renderBlogFeed(page = 1) {
             feedCurrentPage = page;
             const container = document.getElementById('feedPostsList');
@@ -2298,7 +2236,7 @@
                 sortedList = sortedList.filter(p => pinnedPostIds.includes(p.id));
             }
 
-            const pageSize = 5; // 5-7 Posts per Page
+            const pageSize = 5;
             const totalPages = Math.ceil(sortedList.length / pageSize) || 1;
             const pagedList = sortedList.slice((page - 1) * pageSize, page * pageSize);
 
@@ -2352,7 +2290,6 @@
             deleteGrammar();
         }
 
-        /* CLICK SIDEBAR FOLDER POST ➔ SHOW AS SINGLE TIMELINE FEED POST */
         function renderSingleBlogFeedPost(postId) {
             document.getElementById('blogFormCard').style.display = "none";
             document.getElementById('blogFeedContainer').style.display = "block";
@@ -2463,7 +2400,7 @@
                         `;
                         postEl.onclick = (e) => {
                             e.stopPropagation();
-                            renderSingleBlogFeedPost(post.id); // SHOW SINGLE POST ON FEED VIEW
+                            renderSingleBlogFeedPost(post.id);
                         };
                         folderBody.appendChild(postEl);
                     });
@@ -2943,6 +2880,7 @@
             }
         }
 
+        /* DASHBOARD ANALYTICS BASED ON ALL-TIME FLASHCARD REVIEW HISTORY */
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 30);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3118,7 +3056,7 @@
             bottomGrid.style.display = "grid";
         }
 
-        // --- TAB 6: CALENDAR (YELLOW HIGHLIGHT FOR DATES WITH VOCABULARY ADDED) ---
+        // --- TAB 6: CALENDAR ---
         function changeCalDate(offset) {
             const mode = document.getElementById('calViewMode').value;
             if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
@@ -3169,7 +3107,6 @@
                     if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note" title="Note"></span>`;
 
                     const cell = document.createElement('div');
-                    // HIGHLIGHT CELL IN YELLOW IF VOCABULARY WAS ADDED ON THAT DAY
                     cell.className = `cal-cell ${hasVocab ? 'active-vocab' : ''}`;
                     cell.onclick = () => selectCalDate(dateStr);
                     cell.innerHTML = `
@@ -3278,7 +3215,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT ---
+        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY) ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             const flashcardMastered = quizHistory.filter(h => h.source === 'flashcard' && h.remembered);
@@ -3294,21 +3231,9 @@
             countES = uniqueMasteredVocabs.ES.size;
             countKO = uniqueMasteredVocabs.KO.size;
 
-            document.getElementById('reportCountEN').innerText = `${countEN} words`;
-            document.getElementById('reportCountES').innerText = `${countES} words`;
-            document.getElementById('reportCountKO').innerText = `${countKO} words`;
-
-            const gEN = parseInt(localStorage.getItem("goal_EN") || "500");
-            const gES = parseInt(localStorage.getItem("goal_ES") || "300");
-            const gKO = parseInt(localStorage.getItem("goal_KO") || "300");
-
-            const pEN = Math.min(Math.round((countEN / gEN) * 100), 100);
-            const pES = Math.min(Math.round((countES / gES) * 100), 100);
-            const pKO = Math.min(Math.round((countKO / gKO) * 100), 100);
-
-            document.getElementById('goalBarEN').style.width = `${pEN}%`;
-            document.getElementById('goalBarES').style.width = `${pES}%`;
-            document.getElementById('goalBarKO').style.width = `${pKO}%`;
+            document.getElementById('reportCountEN').innerText = `${countEN}`;
+            document.getElementById('reportCountES').innerText = `${countES}`;
+            document.getElementById('reportCountKO').innerText = `${countKO}`;
 
             const radarCtx = document.getElementById('radarChart').getContext('2d');
             if (radarChartInstance) radarChartInstance.destroy();
