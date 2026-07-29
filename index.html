@@ -1,199 +1,162 @@
-
-[116 lines collapsed]
-
-        th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
-        .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
-        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
-        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY COLUMNS) */
-        @media (max-width: 768px) {
-            .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
-            .responsive-card-table table:not(.conj-table), .responsive-card-table table:not(.conj-table) thead, .responsive-card-table table:not(.conj-table) tbody, .responsive-card-table table:not(.conj-table) th, .responsive-card-table table:not(.conj-table) td, .responsive-card-table table:not(.conj-table) tr {
-                display: block; width: 100%;
+            if (dayBlogs.length === 0) bList.innerText = "No blog posts published on this day.";
+            else {
+                bList.innerHTML = dayBlogs.map(g => `• [<b>${g.lang}</b>] <span style="cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="openQuickBlogPopup('${g.id}')">${g.title || 'Untitled Note'}</span> (${g.topic})`).join('<br>');
             }
-            .responsive-card-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .responsive-card-table tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
-            .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
-            .responsive-card-table td:last-child { border-bottom: none; }
-            .responsive-card-table td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
-            .responsive-card-table table:not(.conj-table) thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .responsive-card-table table:not(.conj-table) tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
-            .responsive-card-table table:not(.conj-table) td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
-            .responsive-card-table table:not(.conj-table) tr td:last-child { border-bottom: none; }
-            .responsive-card-table table:not(.conj-table) td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
         }
-        .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-
-[128 lines collapsed]
-
-        .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
-        .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
-        .conj-table input { width: 100%; padding: 6px; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: left; }
-        .conj-view-container { width: 100%; }
-        .conj-tense-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 12px; }
-        @media (max-width: 768px) {
-            .conj-view-container .conj-category-title { font-size: 1rem; padding: 8px 12px; margin: 16px 0 8px 0; }
-            .conj-view-container .conj-section-title { font-size: 0.82rem; padding: 6px 10px; margin: 12px 0 4px 0; }
-            .conj-view-container .conj-table { font-size: 0.82rem; min-width: 280px; }
-            .conj-view-container .conj-table th, .conj-view-container .conj-table td { padding: 7px 10px; }
-            .conj-view-container .conj-tense-wrap { border-radius: 6px; border: 1px solid var(--border); }
+        function openQuickBlogPopup(blogId) {
+            activeQuickBlogList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            activeQuickBlogIndex = activeQuickBlogList.findIndex(x => String(x.id) === String(blogId));
+            if (activeQuickBlogIndex === -1) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+            document.getElementById('quickBlogModal').style.display = "flex";
         }
-        @media (max-width: 900px) {
-            .report-grid-two { grid-template-columns: 1fr; }
-            .grammar-layout { grid-template-columns: 1fr; }
-
-[276 lines collapsed]
-
-                                    <th>Spanish</th>
-                                    <th>Korean</th>
-                                    <th>Vietnamese</th>
-                                    <th>POS / Family</th>
-                                    <th>POS</th>
-                                    <th>Family</th>
-                                    <th>Examples & Notes</th>
-                                    <th>Actions</th>
-                                </tr>
-
-[61 lines collapsed]
-
-                    </div>
-                </div>
-                <div id="searchConjView" style="display: none;">
-                <div id="searchConjView" class="conj-view-container" style="display: none;">
-                    <div id="conjDirectoryContainer"></div>
-                    <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
-                </div>
-
-[1372 lines collapsed]
-
-            const pagedItems = filtered.slice((searchPage - 1) * searchPageSize, searchPage * searchPageSize);
-            if (pagedItems.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
-                return;
-            }
-            const frag = document.createDocumentFragment();
-            pagedItems.forEach(item => {
-                tbody.innerHTML += `
+        function displayQuickBlogModal() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            document.getElementById('quickBlogDate').innerText = `📅 Published: ${post.timestamp || '2026-07-28'} • [${post.lang}]`;
+            document.getElementById('quickBlogTitle').innerText = post.title || 'Untitled Note';
+            document.getElementById('quickBlogContent').innerHTML = post.content || 'No content';
+        }
+        function navigateQuickBlog(direction) {
+            activeQuickBlogIndex += direction;
+            if (activeQuickBlogIndex < 0) activeQuickBlogIndex = activeQuickBlogList.length - 1;
+            if (activeQuickBlogIndex >= activeQuickBlogList.length) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+        }
+        function goToEditCurrentBlog() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            closeQuickBlogPopup();
+            switchTab('tab3');
+            openWriteBlogForm(post.id);
+        }
+        function closeQuickBlogPopup() {
+            document.getElementById('quickBlogModal').style.display = "none";
+        }
+        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
+        function renderReportTab() {
+            let countEN = 0, countES = 0, countKO = 0;
+            
+            userVocabList.forEach(i => {
+                if (i.en) countEN++;
+                if (i.es) countES++;
+                if (i.ko) countKO++;
+            });
+            document.getElementById('reportCountEN').innerText = `${countEN}`;
+            document.getElementById('reportCountES').innerText = `${countES}`;
+            document.getElementById('reportCountKO').innerText = `${countKO}`;
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            if (radarChartInstance) radarChartInstance.destroy();
+            radarChartInstance = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['English (EN)', 'Spanish (ES)', 'Korean (KO)'],
+                    datasets: [{
+                        label: 'Mastered Volume',
+                        data: [countEN, countES, countKO],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: '#10b981',
+                        pointBackgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { r: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', backdropColor: 'transparent' } } }
+                }
+            });
+            const velMode = document.getElementById('velocityPeriodMode')?.value || 'weekly';
+            const timeBuckets = {};
+            userVocabList.forEach(i => {
+                if (i.timestamp) {
+                    const d = new Date(i.timestamp);
+                    let key = "";
+                    if (velMode === 'daily') {
+                        key = formatDateYYYYMMDD(d);
+                    } else if (velMode === 'weekly') {
+                        const weekNum = Math.floor(d.getTime() / (7 * 24 * 60 * 60 * 1000));
+                        key = `W-${weekNum}`;
+                    } else if (velMode === 'monthly') {
+                        key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                    } else {
+                        key = `${d.getFullYear()}`;
+                    }
+                    timeBuckets[key] = (timeBuckets[key] || 0) + 1;
+                }
+            });
+            const sortedKeys = Object.keys(timeBuckets).sort();
+            const velocityLabels = sortedKeys.map((k, idx) => velMode === 'weekly' ? `Period ${idx + 1}` : k);
+            const velocityData = sortedKeys.map(k => timeBuckets[k]);
+            const velCtx = document.getElementById('velocityChart').getContext('2d');
+            if (velocityChartInstance) velocityChartInstance.destroy();
+            velocityChartInstance = new Chart(velCtx, {
+                type: 'line',
+                data: {
+                    labels: velocityLabels.length > 0 ? velocityLabels : ['Current'],
+                    datasets: [{
+                        label: 'Words Added',
+                        data: velocityData.length > 0 ? velocityData : [0],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
+                }
+            });
+            const bookProgressMap = {};
+            Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
+                bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
+            });
+            userVocabList.forEach(item => {
+                if (item.book && bookProgressMap[item.book] && item.unit) {
+                    bookProgressMap[item.book].learnedUnits.add(item.unit);
+                }
+            });
+            const bookLabels = Object.keys(BOOK_UNITS_CONFIG);
+            const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
+            const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
+            const bCtx = document.getElementById('bookChart').getContext('2d');
+            if (bookChartInstance) bookChartInstance.destroy();
+            bookChartInstance = new Chart(bCtx, {
+                type: 'bar',
+                data: {
+                    labels: bookLabels,
+                    datasets: [
+                        { label: 'Learned Units', data: bookLearnedCounts, backgroundColor: '#f59e0b', borderRadius: 4 },
+                        { label: 'Total Units', data: bookTotals, backgroundColor: '#334155', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#f8fafc' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
+                }
+            });
+            const bTbody = document.getElementById('bookProgressTableBody');
+            bTbody.innerHTML = "";
+            bookLabels.forEach(b => {
+                const learned = bookProgressMap[b].learnedUnits.size;
+                const total = bookProgressMap[b].total;
+                const remaining = total - learned;
+                bTbody.innerHTML += `
                     <tr>
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                        <td data-label="English: "><strong>${item.en}</strong> ${item.en ? `<button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button>` : ''}</td>
-                        <td data-label="Spanish: ">${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
-                        <td data-label="Korean: ">${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
-                        <td data-label="Vietnamese: ">${item.vi}</td>
-                        <td data-label="POS / Family:" style="font-size:0.85rem;">
-                            <div><b>POS:</b> <em>${item.pos || '---'}</em></div>
-                            <div><b>Family EN:</b> ${item.familyEN || '---'}</div>
-                            <div><b>Family ES:</b> ${item.familyES || '---'}</div>
-                            <div><b>Family KO:</b> ${item.familyKO || '---'}</div>
-                        <td data-label="POS: " style="font-size:0.85rem;"><em>${item.pos || '---'}</em></td>
-                        <td data-label="Family: " style="font-size:0.85rem; color:var(--text-secondary);">
-                            ${item.familyEN ? `🇺🇸 ${item.familyEN}<br>` : ''}
-                            ${item.familyES ? `🇪🇸 ${item.familyES}<br>` : ''}
-                            ${item.familyKO ? `🇰🇷 ${item.familyKO}<br>` : ''}
-                            ${!item.familyEN && !item.familyES && !item.familyKO ? '---' : ''}
-                        </td>
-                        <td data-label="Examples: " style="font-size:0.85rem; color:var(--text-secondary);">
-                            ${item.exEN ? `🇺🇸 ${item.exEN}<br>` : ''}
-
-[7 lines collapsed]
-
-                            <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                        </td>
+                        <td><strong>${b}</strong></td>
+                        <td style="color:var(--primary); font-weight:bold;">${learned} Units</td>
+                        <td>${total} Units</td>
+                        <td style="color:var(--warning); font-weight:bold;">${remaining} Units left</td>
                     </tr>
                 `;
-                frag.appendChild(tr);
             });
-            tbody.appendChild(frag);
-            if (totalPages > 1) {
-                for (let i = 1; i <= totalPages; i++) {
-
-[114 lines collapsed]
-
-            if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
-        /* CONJUGACIÓN DIRECTORY WITH FULL 6 TENSE SECTIONS AND STRICT SCREENSHOT MATCHING */
-        /* CONJUGACIÓN DIRECTORY — SHOW ALL TENSES (PC & MOBILE) */
-        function buildConjDirectoryHTML(item) {
-            let conjHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
-                    <div>
-                        <h3 style="color:var(--color-es); font-size:1.6rem; margin:0;">🇪🇸 ${item.es || "---"}</h3>
-                        <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">🇺🇸 English: ${item.en || "---"} | 🇰🇷 Korean: ${item.ko || "---"}</div>
-                        <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">🇻🇳 Meaning [VI]: ${item.vi || "---"}</div>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                    </div>
-                </div>
-            `;
-            const conjData = item.conjData || {};
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                let secHTML = `<div class="conj-category-title">${sec.title}</div>`;
-                sec.tenses.forEach((t, tIdx) => {
-                    let rows = "";
-                    PRONOUNS.forEach((p, pIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        const val = conjData[key] || "";
-                        rows += `<tr><td><strong>${p}</strong></td><td>${val || '---'}</td></tr>`;
-                    });
-                    secHTML += `<div class="conj-tense-wrap"><div class="conj-section-title">${t.toUpperCase()}</div><table class="conj-table"><thead><tr><th>Pronombres</th><th>Conjugación</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-                });
-                conjHTML += secHTML;
-            });
-            return conjHTML;
-        }
-        function renderConjDirectory(searchQuery = "") {
-            const container = document.getElementById('conjDirectoryContainer');
-            const paginationEl = document.getElementById('conjPagination');
-
-[19 lines collapsed]
-
-            const card = document.createElement('div');
-            card.className = "card";
-            card.style.marginBottom = "16px";
-            
-            let conjHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
-                    <div>
-                        <h3 style="color:var(--color-es); font-size:1.6rem; margin:0;">🇪🇸 ${item.es || "---"}</h3>
-                        <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">🇺🇸 English: ${item.en || "---"} | 🇰🇷 Korean: ${item.ko || "---"}</div>
-                        <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">🇻🇳 Meaning [VI]: ${item.vi || "---"}</div>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                    </div>
-                </div>
-            `;
-            
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                let sectionHasData = false;
-                let secHTML = `<div class="conj-category-title">${sec.title}</div>`;
-                sec.tenses.forEach((t, tIdx) => {
-                    let tenseHasData = false;
-                    let tenseTableHTML = `<div class="conj-section-title">${t.toUpperCase()}</div><table class="conj-table"><thead><tr><th>Pronombres</th><th>Conjugación</th></tr></thead><tbody>`;
-                    PRONOUNS.forEach((p, pIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        const val = item.conjData[key] || "";
-                        if (val) {
-                            tenseHasData = true;
-                            sectionHasData = true;
-                        }
-                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
-                    });
-                    tenseTableHTML += `</tbody></table>`;
-                    if (tenseHasData) {
-                        secHTML += tenseTableHTML;
-                    }
-                });
-                if(sectionHasData) conjHTML += secHTML;
-            });
-            card.innerHTML = conjHTML;
-            card.innerHTML = buildConjDirectoryHTML(item);
-            container.appendChild(card);
-            if (totalPages > 1) {
-
-[1261 lines collapsed]
+    </script>
+</body>
+</html>
