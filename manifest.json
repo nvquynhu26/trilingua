@@ -1,7 +1,7 @@
 {
   "name": "Trilingua",
   "short_name": "Trilingua",
-  "start_url": "/",
+  "start_url": "/trilingua/"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
