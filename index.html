@@ -10,7 +10,7 @@
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="apple-touch-icon" href="Logo1.png">
+     <link rel="apple-touch-icon" href="Logo1.png">
     <style>
         :root {
             --bg: #0f172a;
@@ -213,7 +213,7 @@
         .year-mini-num { padding: 2px 0; color: #64748b; border-radius: 3px; cursor: pointer; }
         .year-mini-num.active-vocab { color: #ffffff !important; font-weight: 800; background: rgba(245, 158, 11, 0.3); }
 
-        /* BOARD (TAB 5) - FIXED PADDING TO PREVENT BALL CLIPPING ON MOBILE */
+        /* BOARD (TAB 5) */
         .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
         .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -476,7 +476,7 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Vertical Mobile Cards -->
+            <!-- Vocabulary Log Table -->
             <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
@@ -511,7 +511,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH (TAB-AWARE & SEPARATE MOBILE FAMILY/POS LINES) -->
+        <!-- TAB 2: SEARCH -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="position:relative; width:100%;">
@@ -888,7 +888,7 @@
                         <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
@@ -898,7 +898,6 @@
                     </div>
                 </div>
 
-                <!-- 3 PROGRESS BOXES WITH FLAG -> CODE -> PROGRESS ON SEPARATE LINES -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 12px 4px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
                         <div style="font-size: 1.3rem; margin-bottom: 2px;">🇺🇸</div>
@@ -1031,7 +1030,6 @@
                     <div style="background: var(--bg); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
                             <h4 style="font-size: 1rem; color: var(--edit); margin: 0;">📈 Learning Velocity</h4>
-                            <!-- VIEW BY DAY ADDED TO VELOCITY PERIOD MODE -->
                             <select id="velocityPeriodMode" onchange="renderReportTab()" style="width: auto; padding: 4px 10px; font-size: 0.85rem;">
                                 <option value="daily">View by Day</option>
                                 <option value="weekly" selected>View by Week</option>
@@ -1379,7 +1377,6 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* ROBUST AUTO RETRY FETCH TO ENSURE ZERO EMPTY DATA ON MOBILE & IPHONE */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -2153,97 +2150,6 @@
             });
 
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
-        }
-
-        function renderConjDirectory(searchQuery = "") {
-            const container = document.getElementById('conjDirectoryContainer');
-            const paginationEl = document.getElementById('conjPagination');
-            container.innerHTML = "";
-            paginationEl.innerHTML = "";
-
-            let verbsWithConj = userVocabList.filter(i => i.conjData && Object.keys(i.conjData).length > 0);
-
-            if (searchQuery) {
-                verbsWithConj = verbsWithConj.filter(i => (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.en && i.en.toLowerCase().includes(searchQuery)));
-            }
-
-            if(verbsWithConj.length === 0) {
-                container.innerHTML = `<p style="padding:20px; text-align:center; color:var(--text-secondary);">No verb conjugations recorded yet.</p>`;
-                return;
-            }
-
-            const totalPages = verbsWithConj.length;
-            if (conjPage > totalPages) conjPage = totalPages;
-
-            const item = verbsWithConj[conjPage - 1];
-
-            const card = document.createElement('div');
-            card.className = "card";
-            card.style.marginBottom = "16px";
-            
-            let conjHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <div>
-                        <h3 style="color:var(--color-es); font-size:1.6rem;">🇪🇸 ${item.es || "---"}</h3>
-                        <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">🇺🇸 English: ${item.en || "---"} | 🇰🇷 Korean: ${item.ko || "---"}</div>
-                        <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">🇻🇳 Meaning [VI]: ${item.vi || "---"}</div>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                    </div>
-                </div>
-            `;
-            
-            CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                let sectionHasData = false;
-                let secHTML = `<div class="conj-category-title">${sec.title}</div>`;
-
-                sec.tenses.forEach((t, tIdx) => {
-                    let tenseHasData = false;
-                    let tenseTableHTML = `<div class="conj-section-title">${t.toUpperCase()}</div><table class="conj-table"><thead><tr><th>Pronombres</th><th>Conjugación</th></tr></thead><tbody>`;
-
-                    PRONOUNS.forEach((p, pIdx) => {
-                        const key = `${sIdx}_${tIdx}_${pIdx}`;
-                        const val = item.conjData[key] || "";
-                        if (val) {
-                            tenseHasData = true;
-                            sectionHasData = true;
-                        }
-                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
-                    });
-                    tenseTableHTML += `</tbody></table>`;
-
-                    if (tenseHasData) {
-                        secHTML += tenseTableHTML;
-                    }
-                });
-
-                if(sectionHasData) conjHTML += secHTML;
-            });
-
-            card.innerHTML = conjHTML;
-            container.appendChild(card);
-
-            if (totalPages > 1) {
-                const prevBtn = document.createElement('button');
-                prevBtn.className = "btn btn-sm btn-fmt";
-                prevBtn.innerText = "◄ Prev Verb";
-                prevBtn.onclick = () => { if(conjPage > 1) { conjPage--; renderConjDirectory(); } };
-
-                const label = document.createElement('span');
-                label.style.fontWeight = "bold";
-                label.innerText = `Verb ${conjPage} of ${totalPages}`;
-
-                const nextBtn = document.createElement('button');
-                nextBtn.className = "btn btn-sm btn-fmt";
-                nextBtn.innerText = "Next Verb ►";
-                nextBtn.onclick = () => { if(conjPage < totalPages) { conjPage++; renderConjDirectory(); } };
-
-                paginationEl.appendChild(prevBtn);
-                paginationEl.appendChild(label);
-                paginationEl.appendChild(nextBtn);
-            }
         }
 
         // --- TAB 3: GRAMMAR BLOG ---
@@ -3110,7 +3016,7 @@
             const rect = canvas.getBoundingClientRect();
             const cx = (rect.width || 800) / 2;
             const cy = 210;
-            const dist2 = 120; // Reduced distance to prevent mobile clipping
+            const dist2 = 120; // Safe distance for mobile display
 
             const langNodes = [
                 { key: 'es', val: item.es, class: 'es', angle: -30 },
