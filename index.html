@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- APPLE HOME SCREEN WEB APP META TAGS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="apple-touch-icon" href="Logo1.png">
     <style>
         :root {
             --bg: #0f172a;
@@ -252,6 +250,24 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
+        /* TABLA DE CONJUGACIÓN DE VERBOS (STRICT MOBILE FORMAT & CLEAR HEADERS) */
+        .conj-section-title { font-size: 1.15rem; font-weight: 800; color: var(--color-es); background: rgba(16, 185, 129, 0.12); border-left: 4px solid var(--color-es); padding: 8px 12px; margin: 20px 0 10px 0; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; background: var(--bg); }
+        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 10px; font-size: 0.88rem; text-align: center; }
+        .conj-table th { background: var(--surface-hover); color: var(--text); }
+        .conj-table input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; }
+
+        /* MOBILE SPECIFIC CONJUGATION STACKED VIEW */
+        @media (max-width: 768px) {
+            .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
+            .conj-table thead { display: none; }
+            .conj-table tr { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: var(--surface); }
+            .conj-table td { border: none; padding: 6px 4px; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+            .conj-table td:first-child { font-weight: bold; color: var(--primary); text-align: left; }
+            .conj-table td::before { content: attr(data-tense); font-weight: 700; color: var(--text-secondary); text-align: left; margin-right: 10px; }
+            .conj-table input { max-width: 160px; }
+        }
+
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
             .grammar-layout { grid-template-columns: 1fr; }
@@ -314,6 +330,7 @@
             <img src="Logo2.png" alt="Trilingua Logo" class="logo-img">
         </a>
 
+        <!-- NAV TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab1')">1. Vocabulary</button>
             <button class="tab-btn" onclick="switchTab('tab2')">2. Search</button>
@@ -601,8 +618,9 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN MOBILE-FRIENDLY VIEW STRUCTURE -->
                 <div id="searchConjView" style="display: none;">
-                    <h3 style="margin-bottom: 12px; color: var(--color-es);">Conjugación</h3>
+                    <div id="conjHeaderCard" class="card" style="background:var(--bg); border:1px solid var(--border); margin-bottom:16px; text-align:center; padding:12px;"></div>
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
                 </div>
@@ -865,20 +883,20 @@
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--primary); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">🟢 STRONG</div>
+                        <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">🟡 MEDIUM</div>
+                        <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                     <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
-                        <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">🔴 WEAK</div>
+                        <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
                 </div>
 
-                <!-- UPDATED 3 PROGRESS BOXES WITH FLAG -> CODE -> PROGRESS ON SEPARATE LINES -->
+                <!-- 3 PROGRESS BOXES WITH FLAG -> CODE -> PROGRESS ON SEPARATE LINES -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
                     <div style="background: var(--bg); padding: 12px 4px; border-radius: var(--radius); border: 1px solid var(--border); text-align: center;">
                         <div style="font-size: 1.3rem; margin-bottom: 2px;">🇺🇸</div>
@@ -904,7 +922,8 @@
                 </div>
 
                 <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
-                    <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress by POS (EN - ES - KO)</h4>
+                    <!-- UPDATED CHART TITLE -->
+                    <h4 style="font-size: 0.95rem; margin-bottom: 12px; text-align: center; color: var(--text-secondary);">Flashcard Progress</h4>
                     <canvas id="posChart" style="max-height: 320px; width: 100%;"></canvas>
                 </div>
             </div>
@@ -979,7 +998,6 @@
             <div class="card">
                 <h2 style="margin-bottom: 20px; color: var(--grammar);">📈 Comprehensive Learning Report</h2>
                 
-                <!-- RENAMED EN Learned / ES Learned / KO Learned WITH LINES BELOW -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px;">
                     <div style="background: var(--bg); padding: 14px 4px; border-radius: var(--radius); border: 2px solid var(--color-en); text-align: center;">
                         <div style="font-size: 1.3rem; margin-bottom: 2px;">🇺🇸</div>
@@ -1348,9 +1366,6 @@
             }
             if (savedQuiz) quizHistory = JSON.parse(savedQuiz);
 
-            loadCustomGoals();
-
-            // PERSIST ACTIVE TAB STATE AFTER REFRESH
             const savedTab = localStorage.getItem("trilingua_active_tab") || "tab1";
             switchTab(savedTab, false);
         }
@@ -1361,71 +1376,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        function loadCustomGoals() {
-            const gEN = localStorage.getItem("goal_EN") || "500";
-            const gES = localStorage.getItem("goal_ES") || "300";
-            const gKO = localStorage.getItem("goal_KO") || "300";
-
-            document.getElementById('inputGoalEN').value = gEN;
-            document.getElementById('inputGoalES').value = gES;
-            document.getElementById('inputGoalKO').value = gKO;
-            document.getElementById('goalTextEN').innerText = gEN;
-            document.getElementById('goalTextES').innerText = gES;
-            document.getElementById('goalTextKO').innerText = gKO;
-        }
-
-        function toggleGoalEditLock() {
-            const inputEN = document.getElementById('inputGoalEN');
-            const inputES = document.getElementById('inputGoalES');
-            const inputKO = document.getElementById('inputGoalKO');
-            const btn = document.getElementById('toggleGoalEditBtn');
-
-            const isLocked = inputEN.disabled;
-            inputEN.disabled = !isLocked;
-            inputES.disabled = !isLocked;
-            inputKO.disabled = !isLocked;
-
-            if (isLocked) {
-                btn.innerText = "🔒 Save & Lock";
-                btn.className = "btn btn-sm btn-warning";
-            } else {
-                btn.innerText = "Edit Goals";
-                btn.className = "btn btn-sm btn-edit";
-                saveCustomGoals();
-            }
-        }
-
-        async function saveCustomGoals() {
-            const gEN = document.getElementById('inputGoalEN').value;
-            const gES = document.getElementById('inputGoalES').value;
-            const gKO = document.getElementById('inputGoalKO').value;
-            
-            localStorage.setItem("goal_EN", gEN);
-            localStorage.setItem("goal_ES", gES);
-            localStorage.setItem("goal_KO", gKO);
-            loadCustomGoals();
-            renderReportTab();
-
-            showToast("Syncing");
-
-            const rowDataGoals = [
-                "GOALS_CONFIG", formatDateYYYYMMDD(new Date()), "SYSTEM_GOALS", "SYSTEM", gEN, gES, gKO, "GOALS_CONFIG",
-                "", "system", "", "", "", "", "",
-                "", "", "", "", "",
-                "{}", "{}"
-            ];
-
-            try {
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "update", type: "vocab", id: "GOALS_CONFIG", row: rowDataGoals }),
-                    redirect: "follow"
-                });
-                showToast("Saved");
-            } catch(err) { showToast("Saved"); }
-        }
-
-        /* FETCH DATA WITH AUTO RETRY TO PREVENT EMPTY REPORTS ON REFRESH */
+        /* FETCH DATA WITH AUTO RETRY TO ENSURE ALL-TIME REPORT DATA IS NEVER EMPTY */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1437,14 +1388,7 @@
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
-                        const goalsRow = data.userVocab.find(row => String(row[0]) === "GOALS_CONFIG");
-                        if (goalsRow) {
-                            localStorage.setItem("goal_EN", goalsRow[4]);
-                            localStorage.setItem("goal_ES", goalsRow[5]);
-                            localStorage.setItem("goal_KO", goalsRow[6]);
-                            loadCustomGoals();
-                        }
-                        userVocabList = data.userVocab.filter(row => String(row[0]) !== "GOALS_CONFIG").map(row => ({
+                        userVocabList = data.userVocab.map(row => ({
                             id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
                             en: row[4], es: row[5], ko: row[6], vi: row[7], familyEN: row[8],
                             pos: row[9], exEN: row[10], exES: row[11], exKO: row[12], book: row[13], unit: row[14],
@@ -1471,8 +1415,8 @@
                     showToast("Saved");
                 }
             } catch (err) {
-                if(retryCount < 2) {
-                    setTimeout(() => fetchDataFromGAS(retryCount + 1), 1500);
+                if(retryCount < 3) {
+                    setTimeout(() => fetchDataFromGAS(retryCount + 1), 1200);
                 } else {
                     renderLogTable();
                     renderTab2();
@@ -1905,7 +1849,7 @@
             }
         }
 
-        // --- TAB 2: SEARCH & TOPICS ---
+        // --- TAB 2: SEARCH ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
@@ -2201,23 +2145,23 @@
 
             const item = verbsWithConj[conjPage - 1];
 
+            // RENDER HEADER WITH SPANISH, ENGLISH, KOREAN, VIETNAMESE COLORS
+            const headerCard = document.getElementById('conjHeaderCard');
+            headerCard.innerHTML = `
+                <div style="font-size:1.6rem; font-weight:800; color:var(--color-es);">${item.es || "---"}</div>
+                <div style="font-size:0.95rem; color:var(--color-en); margin-top:2px;">English: ${item.en || "---"} | Korean: ${item.ko || "---"}</div>
+                <div style="font-size:0.9rem; color:var(--color-vi); margin-top:2px;">Meaning [VI]: ${item.vi || "---"}</div>
+            `;
+
             const card = document.createElement('div');
             card.className = "card";
             card.style.marginBottom = "16px";
             
-            let conjHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h3 style="color:var(--color-es); font-size:1.4rem;">${item.es || "Verb"} (${item.en || ""})</h3>
-                    <div>
-                        <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
-                    </div>
-                </div>
-            `;
+            let conjHTML = ``;
             
             CONJ_STRUCTURE.forEach((sec, sIdx) => {
                 let sectionHasData = false;
-                let secHTML = `<div class="conj-section-title">${sec.title}</div><table class="conj-table"><tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr>`;
+                let secHTML = `<div class="conj-section-title">${sec.title}</div><table class="conj-table"><thead><tr><th>Pronombres</th>` + sec.tenses.map(t => `<th>${t}</th>`).join('') + `</tr></thead><tbody>`;
 
                 PRONOUNS.forEach((p, pIdx) => {
                     let rowHTML = `<tr><td><strong>${p}</strong></td>`;
@@ -2225,12 +2169,12 @@
                         const key = `${sIdx}_${tIdx}_${pIdx}`;
                         const val = item.conjData[key] || "";
                         if(val) sectionHasData = true;
-                        rowHTML += `<td>${val}</td>`;
+                        rowHTML += `<td data-tense="${t}">${val}</td>`;
                     });
                     rowHTML += `</tr>`;
                     secHTML += rowHTML;
                 });
-                secHTML += `</table>`;
+                secHTML += `</tbody></table>`;
 
                 if(sectionHasData) conjHTML += secHTML;
             });
@@ -2277,15 +2221,29 @@
         }
 
         function handleGramLangChange(langVal) {
-            const tagSelect = document.getElementById('gramTag');
-            tagSelect.innerHTML = "";
-            
+            const wrapper = document.getElementById('tagCheckboxWrapper');
+            wrapper.innerHTML = "";
+
+            let availableTags = [];
             if (langVal === 'Note') {
-                const noteTags = ['English', 'Espanol', '한국어', 'Jottings'];
-                noteTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t}</option>`; });
+                availableTags = ['English', 'Espanol', '한국어', 'Jottings'];
             } else {
-                const defaultTags = ['', 'A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
-                defaultTags.forEach(t => { tagSelect.innerHTML += `<option value="${t}">${t ? '#' + t : '-- None --'}</option>`; });
+                availableTags = ['A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
+            }
+
+            availableTags.forEach(tag => {
+                const item = document.createElement('label');
+                item.className = "tag-checkbox-item";
+                item.innerHTML = `<input type="checkbox" name="blogTagCheckbox" value="${tag}" onchange="enforceMaxTwoTags(this)"> #${tag}`;
+                wrapper.appendChild(item);
+            });
+        }
+
+        function enforceMaxTwoTags(changedInput) {
+            const checkedBoxes = document.querySelectorAll('input[name="blogTagCheckbox"]:checked');
+            if (checkedBoxes.length > 2) {
+                changedInput.checked = false;
+                alert("⚠️ You can select a maximum of 2 tags per blog post!");
             }
         }
 
@@ -2976,7 +2934,7 @@
             }
         }
 
-        /* ALL-TIME STATS DASHBOARD COMPUTATION */
+        // --- DASHBOARD ANALYTICS (RENAMED EN, ES, KO, ALL LANGUAGES LEGENDS) ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3043,7 +3001,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (STRICTLY NO IDIOMS) ---
+        // --- TAB 5: BOARD ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -3343,7 +3301,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
+        // --- TAB 7: REPORT ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             
