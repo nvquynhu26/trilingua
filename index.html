@@ -7,8 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -118,6 +117,7 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
+        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -631,7 +631,6 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN MOBILE & PC VIEW STRUCTURE WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -1387,7 +1386,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* ACCURATE REALTIME CLOUD SYNC FOR VOCABULARY, BLOGS AND CONJUGATIONS */
+        /* AUTO RETRY FETCH FROM GAS FOR REALTIME DATA */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1671,7 +1670,7 @@
             showToast("Saved");
         }
 
-        // --- SAVE VOCABULARY ---
+        // --- SAVE VOCABULARY & MULTI-ROW SPANISH_CONJUGATIONS SYNC ---
         async function saveVocab(e) {
             e.preventDefault();
             const editId = document.getElementById('editId').value;
@@ -1724,10 +1723,33 @@
                 JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData)
             ];
 
+            // EXTRACT MULTI-ROW ROWS FOR SPANISH_CONJUGATIONS SHEET
+            var conjRows = [];
+            if (newEntry.conjData && Object.keys(newEntry.conjData).length > 0) {
+                CONJ_STRUCTURE.forEach((sec, sIdx) => {
+                    sec.tenses.forEach((t, tIdx) => {
+                        var pVals = [];
+                        var hasDataInTense = false;
+                        PRONOUNS.forEach((p, pIdx) => {
+                            var key = `${sIdx}_${tIdx}_${pIdx}`;
+                            var val = newEntry.conjData[key] || "";
+                            if(val) hasDataInTense = true;
+                            pVals.push(val);
+                        });
+                        if (hasDataInTense) {
+                            conjRows.push([
+                                newEntry.id, newEntry.timestamp, newEntry.es, newEntry.en, sec.title, t,
+                                pVals[0], pVals[1], pVals[2], pVals[3], pVals[4], pVals[5], pVals[6]
+                            ]);
+                        }
+                    });
+                });
+            }
+
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab, conjRows: conjRows }),
                     redirect: "follow"
                 });
 
@@ -1984,7 +2006,7 @@
             renderTab2();
         }
 
-        /* SEARCH TAB RENDERER (POS ON 1 ROW, FAMILY EN, ES, KO ON SEPARATE MOBILE ROWS) */
+        /* SEARCH TAB RENDERER (SEPARATED POS AND 3 FAMILY COLUMNS/MOBILE ROWS) */
         function renderTab2() {
             const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2019,7 +2041,7 @@
             const pagedItems = filtered.slice((searchPage - 1) * searchPageSize, searchPage * searchPageSize);
 
             if (pagedItems.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 20px;">No matching vocabulary found.</td></tr>`;
                 return;
             }
 
@@ -2169,7 +2191,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES EXACTLY MATCHING USER SCREENSHOT SPECIFICATIONS */
+        /* CONJUGACIÓN DIRECTORY WITH FULL 18 TENSES AND SCREENSHOT BORDERED TABLES */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -3503,4 +3525,4 @@
         }
     </script>
 </body>
-</html>ㄹ
+</html>
