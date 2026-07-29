@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua</title>
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -27,10 +27,10 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            --color-en: #4e90c0;
-            --color-es: #10b981;
-            --color-ko: #d57c91;
-            --color-vi: #feeeb5;
+            --color-en: #4e90c0; /* Blue */
+            --color-es: #10b981; /* Green */
+            --color-ko: #d57c91; /* Pink */
+            --color-vi: #feeeb5; /* Light Yellow */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -40,6 +40,7 @@
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
+        
         .logo-container { display: flex; align-items: center; text-decoration: none; }
         .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         
@@ -116,6 +117,7 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
+        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -251,7 +253,7 @@
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
         /* CONJUGACIÓN TABLE - EXACT MATCH WITH USER SCREENSHOT SPECIFICATIONS */
-        .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+        .conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
         .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
         .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; }
@@ -500,7 +502,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: SEARCH -->
+        <!-- TAB 2: SEARCH & TOPICS -->
         <div id="tab2" class="tab-content">
             <div class="card" style="position:relative; z-index:100;">
                 <div style="position:relative; width:100%;">
@@ -610,7 +612,7 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN MOBILE & PC VIEW STRUCTURE -->
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -877,11 +879,11 @@
                         <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
@@ -1366,6 +1368,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
+        /* AUTO RETRY FETCH FROM GAS FOR REALTIME ALL-TIME REPORT & REVIEW DATA */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -2140,7 +2143,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 6 CATEGORIES AND EXACT IMAGE SCREENSHOT MATCH */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES EXACTLY MATCHING USER SCREENSHOT SPECIFICATIONS */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -3030,7 +3033,7 @@
             });
         }
 
-        // --- TAB 5: BOARD (SAFEGUARDED BALL RADIUS TO PREVENT MOBILE CLIPPING) ---
+        // --- TAB 5: BOARD ---
         function handleBoardAutocomplete(val) {
             const dropdown = document.getElementById('boardDropdown');
             if(!val || val.trim().length < 1) {
@@ -3097,7 +3100,6 @@
             const cx = (rect.width || 800) / 2;
             const cy = (rect.height || 480) / 2;
             
-            // ADJUSTED DISTANCE BASED ON CONTAINER WIDTH FOR MOBILE
             const isMobile = window.innerWidth <= 768;
             const dist2 = isMobile ? 110 : 140;
 
@@ -3333,7 +3335,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT (WITH VIEW BY DAY INCLUDED) ---
+        // --- TAB 7: REPORT ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             
