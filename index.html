@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,9 +79,13 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* MULTI SELECT DROPDOWN POS */
-        .pos-multi-select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; max-height: 110px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-        .pos-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer; }
+        /* CUSTOM DROPDOWN SELECT FOR POS (CLICK TO EXPAND, CHECKBOXES AT THE END) */
+        .pos-dropdown-container { position: relative; width: 100%; }
+        .pos-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .pos-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 999; max-height: 200px; overflow-y: auto; box-shadow: var(--shadow); }
+        .pos-dropdown-content.show { display: block; }
+        .pos-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; font-size: 0.85rem; cursor: pointer; border-radius: 4px; }
+        .pos-item:hover { background: var(--surface-hover); }
         .pos-item input { width: auto; cursor: pointer; }
 
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
@@ -260,8 +263,8 @@
         .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
         .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
         .modal-conj-table th { background: var(--surface-hover); color: var(--primary); }
-        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
-        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
+        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 15% !important; min-width: 90px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 10px; }
+        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; min-width: 120px; }
 
         /* CONJUGACIÓN SEARCH VIEW - EXACT IMAGE SCREENSHOT MATCH */
         .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
@@ -381,7 +384,7 @@
                                 <label class="pos-item"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()"> phrasal verb</label>
                                 <label class="pos-item"><input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()"> idiom</label>
                                 <label class="pos-item"><input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()"> collocation</label>
-                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()"> phrase / expression</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()"> phrase</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -732,8 +735,8 @@
                                         <option value="1">12px</option>
                                         <option value="2">14px</option>
                                         <option value="3" selected>16px</option>
-                                        <option value="4">20px</option>
-                                        <option value="5">24px</option>
+                                        <option value="4">18px</option>
+                                        <option value="5">20px</option>
                                         <option value="6">24px</option>
                                         <option value="7">32px</option>
                                     </select>
@@ -1381,7 +1384,6 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* SAFE DECODING & FETCHING FROM GOOGLE APPS SCRIPT */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1740,7 +1742,6 @@
             renderTab2();
             showToast("Syncing");
 
-            // COMPACT ENCODING FOR CONJUGATION & IRREGULAR VERB PAYLOAD
             const encodedConj = encodeURIComponent(JSON.stringify(newEntry.conjData));
             const encodedIrreg = encodeURIComponent(JSON.stringify(newEntry.enIrregData));
 
@@ -2200,7 +2201,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY (FULL 18 TENSES DISPLAY) */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
