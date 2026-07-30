@@ -63,7 +63,7 @@
 
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; width: 100%; word-break: break-word; }
         
-        .grid-row-1 { display: grid; grid-template-columns: 2fr 1.2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+        .grid-row-1 { display: grid; grid-template-columns: 2fr 1.5fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-2 { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-3 { display: grid; grid-template-columns: 2fr 2fr 2fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
         .grid-row-4 { display: grid; grid-template-columns: 1fr 1fr 1.5fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -79,13 +79,10 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* POS MULTI-SELECT CUSTOM DROPDOWN */
-        .pos-dropdown-container { position: relative; width: 100%; }
-        .pos-select-box { background: var(--bg); border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; min-height: 42px; display: flex; align-items: center; justify-content: space-between; }
-        .pos-options-panel { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; z-index: 500; max-height: 220px; overflow-y: auto; box-shadow: var(--shadow); padding: 8px; margin-top: 4px; }
-        .pos-options-panel.show { display: block; }
-        .pos-option-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; font-size: 0.85rem; cursor: pointer; border-radius: 4px; }
-        .pos-option-item:hover { background: var(--surface-hover); }
+        /* MULTI SELECT DROPDOWN POS */
+        .pos-multi-select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; max-height: 110px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+        .pos-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer; }
+        .pos-item input { width: auto; cursor: pointer; }
 
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
@@ -123,7 +120,6 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-        /* SEARCH TAB MOBILE CARD VIEW */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -275,15 +271,6 @@
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
         .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
 
-        @media (max-width: 768px) {
-            .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
-            .conj-table thead { display: none; }
-            .conj-table tr { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface); }
-            .conj-table td { border: none; padding: 6px 4px; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.05); }
-            .conj-table td:first-child { font-weight: bold; color: var(--primary); text-align: left; }
-            .conj-table td::before { content: attr(data-tense); font-weight: 700; color: var(--text-secondary); text-align: left; margin-right: 10px; }
-        }
-
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
             .grammar-layout { grid-template-columns: 1fr; }
@@ -383,23 +370,17 @@
                             <input type="text" id="wordEN" required>
                         </div>
                         <div class="form-group">
-                            <label>POS * (Multi-select)</label>
-                            <div class="pos-dropdown-container">
-                                <div class="pos-select-box" onclick="togglePosDropdown(event)">
-                                    <span id="posSelectLabel">-- Select POS --</span>
-                                    <span style="font-size:0.75rem;">▼</span>
-                                </div>
-                                <div id="posOptionsPanel" class="pos-options-panel" onclick="event.stopPropagation()">
-                                    <div class="pos-option-item"><input type="checkbox" value="noun (n)" onchange="handlePosCheckboxChange(this)"> noun (n)</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="verb (v)" onchange="handlePosCheckboxChange(this)"> verb (v)</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="adj" onchange="handlePosCheckboxChange(this)"> adjective (adj)</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="adv" onchange="handlePosCheckboxChange(this)"> adverb (adv)</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="prep" onchange="handlePosCheckboxChange(this)"> preposition (prep)</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="phrasal verb" onchange="handlePosCheckboxChange(this)"> phrasal verb</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="idiom" onchange="handlePosCheckboxChange(this)"> idiom</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="collocation" onchange="handlePosCheckboxChange(this)"> collocation</div>
-                                    <div class="pos-option-item"><input type="checkbox" value="phrase" onchange="handlePosCheckboxChange(this)"> phrase / expression</div>
-                                </div>
+                            <label>POS * (Multi-Select)</label>
+                            <div class="pos-multi-select">
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="noun" onchange="handlePosMultiChange()"> noun (n)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="verb" onchange="handlePosMultiChange()"> verb (v)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="adj" onchange="handlePosMultiChange()"> adjective (adj)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="adv" onchange="handlePosMultiChange()"> adverb (adv)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="prep" onchange="handlePosMultiChange()"> preposition (prep)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()"> phrasal verb</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()"> idiom</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()"> collocation</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()"> phrase / expression</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -495,16 +476,18 @@
                 </form>
             </div>
 
-            <!-- Vocabulary Log Table with Filter Day/Week/Month & 15 items Pagination -->
+            <!-- Vocabulary Log Table -->
             <div class="card responsive-card-table">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3>Vocabulary Log</h3>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="logFilter" style="margin:0;">Filter period:</label>
                         <select id="logFilter" onchange="logPage = 1; renderLogTable()" style="width: auto; padding: 6px 10px;">
-                            <option value="today" selected>Day (Today)</option>
-                            <option value="7days">Week (1 Week)</option>
-                            <option value="30days">Month (1 Month)</option>
+                            <option value="today">Today</option>
+                            <option value="3days">Last 3 days</option>
+                            <option value="5days">Last 5 days</option>
+                            <option value="7days">1 week</option>
+                            <option value="30days">1 month</option>
                             <option value="all">All time</option>
                         </select>
                     </div>
@@ -517,8 +500,7 @@
                                 <th>Spanish</th>
                                 <th>Korean</th>
                                 <th>Vietnamese</th>
-                                <th>POS / Family</th>
-                                <th>Examples & Notes</th>
+                                <th>Topic / Source</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -642,6 +624,7 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -908,11 +891,11 @@
                         <div class="dash-metric-title" style="color: var(--primary); font-weight: 700;">STRONG</div>
                         <div class="dash-metric-val" id="groupStrongCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--warning); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
@@ -1344,42 +1327,6 @@
             menu.classList.toggle('show');
         }
 
-        function togglePosDropdown(e) {
-            e.stopPropagation();
-            document.getElementById('posOptionsPanel').classList.toggle('show');
-        }
-
-        document.addEventListener('click', function() {
-            const panel = document.getElementById('posOptionsPanel');
-            if (panel) panel.classList.remove('show');
-        });
-
-        function handlePosCheckboxChange() {
-            const checked = Array.from(document.querySelectorAll('#posOptionsPanel input[type="checkbox"]:checked')).map(cb => cb.value);
-            const label = document.getElementById('posSelectLabel');
-            if (checked.length === 0) {
-                label.innerText = "-- Select POS --";
-            } else {
-                label.innerText = checked.join(", ");
-            }
-
-            const hasVerb = checked.some(p => p.toLowerCase().includes('verb'));
-            document.getElementById('enIrregBtn').style.display = hasVerb ? 'inline-flex' : 'none';
-            document.getElementById('esConjBtn').style.display = hasVerb ? 'inline-flex' : 'none';
-        }
-
-        function getSelectedPosValues() {
-            return Array.from(document.querySelectorAll('#posOptionsPanel input[type="checkbox"]:checked')).map(cb => cb.value).join(", ");
-        }
-
-        function setSelectedPosValues(posStr) {
-            const values = posStr ? posStr.split(',').map(s => s.trim()) : [];
-            document.querySelectorAll('#posOptionsPanel input[type="checkbox"]').forEach(cb => {
-                cb.checked = values.includes(cb.value);
-            });
-            handlePosCheckboxChange();
-        }
-
         function handleTopicChange(topicVal) {
             const subSelect = document.getElementById('subTopic');
             const bookSelect = document.getElementById('book');
@@ -1433,6 +1380,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
+        /* SAFE DECODING & FETCHING FROM GOOGLE APPS SCRIPT */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1444,15 +1392,40 @@
                 const data = await response.json();
                 if (data.status === "success") {
                     if (data.userVocab && data.userVocab.length > 0) {
-                        userVocabList = data.userVocab.map(row => ({
-                            id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
-                            en: row[4], es: row[5], ko: row[6], vi: row[7],
-                            pos: row[8], familyEN: row[9], familyES: row[10], familyKO: row[11],
-                            exEN: row[12], exES: row[13], exKO: row[14], book: row[15], unit: row[16],
-                            noteEN: row[17] || "", noteES: row[18] || "", noteKO: row[19] || "",
-                            conjData: row[20] ? (typeof row[20] === 'string' ? JSON.parse(row[20]) : row[20]) : {},
-                            enIrregData: row[21] ? (typeof row[21] === 'string' ? JSON.parse(row[21]) : row[21]) : { base: "", past: "", part: "" }
-                        }));
+                        userVocabList = data.userVocab.map(row => {
+                            let parsedConj = {};
+                            let parsedIrreg = { base: "", past: "", part: "" };
+                            
+                            try {
+                                if (row[20]) {
+                                    let rawStr = String(row[20]);
+                                    if (rawStr.startsWith("%7B") || rawStr.startsWith("%7b")) {
+                                        rawStr = decodeURIComponent(rawStr);
+                                    }
+                                    parsedConj = JSON.parse(rawStr);
+                                }
+                            } catch(e) { parsedConj = {}; }
+
+                            try {
+                                if (row[21]) {
+                                    let rawStr = String(row[21]);
+                                    if (rawStr.startsWith("%7B") || rawStr.startsWith("%7b")) {
+                                        rawStr = decodeURIComponent(rawStr);
+                                    }
+                                    parsedIrreg = JSON.parse(rawStr);
+                                }
+                            } catch(e) { parsedIrreg = { base: "", past: "", part: "" }; }
+
+                            return {
+                                id: row[0], timestamp: formatDateYYYYMMDD(row[1]), topic: row[2], subTopic: row[3],
+                                en: row[4], es: row[5], ko: row[6], vi: row[7],
+                                pos: row[8], familyEN: row[9], familyES: row[10], familyKO: row[11],
+                                exEN: row[12], exES: row[13], exKO: row[14], book: row[15], unit: row[16],
+                                noteEN: row[17] || "", noteES: row[18] || "", noteKO: row[19] || "",
+                                conjData: parsedConj,
+                                enIrregData: parsedIrreg
+                            };
+                        });
                     }
                     if (data.grammarBlog && data.grammarBlog.length > 0) {
                         grammarList = data.grammarBlog.map(row => ({
@@ -1528,6 +1501,17 @@
             window.speechSynthesis.speak(utterance);
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+        function handlePosMultiChange() {
+            const checkedPos = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value);
+            const isVerb = checkedPos.includes('verb');
+            document.getElementById('enIrregBtn').style.display = isVerb ? 'inline-flex' : 'none';
+            document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
+        }
+
+        function handlePosChange(val) {
+            handlePosMultiChange();
+        }
 
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
         function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
@@ -1707,34 +1691,25 @@
             showToast("Saved");
         }
 
-        // --- SAVE VOCABULARY (STRICT FORM VALIDATION & REALTIME GOOGLE SHEETS SYNC) ---
+        // --- SAVE VOCABULARY ---
         async function saveVocab(e) {
             e.preventDefault();
-
-            const wordEN = document.getElementById('wordEN').value.trim();
-            const wordES = document.getElementById('wordES').value.trim();
-            const wordKO = document.getElementById('wordKO').value.trim();
-            const posVal = getSelectedPosValues();
-
-            if (!wordEN || !wordES || !wordKO || !posVal) {
-                alert("⚠️ Please fill in EN Word, ES Word, KO Word, and select at least one POS!");
-                return;
-            }
-
             const editId = document.getElementById('editId').value;
             const isEdit = !!editId;
             const id = isEdit ? editId : 'ID_' + Date.now();
             const timestamp = formatDateYYYYMMDD(isEdit ? userVocabList.find(i => String(i.id) === String(id)).timestamp : new Date());
             
+            const selectedPos = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value).join(', ');
+
             const newEntry = {
                 id, timestamp,
                 topic: document.getElementById('topic').value,
                 subTopic: document.getElementById('subTopic').value,
-                en: wordEN,
-                es: wordES,
-                ko: wordKO,
+                en: document.getElementById('wordEN').value.trim(),
+                es: document.getElementById('wordES').value.trim(),
+                ko: document.getElementById('wordKO').value.trim(),
                 vi: document.getElementById('meaningVI').value.trim(),
-                pos: posVal,
+                pos: selectedPos,
                 familyEN: document.getElementById('wordFamilyEN').value.trim(),
                 familyES: document.getElementById('wordFamilyES').value.trim(),
                 familyKO: document.getElementById('wordFamilyKO').value.trim(),
@@ -1764,11 +1739,15 @@
             renderTab2();
             showToast("Syncing");
 
+            // COMPACT ENCODING FOR CONJUGATION & IRREGULAR VERB PAYLOAD
+            const encodedConj = encodeURIComponent(JSON.stringify(newEntry.conjData));
+            const encodedIrreg = encodeURIComponent(JSON.stringify(newEntry.enIrregData));
+
             const rowDataVocab = [
                 newEntry.id, newEntry.timestamp, newEntry.topic, newEntry.subTopic, newEntry.en, newEntry.es, newEntry.ko, newEntry.vi, 
                 newEntry.pos, newEntry.familyEN, newEntry.familyES, newEntry.familyKO, newEntry.exEN, newEntry.exES, newEntry.exKO, 
                 newEntry.book, newEntry.unit, newEntry.noteEN, newEntry.noteES, newEntry.noteKO, 
-                JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData)
+                encodedConj, encodedIrreg
             ];
 
             try {
@@ -1795,7 +1774,12 @@
             document.getElementById('wordFamilyEN').value = item.familyEN || "";
             document.getElementById('wordFamilyES').value = item.familyES || "";
             document.getElementById('wordFamilyKO').value = item.familyKO || "";
-            setSelectedPosValues(item.pos || "");
+            
+            const itemPosArray = (item.pos || "").split(',').map(s => s.trim());
+            document.querySelectorAll('input[name="posSelect"]').forEach(cb => {
+                cb.checked = itemPosArray.includes(cb.value);
+            });
+            handlePosMultiChange();
 
             if(TOPIC_MAPPING[item.topic]) {
                 document.getElementById('topic').value = item.topic;
@@ -1821,10 +1805,11 @@
         function resetForm() {
             document.getElementById('vocabForm').reset();
             document.getElementById('editId').value = "";
-            setSelectedPosValues("");
+            document.querySelectorAll('input[name="posSelect"]').forEach(cb => cb.checked = false);
             currentNotes = { EN: "", ES: "", KO: "" };
             currentConjData = {};
             currentEnIrregData = { base: "", past: "", part: "" };
+            handlePosMultiChange();
             document.getElementById('submitBtn').innerText = "Save Vocabulary";
             document.getElementById('cancelEditBtn').style.display = "none";
         }
@@ -1849,7 +1834,6 @@
             } catch(err) { showToast("Saved"); }
         }
 
-        /* VOCABULARY LOG WITH MERGED 3-LINE FAMILY & EXAMPLES IN 1 CELL */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -1870,6 +1854,8 @@
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
                 if (filterVal === 'today') return itemDateStr === todayStr;
+                if (filterVal === '3days') return diffDays <= 3;
+                if (filterVal === '5days') return diffDays <= 5;
                 if (filterVal === '7days') return diffDays <= 7;
                 if (filterVal === '30days') return diffDays <= 30;
                 return true;
@@ -1881,7 +1867,7 @@
             const pagedItems = filtered.slice((logPage - 1) * logPageSize, logPage * logPageSize);
 
             if (pagedItems.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No vocabulary entries found for this period.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No vocabulary entries found for this period.</td></tr>`;
                 return;
             }
 
@@ -1892,17 +1878,7 @@
                         <td data-label="Spanish: ">${item.es} ${item.es ? `<button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button>` : ''}</td>
                         <td data-label="Korean: ">${item.ko} ${item.ko ? `<button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button>` : ''}</td>
                         <td data-label="Vietnamese: ">${item.vi}</td>
-                        <td data-label="POS & Family: " style="font-size:0.85rem;">
-                            <div><b>POS:</b> <em>${item.pos || '---'}</em></div>
-                            <div><b>Family EN:</b> ${item.familyEN || '---'}</div>
-                            <div><b>Family ES:</b> ${item.familyES || '---'}</div>
-                            <div><b>Family KO:</b> ${item.familyKO || '---'}</div>
-                        </td>
-                        <td data-label="Examples: " style="font-size:0.85rem; color:var(--text-secondary);">
-                            ${item.exEN ? `🇺🇸 ${item.exEN}<br>` : ''}
-                            ${item.exES ? `🇪🇸 ${item.exES}<br>` : ''}
-                            ${item.exKO ? `🇰🇷 ${item.exKO}<br>` : ''}
-                        </td>
+                        <td data-label="Topic: " style="font-size:0.8rem; color:var(--text-secondary);">${item.topic}<br><em>${item.book} (${item.unit})</em></td>
                         <td data-label="Actions: ">
                             <button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button>
@@ -2120,7 +2096,7 @@
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.pos && i.pos.toLowerCase().includes('phrasal') && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
+            userVocabList.filter(i => i.pos && i.pos.includes('phrasal verb') && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2145,7 +2121,7 @@
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.es && (i.pos && i.pos.toLowerCase().includes('phrasal') || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1) && (!searchQuery || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
+            userVocabList.filter(i => i.es && (!i.pos || !i.pos.includes('idiom')) && ((i.pos && i.pos.includes('phrasal verb')) || (i.noteES && i.noteES.toLowerCase().includes('phrasal')) || i.es.split(' ').length > 1) && (!searchQuery || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2170,7 +2146,7 @@
             tbody.innerHTML = "";
             let count = 0;
 
-            userVocabList.filter(i => i.pos && i.pos.toLowerCase().includes('idiom') && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.ko && i.ko.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
+            userVocabList.filter(i => i.pos && i.pos.includes('idiom') && (!searchQuery || (i.en && i.en.toLowerCase().includes(searchQuery)) || (i.es && i.es.toLowerCase().includes(searchQuery)) || (i.ko && i.ko.toLowerCase().includes(searchQuery)) || (i.vi && i.vi.toLowerCase().includes(searchQuery)))).forEach(item => {
                 count++;
                 tbody.innerHTML += `
                     <tr>
@@ -2729,12 +2705,12 @@
                 const matchTop = (topic === "ALL" || i.topic === topic);
                 const matchSub = (subTopic === "ALL" || i.subTopic === subTopic);
 
-                if (mode === 'phrasal') return matchTop && matchSub && i.pos === 'phrasal verb';
-                if (mode === 'idiom') return matchTop && matchSub && i.pos === 'idiom';
-                if (mode === 'collocation') return matchTop && matchSub && i.pos === 'collocation';
+                if (mode === 'phrasal') return matchTop && matchSub && i.pos && i.pos.includes('phrasal verb');
+                if (mode === 'idiom') return matchTop && matchSub && i.pos && i.pos.includes('idiom');
+                if (mode === 'collocation') return matchTop && matchSub && i.pos && i.pos.includes('collocation');
                 
                 if (mode === 'flashcard' || mode === 'reverse') {
-                    return matchTop && matchSub && allowedFlashcardPos.includes(i.pos);
+                    return matchTop && matchSub && i.pos && allowedFlashcardPos.some(p => i.pos.includes(p));
                 }
 
                 return matchTop && matchSub;
@@ -2819,7 +2795,7 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'phrasal verb').sort(() => Math.random() - 0.5).slice(0, 3);
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('phrasal verb')).sort(() => Math.random() - 0.5).slice(0, 3);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
@@ -2839,7 +2815,7 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'idiom').sort(() => Math.random() - 0.5).slice(0, 2);
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('idiom')).sort(() => Math.random() - 0.5).slice(0, 2);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
@@ -2859,7 +2835,7 @@
                 document.getElementById('mcPrompt').innerText = item.vi || "---";
                 document.getElementById('mcResult').style.display = 'none';
 
-                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos === 'collocation').sort(() => Math.random() - 0.5).slice(0, 3);
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('collocation')).sort(() => Math.random() - 0.5).slice(0, 3);
                 const options = [item, ...distractors].sort(() => Math.random() - 0.5);
 
                 const grid = document.getElementById('mcGridContainer');
@@ -3123,7 +3099,7 @@
             const q = val.toLowerCase().trim();
             
             const matches = userVocabList.filter(i => 
-                i.pos !== 'idiom' && (
+                (!i.pos || !i.pos.includes('idiom')) && (
                     (i.en && i.en.toLowerCase().includes(q)) ||
                     (i.es && i.es.toLowerCase().includes(q)) ||
                     (i.ko && i.ko.toLowerCase().includes(q))
@@ -3170,7 +3146,7 @@
             
             canvas.innerHTML = "";
 
-            if (!item || item.pos === 'idiom') {
+            if (!item || (item.pos && item.pos.includes('idiom'))) {
                 canvas.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:200px; font-weight:600;">Item not found in database!</div>`;
                 bottomGrid.style.display = "none";
                 return;
