@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- APPLE HOME SCREEN WEB APP META TAGS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
@@ -27,10 +26,10 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            --color-en: #4e90c0; /* Blue */
-            --color-es: #10b981; /* Green */
-            --color-ko: #d57c91; /* Pink */
-            --color-vi: #feeeb5; /* Light Yellow */
+            --color-en: #4e90c0;
+            --color-es: #10b981;
+            --color-ko: #d57c91;
+            --color-vi: #feeeb5;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -40,7 +39,6 @@
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
-        
         .logo-container { display: flex; align-items: center; text-decoration: none; }
         .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         
@@ -117,7 +115,6 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -268,15 +265,6 @@
         .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
         .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
-
-        @media (max-width: 768px) {
-            .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
-            .conj-table thead { display: none; }
-            .conj-table tr { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface); }
-            .conj-table td { border: none; padding: 6px 4px; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.05); }
-            .conj-table td:first-child { font-weight: bold; color: var(--primary); text-align: left; }
-            .conj-table td::before { content: attr(data-tense); font-weight: 700; color: var(--text-secondary); text-align: left; margin-right: 10px; }
-        }
 
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
@@ -1104,7 +1092,7 @@
         </div>
     </div>
 
-    <!-- MODAL 2: SPANISH CONJUGATION MODAL (EQUAL BALANCED INPUT COLUMNS) -->
+    <!-- MODAL 2: SPANISH CONJUGATION MODAL -->
     <div id="conjModal" class="modal-overlay">
         <div class="modal-card">
             <h2 style="margin-bottom: 12px; color: var(--color-es);">Tabla de Conjugación de Verbos</h2>
@@ -1386,7 +1374,6 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* AUTO RETRY FETCH FROM GAS FOR REALTIME DATA */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1611,13 +1598,12 @@
             showToast("Saved");
         }
 
-        /* CONJUGATION INPUT MODAL BUILDER WITH BALANCED EQUAL COLUMN WIDTHS */
         function buildConjModalHTML() {
             const container = document.getElementById('conjTablesContainer');
             container.innerHTML = "";
             CONJ_STRUCTURE.forEach((sec, sIdx) => {
                 const sectionEl = document.createElement('div');
-                sectionEl.innerHTML = `<div class="conj-category-title">${sec.title}</div>`;
+                sectionEl.innerHTML = `<div class="conj-section-title">${sec.title}</div>`;
                 
                 const tableWrap = document.createElement('div');
                 tableWrap.className = "modal-conj-table-wrapper";
@@ -1670,7 +1656,7 @@
             showToast("Saved");
         }
 
-        // --- SAVE VOCABULARY & MULTI-ROW SPANISH_CONJUGATIONS SYNC ---
+        // --- SAVE VOCABULARY ---
         async function saveVocab(e) {
             e.preventDefault();
             const editId = document.getElementById('editId').value;
@@ -1723,33 +1709,10 @@
                 JSON.stringify(newEntry.conjData), JSON.stringify(newEntry.enIrregData)
             ];
 
-            // EXTRACT MULTI-ROW ROWS FOR SPANISH_CONJUGATIONS SHEET
-            var conjRows = [];
-            if (newEntry.conjData && Object.keys(newEntry.conjData).length > 0) {
-                CONJ_STRUCTURE.forEach((sec, sIdx) => {
-                    sec.tenses.forEach((t, tIdx) => {
-                        var pVals = [];
-                        var hasDataInTense = false;
-                        PRONOUNS.forEach((p, pIdx) => {
-                            var key = `${sIdx}_${tIdx}_${pIdx}`;
-                            var val = newEntry.conjData[key] || "";
-                            if(val) hasDataInTense = true;
-                            pVals.push(val);
-                        });
-                        if (hasDataInTense) {
-                            conjRows.push([
-                                newEntry.id, newEntry.timestamp, newEntry.es, newEntry.en, sec.title, t,
-                                pVals[0], pVals[1], pVals[2], pVals[3], pVals[4], pVals[5], pVals[6]
-                            ]);
-                        }
-                    });
-                });
-            }
-
             try {
                 await fetch(GAS_WEB_APP_URL, {
                     method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab, conjRows: conjRows }),
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "vocab", id: newEntry.id, row: rowDataVocab }),
                     redirect: "follow"
                 });
 
@@ -2006,7 +1969,6 @@
             renderTab2();
         }
 
-        /* SEARCH TAB RENDERER (SEPARATED POS AND 3 FAMILY COLUMNS/MOBILE ROWS) */
         function renderTab2() {
             const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2191,7 +2153,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY WITH FULL 18 TENSES AND SCREENSHOT BORDERED TABLES */
+        /* CONJUGACIÓN DIRECTORY (FULL 18 TENSES DISPLAY) */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2266,7 +2228,7 @@
                 const prevBtn = document.createElement('button');
                 prevBtn.className = "btn btn-sm btn-fmt";
                 prevBtn.innerText = "◄ Prev Verb";
-                prevBtn.onclick = () => { if(conjPage > 1) { conjPage--; renderConjDirectory(); } };
+                prevBtn.onclick = () => { if(conjPage > 1) { conjPage--; renderConjDirectory(searchQuery); } };
 
                 const label = document.createElement('span');
                 label.style.fontWeight = "bold";
@@ -2275,7 +2237,7 @@
                 const nextBtn = document.createElement('button');
                 nextBtn.className = "btn btn-sm btn-fmt";
                 nextBtn.innerText = "Next Verb ►";
-                nextBtn.onclick = () => { if(conjPage < totalPages) { conjPage++; renderConjDirectory(); } };
+                nextBtn.onclick = () => { if(conjPage < totalPages) { conjPage++; renderConjDirectory(searchQuery); } };
 
                 paginationEl.appendChild(prevBtn);
                 paginationEl.appendChild(label);
@@ -3014,7 +2976,7 @@
             }
         }
 
-        /* ALL-TIME STATS DASHBOARD COMPUTATION */
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3383,7 +3345,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
+        // --- TAB 7: REPORT ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             
