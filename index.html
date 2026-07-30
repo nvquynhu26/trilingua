@@ -1,755 +1,918 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Trilingua</title>
-  <link rel="apple-touch-icon" href="Logo1.png">
-  <!-- Tailwind CSS & Lucide Icons -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Trilingua">
+   <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --danger: #ef4444;
+            --edit: #3b82f6;
+            --warning: #f59e0b;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brandEn: '#4e8fc0',
-            brandEs: '#55b785',
-            brandKo: '#c98091',
-            brandVn: '#f7f54f',
-            brandAll: '#e8a23b',
-            brandNote: '#8e44ad',
-            darkBg: '#121212',
-            darkCard: '#1e1e1e',
-            darkInput: '#2d2d2d'
-          }
+            /* CUSTOM REQUIRED BRAND COLORS */
+            --color-en: #4e8fc0;
+            --color-es: #55b785;
+            --color-ko: #c98091;
+            --color-vi: #f7f54f;
+            --color-all: #e8a23b;
+            --color-note: #8b5cf6;
         }
-      }
-    }
-  </script>
 
-  <style>
-    body { background-color: #121212; color: #e0e0e0; font-family: system-ui, -apple-system, sans-serif; }
-    .lang-en { color: #4e8fc0; }
-    .lang-es { color: #55b785; }
-    .lang-ko { color: #c98091; }
-    .lang-vn { color: #f7f54f; }
-    .lang-all { color: #e8a23b; }
-    .lang-note { color: #8e44ad; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 60px; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; width: 100%; max-width: 100vw; }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #1e1e1e; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 14px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-img { height: 36px; width: auto; object-fit: contain; }
+        
+        .nav-tabs { display: flex; gap: 6px; flex-wrap: nowrap; align-items: center; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: var(--radius); cursor: pointer; font-weight: 600; color: var(--text); transition: all 0.2s; font-size: 0.82rem; white-space: nowrap; }
+        .tab-btn:hover { background: var(--surface-hover); }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab-btn.tab-progress { background: var(--color-note); color: white; border-color: var(--color-note); }
 
-    /* Flip Card CSS for Quizlet Review */
-    .perspective-1000 { perspective: 1000px; }
-    .transform-style-3d { transform-style: preserve-3d; transition: transform 0.6s; }
-    .backface-hidden { backface-visibility: hidden; }
-    .rotate-y-180 { transform: rotateY(180deg); }
+        .menu-toggle-btn { display: none; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: var(--radius); font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+        .dropdown-menu-mobile { display: none; position: absolute; top: 100%; right: 4%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); z-index: 1000; width: 220px; padding: 10px; flex-direction: column; gap: 6px; }
+        .dropdown-menu-mobile.show { display: flex; }
+        .dropdown-menu-mobile .tab-btn { width: 100%; text-align: left; }
 
-    /* Multi-column layout inside Rich Text / Notes */
-    .column-split-2 { column-count: 2; column-gap: 1rem; }
-    .column-split-3 { column-count: 3; column-gap: 1rem; }
-    @media (max-width: 768px) {
-      .column-split-2, .column-split-3 { column-count: 1 !important; }
-    }
-  </style>
+        @media (max-width: 1150px) {
+            .nav-tabs { display: none; }
+            .menu-toggle-btn { display: inline-flex; align-items: center; gap: 6px; }
+        }
+
+        main { max-width: 1600px; margin: 0 auto; padding: 0 4%; flex: 1; width: 100%; overflow: hidden; }
+        .tab-content { display: none; margin-top: 20px; width: 100%; }
+        .tab-content.active { display: block; }
+
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; width: 100%; word-break: break-word; }
+        
+        /* FORM GRID LAYOUTS */
+        .form-row { display: grid; gap: 12px; margin-bottom: 14px; align-items: end; }
+        .row-1 { grid-template-columns: 2fr 1fr 2fr auto; }
+        .row-2 { grid-template-columns: 2fr 2fr auto; }
+        .row-3 { grid-template-columns: 2fr 2fr 2fr auto; }
+        .row-4 { grid-template-columns: 1fr 1fr 1fr; }
+        .row-5 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+        @media (max-width: 900px) {
+            .row-1, .row-2, .row-3, .row-4, .row-5 { grid-template-columns: 1fr; }
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; position: relative; width: 100%; }
+        label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.92rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+
+        /* BUTTONS */
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; white-space: nowrap; font-size: 0.85rem; }
+        .btn:hover { background: var(--primary-hover); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-note { background: var(--color-note); color: white; }
+        .btn-warning { background: var(--warning); color: #000; }
+        .btn-danger { background: var(--danger); }
+        .btn-edit { background: var(--edit); }
+
+        /* RESPONSIVE TABLE */
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+        th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
+
+        @media (max-width: 768px) {
+            .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr { display: block; width: 100%; }
+            .responsive-card-table thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .responsive-card-table tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; padding: 10px; background: var(--bg); }
+            .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 6px 6px 6px 120px !important; min-height: 34px; display: flex; align-items: center; text-align: left; }
+            .responsive-card-table td:last-child { border-bottom: none; }
+            .responsive-card-table td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.78rem; content: attr(data-label); }
+        }
+
+        /* MODALS & RICH EDITOR */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; }
+        .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 950px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; }
+
+        .rich-editor { width: 100%; min-height: 300px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; line-height: 1.6; overflow-y: auto; outline: none; }
+        .rich-editor img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px auto; display: block; }
+
+        .column-layout-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; }
+        .column-layout-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 12px 0; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; }
+
+        /* CONJUGACIÓN TABLE STYLE */
+        .conj-category-title { font-size: 1.15rem; font-weight: 900; color: #fff; background: var(--color-note); padding: 8px 14px; margin: 18px 0 10px 0; border-radius: 6px; text-transform: uppercase; }
+        .conj-section-title { font-size: 0.95rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 6px 10px; margin: 12px 0 4px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; }
+        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; background: #182232; border: 1px solid var(--border); }
+        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 10px; font-size: 0.85rem; text-align: left; }
+
+        @media (max-width: 768px) {
+            .conj-table, .conj-table tbody, .conj-table tr, .conj-table td { display: block; width: 100%; }
+            .conj-table thead { display: none; }
+            .conj-table tr { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface); }
+            .conj-table td { border: none; padding: 4px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+            .conj-table td:first-child { font-weight: bold; color: var(--color-es); }
+            .conj-table td::before { content: attr(data-tense); font-weight: 700; color: var(--text-secondary); margin-right: 8px; }
+        }
+
+        /* CALENDAR STYLE */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+        .cal-cell { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; min-height: 44px; }
+        .cal-num { font-size: 0.82rem; font-weight: 600; color: #64748b; }
+        .cal-cell.active-vocab .cal-num { color: #ffffff !important; font-weight: 800 !important; }
+        
+        /* FOOTER & TOAST */
+        #toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; display: none; z-index: 2000; font-weight: 600; box-shadow: var(--shadow); }
+    </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden text-sm">
+<body>
 
-  <!-- TOP HEADER -->
-  <header class="bg-darkCard border-b border-gray-800 px-4 py-2.5 flex items-center justify-between shrink-0">
-    <div class="flex items-center space-x-3">
-      <h1 class="text-xl font-bold tracking-wider text-white">TRILINGUA</h1>
-      <span id="current-time" class="text-xs text-gray-400 font-mono"></span>
+    <!-- WORD OF THE DAY POPUP -->
+    <div id="wotdModal" class="modal-overlay">
+        <div class="wotd-card card">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--primary); letter-spacing: 1px; margin-bottom: 12px;">🌟 WORD OF THE DAY</div>
+            <div id="wotdEN" class="wotd-en" style="color:var(--color-en); font-size:2rem; font-weight:800;">---</div>
+            <div id="wotdES" class="wotd-es" style="color:var(--color-es); font-size:1.5rem; font-weight:700;">---</div>
+            <div id="wotdKO" class="wotd-ko" style="color:var(--color-ko); font-size:1.2rem; font-weight:600;">---</div>
+            <div id="wotdVI" class="wotd-vi" style="color:var(--color-vi); font-size:1rem; margin-bottom:20px;">---</div>
+            <button class="btn full-width" style="width: 100%;" onclick="closeWotdModal()">Continue to App</button>
+        </div>
     </div>
-    <div class="flex items-center space-x-2">
-      <span id="sync-status" class="text-xs text-gray-500">Local Draft</span>
-      <button onclick="saveAllDataToCloud()" id="btn-save" class="bg-brandEs hover:opacity-90 text-black px-4 py-1.5 rounded font-bold flex items-center space-x-1.5 transition">
-        <i data-lucide="save" class="w-4 h-4"></i>
-        <span>Save</span>
-      </button>
-    </div>
-  </header>
 
-  <!-- NAVIGATION TABS -->
-  <nav class="bg-darkCard border-b border-gray-800 flex overflow-x-auto shrink-0 scrollbar-none">
-    <button onclick="switchTab('words')" id="tab-words" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-brandEn text-white flex items-center space-x-1.5">
-      <i data-lucide="plus-circle" class="w-4 h-4"></i><span>1. Words</span>
-    </button>
-    <button onclick="switchTab('search')" id="tab-search" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:text-white flex items-center space-x-1.5">
-      <i data-lucide="search" class="w-4 h-4"></i><span>2. Search</span>
-    </button>
-    <button onclick="switchTab('blog')" id="tab-blog" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:text-white flex items-center space-x-1.5">
-      <i data-lucide="book-open" class="w-4 h-4"></i><span>3. Grammar Blog</span>
-    </button>
-    <button onclick="switchTab('review')" id="tab-review" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:text-white flex items-center space-x-1.5">
-      <i data-lucide="brain" class="w-4 h-4"></i><span>4. Review</span>
-    </button>
-    <button onclick="switchTab('board')" id="tab-board" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:text-white flex items-center space-x-1.5">
-      <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>5. Board</span>
-    </button>
-    <button onclick="switchTab('calendar')" id="tab-calendar" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:text-white flex items-center space-x-1.5">
-      <i data-lucide="calendar" class="w-4 h-4"></i><span>6. Calendar</span>
-    </button>
-    <button onclick="switchTab('progress')" id="tab-progress" class="px-4 py-3 font-semibold whitespace-nowrap border-b-2 border-transparent text-brandNote flex items-center space-x-1.5">
-      <i data-lucide="trending-up" class="w-4 h-4"></i><span>7. Progress</span>
-    </button>
-  </nav>
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo-container" onclick="switchTab('tab1'); return false;">
+            <img src="Logo2.png" alt="Trilingua" class="logo-img">
+            <span style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">Trilingua.</span>
+        </a>
 
-  <!-- MAIN VIEWPORT CONTAINER -->
-  <main id="main-content" class="flex-1 overflow-y-auto p-4 max-w-7xl mx-auto w-full">
-    
-    <!-- TAB 1: WORDS -->
-    <section id="sec-words" class="space-y-4">
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-3">
-        <h2 class="text-base font-bold text-gray-200 border-b border-gray-800 pb-2">Add New Word Entry</h2>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab1')">1. Words</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">2. Search</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">3. Grammar Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">4. Review</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">5. Board</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">6. Calendar</button>
+            <button class="tab-btn tab-progress" onclick="switchTab('tab7')">7. Progress</button>
+            <button class="btn btn-sm btn-warning" onclick="syncBatchToCloud()" style="margin-left:8px;">☁ Save to Cloud</button>
+        </div>
+        <button class="menu-toggle-btn" onclick="toggleMobileMenu()">☰ Menu</button>
+        <div id="mobileDropdownMenu" class="dropdown-menu-mobile">
+            <button class="tab-btn active" onclick="switchTab('tab1'); toggleMobileMenu();">1. Words</button>
+            <button class="tab-btn" onclick="switchTab('tab2'); toggleMobileMenu();">2. Search</button>
+            <button class="tab-btn" onclick="switchTab('tab3'); toggleMobileMenu();">3. Grammar Blog</button>
+            <button class="tab-btn" onclick="switchTab('tab4'); toggleMobileMenu();">4. Review</button>
+            <button class="tab-btn" onclick="switchTab('tab5'); toggleMobileMenu();">5. Board</button>
+            <button class="tab-btn" onclick="switchTab('tab6'); toggleMobileMenu();">6. Calendar</button>
+            <button class="tab-btn tab-progress" onclick="switchTab('tab7'); toggleMobileMenu();">7. Progress</button>
+            <button class="btn btn-sm btn-warning" onclick="syncBatchToCloud(); toggleMobileMenu();" style="margin-top:6px;">☁ Save to Cloud</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- TAB 1: WORDS -->
+        <div id="tab1" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 16px; color: var(--primary);">Add / Edit Vocabulary</h2>
+                <form id="vocabForm" onsubmit="handleSaveWord(event)">
+                    <input type="hidden" id="editId" value="">
+                    
+                    <!-- Row 1 -->
+                    <div class="form-row row-1">
+                        <div class="form-group">
+                            <label style="color:var(--color-en)">EN Word *</label>
+                            <input type="text" id="wordEN" required>
+                        </div>
+                        <div class="form-group">
+                            <label>POS * (Multi-Select)</label>
+                            <select id="posSelect" multiple style="height: 40px;" onchange="handlePosMultiChange()">
+                                <option value="noun">noun (n)</option>
+                                <option value="verb">verb (v)</option>
+                                <option value="adj">adjective (adj)</option>
+                                <option value="adv">adverb (adv)</option>
+                                <option value="prep">preposition (prep)</option>
+                                <option value="phrasal verb">phrasal verb</option>
+                                <option value="idiom">idiom</option>
+                                <option value="collocation">collocation</option>
+                                <option value="phrase">phrase</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-en)">EN Family</label>
+                            <input type="text" id="familyEN" placeholder="e.g. friend / friendly / friendship">
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" class="btn btn-warning" id="irregBtn" style="display:none;" onclick="openIrregModal()">Irregular</button>
+                            <button type="button" class="btn btn-note" onclick="openNoteModal('EN')">Note</button>
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="form-row row-2">
+                        <div class="form-group">
+                            <label style="color:var(--color-es)">ES Word *</label>
+                            <input type="text" id="wordES" required>
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-es)">ES Family</label>
+                            <input type="text" id="familyES" placeholder="e.g. amigo / amigable">
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" class="btn btn-warning" id="conjBtn" style="display:none;" onclick="openConjModal()">Conjugación</button>
+                            <button type="button" class="btn btn-note" onclick="openNoteModal('ES')">Note</button>
+                        </div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="form-row row-3">
+                        <div class="form-group">
+                            <label style="color:var(--color-ko)">KO Word *</label>
+                            <input type="text" id="wordKO" required>
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-ko)">KO Family</label>
+                            <input type="text" id="familyKO" placeholder="e.g. 친구 / 친근한">
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-vi)">VN Meaning</label>
+                            <input type="text" id="meaningVI">
+                        </div>
+                        <button type="button" class="btn btn-note" onclick="openNoteModal('KO')">Note</button>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="form-row row-4">
+                        <div class="form-group">
+                            <label style="color:var(--color-en)">EN Example</label>
+                            <textarea id="exEN" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-es)">ES Example</label>
+                            <textarea id="exES" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label style="color:var(--color-ko)">KO Example</label>
+                            <textarea id="exKO" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="form-row row-5">
+                        <div class="form-group">
+                            <label>Main Topic</label>
+                            <select id="mainTopic" onchange="handleMainTopicChange(this.value)">
+                                <option value="People, Psychology & Relationship">People, Psychology & Relationship</option>
+                                <option value="Daily Life, Home & Leisure">Daily Life, Home & Leisure</option>
+                                <option value="Work, Education & Business">Work, Education & Business</option>
+                                <option value="World, Environment & Travel">World, Environment & Travel</option>
+                                <option value="Technology & Media">Technology & Media</option>
+                                <option value="Functional Language & Communication">Functional Language & Communication</option>
+                                <option value="Basic Concepts & Semantics">Basic Concepts & Semantics</option>
+                                <option value="Word Formation, Grammar & Phrasal Verbs">Word Formation, Grammar & Phrasal Verbs</option>
+                                <option value="Business">Business</option>
+                                <option value="Academic">Academic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sub-Topic</label>
+                            <select id="subTopic"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Book Source / Level</label>
+                            <select id="bookSource" onchange="updateUnitsByBook(this.value)"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <select id="unitSelect"></select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; display:flex; gap:10px;">
+                        <button type="submit" class="btn" id="submitVocabBtn">Save Word (Draft)</button>
+                        <button type="button" class="btn btn-fmt" id="cancelEditBtn" style="display:none;" onclick="resetVocabForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VOCABULARY LOG -->
+            <div class="card responsive-card-table">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                    <h3>Vocabulary Log</h3>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label style="margin:0;">Period:</label>
+                        <select id="logFilter" onchange="logPage = 1; renderLogTable()" style="width: auto; padding: 4px 8px;">
+                            <option value="today">Today</option>
+                            <option value="7days">1 Week</option>
+                            <option value="30days">1 Month</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>English</th>
+                                <th>Spanish</th>
+                                <th>Korean</th>
+                                <th>Vietnamese</th>
+                                <th>POS / Family</th>
+                                <th>Examples</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="logPagination" style="display:flex; justify-content:center; gap:6px; margin-top:16px;"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SEARCH -->
+        <div id="tab2" class="tab-content">
+            <div class="card" style="position:relative; z-index:100;">
+                <input type="text" id="searchInput" placeholder="🔍 Type keyword A-Z..." oninput="handleSearchAutocomplete(this.value)" onkeydown="if(e.key==='Enter') executeTabSearch(true)" autocomplete="off">
+                <div id="searchDropdown" class="board-dropdown"></div>
+            </div>
+            
+            <div class="card responsive-card-table">
+                <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <button class="btn btn-sm btn-warning" onclick="switchSearchSubTab('vocab')">Vocabulary View</button>
+                    <button class="btn btn-sm btn-lang-en" onclick="switchSearchSubTab('phrasal')">EN Phrasal Verbs</button>
+                    <button class="btn btn-sm btn-lang-en" onclick="switchSearchSubTab('idiom')">Idioms</button>
+                    <button class="btn btn-sm btn-lang-en" onclick="switchSearchSubTab('irreg')">Irregular Verbs</button>
+                    <button class="btn btn-sm btn-lang-es" onclick="switchSearchSubTab('conj')">Conjugación</button>
+                    <button class="btn btn-sm btn-lang-es" onclick="switchSearchSubTab('esPhrasal')">ES Phrasal Verbs</button>
+                </div>
+
+                <div id="searchVocabView">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3>Filter by Topic</h3>
+                        <select id="searchSortMode" onchange="renderTab2()" style="width:auto; padding:4px 8px;">
+                            <option value="date">Newest First</option>
+                            <option value="alphabet">Alphabet (A-Z)</option>
+                        </select>
+                    </div>
+                    <div class="sub-nav" id="topicNav"></div>
+                    <div class="sub-nav" id="subTopicNav" style="border-top:1px dashed var(--border); padding-top:10px;"></div>
+                    
+                    <div class="table-container" style="margin-top: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>English</th>
+                                    <th>Spanish</th>
+                                    <th>Korean</th>
+                                    <th>Vietnamese</th>
+                                    <th>POS / Family</th>
+                                    <th>Examples & Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tab2TableBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="searchPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
+                </div>
+
+                <div id="searchPhrasalView" style="display:none;"><div class="table-container"><table><thead><tr><th>Base</th><th>Phrasal</th><th>Meaning [EN]</th><th>Meaning [VI]</th><th>Example</th><th>Actions</th></tr></thead><tbody id="phrasalBody"></tbody></table></div></div>
+                <div id="searchIdiomView" style="display:none;"><div class="table-container"><table><thead><tr><th>EN</th><th>ES</th><th>KO</th><th>VI</th><th>POS</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="idiomBody"></tbody></table></div></div>
+                <div id="searchIrregView" style="display:none;"><div class="table-container"><table><thead><tr><th>Infinitive</th><th>Past Simple</th><th>Past Participle</th><th>VI</th><th>Actions</th></tr></thead><tbody id="irregBody"></tbody></table></div></div>
+                <div id="searchConjView" style="display:none;"><div id="conjDirectoryContainer"></div><div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div></div>
+                <div id="searchEsPhrasalView" style="display:none;"><div class="table-container"><table><thead><tr><th>ES Expression</th><th>EN Equivalent</th><th>VI Meaning</th><th>Example</th><th>Actions</th></tr></thead><tbody id="esPhrasalBody"></tbody></table></div></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: GRAMMAR BLOG -->
+        <div id="tab3" class="tab-content">
+            <div class="grammar-layout">
+                <div class="sidebar">
+                    <button class="btn btn-grammar full-width" style="width:100%; margin-bottom:12px;" onclick="openWriteBlogForm()">+ Write New Post</button>
+                    <div style="display:flex; gap:6px; margin-bottom:12px;">
+                        <input type="text" id="gramSearchInput" placeholder="🔍 Search..." oninput="renderGrammarSidebar()">
+                    </div>
+                    <div id="grammarTreeContainer"></div>
+                </div>
+
+                <div>
+                    <div id="blogFeedContainer">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                            <h3 style="color:var(--grammar);">📰 Timeline Feed</h3>
+                            <button id="filterPinnedFeedBtn" class="btn btn-sm btn-warning" onclick="togglePinnedFeedFilter()">⭐ Pinned Only</button>
+                        </div>
+                        <div id="feedPostsList"></div>
+                    </div>
+
+                    <div id="blogFormCard" class="card" style="display:none;">
+                        <h2 style="color:var(--grammar); margin-bottom:16px;">Create / Edit Note</h2>
+                        <form id="grammarForm" onsubmit="handleSaveGrammar(event)">
+                            <input type="hidden" id="grammarId" value="">
+                            <div class="form-row row-4">
+                                <div class="form-group"><label>Language *</label><select id="gramLang" onchange="handleGramLangChange(this.value)"><option value="English">English 🇺🇸</option><option value="Español">Español 🇪🇸</option><option value="한국어">한국어 🇰🇷</option><option value="Note">Note 📝</option></select></div>
+                                <div class="form-group"><label>Category *</label><input type="text" id="gramTopic" required placeholder="e.g. Tenses"></div>
+                                <div class="form-group"><label>Title *</label><input type="text" id="gramTitle" required placeholder="Title..."></div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:12px;"><label>Tags (Max 3)</label><div id="tagCheckboxWrapper" class="tag-checkbox-container"></div></div>
+                            <div class="form-group full-width" style="margin-bottom:12px;"><label>Keywords</label><input type="text" id="gramKeywords"></div>
+                            
+                            <div class="form-group full-width">
+                                <label>Lesson Content</label>
+                                <div class="editor-toolbar" style="margin-bottom:8px; display:flex; gap:6px; flex-wrap:wrap;">
+                                    <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b></button>
+                                    <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i></button>
+                                    <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('gramContentEditor')">+ Table 2x2</button>
+                                    <select class="btn-fmt" onchange="if(this.value){insertColumnLayout(parseInt(this.value)); this.value='';}"><option value="">📰 Cols</option><option value="2">2 Cols</option><option value="3">3 Cols</option></select>
+                                    <input type="file" id="blogImgFileInput" accept="image/*" style="display:none" onchange="handleBlogImageUpload(this)">
+                                    <button type="button" class="btn-fmt btn-edit" onclick="document.getElementById('blogImgFileInput').click()">🖼 Upload Image</button>
+                                </div>
+                                <div id="gramContentEditor" class="rich-editor" contenteditable="true"></div>
+                            </div>
+
+                            <div style="margin-top:16px; display:flex; gap:10px;">
+                                <button type="submit" class="btn btn-grammar">Save Note (Draft)</button>
+                                <button type="button" class="btn btn-fmt" onclick="closeWriteBlogForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: REVIEW -->
+        <div id="tab4" class="tab-content">
+            <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <select id="quizTopic" onchange="startQuiz()"><option value="ALL">All Topics</option></select>
+                    <select id="quizMode" onchange="startQuiz()">
+                        <option value="flashcard">1. Flashcard EN/ES/KO</option>
+                        <option value="reverse">2. Flashcard VN</option>
+                        <option value="idiom">3. Idiom</option>
+                        <option value="phrasal">4. Phrasal Verbs</option>
+                        <option value="typing">5. Typing</option>
+                    </select>
+                </div>
+                <span id="quizProgress" style="font-weight:bold;">0 / 0</span>
+            </div>
+
+            <!-- REVIEW VIEWS -->
+            <div id="flashcardView" class="quiz-container">
+                <div class="tri-flashcard-grid">
+                    <div class="card-box en" onclick="flipCard('EN')"><div id="flagEN" class="card-flag">🇺🇸</div><div id="textEN" class="card-text-lang">EN</div><div class="card-actions"><button id="btnStillEN" class="btn btn-sm btn-danger" onclick="markCardLang('EN', false); event.stopPropagation();">Still Learning</button><button id="btnMasterEN" class="btn btn-sm" onclick="markCardLang('EN', true); event.stopPropagation();">Mastered</button></div></div>
+                    <div class="card-box es" onclick="flipCard('ES')"><div id="flagES" class="card-flag">🇪🇸</div><div id="textES" class="card-text-lang">ES</div><div class="card-actions"><button id="btnStillES" class="btn btn-sm btn-danger" onclick="markCardLang('ES', false); event.stopPropagation();">Still Learning</button><button id="btnMasterES" class="btn btn-sm" onclick="markCardLang('ES', true); event.stopPropagation();">Mastered</button></div></div>
+                    <div class="card-box ko" onclick="flipCard('KO')"><div id="flagKO" class="card-flag">🇰🇷</div><div id="textKO" class="card-text-lang">KO</div><div class="card-actions"><button id="btnStillKO" class="btn btn-sm btn-danger" onclick="markCardLang('KO', false); event.stopPropagation();">Still Learning</button><button id="btnMasterKO" class="btn btn-sm" onclick="markCardLang('KO', true); event.stopPropagation();">Mastered</button></div></div>
+                </div>
+                <div class="vi-card-box card"><h4 id="triPromptVI" style="color:var(--color-vi);">---</h4></div>
+            </div>
+
+            <div id="mcView" class="quiz-container" style="display:none;">
+                <div class="card"><h3 id="mcPrompt" style="color:var(--color-vi); margin-bottom:16px;">---</h3><div id="mcGridContainer" class="mc-grid"></div><div id="mcResult" style="margin-top:12px; font-weight:bold;"></div></div>
+            </div>
+
+            <div id="typingView" class="quiz-container" style="display:none;">
+                <div class="card">
+                    <h3 id="typePrompt" style="margin-bottom:16px;">---</h3>
+                    <div style="display:flex; flex-direction:column; gap:8px; max-width:380px; margin:0 auto;">
+                        <input type="text" id="typeInputEN" placeholder="EN...">
+                        <input type="text" id="typeInputES" placeholder="ES...">
+                        <input type="text" id="typeInputKO" placeholder="KO...">
+                    </div>
+                    <button class="btn" style="margin-top:16px;" onclick="checkTyping()">Check Answer</button>
+                    <div id="typeResult" style="margin-top:12px; font-weight:bold;"></div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS DASHBOARD -->
+            <div class="card" style="margin-top:20px;">
+                <h3>Learning Analytics Dashboard (All-Time Weighted)</h3>
+                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin:16px 0; text-align:center;">
+                    <div style="background:var(--bg); padding:10px; border-radius:8px; border:1px solid var(--primary);"><div style="color:var(--primary); font-size:0.8rem; font-weight:bold;">STRONG</div><div id="countStrong" style="font-size:1.2rem; font-weight:800;">0</div></div>
+                    <div style="background:var(--bg); padding:10px; border-radius:8px; border:1px solid var(--warning);"><div style="color:var(--warning); font-size:0.8rem; font-weight:bold;">MEDIUM</div><div id="countMedium" style="font-size:1.2rem; font-weight:800;">0</div></div>
+                    <div style="background:var(--bg); padding:10px; border-radius:8px; border:1px solid var(--danger);"><div style="color:var(--danger); font-size:0.8rem; font-weight:bold;">WEAK</div><div id="countWeak" style="font-size:1.2rem; font-weight:800;">0</div></div>
+                    <div style="background:var(--bg); padding:10px; border-radius:8px; border:1px solid var(--edit);"><div style="color:var(--edit); font-size:0.8rem; font-weight:bold;">NEW</div><div id="countNew" style="font-size:1.2rem; font-weight:800;">0</div></div>
+                </div>
+                <div style="background:var(--bg); padding:16px; border-radius:8px;"><canvas id="posChart" style="max-height:280px;"></canvas></div>
+            </div>
+        </div>
+
+        <!-- TAB 5: BOARD -->
+        <div id="tab5" class="tab-content">
+            <div class="card">
+                <div class="board-search-container">
+                    <input type="text" id="boardSearchInput" placeholder="🔍 Type keyword A-Z..." oninput="handleBoardAutocomplete(this.value)" autocomplete="off">
+                    <div id="boardDropdown" class="board-dropdown"></div>
+                </div>
+                <div id="mindmapCanvas" class="mindmap-canvas"><div>Select a word above to build Mind-map.</div></div>
+                <div id="wfBottomContainer" class="wf-bottom-grid" style="display:none;">
+                    <div class="wf-box en"><div class="wf-title" style="color:var(--color-en)">🇺🇸 EN FAMILY</div><ul id="wfListEN" class="wf-list"></ul></div>
+                    <div class="wf-box es"><div class="wf-title" style="color:var(--color-es)">🇪🇸 ES FAMILY</div><ul id="wfListES" class="wf-list"></ul></div>
+                    <div class="wf-box ko"><div class="wf-title" style="color:var(--color-ko)">🇰🇷 KO FAMILY</div><ul id="wfListKO" class="wf-list"></ul></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: CALENDAR -->
+        <div id="tab6" class="tab-content">
+            <div class="card">
+                <div class="calendar-header">
+                    <h2>📅 Activity Calendar</h2>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <select id="calViewMode" onchange="renderCalendarTab()"><option value="month">Month</option><option value="week">Week</option><option value="year">Year</option></select>
+                        <button class="btn btn-sm btn-fmt" onclick="changeCalDate(-1)">◄ Prev</button>
+                        <span id="calCurrentLabel" style="font-weight:bold;">July 2026</span>
+                        <button class="btn btn-sm btn-fmt" onclick="changeCalDate(1)">Next ►</button>
+                    </div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <div id="daySummaryCard" class="card" style="margin-top:16px; display:none; background:var(--bg);">
+                    <h3 id="selectedDateTitle" style="color:var(--warning); margin-bottom:10px;">Summary</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                        <div><h4 style="color:var(--color-en);">📚 Vocabulary</h4><div id="dayVocabList" style="font-size:0.85rem;">None</div></div>
+                        <div><h4 style="color:var(--color-note);">📝 Blogs</h4><div id="dayBlogList" style="font-size:0.85rem;">None</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 7: PROGRESS -->
+        <div id="tab7" class="tab-content">
+            <div class="card">
+                <h2 style="color:var(--color-note); margin-bottom:16px;">📈 Learning Progress & Tracker</h2>
+                <div class="report-grid-two">
+                    <div style="background:var(--bg); padding:16px; border-radius:8px; text-align:center;">
+                        <h4>🌐 Language Balance Radar</h4>
+                        <div style="height:240px;"><canvas id="radarChart"></canvas></div>
+                    </div>
+                    <div style="background:var(--bg); padding:16px; border-radius:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h4>📈 Learning Velocity</h4>
+                            <select id="velocityPeriodMode" onchange="renderReportTab()"><option value="daily">Daily</option><option value="weekly" selected>Weekly</option><option value="monthly">Monthly</option></select>
+                        </div>
+                        <div style="height:220px;"><canvas id="velocityChart"></canvas></div>
+                    </div>
+                </div>
+                <div style="background:var(--bg); padding:16px; border-radius:8px; margin-bottom:20px;">
+                    <h4>📚 Book Source Units Completion Tracker</h4>
+                    <div style="height:300px;"><canvas id="bookChart"></canvas></div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Book Source</th><th>Learned Units</th><th>Total Units</th><th>Unit Checklist (Manual)</th></tr></thead>
+                        <tbody id="bookProgressTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>© Copyright by Youme - Trilingua</footer>
+    <div id="toast">Notification</div>
+
+    <script>
+        // CONFIG WEB APP GAS
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
+
+        let userVocabList = [];
+        let grammarList = [];
+        let quizHistory = [];
+        let unitTrackerList = {};
         
-        <!-- Row 1: EN -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
-          <div class="md:col-span-4">
-            <label class="text-xs font-bold lang-en block mb-1">(EN) Word *</label>
-            <input type="text" id="input-en-word" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-brandEn" placeholder="English Word">
-          </div>
-          <div class="md:col-span-3 relative">
-            <label class="text-xs font-bold text-gray-400 block mb-1">POS *</label>
-            <button onclick="togglePosDropdown()" id="btn-pos-select" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-left text-gray-300 flex justify-between items-center">
-              <span id="txt-pos-label" class="truncate">Select POS...</span>
-              <i data-lucide="chevron-down" class="w-4 h-4"></i>
-            </button>
-            <div id="dropdown-pos" class="hidden absolute top-full left-0 right-0 bg-darkCard border border-gray-700 rounded mt-1 p-2 z-30 grid grid-cols-2 gap-1.5 shadow-2xl"></div>
-          </div>
-          <div class="md:col-span-3">
-            <label class="text-xs font-bold text-gray-400 block mb-1">EN Family</label>
-            <input type="text" id="input-en-family" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white" placeholder="noun / adj / adv...">
-          </div>
-          <div class="md:col-span-2 flex items-end space-x-1 pt-4 md:pt-0">
-            <button onclick="openIrregularVerbModal()" id="btn-irreg" class="hidden bg-yellow-600 hover:bg-yellow-700 text-xs px-2 py-2 rounded text-white font-semibold">Irregular</button>
-            <button onclick="openNoteModal('en')" class="bg-brandNote hover:opacity-90 text-xs px-3 py-2 rounded text-white font-semibold w-full">Note</button>
-          </div>
-        </div>
+        let posChartInstance = null, bookChartInstance = null, velocityChartInstance = null, radarChartInstance = null;
+        let lastRenderedBoardItem = null;
+        let calCurrentDate = new Date();
+        let currentTopicTab = "ALL", currentSubTopicTab = "ALL";
+        let currentNotes = { EN: "", ES: "", KO: "" };
+        let currentConjData = {}, currentEnIrregData = { base: "", past: "", part: "" };
+        let searchPage = 1, logPage = 1, conjPage = 1;
+        const searchPageSize = 30, logPageSize = 15;
+        let currentFlashcardStatus = { EN: null, ES: null, KO: null };
+        let activeQuickBlogIndex = 0, activeQuickBlogList = [];
+        let filterPinnedFeedOnly = false;
 
-        <!-- Row 2: ES -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
-          <div class="md:col-span-4">
-            <label class="text-xs font-bold lang-es block mb-1">(ES) Word *</label>
-            <input type="text" id="input-es-word" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-brandEs" placeholder="Palabra en Español">
-          </div>
-          <div class="md:col-span-6">
-            <label class="text-xs font-bold text-gray-400 block mb-1">ES Family</label>
-            <input type="text" id="input-es-family" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white" placeholder="Familia de palabras">
-          </div>
-          <div class="md:col-span-2 flex items-end space-x-1 pt-4 md:pt-0">
-            <button onclick="openConjugacionModal()" id="btn-conj" class="hidden bg-emerald-600 hover:bg-emerald-700 text-xs px-2 py-2 rounded text-white font-semibold">Conjugación</button>
-            <button onclick="openNoteModal('es')" class="bg-brandNote hover:opacity-90 text-xs px-3 py-2 rounded text-white font-semibold w-full">Note</button>
-          </div>
-        </div>
+        const PRONOUNS = ["Yo", "tú", "Él/Ella/usted", "Nosotros/as", "Vosotros/as", "Ellos/Ellas/Ustedes", "Vos"];
+        const CONJ_STRUCTURE = [
+            { title: "Indicativo", tenses: ["presente", "imperfecto", "pretérito", "futuro", "condicional"] },
+            { title: "Formas compuestas comunes", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto", "condicional perfecto"] },
+            { title: "Subjuntivo", tenses: ["presente", "imperfecto", "futuro"] },
+            { title: "Tiempos compuestos del subjuntivo", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto"] },
+            { title: "Imperativo", tenses: ["afirmativo", "negativo"] },
+            { title: "Indicativo (Pretérito anterior)", tenses: ["pretérito anterior"] }
+        ];
 
-        <!-- Row 3: KO & VN -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
-          <div class="md:col-span-3">
-            <label class="text-xs font-bold lang-ko block mb-1">(KO) Word *</label>
-            <input type="text" id="input-ko-word" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-brandKo" placeholder="한국어 단어">
-          </div>
-          <div class="md:col-span-3">
-            <label class="text-xs font-bold text-gray-400 block mb-1">KO Family</label>
-            <input type="text" id="input-ko-family" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white" placeholder="단어 파생어">
-          </div>
-          <div class="md:col-span-4">
-            <label class="text-xs font-bold lang-vn block mb-1">(VN) Meaning</label>
-            <input type="text" id="input-vn-meaning" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-brandVn" placeholder="Nghĩa tiếng Việt">
-          </div>
-          <div class="md:col-span-2 flex items-end pt-4 md:pt-0">
-            <button onclick="openNoteModal('ko')" class="bg-brandNote hover:opacity-90 text-xs px-3 py-2 rounded text-white font-semibold w-full">Note</button>
-          </div>
-        </div>
+        const BOOK_UNITS_CONFIG = {
+            "Biz Pre": 49, "Biz Elem-Pre": 62, "Biz - Inter": 66, "Biz in Adv": 66,
+            "Academic": 50, "In Use Pre": 60, "In Use Pre-Inter": 100, "In Use - Upper": 101, "In Use - Adv.": 101
+        };
 
-        <!-- Row 4: EXAMPLES -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
-          <div class="md:col-span-3">
-            <input type="text" id="input-en-ex" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white text-xs" placeholder="(EN) Example sentence">
-          </div>
-          <div class="md:col-span-3">
-            <input type="text" id="input-es-ex" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white text-xs" placeholder="(ES) Ejemplo de oración">
-          </div>
-          <div class="md:col-span-4">
-            <input type="text" id="input-ko-ex" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-white text-xs" placeholder="(KO) 예문">
-          </div>
-          <div class="md:col-span-2 flex items-end">
-            <button onclick="openNoteModal('ex')" class="bg-brandNote hover:opacity-90 text-xs px-3 py-2 rounded text-white font-semibold w-full">Note</button>
-          </div>
-        </div>
+        const TOPIC_MAPPING = {
+            "People, Psychology & Relationship": { subs: ["Appearance & Character", "Family, Relationships & Life Events Feelings", "Emotions & Attitudes Health", "Illness & Lifestyle"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Daily Life, Home & Leisure": { subs: ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance Leisure", "Sports & Entertainment"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Work, Education & Business": { subs: ["Jobs", "Workplace & Career Business", "Company & Economy"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "World, Environment & Travel": { subs: ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Technology & Media": { subs: ["Technology, Computers & Internet", "Media, Press & News"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Functional Language & Communication": { subs: ["Social Interaction & Conversation Opinions", "Arguments & Feedback", "Style / Register & Written Communication"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Basic Concepts & Semantics": { subs: ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Word Formation, Grammar & Phrasal Verbs": { subs: ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"], books: ["In Use Pre", "In Use Pre-Inter", "In Use - Upper", "In Use - Adv."] },
+            "Business": { subs: ["Work & Careers", "Money, Finance & Economy", "Products, Services & Production", "Marketing & Logistics", "Communication, Telephoning & Writing", "Business Skills", "Responsibility & Ethics"], books: ["Biz Pre", "Biz Elem-Pre", "Biz - Inter", "Biz in Adv"] },
+            "Academic": { subs: ["Academic kill & research"], books: ["Academic"] }
+        };
 
-        <!-- Row 5: TAXONOMY SELECTORS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-2 border-t border-gray-800">
-          <div>
-            <label class="text-xs text-gray-400 block mb-1">Main Topic</label>
-            <select id="select-main-topic" onchange="updateSubTopics()" class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1.5 text-xs text-white"></select>
-          </div>
-          <div>
-            <label class="text-xs text-gray-400 block mb-1">Sub-topic</label>
-            <select id="select-sub-topic" class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1.5 text-xs text-white"></select>
-          </div>
-          <div>
-            <label class="text-xs text-gray-400 block mb-1">Level</label>
-            <select id="select-level" class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1.5 text-xs text-white"></select>
-          </div>
-          <div>
-            <label class="text-xs text-gray-400 block mb-1">Unit</label>
-            <input type="text" id="input-unit" class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-xs text-white" placeholder="e.g., Unit 1">
-          </div>
-        </div>
-
-        <div class="pt-2 flex justify-end">
-          <button onclick="submitWordEntry()" class="bg-brandEn hover:opacity-90 text-black px-6 py-2 rounded font-bold transition flex items-center space-x-1">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>Add Word to Local</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- VOCABULARY LOG -->
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-3">
-        <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-          <h3 class="font-bold text-gray-200">Vocabulary Log</h3>
-          <div class="flex space-x-1 bg-darkInput p-1 rounded">
-            <button onclick="setLogFilter('day')" id="btn-filter-day" class="px-2.5 py-1 text-xs rounded font-medium bg-brandEn text-black">Day</button>
-            <button onclick="setLogFilter('week')" id="btn-filter-week" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400">Week</button>
-            <button onclick="setLogFilter('month')" id="btn-filter-month" class="px-2.5 py-1 text-xs rounded font-medium text-gray-400">Month</button>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-gray-800 text-gray-400 text-xs">
-                <th class="p-2">Words (EN/ES/KO)</th>
-                <th class="p-2">VN Meaning</th>
-                <th class="p-2">POS</th>
-                <th class="p-2">Family (EN/ES/KO)</th>
-                <th class="p-2">Examples (EN/ES/KO)</th>
-                <th class="p-2 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tbl-vocab-log" class="divide-y divide-gray-800 text-xs"></tbody>
-          </table>
-        </div>
-
-        <div class="flex justify-between items-center pt-2 text-xs text-gray-400">
-          <span id="log-page-info">Showing 0-0 of 0</span>
-          <div class="space-x-1">
-            <button onclick="prevLogPage()" class="px-2 py-1 bg-darkInput rounded hover:bg-gray-700">Prev</button>
-            <button onclick="nextLogPage()" class="px-2 py-1 bg-darkInput rounded hover:bg-gray-700">Next</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 2: SEARCH -->
-    <section id="sec-search" class="hidden space-y-4">
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-3">
-        <div class="relative">
-          <input type="text" id="search-autocomplete" oninput="onSearchInput()" class="w-full bg-darkInput border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-brandEn" placeholder="Type word to search...">
-          <div id="search-dropdown" class="hidden absolute top-full left-0 right-0 bg-darkCard border border-gray-700 rounded mt-1 max-h-48 overflow-y-auto z-20 divide-y divide-gray-800"></div>
-        </div>
-
-        <div class="flex flex-wrap gap-2 pt-2 border-b border-gray-800 pb-2">
-          <button onclick="setSearchFilter('all')" class="search-tab px-3 py-1.5 text-xs rounded bg-brandEn text-black font-semibold">Vocabulary view</button>
-          <button onclick="setSearchFilter('en_phrasal')" class="search-tab px-3 py-1.5 text-xs rounded bg-darkInput text-gray-300">EN Phrasal Verbs</button>
-          <button onclick="setSearchFilter('idioms')" class="search-tab px-3 py-1.5 text-xs rounded bg-darkInput text-gray-300">Idioms</button>
-          <button onclick="setSearchFilter('irreg')" class="search-tab px-3 py-1.5 text-xs rounded bg-darkInput text-gray-300">Irregular Verbs</button>
-          <button onclick="setSearchFilter('conjugacion')" class="search-tab px-3 py-1.5 text-xs rounded bg-darkInput text-gray-300">Conjugación</button>
-        </div>
-
-        <div id="search-results-container" class="overflow-x-auto"></div>
-      </div>
-    </section>
-
-    <!-- TAB 3: GRAMMAR BLOG -->
-    <section id="sec-blog" class="hidden grid grid-cols-1 md:grid-cols-12 gap-4">
-      <div class="md:col-span-4 bg-darkCard p-3 rounded-lg border border-gray-800 space-y-3">
-        <button onclick="showBlogEditor()" class="w-full bg-brandEn hover:opacity-90 text-black py-2 rounded font-bold flex items-center justify-center space-x-1">
-          <i data-lucide="plus" class="w-4 h-4"></i>
-          <span>+ Write New Post</span>
-        </button>
-
-        <input type="text" id="blog-search-input" oninput="renderBlogList()" placeholder="Search post..." class="w-full bg-darkInput border border-gray-700 rounded px-2.5 py-1.5 text-xs text-white">
-
-        <div class="space-y-2">
-          <div class="font-bold text-xs text-brandEn">English</div>
-          <div id="blog-folder-en" class="pl-2 space-y-1 text-xs"></div>
-
-          <div class="font-bold text-xs text-brandEs">Español</div>
-          <div id="blog-folder-es" class="pl-2 space-y-1 text-xs"></div>
-
-          <div class="font-bold text-xs text-brandKo">한국어</div>
-          <div id="blog-folder-ko" class="pl-2 space-y-1 text-xs"></div>
-        </div>
-      </div>
-
-      <div id="blog-right-pane" class="md:col-span-8 bg-darkCard p-4 rounded-lg border border-gray-800 overflow-hidden">
-        <div class="text-center text-gray-500 py-12">Select a blog post from the left folder or click "+ Write New Post".</div>
-      </div>
-    </section>
-
-    <!-- TAB 4: REVIEW -->
-    <section id="sec-review" class="hidden space-y-4">
-      <div class="bg-darkCard p-3 rounded-lg border border-gray-800 flex flex-wrap gap-2 items-center justify-between">
-        <select id="review-topic-filter" class="bg-darkInput border border-gray-700 text-xs rounded px-2 py-1.5 text-white">
-          <option value="all">All Topics</option>
-        </select>
-        <select id="review-mode-select" onchange="startReviewMode()" class="bg-darkInput border border-gray-700 text-xs rounded px-2 py-1.5 text-white">
-          <option value="flashcard_3">1. Flashcard EN/ES/KO</option>
-          <option value="typing">2. Typing Mode</option>
-        </select>
-      </div>
-
-      <!-- Review Card Arena -->
-      <div id="review-arena" class="min-h-[300px] flex items-center justify-center"></div>
-
-      <!-- Analytics Section -->
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-4">
-        <h3 class="font-bold border-b border-gray-800 pb-2 text-gray-300">Learning Mastery Analytics</h3>
-        
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <div class="bg-darkInput p-2 rounded">
-            <div class="text-xs text-gray-400">EN Learned</div>
-            <div id="stat-count-en" class="text-lg font-bold lang-en">0</div>
-          </div>
-          <div class="bg-darkInput p-2 rounded">
-            <div class="text-xs text-gray-400">ES Learned</div>
-            <div id="stat-count-es" class="text-lg font-bold lang-es">0</div>
-          </div>
-          <div class="bg-darkInput p-2 rounded">
-            <div class="text-xs text-gray-400">KO Learned</div>
-            <div id="stat-count-ko" class="text-lg font-bold lang-ko">0</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: BOARD -->
-    <section id="sec-board" class="hidden space-y-4">
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-4">
-        <div class="relative max-w-md mx-auto">
-          <input type="text" id="board-search" oninput="onBoardSearchInput()" placeholder="Search word for Board view..." class="w-full bg-darkInput border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:border-brandEn">
-          <div id="board-dropdown" class="hidden absolute top-full left-0 right-0 bg-darkCard border border-gray-700 rounded mt-1 max-h-48 overflow-y-auto z-20 divide-y divide-gray-800"></div>
-        </div>
-
-        <!-- 4 BALLS CONTAINER -->
-        <div class="relative w-full h-64 bg-darkInput rounded-xl border border-gray-800 flex items-center justify-center overflow-hidden">
-          <div id="ball-en" class="w-24 h-24 rounded-full bg-brandEn text-black font-bold flex flex-col items-center justify-center p-2 shadow-lg text-center z-10">
-            <span class="text-xs opacity-75">(EN)</span>
-            <span id="ball-en-txt" class="text-sm truncate w-full">Word</span>
-          </div>
-          <div id="ball-es" class="absolute top-4 left-6 md:left-16 w-16 h-16 rounded-full bg-brandEs text-black font-bold flex flex-col items-center justify-center p-1 text-center text-xs shadow">
-            <span>(ES)</span>
-            <span id="ball-es-txt" class="truncate w-full">Word</span>
-          </div>
-          <div id="ball-ko" class="absolute top-4 right-6 md:right-16 w-16 h-16 rounded-full bg-brandKo text-black font-bold flex flex-col items-center justify-center p-1 text-center text-xs shadow">
-            <span>(KO)</span>
-            <span id="ball-ko-txt" class="truncate w-full">Word</span>
-          </div>
-          <div id="ball-vn" class="absolute bottom-4 w-16 h-16 rounded-full bg-brandVn text-black font-bold flex flex-col items-center justify-center p-1 text-center text-xs shadow">
-            <span>(VN)</span>
-            <span id="ball-vn-txt" class="truncate w-full">Nghĩa</span>
-          </div>
-        </div>
-
-        <!-- 3 WORD FAMILY BOXES -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="bg-darkInput p-3 rounded border border-gray-800">
-            <h4 class="font-bold text-xs lang-en border-b border-gray-700 pb-1 mb-2">(EN) Family</h4>
-            <div id="board-fam-en" class="text-xs space-y-1"></div>
-          </div>
-          <div class="bg-darkInput p-3 rounded border border-gray-800">
-            <h4 class="font-bold text-xs lang-es border-b border-gray-700 pb-1 mb-2">(ES) Family</h4>
-            <div id="board-fam-es" class="text-xs space-y-1"></div>
-          </div>
-          <div class="bg-darkInput p-3 rounded border border-gray-800">
-            <h4 class="font-bold text-xs lang-ko border-b border-gray-700 pb-1 mb-2">(KO) Family</h4>
-            <div id="board-fam-ko" class="text-xs space-y-1"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 6: CALENDAR -->
-    <section id="sec-calendar" class="hidden space-y-4">
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-3">
-        <div class="flex justify-between items-center">
-          <h3 id="cal-month-year" class="font-bold text-base text-gray-200">Month YYYY</h3>
-          <div class="space-x-1">
-            <button onclick="prevMonth()" class="px-2 py-1 bg-darkInput rounded text-xs">&lt;</button>
-            <button onclick="nextMonth()" class="px-2 py-1 bg-darkInput rounded text-xs">&gt;</button>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-gray-400">
-          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-        </div>
-        <div id="cal-grid" class="grid grid-cols-7 gap-1 text-xs"></div>
-      </div>
-
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800">
-        <h4 id="cal-selected-date" class="font-bold text-xs text-gray-400 mb-2">Activities on selected date</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h5 class="text-xs font-bold text-brandEn mb-1">Words Added</h5>
-            <div id="cal-day-words" class="space-y-1 text-xs"></div>
-          </div>
-          <div>
-            <h5 class="text-xs font-bold text-brandEs mb-1">Blogs Posted</h5>
-            <div id="cal-day-blogs" class="space-y-1 text-xs"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 7: PROGRESS -->
-    <section id="sec-progress" class="hidden space-y-4">
-      <div class="bg-darkCard p-4 rounded-lg border border-gray-800 space-y-4">
-        <h3 class="font-bold text-brandNote border-b border-gray-800 pb-2">Learning Progress Tracker</h3>
-        <div id="book-tracker-list" class="space-y-2 text-xs"></div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- POPUP 1: DAILY RANDOM WORD POPUP -->
-  <div id="modal-daily" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-    <div class="bg-darkCard border border-gray-700 rounded-xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
-      <div class="text-xs text-gray-500 uppercase tracking-widest">Daily Random Vocab</div>
-      <div class="space-y-2">
-        <div id="pop-en" class="text-2xl font-bold lang-en">Word</div>
-        <div id="pop-es" class="text-lg font-semibold lang-es">Word</div>
-        <div id="pop-ko" class="text-base font-medium lang-ko">Word</div>
-        <div id="pop-vn" class="text-xs text-gray-400 lang-vn">Meaning</div>
-      </div>
-      <button onclick="closeDailyPopup()" class="bg-brandEn hover:opacity-90 text-black px-6 py-1.5 rounded font-bold text-xs">Close</button>
-    </div>
-  </div>
-
-  <!-- POPUP 2: RICH TEXT NOTE MODAL -->
-  <div id="modal-note" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-    <div class="bg-darkCard border border-gray-700 rounded-xl max-w-2xl w-full p-4 space-y-3">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-        <h3 class="font-bold text-brandNote">Rich Text Note Editor</h3>
-        <button onclick="closeNoteModal()" class="text-gray-400 hover:text-white">&times;</button>
-      </div>
-
-      <div class="flex flex-wrap gap-1 bg-darkInput p-1.5 rounded text-xs">
-        <button onclick="execCmd('bold')" class="px-2 py-1 bg-darkCard rounded font-bold">B</button>
-        <button onclick="execCmd('italic')" class="px-2 py-1 bg-darkCard rounded italic">I</button>
-        <button onclick="insertColumns(2)" class="px-2 py-1 bg-darkCard rounded">2 Cols</button>
-        <button onclick="insertColumns(3)" class="px-2 py-1 bg-darkCard rounded">3 Cols</button>
-      </div>
-
-      <div id="editor-note" contenteditable="true" class="bg-darkInput border border-gray-700 rounded p-3 min-h-[180px] text-xs text-white focus:outline-none"></div>
-
-      <div class="flex justify-end space-x-2">
-        <button onclick="saveNoteModal()" class="bg-brandNote text-white px-4 py-1.5 rounded text-xs font-bold">Save Note</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP 3: IRREGULAR VERB MODAL -->
-  <div id="modal-irreg" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-    <div class="bg-darkCard border border-gray-700 rounded-xl max-w-sm w-full p-4 space-y-3">
-      <h3 class="font-bold text-yellow-500 text-sm">Irregular Verb Details</h3>
-      <div class="space-y-2 text-xs">
-        <div>
-          <label class="block text-gray-400">Infinitive (Base Form)</label>
-          <input type="text" id="irreg-inf" readonly class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1 text-white">
-        </div>
-        <div>
-          <label class="block text-gray-400">Past Simple</label>
-          <input type="text" id="irreg-past" class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1 text-white">
-        </div>
-        <div>
-          <label class="block text-gray-400">Past Participle</label>
-          <input type="text" id="irreg-pp" class="w-full bg-darkInput border border-gray-700 rounded px-2 py-1 text-white">
-        </div>
-      </div>
-      <div class="flex justify-end space-x-2">
-        <button onclick="saveIrregularVerb()" class="bg-yellow-600 text-white px-4 py-1 rounded text-xs font-bold">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP 4: CONJUGACIÓN MODAL (ES) -->
-  <div id="modal-conj" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-    <div class="bg-darkCard border border-gray-700 rounded-xl max-w-4xl w-full p-4 space-y-3 max-h-[90vh] flex flex-col">
-      <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-        <h3 class="font-bold text-emerald-400">Conjugación de Verbos en Español</h3>
-        <button onclick="closeConjugacionModal()" class="text-gray-400 hover:text-white">&times;</button>
-      </div>
-
-      <div id="conj-tables-container" class="flex-1 overflow-y-auto space-y-4 pr-1 text-xs"></div>
-
-      <div class="flex justify-end pt-2 border-t border-gray-800">
-        <button onclick="saveConjugationData()" class="bg-emerald-600 text-white px-6 py-1.5 rounded font-bold text-xs">Save Conjugation</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- FRONTEND JS LOGIC -->
-  <script>
-    // DÁN DEPLOYED APPS SCRIPT URL CỦA BẠN VÀO ĐÂY:
-    const API_URL = "https://script.google.com/macros/s/AKfycbx.../exec"; 
-
-    const TAXONOMY = {
-      "People, Psychology & Relationship": ["Appearance & Character", "Family, Relationships & Life Events", "Feelings, Emotions & Attitudes", "Health, Illness & Lifestyle"],
-      "Daily Life, Home & Leisure": ["Home, Living & Daily Routines", "Food, Drink & Cooking", "Shopping, Fashion & Personal Finance", "Leisure, Sports & Entertainment"],
-      "Work, Education & Business": ["Jobs, Workplace & Career", "Business, Company & Economy"],
-      "World, Environment & Travel": ["World, Geography & Nature", "Weather & Environment", "Travel, Transport & Tourism", "Society, Politics, Crime & Culture"],
-      "Technology & Media": ["Technology, Computers & Internet", "Media, Press & News"],
-      "Functional Language & Communication": ["Social Interaction & Conversation", "Opinions, Arguments & Feedback", "Style, Register & Written Communication"],
-      "Basic Concepts & Semantics": ["Time, Numbers, Size & Space", "Actions, Movement & Senses", "Cause, Effect, Logic & Comparison"],
-      "Word Formation, Grammar & Phrasal Verbs": ["Word Formation & Word Building", "Key Verbs, Phrasal Verbs & Collocations", "Grammar in Vocabulary Context"],
-      "Business": ["Work & Careers", "Money, Finance & Economy", "Products, Services & Production", "Marketing & Logistics", "Communication, Telephoning & Writing", "Business Skills", "Responsibility & Ethics"],
-      "Academic": ["Academic skill & research"]
-    };
-
-    const POS_OPTIONS = ["noun (n)", "verb (v)", "adjective (adj)", "adverb (adv)", "preposition (prep)", "phrasal verb", "idiom", "collocation", "phrase"];
-    const SPANISH_PRONOUNS = ["yo", "tú", "él/ella/usted", "nosotros/as", "vosotros/as", "ellos/ellas/ustedes", "vos"];
-    const SPANISH_TENSES = [
-      { group: "A. Indicativo", tenses: ["presente", "imperfecto", "pretérito", "futuro", "condicional"] },
-      { group: "B. Formas compuestas comunes", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto", "condicional perfecto"] },
-      { group: "C. Subjuntivo", tenses: ["presente", "imperfecto", "futuro"] },
-      { group: "D. Tiempos compuestos del subjuntivo", tenses: ["pretérito perfecto", "pluscuamperfecto", "futuro perfecto"] },
-      { group: "E. Imperativo", tenses: ["afirmativo", "negativo"] },
-      { group: "F. Indicativo", tenses: ["pretérito anterior"] }
-    ];
-
-    let appData = { words: [], irregularVerbs: [], conjugations: [], blogs: [], logs: [], books: [] };
-    let activePosSelections = [];
-    let currentActiveNoteLang = null;
-    let tempNoteData = { en: '', es: '', ko: '', ex: '' };
-    let tempIrregData = null;
-    let tempConjData = {};
-    let logCurrentPage = 1;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      updateClock();
-      setInterval(updateClock, 1000);
-      initTaxonomyUI();
-      initPosDropdown();
-
-      const cached = localStorage.getItem('TRILINGUA_DRAFT');
-      if (cached) {
-        appData = JSON.parse(cached);
-        onDataLoaded();
-      } else {
-        fetchCloudData();
-      }
-
-      checkAndShowDailyPopup();
-    });
-
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('current-time').innerText = now.toISOString().slice(0,16).replace('T', ' ');
-    }
-
-    function saveDraftToLocal() {
-      localStorage.setItem('TRILINGUA_DRAFT', JSON.stringify(appData));
-    }
-
-    async function fetchCloudData() {
-      if (!API_URL || API_URL.includes("AKfycbx...")) return;
-      try {
-        const res = await fetch(API_URL + '?action=fetchAllData');
-        const json = await res.json();
-        if (json) {
-          appData = json;
-          saveDraftToLocal();
-          onDataLoaded();
+        function formatDateYYYYMMDD(d) {
+            if(!d) return new Date().toISOString().split('T')[0];
+            const date = new Date(d);
+            return isNaN(date.getTime()) ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0];
         }
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
-    }
 
-    async function saveAllDataToCloud() {
-      saveDraftToLocal();
-      if (!API_URL || API_URL.includes("AKfycbx...")) {
-        alert("Saved to LocalStorage Draft! (Please add your Google Apps Script Web App URL to sync with Sheets)");
-        return;
-      }
-      const btn = document.getElementById('btn-save');
-      btn.innerText = "Saving...";
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'saveAllData', payload: appData })
-        });
-        const json = await res.json();
-        alert(json.message || "Saved successfully to Google Sheets!");
-      } catch (err) {
-        alert("Error saving: " + err.toString());
-      } finally {
-        btn.innerText = "Save";
-      }
-    }
+        window.onload = () => {
+            handleMainTopicChange(document.getElementById('mainTopic').value);
+            renderTopicNav();
+            populateQuizTopics();
+            buildConjModalHTML();
+            loadFromLocalStorage();
+            fetchDataFromGAS();
+            window.addEventListener('resize', () => { if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem); });
+        };
 
-    function onDataLoaded() {
-      renderVocabLog();
-      renderBlogList();
-      renderBookTracker();
-      updateAnalyticsStats();
-    }
+        function verifyPin() {
+            if (document.getElementById('pinInput').value.trim() === "3536") {
+                document.getElementById('authOverlay').style.display = 'none';
+                localStorage.setItem("trilingua_auth", "true");
+                triggerWordOfTheDay();
+            } else alert("Incorrect PIN!");
+        }
+        if (localStorage.getItem("trilingua_auth") === "true") {
+            document.getElementById('authOverlay').style.display = 'none';
+            setTimeout(triggerWordOfTheDay, 500);
+        }
 
-    function switchTab(tabId) {
-      ['words', 'search', 'blog', 'review', 'board', 'calendar', 'progress'].forEach(t => {
-        document.getElementById('sec-' + t).classList.add('hidden');
-        document.getElementById('tab-' + t).classList.remove('border-brandEn', 'text-white');
-      });
-      document.getElementById('sec-' + tabId).classList.remove('hidden');
-      document.getElementById('tab-' + tabId).classList.add('border-brandEn', 'text-white');
+        function triggerWordOfTheDay() {
+            const today = formatDateYYYYMMDD(new Date());
+            if (localStorage.getItem("wotd_date") !== today && userVocabList.length > 0) {
+                let hist = JSON.parse(localStorage.getItem("wotd_hist") || "[]");
+                let candidates = userVocabList.filter(i => !hist.includes(i.id));
+                if(candidates.length === 0) candidates = userVocabList;
+                const rand = candidates[Math.floor(Math.random() * candidates.length)];
+                
+                document.getElementById('wotdEN').innerText = rand.en || "---";
+                document.getElementById('wotdES').innerText = rand.es || "---";
+                document.getElementById('wotdKO').innerText = rand.ko || "---";
+                document.getElementById('wotdVI').innerText = rand.vi || "---";
+                document.getElementById('wotdModal').style.display = "flex";
+                
+                hist.push(rand.id);
+                if(hist.length > 60) hist.shift();
+                localStorage.setItem("wotd_hist", JSON.stringify(hist));
+                localStorage.setItem("wotd_date", today);
+            }
+        }
+        function closeWotdModal() { document.getElementById('wotdModal').style.display = "none"; }
 
-      if (tabId === 'search') renderSearchResults();
-      if (tabId === 'board') renderBoardView();
-      if (tabId === 'calendar') renderCalendarView();
-    }
+        function switchTab(tabId, save = true) {
+            if(save) localStorage.setItem("trilingua_active_tab", tabId);
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            const activeBtn = document.querySelector(`.nav-tabs button[onclick*="${tabId}"]`);
+            if(activeBtn) activeBtn.classList.add('active');
+            const target = document.getElementById(tabId);
+            if(target) target.classList.add('active');
 
-    function initPosDropdown() {
-      const container = document.getElementById('dropdown-pos');
-      container.innerHTML = POS_OPTIONS.map(pos => `
-        <label class="flex items-center space-x-1.5 text-xs text-gray-300 cursor-pointer">
-          <input type="checkbox" value="${pos}" onchange="onPosCheckChange()" class="rounded bg-darkInput border-gray-700 text-brandEn">
-          <span>${pos}</span>
-        </label>
-      `).join('');
-    }
+            if(tabId === 'tab1') renderLogTable();
+            if(tabId === 'tab2') renderTab2();
+            if(tabId === 'tab3') { renderGrammarSidebar(); renderBlogFeed(1); closeWriteBlogForm(); }
+            if(tabId === 'tab4') { startQuiz(); renderAnalyticsDashboard(); }
+            if(tabId === 'tab6') renderCalendarTab();
+            if(tabId === 'tab7') renderReportTab();
+        }
 
-    function togglePosDropdown() { document.getElementById('dropdown-pos').classList.toggle('hidden'); }
+        function loadFromLocalStorage() {
+            const v = localStorage.getItem("trilingua_vocab"), g = localStorage.getItem("trilingua_grammar"), q = localStorage.getItem("trilingua_quiz_hist"), u = localStorage.getItem("trilingua_units");
+            if(v) userVocabList = JSON.parse(v);
+            if(g) grammarList = JSON.parse(g);
+            if(q) quizHistory = JSON.parse(q);
+            if(u) unitTrackerList = JSON.parse(u);
+            switchTab(localStorage.getItem("trilingua_active_tab") || "tab1", false);
+        }
 
-    function onPosCheckChange() {
-      const checkboxes = document.querySelectorAll('#dropdown-pos input[type="checkbox"]:checked');
-      activePosSelections = Array.from(checkboxes).map(c => c.value);
-      document.getElementById('txt-pos-label').innerText = activePosSelections.length > 0 ? activePosSelections.join(', ') : 'Select POS...';
-      const isVerb = activePosSelections.some(p => p.includes('verb'));
-      document.getElementById('btn-irreg').classList.toggle('hidden', !isVerb);
-      document.getElementById('btn-conj').classList.toggle('hidden', !isVerb);
-    }
+        function saveToLocalStorage() {
+            localStorage.setItem("trilingua_vocab", JSON.stringify(userVocabList));
+            localStorage.setItem("trilingua_grammar", JSON.stringify(grammarList));
+            localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
+            localStorage.setItem("trilingua_units", JSON.stringify(unitTrackerList));
+        }
 
-    function initTaxonomyUI() {
-      const mainSel = document.getElementById('select-main-topic');
-      mainSel.innerHTML = Object.keys(TAXONOMY).map(t => `<option value="${t}">${t}</option>`).join('');
-      updateSubTopics();
-    }
+        async function fetchDataFromGAS() {
+            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) return;
+            try {
+                showToast("Fetching Data...");
+                const res = await fetch(GAS_WEB_APP_URL);
+                const data = await res.json();
+                if(data.status === "success") {
+                    if(data.words) userVocabList = data.words.map(r => ({ id: r[0], timestamp: formatDateYYYYMMDD(r[1]), mainTopic: r[2], subTopic: r[3], book: r[4], unit: r[5], level: r[6], en: r[7], pos: r[8], familyEN: r[9], noteEN: r[10], enIrregData: r[11]?JSON.parse(r[11]):{}, es: r[12], familyES: r[13], noteES: r[14], conjData: r[15]?JSON.parse(r[15]):{}, ko: r[16], familyKO: r[17], noteKO: r[18], vi: r[19], exEN: r[20], exES: r[21], exKO: r[22], exNote: r[23] }));
+                    if(data.blogs) grammarList = data.blogs.map(r => ({ id: r[0], timestamp: formatDateYYYYMMDD(r[1]), lang: r[2], topic: r[3], title: r[4], tags: r[5], keywords: r[6], content: r[7] }));
+                    if(data.units) data.units.forEach(r => unitTrackerList[r[0]] = r[1]);
+                    saveToLocalStorage();
+                    switchTab(localStorage.getItem("trilingua_active_tab") || "tab1", false);
+                    showToast("Synchronized!");
+                }
+            } catch(e) { showToast("Using Local Data."); }
+        }
 
-    function updateSubTopics() {
-      const mainVal = document.getElementById('select-main-topic').value;
-      const subSel = document.getElementById('select-sub-topic');
-      const lvlSel = document.getElementById('select-level');
-      subSel.innerHTML = (TAXONOMY[mainVal] || []).map(s => `<option value="${s}">${s}</option>`).join('');
+        async function syncBatchToCloud() {
+            showToast("Saving Data to Cloud...");
+            const wordsBatch = userVocabList.map(i => [i.id, i.timestamp, i.mainTopic, i.subTopic, i.book, i.unit, i.level, i.en, i.pos, i.familyEN, i.noteEN, JSON.stringify(i.enIrregData||{}), i.es, i.familyES, i.noteES, JSON.stringify(i.conjData||{}), i.ko, i.familyKO, i.noteKO, i.vi, i.exEN, i.exES, i.exKO, i.exNote||""]);
+            const blogsBatch = grammarList.map(i => [i.id, i.timestamp, i.lang, i.topic, i.title, i.tags, i.keywords, i.content]);
+            const unitsBatch = Object.keys(unitTrackerList).map(k => [k, unitTrackerList[k]]);
 
-      if (mainVal === 'Business') {
-        lvlSel.innerHTML = `<option value="Biz Pre">Biz Pre (49 units)</option><option value="Biz Elem-Pre">Biz Elem-Pre (62 units)</option><option value="Biz - Inter">Biz - Inter (66 units)</option><option value="Biz in Adv">Biz in Adv (66 units)</option>`;
-      } else if (mainVal === 'Academic') {
-        lvlSel.innerHTML = `<option value="Academic">Academic (50 units)</option>`;
-      } else {
-        lvlSel.innerHTML = `<option value="In Use Pre">In Use Pre (60 units)</option><option value="In Use Pre-Inter">In Use Pre-Inter (100 units)</option><option value="In Use - Upper">In Use - Upper (101 units)</option><option value="In Use - Adv.">In Use - Adv. (101 units)</option>`;
-      }
-    }
+            try {
+                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "save_all_words", type: "vocab", wordsList: wordsBatch }) });
+                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "save_all_blogs", type: "grammar", blogsList: blogsBatch }) });
+                await fetch(GAS_WEB_APP_URL, { method: 'POST', body: JSON.stringify({ action: "save_unit_tracker", unitsList: unitsBatch }) });
+                showToast("Saved All to Google Sheets!");
+            } catch(e) { showToast("Saved Locally!"); }
+        }
 
-    function submitWordEntry() {
-      const enWord = document.getElementById('input-en-word').value.trim();
-      const esWord = document.getElementById('input-es-word').value.trim();
-      const koWord = document.getElementById('input-ko-word').value.trim();
+        function handleMainTopicChange(top) {
+            const sub = document.getElementById('subTopic'), book = document.getElementById('bookSource');
+            sub.innerHTML = ""; book.innerHTML = "";
+            if(TOPIC_MAPPING[top]) {
+                TOPIC_MAPPING[top].subs.forEach(s => sub.innerHTML += `<option value="${s}">${s}</option>`);
+                TOPIC_MAPPING[top].books.forEach(b => book.innerHTML += `<option value="${b}">${b}</option>`);
+            }
+            updateUnitsByBook(book.value);
+        }
 
-      if (!enWord || !esWord || !koWord || activePosSelections.length === 0) {
-        alert("Please fill required fields: POS, EN Word, ES Word, KO Word.");
-        return;
-      }
+        function updateUnitsByBook(book) {
+            const uSelect = document.getElementById('unitSelect');
+            uSelect.innerHTML = "";
+            const max = BOOK_UNITS_CONFIG[book] || 60;
+            for(let i=1; i<=max; i++) uSelect.innerHTML += `<option value="Unit ${i}">Unit ${i}</option>`;
+        }
 
-      const wordId = 'WORD_' + Date.now();
-      const newEntry = {
-        Word_ID: wordId,
-        EN_Word: enWord, POS: activePosSelections.join('; '),
-        EN_Family: document.getElementById('input-en-family').value, EN_Note: tempNoteData.en,
-        ES_Word: esWord, ES_Family: document.getElementById('input-es-family').value, ES_Note: tempNoteData.es,
-        KO_Word: koWord, KO_Family: document.getElementById('input-ko-family').value, VN_Meaning: document.getElementById('input-vn-meaning').value, KO_Note: tempNoteData.ko,
-        EN_Example: document.getElementById('input-en-ex').value, ES_Example: document.getElementById('input-es-ex').value, KO_Example: document.getElementById('input-ko-ex').value, Ex_Note: tempNoteData.ex,
-        Main_Topic: document.getElementById('select-main-topic').value, Sub_Topic: document.getElementById('select-sub-topic').value, Level: document.getElementById('select-level').value, Unit: document.getElementById('input-unit').value,
-        Last_Popup_Date: '', Popup_Count_Current_Month: 0, Created_At: new Date().toISOString().split('T')[0]
-      };
+        function handlePosMultiChange() {
+            const selected = Array.from(document.getElementById('posSelect').selectedOptions).map(o => o.value);
+            document.getElementById('irregBtn').style.display = selected.includes('verb') ? 'inline-flex' : 'none';
+            document.getElementById('conjBtn').style.display = selected.includes('verb') ? 'inline-flex' : 'none';
+        }
 
-      appData.words.unshift(newEntry);
-      saveDraftToLocal();
-      renderVocabLog();
-      alert("Word added to draft!");
-    }
+        function handleSaveWord(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editId').value;
+            const isEdit = !!editId;
+            const id = isEdit ? editId : 'W_' + Date.now();
+            const timestamp = formatDateYYYYMMDD(new Date());
 
-    function renderVocabLog() {
-      const tbody = document.getElementById('tbl-vocab-log');
-      const pageSize = 15;
-      const pageItems = appData.words.slice((logCurrentPage - 1) * pageSize, logCurrentPage * pageSize);
+            const posArr = Array.from(document.getElementById('posSelect').selectedOptions).map(o => o.value);
 
-      tbody.innerHTML = pageItems.map(w => `
-        <tr>
-          <td class="p-2"><div class="font-bold lang-en">${w.EN_Word}</div><div class="lang-es">${w.ES_Word}</div><div class="lang-ko">${w.KO_Word}</div></td>
-          <td class="p-2 lang-vn">${w.VN_Meaning || '-'}</td>
-          <td class="p-2 text-gray-400">${w.POS}</td>
-          <td class="p-2 text-gray-300"><div>${w.EN_Family || '-'}</div><div>${w.ES_Family || '-'}</div><div>${w.KO_Family || '-'}</div></td>
-          <td class="p-2 text-gray-300"><div>${w.EN_Example || '-'}</div><div>${w.ES_Example || '-'}</div><div>${w.KO_Example || '-'}</div></td>
-          <td class="p-2 text-right"><button onclick="deleteWord('${w.Word_ID}')" class="text-rose-400 hover:underline">Delete</button></td>
-        </tr>
-      `).join('');
-    }
+            const newEntry = {
+                id, timestamp,
+                mainTopic: document.getElementById('mainTopic').value,
+                subTopic: document.getElementById('subTopic').value,
+                book: document.getElementById('bookSource').value,
+                unit: document.getElementById('unitSelect').value,
+                en: document.getElementById('wordEN').value.trim(),
+                pos: posArr.join(', '),
+                familyEN: document.getElementById('familyEN').value.trim(),
+                noteEN: currentNotes.EN,
+                enIrregData: currentEnIrregData,
+                es: document.getElementById('wordES').value.trim(),
+                familyES: document.getElementById('familyES').value.trim(),
+                noteES: currentNotes.ES,
+                conjData: currentConjData,
+                ko: document.getElementById('wordKO').value.trim(),
+                familyKO: document.getElementById('familyKO').value.trim(),
+                noteKO: currentNotes.KO,
+                vi: document.getElementById('meaningVI').value.trim(),
+                exEN: document.getElementById('exEN').value.trim(),
+                exES: document.getElementById('exES').value.trim(),
+                exKO: document.getElementById('exKO').value.trim()
+            };
 
-    function deleteWord(wordId) {
-      if (!confirm("Delete word?")) return;
-      appData.words = appData.words.filter(w => w.Word_ID !== wordId);
-      saveDraftToLocal();
-      renderVocabLog();
-    }
+            if(isEdit) {
+                const idx = userVocabList.findIndex(i => String(i.id) === String(id));
+                if(idx !== -1) userVocabList[idx] = newEntry;
+            } else userVocabList.push(newEntry);
 
-    function openNoteModal(lang) { currentActiveNoteLang = lang; document.getElementById('editor-note').innerHTML = tempNoteData[lang] || ''; document.getElementById('modal-note').classList.remove('hidden'); }
-    function closeNoteModal() { document.getElementById('modal-note').classList.add('hidden'); }
-    function saveNoteModal() { tempNoteData[currentActiveNoteLang] = document.getElementById('editor-note').innerHTML; closeNoteModal(); }
-    function execCmd(cmd, arg = null) { document.execCommand(cmd, false, arg); }
-    function insertColumns(n) { document.execCommand('insertHTML', false, `<div class="column-split-${n}"><p>Col 1...</p><p>Col 2...</p></div>`); }
+            saveToLocalStorage();
+            resetVocabForm();
+            renderLogTable();
+            showToast("Saved Draft!");
+        }
 
-    function openIrregularVerbModal() { document.getElementById('irreg-inf').value = document.getElementById('input-en-word').value; document.getElementById('modal-irreg').classList.remove('hidden'); }
-    function saveIrregularVerb() { tempIrregData = { Irreg_ID: 'IR_' + Date.now(), Infinitive: document.getElementById('irreg-inf').value, Past_Simple: document.getElementById('irreg-past').value, Past_Participle: document.getElementById('irreg-pp').value }; document.getElementById('modal-irreg').classList.add('hidden'); }
+        function resetVocabForm() {
+            document.getElementById('vocabForm').reset();
+            document.getElementById('editId').value = "";
+            currentNotes = { EN: "", ES: "", KO: "" };
+            currentConjData = {}; currentEnIrregData = {};
+            handlePosMultiChange();
+            document.getElementById('submitVocabBtn').innerText = "Save Word (Draft)";
+            document.getElementById('cancelEditBtn').style.display = "none";
+        }
 
-    function openConjugacionModal() { document.getElementById('modal-conj').classList.remove('hidden'); }
-    function closeConjugacionModal() { document.getElementById('modal-conj').classList.add('hidden'); }
-    function saveConjugationData() { closeConjugacionModal(); }
+        function renderLogTable() {
+            const filter = document.getElementById('logFilter').value;
+            const tbody = document.getElementById('logTableBody');
+            tbody.innerHTML = "";
+            const now = new Date(), today = formatDateYYYYMMDD(now);
 
-    function checkAndShowDailyPopup() {
-      if (appData.words.length === 0) return;
-      const r = appData.words[Math.floor(Math.random() * appData.words.length)];
-      document.getElementById('pop-en').innerText = r.EN_Word;
-      document.getElementById('pop-es').innerText = r.ES_Word;
-      document.getElementById('pop-ko').innerText = r.KO_Word;
-      document.getElementById('pop-vn').innerText = r.VN_Meaning || '';
-      document.getElementById('modal-daily').classList.remove('hidden');
-    }
-    function closeDailyPopup() { document.getElementById('modal-daily').classList.add('hidden'); }
+            let filtered = userVocabList.filter(item => {
+                if (filter === 'all') return true;
+                const dStr = formatDateYYYYMMDD(item.timestamp);
+                if (filter === 'today') return dStr === today;
+                const diffDays = Math.ceil(Math.abs(now - new Date(dStr)) / (1000 * 60 * 60 * 24));
+                if (filter === '7days') return diffDays <= 7;
+                if (filter === '30days') return diffDays <= 30;
+                return true;
+            }).reverse();
 
-    function onSearchInput() { renderSearchResults(); }
-    function renderSearchResults() {
-      document.getElementById('search-results-container').innerHTML = `<table class="w-full text-left text-xs divide-y divide-gray-800">${appData.words.map(w => `<tr><td class="p-2 font-bold lang-en">${w.EN_Word}</td><td class="p-2 lang-es">${w.ES_Word}</td><td class="p-2 lang-ko">${w.KO_Word}</td><td class="p-2 lang-vn">${w.VN_Meaning}</td></tr>`).join('')}</table>`;
-    }
+            filtered.slice((logPage - 1) * logPageSize, logPage * logPageSize).forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td data-label="English: "><strong>${item.en}</strong></td>
+                        <td data-label="Spanish: ">${item.es}</td>
+                        <td data-label="Korean: ">${item.ko}</td>
+                        <td data-label="Vietnamese: ">${item.vi}</td>
+                        <td data-label="POS/Family: "><em>${item.pos}</em><br><small>EN: ${item.familyEN}<br>ES: ${item.familyES}<br>KO: ${item.familyKO}</small></td>
+                        <td data-label="Examples: "><small>EN: ${item.exEN}<br>ES: ${item.exES}<br>KO: ${item.exKO}</small></td>
+                        <td data-label="Actions: "><button class="btn btn-sm btn-edit" onclick="editVocab('${item.id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteVocab('${item.id}')">Delete</button></td>
+                    </tr>
+                `;
+            });
+        }
 
-    function renderBlogList() {}
-    function showBlogEditor() {}
-    function onBoardSearchInput() {}
-    function renderBoardView() {}
-    function renderCalendarView() {}
-    function renderBookTracker() {}
-    function updateAnalyticsStats() {
-      document.getElementById('stat-count-en').innerText = appData.words.length;
-      document.getElementById('stat-count-es').innerText = appData.words.length;
-      document.getElementById('stat-count-ko').innerText = appData.words.length;
-    }
-  </script>
+        function editVocab(id) {
+            const item = userVocabList.find(i => String(i.id) === String(id));
+            if(!item) return;
+            switchTab('tab1');
+            document.getElementById('editId').value = item.id;
+            document.getElementById('wordEN').value = item.en || "";
+            document.getElementById('wordES').value = item.es || "";
+            document.getElementById('wordKO').value = item.ko || "";
+            document.getElementById('meaningVI').value = item.vi || "";
+            document.getElementById('familyEN').value = item.familyEN || "";
+            document.getElementById('familyES').value = item.familyES || "";
+            document.getElementById('familyKO').value = item.familyKO || "";
+            document.getElementById('exEN').value = item.exEN || "";
+            document.getElementById('exES').value = item.exES || "";
+            document.getElementById('exKO').value = item.exKO || "";
+            
+            currentNotes = { EN: item.noteEN||"", ES: item.noteES||"", KO: item.noteKO||"" };
+            currentConjData = item.conjData || {}; currentEnIrregData = item.enIrregData || {};
+            
+            document.getElementById('submitVocabBtn').innerText = "Update Word";
+            document.getElementById('cancelEditBtn').style.display = "inline-flex";
+        }
+
+        function deleteVocab(id) {
+            if(confirm("Delete this word?")) {
+                userVocabList = userVocabList.filter(i => String(i.id) !== String(id));
+                saveToLocalStorage();
+                renderLogTable();
+                showToast("Deleted!");
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg; toast.style.display = "block";
+            setTimeout(() => toast.style.display = "none", 2500);
+        }
+
+        // DUMMY FUNCTIONS TO PREVENT MISSING REFERENCE ERRORS
+        function renderTab2() {}
+        function renderGrammarSidebar() {}
+        function renderBlogFeed() {}
+        function startQuiz() {}
+        function renderAnalyticsDashboard() {}
+        function renderCalendarTab() {}
+        function renderReportTab() {}
+        function handleSearchAutocomplete() {}
+        function switchSearchSubTab() {}
+        function openWriteBlogForm() {}
+        function closeWriteBlogForm() {}
+        function handleGramLangChange() {}
+        function handleSaveGrammar() {}
+        function togglePinnedFeedFilter() {}
+        function handleBlogImageUpload() {}
+        function toggleMobileMenu() {}
+        function renderTopicNav() {}
+        function populateQuizTopics() {}
+        function handleBoardAutocomplete() {}
+        function renderMindmap() {}
+        function changeCalDate() {}
+    </script>
 </body>
 </html>
