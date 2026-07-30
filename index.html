@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua - EN | ES | KO</title>
-     <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua</title>
+    <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -81,7 +81,6 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* CUSTOM DROPDOWN MULTI-SELECT POS STYLING */
         .custom-dropdown-container { position: relative; width: 100%; }
         .custom-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .custom-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 999; max-height: 180px; overflow-y: auto; box-shadow: var(--shadow); }
@@ -261,22 +260,19 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
-        /* CONJUGACIÓN INPUT MODAL TABLE - BALANCED EQUAL COLUMNS */
-        .modal-conj-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 16px; }
-        .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
-        .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
-        .modal-conj-table th { background: var(--surface-hover); color: var(--primary); }
-        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 16% !important; min-width: 120px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 10px; }
-        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; min-width: 110px; }
+        /* CONJUGACIÓN TABLE - OPTIMIZED COMPACT WIDTH FOR PC & MOBILE */
+        .conj-category-title { font-size: 1.15rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 8px 14px; margin: 20px 0 10px 0; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: var(--shadow); }
+        .conj-section-title { font-size: 0.95rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 6px 10px; margin: 12px 0 4px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; }
+        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; table-layout: fixed; }
+        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 10px; font-size: 0.85rem; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .conj-table th:first-child, .conj-table td:first-child { width: 32% !important; max-width: 140px; font-weight: 700; color: #f8fafc; }
+        .conj-table th:last-child, .conj-table td:last-child { width: 68% !important; color: #f8fafc; font-weight: 500; }
 
-        /* CONJUGACIÓN SEARCH VIEW - EXACT IMAGE SCREENSHOT MATCH */
-        .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
-        .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
-        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
-        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; }
-        .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
-        .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
-        .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
+        @media (max-width: 768px) {
+            .conj-table th:first-child, .conj-table td:first-child { width: 38% !important; min-width: 90px; }
+            .conj-table th:last-child, .conj-table td:last-child { width: 62% !important; }
+            .conj-table th, .conj-table td { padding: 6px 8px; font-size: 0.8rem; }
+        }
 
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
@@ -636,6 +632,7 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN TABLE VIEW WITH COMPACT TENSE WIDTHS -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -1304,7 +1301,6 @@
                 if (activeTab === 'tab6') renderCalendarTab();
             });
 
-            // Close custom dropdown when clicking outside
             window.addEventListener('click', (e) => {
                 const container = document.querySelector('.custom-dropdown-container');
                 if (container && !container.contains(e.target)) {
@@ -1346,7 +1342,6 @@
             menu.classList.toggle('show');
         }
 
-        /* CUSTOM MULTI-SELECT POS DROPDOWN LOGIC */
         function togglePosDropdown(e) {
             e.stopPropagation();
             const content = document.getElementById('posDropdownContent');
@@ -1362,7 +1357,6 @@
             }
         }
 
-        // Attach click handlers to pos-items
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.pos-item').forEach(item => {
                 item.onclick = function(e) {
@@ -1389,7 +1383,6 @@
                 labelEl.innerText = checkedBoxes.map(b => b.value).join(', ');
             }
 
-            // Sync visual selected class
             document.querySelectorAll('.pos-item').forEach(item => {
                 const cb = item.querySelector('input');
                 if (cb.checked) item.classList.add('selected');
@@ -1404,10 +1397,6 @@
             const isVerb = checkedPos.includes('verb');
             document.getElementById('enIrregBtn').style.display = isVerb ? 'inline-flex' : 'none';
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
-        }
-
-        function handlePosChange(val) {
-            handlePosMultiChange();
         }
 
         function handleTopicChange(topicVal) {
@@ -2729,7 +2718,7 @@
             showToast("Saved");
 
             try {
-                const response = await fetch(GAS_WEB_APP_URL, {
+                await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
@@ -3605,3 +3594,4 @@
     </script>
 </body>
 </html>
+
