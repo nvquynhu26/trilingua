@@ -7,8 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -41,7 +40,6 @@
         .auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius); text-align: center; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 16px 4%; max-width: 1600px; margin: 0 auto; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
-        
         .logo-container { display: flex; align-items: center; text-decoration: none; }
         .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         
@@ -82,14 +80,16 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* CUSTOM DROPDOWN POS WITH CHECKBOX AT RIGHT END */
+        /* CUSTOM POS DROPDOWN WITH TICK MARKS ON RIGHT */
         .pos-dropdown-wrapper { position: relative; width: 100%; }
-        .pos-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; }
-        .pos-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 6px; z-index: 500; box-shadow: var(--shadow); max-height: 200px; overflow-y: auto; }
+        .pos-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.9rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .pos-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); z-index: 500; margin-top: 4px; max-height: 220px; overflow-y: auto; padding: 6px; }
         .pos-dropdown-menu.show { display: flex; flex-direction: column; gap: 4px; }
-        .pos-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border-radius: 6px; }
-        .pos-item:hover { background: var(--surface-hover); }
-        .pos-item input { width: auto; cursor: pointer; }
+        .pos-item-option { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; color: var(--text); transition: background 0.2s; }
+        .pos-item-option:hover { background: var(--surface-hover); }
+        .pos-item-option input { display: none; }
+        .pos-item-option .tick-mark { font-weight: bold; color: var(--primary); visibility: hidden; }
+        .pos-item-option input:checked ~ .tick-mark { visibility: visible; }
 
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
@@ -127,7 +127,7 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-        /* SEARCH TAB MOBILE CARD VIEW (SEPARATED POS & FAMILY LINES) */
+        /* SEARCH TAB MOBILE CARD VIEW */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -137,10 +137,6 @@
             .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
             .responsive-card-table td:last-child { border-bottom: none; }
             .responsive-card-table td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
-
-            /* MOBILE BOARD MINDMAP NODE 10% REDUCTION FOR BALLS */
-            .mindmap-node-main { width: 117px !important; height: 117px !important; font-size: 1rem !important; }
-            .mindmap-node-sub { width: 94px !important; height: 94px !important; font-size: 0.78rem !important; }
         }
 
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -232,6 +228,34 @@
         .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         .board-dropdown-item:hover { background: var(--primary); color: white; }
 
+        .mindmap-canvas { width: 100%; height: 480px; position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; display: flex; justify-content: center; align-items: center; padding: 30px; }
+        .mindmap-node { position: absolute; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px; box-shadow: var(--shadow); transition: all 0.3s ease; z-index: 10; transform: translate(-50%, -50%); }
+
+        .mindmap-node-main { width: 130px; height: 130px; background: var(--color-en); color: #fff; font-weight: 800; font-size: 1.15rem; }
+        .mindmap-node-main .pos-tag { font-size: 0.75rem; font-weight: 500; opacity: 0.9; margin-top: 2px; }
+
+        .mindmap-node-sub { width: 105px; height: 105px; color: #fff; font-weight: 700; font-size: 0.85rem; }
+        .mindmap-node-sub.es { background: var(--color-es); color: #fff; }
+        .mindmap-node-sub.ko { background: var(--color-ko); color: #fff; }
+        .mindmap-node-sub.vi { background: var(--color-vi); color: #0f172a; }
+
+        svg.mindmap-svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+
+        .wf-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; width: 100%; }
+        .wf-box { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 120px; width: 100%; }
+        .wf-box.en { border-color: var(--color-en); }
+        .wf-box.es { border-color: var(--color-es); }
+        .wf-box.ko { border-color: var(--color-ko); }
+
+        .wf-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
+        .wf-box.en .wf-title { color: var(--color-en); }
+        .wf-box.es .wf-title { color: var(--color-es); }
+        .wf-box.ko .wf-title { color: var(--color-ko); }
+
+        .wf-list { list-style: none; padding: 0; margin: 0; font-size: 0.88rem; line-height: 1.6; }
+        .wf-list li { margin-bottom: 4px; position: relative; padding-left: 14px; word-break: break-word; }
+        .wf-list li::before { content: "•"; position: absolute; left: 0; color: var(--text-secondary); }
+
         .report-grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; width: 100%; }
 
         .tag-checkbox-container { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
@@ -246,11 +270,11 @@
         .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
         .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
 
-        /* CONJUGACIÓN SEARCH VIEW - EXACT UNIFIED GRID MATCH (DESKTOP & MOBILE) */
-        .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+        /* CONJUGACIÓN SEARCH VIEW - PRESERVES EXACT 2-COLUMN TABLE FORMAT ON MOBILE AND PC */
+        .conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
         .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; table-layout: fixed; }
-        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; word-break: break-word; }
+        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 12px; font-size: 0.88rem; text-align: left; word-break: break-word; }
         .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
         .conj-table td:last-child { color: #f8fafc; font-weight: 500; width: 55%; }
@@ -355,21 +379,58 @@
                         </div>
                         <div class="form-group">
                             <label>POS * (Click to select)</label>
+                            <!-- DROPDOWN BUTTON FOR MULTI-SELECT POS -->
                             <div class="pos-dropdown-wrapper">
-                                <div class="pos-dropdown-btn" onclick="togglePosDropdown()">
-                                    <span id="posSelectLabel">-- Select POS --</span>
+                                <button type="button" class="pos-dropdown-btn" onclick="togglePosDropdown()">
+                                    <span id="posBtnLabel">-- Select POS --</span>
                                     <span>▼</span>
-                                </div>
+                                </button>
                                 <div id="posDropdownMenu" class="pos-dropdown-menu">
-                                    <label class="pos-item"><span>n</span> <input type="checkbox" name="posSelect" value="n" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>v</span> <input type="checkbox" name="posSelect" value="v" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>adj</span> <input type="checkbox" name="posSelect" value="adj" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>adv</span> <input type="checkbox" name="posSelect" value="adv" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>prep</span> <input type="checkbox" name="posSelect" value="prep" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>phrasal verb</span> <input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>idiom</span> <input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>collocation</span> <input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()"></label>
-                                    <label class="pos-item"><span>phrase</span> <input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()"></label>
+                                    <label class="pos-item-option">
+                                        <span>noun (n)</span>
+                                        <input type="checkbox" name="posSelect" value="noun" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>verb (v)</span>
+                                        <input type="checkbox" name="posSelect" value="verb" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>adjective (adj)</span>
+                                        <input type="checkbox" name="posSelect" value="adj" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>adverb (adv)</span>
+                                        <input type="checkbox" name="posSelect" value="adv" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>preposition (prep)</span>
+                                        <input type="checkbox" name="posSelect" value="prep" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>phrasal verb</span>
+                                        <input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>idiom</span>
+                                        <input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>collocation</span>
+                                        <input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
+                                    <label class="pos-item-option">
+                                        <span>phrase</span>
+                                        <input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()">
+                                        <span class="tick-mark">✔</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -614,7 +675,7 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES PRESERVING 2 COLUMNS -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -885,7 +946,7 @@
                         <div class="dash-metric-title" style="color: var(--warning); font-weight: 700;">MEDIUM</div>
                         <div class="dash-metric-val" id="groupMediumCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
-                    <div style="background: var(--bg); padding: 14px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
+                    <div style="background: var(--bg); padding: 14px 6px; border-radius: var(--radius); border: 2px solid var(--danger); text-align: center;">
                         <div class="dash-metric-title" style="color: var(--danger); font-weight: 700;">WEAK</div>
                         <div class="dash-metric-val" id="groupWeakCount" style="font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; margin: 4px 0;">0</div>
                     </div>
@@ -1060,7 +1121,7 @@
         </div>
     </main>
 
-    <!-- MODAL 1: NOTE EDITOR MODAL -->
+    <!-- MODAL 1: NOTE EDITOR MODAL WITH RICH TEXT TOOLS -->
     <div id="noteModal" class="modal-overlay">
         <div class="modal-card">
             <h3 id="noteModalTitle" style="margin-bottom: 12px; color: var(--grammar);">Edit Note</h3>
@@ -1068,16 +1129,21 @@
                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
                 <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
-                    <option value="12px">12px</option>
-                    <option value="16px" selected>16px</option>
-                    <option value="20px">20px</option>
-                    <option value="24px">24px</option>
-                    <option value="30px">30px</option>
-                    <option value="36px">36px</option>
-                    <option value="40px">40px</option>
+                    <option value="1">12px</option>
+                    <option value="2">16px</option>
+                    <option value="3" selected>20px</option>
+                    <option value="4">24px</option>
+                    <option value="5">30px</option>
+                    <option value="6">36px</option>
+                    <option value="7">40px</option>
                 </select>
                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
-                <button type="button" class="btn-fmt" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 2x2</button>
+                <select class="btn-fmt" onchange="if(this.value){insertColumnLayout(parseInt(this.value)); this.value='';}" style="width:auto; padding:4px;">
+                    <option value="">📰 Cols...</option>
+                    <option value="2">2 Columns</option>
+                    <option value="3">3 Columns</option>
+                </select>
+                <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 2x2</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                 <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
@@ -1280,19 +1346,23 @@
             loadFromLocalStorage();
             fetchDataFromGAS();
 
-            window.addEventListener('resize', () => {
-                if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem);
-                const activeTab = localStorage.getItem("trilingua_active_tab");
-                if (activeTab === 'tab6') renderCalendarTab();
-            });
-
-            document.addEventListener('click', (e) => {
+            window.addEventListener('click', (e) => {
                 const wrapper = document.querySelector('.pos-dropdown-wrapper');
                 if (wrapper && !wrapper.contains(e.target)) {
                     document.getElementById('posDropdownMenu').classList.remove('show');
                 }
             });
+
+            window.addEventListener('resize', () => {
+                if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem);
+                const activeTab = localStorage.getItem("trilingua_active_tab");
+                if (activeTab === 'tab6') renderCalendarTab();
+            });
         };
+
+        function togglePosDropdown() {
+            document.getElementById('posDropdownMenu').classList.toggle('show');
+        }
 
         function triggerWordOfTheDay() {
             const today = formatDateYYYYMMDD(new Date());
@@ -1380,7 +1450,6 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
-        /* SAFE DECODING & FETCHING FROM GOOGLE APPS SCRIPT WITH ZERO PAYLOAD LOSS */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -1502,33 +1571,25 @@
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
-        function togglePosDropdown() {
-            document.getElementById('posDropdownMenu').classList.toggle('show');
-        }
-
         function handlePosMultiChange() {
-            const checkedBoxes = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value);
-            const label = document.getElementById('posSelectLabel');
-            
-            if (checkedBoxes.length > 0) {
-                label.innerText = checkedBoxes.join(', ');
-            } else {
-                label.innerText = "-- Select POS --";
-            }
-
-            const isVerb = checkedBoxes.includes('v') || checkedBoxes.includes('verb');
+            const checkedPos = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value);
+            const isVerb = checkedPos.includes('verb');
             document.getElementById('enIrregBtn').style.display = isVerb ? 'inline-flex' : 'none';
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
-        }
 
-        function execCmd(command, value = null) {
-            if (command === 'fontSize') {
-                document.execCommand('styleWithCSS', false, true);
-                document.execCommand('fontSize', false, value);
+            const btnLabel = document.getElementById('posBtnLabel');
+            if(checkedPos.length === 0) {
+                btnLabel.innerText = "-- Select POS --";
             } else {
-                document.execCommand(command, false, value);
+                btnLabel.innerText = checkedPos.join(', ');
             }
         }
+
+        function handlePosChange(val) {
+            handlePosMultiChange();
+        }
+
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
         function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
         
         function insertSmartTable(editorId) {
@@ -1714,8 +1775,7 @@
             const id = isEdit ? editId : 'ID_' + Date.now();
             const timestamp = formatDateYYYYMMDD(isEdit ? userVocabList.find(i => String(i.id) === String(id)).timestamp : new Date());
             
-            const selectedPosArr = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value);
-            const selectedPosStr = selectedPosArr.join(', ');
+            const selectedPos = Array.from(document.querySelectorAll('input[name="posSelect"]:checked')).map(c => c.value).join(', ');
 
             const newEntry = {
                 id, timestamp,
@@ -1725,7 +1785,7 @@
                 es: document.getElementById('wordES').value.trim(),
                 ko: document.getElementById('wordKO').value.trim(),
                 vi: document.getElementById('meaningVI').value.trim(),
-                pos: selectedPosStr,
+                pos: selectedPos,
                 familyEN: document.getElementById('wordFamilyEN').value.trim(),
                 familyES: document.getElementById('wordFamilyES').value.trim(),
                 familyKO: document.getElementById('wordFamilyKO').value.trim(),
@@ -1755,7 +1815,7 @@
             renderTab2();
             showToast("Syncing");
 
-            // ENCODE JSON PAYLOAD FOR ZERO TRANSMISSION DATA LOSS
+            // COMPACT ENCODING FOR CONJUGATION & IRREGULAR VERB PAYLOAD
             const encodedConj = encodeURIComponent(JSON.stringify(newEntry.conjData));
             const encodedIrreg = encodeURIComponent(JSON.stringify(newEntry.enIrregData));
 
@@ -1850,7 +1910,7 @@
             } catch(err) { showToast("Saved"); }
         }
 
-        /* VOCABULARY LOG RENDERER WITH COMBINED FAMILY AND EXAMPLES LINES */
+        /* VOCABULARY LOG RENDERER (GỘP FAMILY VA EXAMPLES THÀNH DÒNG VÀ DÒNG CHUẨN MỰC) */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -2032,7 +2092,6 @@
             renderTab2();
         }
 
-        /* SEARCH TAB RENDERER (POS ON 1 ROW, FAMILY EN, ES, KO ON SEPARATE MOBILE ROWS) */
         function renderTab2() {
             const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
             const sortMode = document.getElementById('searchSortMode')?.value || "date";
@@ -2217,7 +2276,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES PRESERVING EXACT 2-COLUMN DISPLAY */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2273,7 +2332,7 @@
                             tenseHasData = true;
                             sectionHasData = true;
                         }
-                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
+                        tenseTableHTML += `<tr><td><strong>${p}</strong></td><td>${val || '---'}</td></tr>`;
                     });
                     tenseTableHTML += `</tbody></table>`;
 
@@ -2717,7 +2776,7 @@
             const subTopic = document.getElementById('quizSubTopic').value;
             const mode = document.getElementById('quizMode').value;
             
-            const allowedFlashcardPos = ['noun', 'verb', 'adj', 'adv', 'phrase', 'n', 'v', 'prep'];
+            const allowedFlashcardPos = ['noun', 'verb', 'adj', 'adv', 'phrase'];
 
             quizList = userVocabList.filter(i => {
                 const matchTop = (topic === "ALL" || i.topic === topic);
@@ -3040,7 +3099,7 @@
             }
         }
 
-        /* ALL-TIME STATS DASHBOARD COMPUTATION */
+        // --- DASHBOARD ANALYTICS ---
         function renderAnalyticsDashboard() {
             const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
@@ -3409,7 +3468,7 @@
             document.getElementById('quickBlogModal').style.display = "none";
         }
 
-        // --- TAB 7: REPORT (ALL-TIME FLASHCARD REVIEW HISTORY & VOCAB COUNTS) ---
+        // --- TAB 7: REPORT ---
         function renderReportTab() {
             let countEN = 0, countES = 0, countKO = 0;
             
@@ -3513,7 +3572,7 @@
             const bCtx = document.getElementById('bookChart').getContext('2d');
             if (bookChartInstance) bookChartInstance.destroy();
 
-            bookChartInstance = new Chart(bookChartInstance = new Chart(bCtx, {
+            bookChartInstance = new Chart(bCtx, {
                 type: 'bar',
                 data: {
                     labels: bookLabels,
@@ -3529,7 +3588,7 @@
                     plugins: { legend: { labels: { color: '#f8fafc' } } },
                     scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
                 }
-            }));
+            });
 
             const bTbody = document.getElementById('bookProgressTableBody');
             bTbody.innerHTML = "";
