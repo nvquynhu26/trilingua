@@ -7,8 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua</title>
-         <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua - EN | ES | KO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -28,10 +27,10 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            --color-en: #4e90c0;
-            --color-es: #10b981;
-            --color-ko: #d57c91;
-            --color-vi: #feeeb5;
+            --color-en: #4e90c0; /* Blue */
+            --color-es: #10b981; /* Green */
+            --color-ko: #d57c91; /* Pink */
+            --color-vi: #feeeb5; /* Light Yellow */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -81,6 +80,7 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
+        /* CUSTOM DROPDOWN MULTI-SELECT POS STYLING */
         .custom-dropdown-container { position: relative; width: 100%; }
         .custom-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .custom-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 999; max-height: 180px; overflow-y: auto; box-shadow: var(--shadow); }
@@ -126,15 +126,21 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
+        /* GENERAL TABLE MOBILE CARD VIEW (EXCLUDING CONJUGATION TABLES TO PREVENT OVERLAY BUG) */
         @media (max-width: 768px) {
-            .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
+            .responsive-card-table table:not(.conj-table), 
+            .responsive-card-table thead:not(.conj-table thead), 
+            .responsive-card-table tbody:not(.conj-table tbody), 
+            .responsive-card-table th:not(.conj-table th), 
+            .responsive-card-table td:not(.conj-table td), 
+            .responsive-card-table tr:not(.conj-table tr) {
                 display: block; width: 100%;
             }
-            .responsive-card-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .responsive-card-table tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
-            .responsive-card-table td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
-            .responsive-card-table td:last-child { border-bottom: none; }
-            .responsive-card-table td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
+            .responsive-card-table thead:not(.conj-table thead) tr { position: absolute; top: -9999px; left: -9999px; }
+            .responsive-card-table tbody:not(.conj-table tbody) tr { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; padding: 10px; background: var(--bg); }
+            .responsive-card-table tbody:not(.conj-table tbody) td { border: none; border-bottom: 1px dashed rgba(255,255,255,0.06); position: relative; padding: 8px 8px 8px 115px !important; min-height: 36px; display: flex; align-items: center; text-align: left; }
+            .responsive-card-table tbody:not(.conj-table tbody) td:last-child { border-bottom: none; }
+            .responsive-card-table tbody:not(.conj-table tbody) td::before { position: absolute; left: 8px; width: 105px; font-weight: 700; color: var(--text-secondary); font-size: 0.8rem; content: attr(data-label); }
         }
 
         .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -268,10 +274,12 @@
         .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
         .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
 
-        /* CONJUGACIÓN SEARCH VIEW - FIXED 2-COLUMN TABLE ACROSS PC AND MOBILE (NO LETTER-WRAPPING) */
+        /* CONJUGACIÓN SEARCH VIEW - CLEAN TABLE NO WRAPPING */
         .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
-        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
+        
+        .conj-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 20px; border-radius: 0 0 6px 6px; }
+        .conj-table { width: 100%; border-collapse: collapse; background: #182232; border: 1px solid var(--border); }
         .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; white-space: nowrap; }
         .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
@@ -742,8 +750,8 @@
                                         <option value="1">12px</option>
                                         <option value="2">14px</option>
                                         <option value="3" selected>16px</option>
-                                        <option value="4">18px</option>
-                                        <option value="5">20px</option>
+                                        <option value="4">20px</option>
+                                        <option value="5">24px</option>
                                         <option value="6">24px</option>
                                         <option value="7">32px</option>
                                     </select>
@@ -2257,7 +2265,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY (FULL 18 TENSES DISPLAY) */
+        /* CONJUGACIÓN DIRECTORY WITH WRAPPING PREVENTED IN TABLES */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2304,7 +2312,17 @@
 
                 sec.tenses.forEach((t, tIdx) => {
                     let tenseHasData = false;
-                    let tenseTableHTML = `<div class="conj-section-title">${t.toUpperCase()}</div><table class="conj-table"><thead><tr><th>Pronombres</th><th></th></tr></thead><tbody>`;
+                    let tenseTableHTML = `
+                        <div class="conj-section-title">${t.toUpperCase()}</div>
+                        <div class="conj-table-wrapper">
+                            <table class="conj-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pronombres</th>
+                                        <th>Conjugación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
 
                     PRONOUNS.forEach((p, pIdx) => {
                         const key = `${sIdx}_${tIdx}_${pIdx}`;
@@ -2313,9 +2331,9 @@
                             tenseHasData = true;
                             sectionHasData = true;
                         }
-                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
+                        tenseTableHTML += `<tr><td><strong>${p}</strong></td><td>${val || '---'}</td></tr>`;
                     });
-                    tenseTableHTML += `</tbody></table>`;
+                    tenseTableHTML += `</tbody></table></div>`;
 
                     if (tenseHasData) {
                         secHTML += tenseTableHTML;
