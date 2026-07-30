@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- APPLE HOME SCREEN WEB APP META TAGS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua - EN | ES | KO</title>
+     <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -27,10 +27,10 @@
             --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
-            --color-en: #4e90c0; /* Blue */
-            --color-es: #10b981; /* Green */
-            --color-ko: #d57c91; /* Pink */
-            --color-vi: #feeeb5; /* Light Yellow */
+            --color-en: #4e90c0;
+            --color-es: #10b981;
+            --color-ko: #d57c91;
+            --color-vi: #feeeb5;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -80,16 +80,14 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* CUSTOM POS DROPDOWN WITH TICK MARKS ON RIGHT */
-        .pos-dropdown-wrapper { position: relative; width: 100%; }
-        .pos-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.9rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .pos-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); z-index: 500; margin-top: 4px; max-height: 220px; overflow-y: auto; padding: 6px; }
-        .pos-dropdown-menu.show { display: flex; flex-direction: column; gap: 4px; }
-        .pos-item-option { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; color: var(--text); transition: background 0.2s; }
-        .pos-item-option:hover { background: var(--surface-hover); }
-        .pos-item-option input { display: none; }
-        .pos-item-option .tick-mark { font-weight: bold; color: var(--primary); visibility: hidden; }
-        .pos-item-option input:checked ~ .tick-mark { visibility: visible; }
+        /* CUSTOM DROPDOWN SELECT FOR POS (CLICK TO EXPAND, CHECKBOXES AT THE END) */
+        .pos-dropdown-container { position: relative; width: 100%; }
+        .pos-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .pos-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 999; max-height: 200px; overflow-y: auto; box-shadow: var(--shadow); }
+        .pos-dropdown-content.show { display: block; }
+        .pos-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; font-size: 0.85rem; cursor: pointer; border-radius: 4px; }
+        .pos-item:hover { background: var(--surface-hover); }
+        .pos-item input { width: auto; cursor: pointer; }
 
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 1rem; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
@@ -127,7 +125,6 @@
         th { background: var(--bg); font-weight: 700; color: var(--text-secondary); }
         .tts-btn { background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-left: 4px; }
 
-        /* SEARCH TAB MOBILE CARD VIEW */
         @media (max-width: 768px) {
             .responsive-card-table table, .responsive-card-table thead, .responsive-card-table tbody, .responsive-card-table th, .responsive-card-table td, .responsive-card-table tr {
                 display: block; width: 100%;
@@ -267,17 +264,17 @@
         .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
         .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
         .modal-conj-table th { background: var(--surface-hover); color: var(--primary); }
-        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
-        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
+        .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 15% !important; min-width: 90px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 10px; }
+        .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; min-width: 120px; }
 
-        /* CONJUGACIÓN SEARCH VIEW - PRESERVES EXACT 2-COLUMN TABLE FORMAT ON MOBILE AND PC */
-        .conj-category-title { font-size: 1.2rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+        /* CONJUGACIÓN SEARCH VIEW - EXACT IMAGE SCREENSHOT MATCH */
+        .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
-        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; table-layout: fixed; }
-        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 8px 12px; font-size: 0.88rem; text-align: left; word-break: break-word; }
+        .conj-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #182232; border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
+        .conj-table th, .conj-table td { border: 1px solid var(--border); padding: 10px 14px; font-size: 0.9rem; text-align: left; }
         .conj-table th { background: rgba(0,0,0,0.2); color: var(--text-secondary); font-weight: 700; width: 45%; }
         .conj-table td:first-child { font-weight: 700; color: #f8fafc; width: 45%; }
-        .conj-table td:last-child { color: #f8fafc; font-weight: 500; width: 55%; }
+        .conj-table td:last-child { color: #f8fafc; font-weight: 500; }
 
         @media (max-width: 900px) {
             .report-grid-two { grid-template-columns: 1fr; }
@@ -378,60 +375,17 @@
                             <input type="text" id="wordEN" required>
                         </div>
                         <div class="form-group">
-                            <label>POS * (Click to select)</label>
-                            <!-- DROPDOWN BUTTON FOR MULTI-SELECT POS -->
-                            <div class="pos-dropdown-wrapper">
-                                <button type="button" class="pos-dropdown-btn" onclick="togglePosDropdown()">
-                                    <span id="posBtnLabel">-- Select POS --</span>
-                                    <span>▼</span>
-                                </button>
-                                <div id="posDropdownMenu" class="pos-dropdown-menu">
-                                    <label class="pos-item-option">
-                                        <span>noun (n)</span>
-                                        <input type="checkbox" name="posSelect" value="noun" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>verb (v)</span>
-                                        <input type="checkbox" name="posSelect" value="verb" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>adjective (adj)</span>
-                                        <input type="checkbox" name="posSelect" value="adj" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>adverb (adv)</span>
-                                        <input type="checkbox" name="posSelect" value="adv" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>preposition (prep)</span>
-                                        <input type="checkbox" name="posSelect" value="prep" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>phrasal verb</span>
-                                        <input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>idiom</span>
-                                        <input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>collocation</span>
-                                        <input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                    <label class="pos-item-option">
-                                        <span>phrase</span>
-                                        <input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()">
-                                        <span class="tick-mark">✔</span>
-                                    </label>
-                                </div>
+                            <label>POS * (Multi-Select)</label>
+                            <div class="pos-multi-select">
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="noun" onchange="handlePosMultiChange()"> noun (n)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="verb" onchange="handlePosMultiChange()"> verb (v)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="adj" onchange="handlePosMultiChange()"> adjective (adj)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="adv" onchange="handlePosMultiChange()"> adverb (adv)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="prep" onchange="handlePosMultiChange()"> preposition (prep)</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="handlePosMultiChange()"> phrasal verb</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="idiom" onchange="handlePosMultiChange()"> idiom</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="collocation" onchange="handlePosMultiChange()"> collocation</label>
+                                <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="handlePosMultiChange()"> phrase</label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -675,7 +629,7 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES PRESERVING 2 COLUMNS -->
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -1121,7 +1075,7 @@
         </div>
     </main>
 
-    <!-- MODAL 1: NOTE EDITOR MODAL WITH RICH TEXT TOOLS -->
+    <!-- MODAL 1: NOTE EDITOR MODAL -->
     <div id="noteModal" class="modal-overlay">
         <div class="modal-card">
             <h3 id="noteModalTitle" style="margin-bottom: 12px; color: var(--grammar);">Edit Note</h3>
@@ -1129,21 +1083,13 @@
                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
                 <select class="btn-fmt" onchange="execCmd('fontSize', this.value)" style="width: auto; padding: 4px;">
-                    <option value="1">12px</option>
-                    <option value="2">16px</option>
-                    <option value="3" selected>20px</option>
-                    <option value="4">24px</option>
-                    <option value="5">30px</option>
-                    <option value="6">36px</option>
-                    <option value="7">40px</option>
+                    <option value="2">12px</option>
+                    <option value="3" selected>16px</option>
+                    <option value="4">20px</option>
+                    <option value="5">24px</option>
                 </select>
                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
-                <select class="btn-fmt" onchange="if(this.value){insertColumnLayout(parseInt(this.value)); this.value='';}" style="width:auto; padding:4px;">
-                    <option value="">📰 Cols...</option>
-                    <option value="2">2 Columns</option>
-                    <option value="3">3 Columns</option>
-                </select>
-                <button type="button" class="btn-fmt btn-warning" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 2x2</button>
+                <button type="button" class="btn-fmt" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 3x2</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
                 <input type="color" onchange="execCmd('foreColor', this.value)" title="Text Color" style="width:28px; height:26px; padding:1px; cursor:pointer;">
                 <label style="font-size:0.75rem; margin-left:4px;">Bg:</label>
@@ -1346,23 +1292,12 @@
             loadFromLocalStorage();
             fetchDataFromGAS();
 
-            window.addEventListener('click', (e) => {
-                const wrapper = document.querySelector('.pos-dropdown-wrapper');
-                if (wrapper && !wrapper.contains(e.target)) {
-                    document.getElementById('posDropdownMenu').classList.remove('show');
-                }
-            });
-
             window.addEventListener('resize', () => {
                 if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem);
                 const activeTab = localStorage.getItem("trilingua_active_tab");
                 if (activeTab === 'tab6') renderCalendarTab();
             });
         };
-
-        function togglePosDropdown() {
-            document.getElementById('posDropdownMenu').classList.toggle('show');
-        }
 
         function triggerWordOfTheDay() {
             const today = formatDateYYYYMMDD(new Date());
@@ -1576,13 +1511,6 @@
             const isVerb = checkedPos.includes('verb');
             document.getElementById('enIrregBtn').style.display = isVerb ? 'inline-flex' : 'none';
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
-
-            const btnLabel = document.getElementById('posBtnLabel');
-            if(checkedPos.length === 0) {
-                btnLabel.innerText = "-- Select POS --";
-            } else {
-                btnLabel.innerText = checkedPos.join(', ');
-            }
         }
 
         function handlePosChange(val) {
@@ -1602,8 +1530,8 @@
                     <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="removeSmartCol(this)" title="Remove Column">-</button>
                     <button class="tbl-btn tbl-btn-del" style="top:4px; right:4px;" onclick="deleteBlockElement(this)" title="Delete Table">🗑</button>
                     <table class="smart-table">
-                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td></tr>
-                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td></tr>
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
                     </table>
                 </div><p><br></p>
             `;
@@ -1815,7 +1743,6 @@
             renderTab2();
             showToast("Syncing");
 
-            // COMPACT ENCODING FOR CONJUGATION & IRREGULAR VERB PAYLOAD
             const encodedConj = encodeURIComponent(JSON.stringify(newEntry.conjData));
             const encodedIrreg = encodeURIComponent(JSON.stringify(newEntry.enIrregData));
 
@@ -1910,7 +1837,6 @@
             } catch(err) { showToast("Saved"); }
         }
 
-        /* VOCABULARY LOG RENDERER (GỘP FAMILY VA EXAMPLES THÀNH DÒNG VÀ DÒNG CHUẨN MỰC) */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -2276,7 +2202,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES PRESERVING EXACT 2-COLUMN DISPLAY */
+        /* CONJUGACIÓN DIRECTORY (FULL 18 TENSES DISPLAY) */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2332,7 +2258,7 @@
                             tenseHasData = true;
                             sectionHasData = true;
                         }
-                        tenseTableHTML += `<tr><td><strong>${p}</strong></td><td>${val || '---'}</td></tr>`;
+                        tenseTableHTML += `<tr><td data-tense="Pronombres: "><strong>${p}</strong></td><td data-tense="${t}: ">${val || '---'}</td></tr>`;
                     });
                     tenseTableHTML += `</tbody></table>`;
 
