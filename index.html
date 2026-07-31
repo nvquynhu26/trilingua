@@ -265,6 +265,7 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
+        /* CONJUGACIÓN INPUT MODAL TABLE - BALANCED EQUAL COLUMNS */
         .modal-conj-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 16px; }
         .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
         .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
@@ -272,6 +273,7 @@
         .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
         .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
 
+        /* CONJUGACIÓN SEARCH VIEW - CLEAN TABLE NO WRAPPING */
         .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
         
@@ -387,15 +389,15 @@
                                     <span id="posDropdownLabel">-- Select POS --</span> <span>▼</span>
                                 </button>
                                 <div id="posDropdownContent" class="custom-dropdown-content">
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="noun" onchange="updatePosLabel()"> noun (n)</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="verb" onchange="updatePosLabel()"> verb (v)</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="adj" onchange="updatePosLabel()"> adjective (adj)</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="adv" onchange="updatePosLabel()"> adverb (adv)</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="prep" onchange="updatePosLabel()"> preposition (prep)</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="updatePosLabel()"> phrasal verb</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="idiom" onchange="updatePosLabel()"> idiom</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="collocation" onchange="updatePosLabel()"> collocation</label>
-                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="updatePosLabel()"> phrase</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="noun" onchange="updatePosLabel()"> noun (n)</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="verb" onchange="updatePosLabel()"> verb (v)</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="adj" onchange="updatePosLabel()"> adjective (adj)</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="adv" onchange="updatePosLabel()"> adverb (adv)</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="prep" onchange="updatePosLabel()"> preposition (prep)</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="updatePosLabel()"> phrasal verb</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="idiom" onchange="updatePosLabel()"> idiom</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="collocation" onchange="updatePosLabel()"> collocation</label>
+                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="phrase" onchange="updatePosLabel()"> phrase</label>
                                 </div>
                             </div>
                         </div>
@@ -640,6 +642,7 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -899,10 +902,10 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
-                        <option value="7" selected>1 Week (7 Days)</option>
-                        <option value="30">1 Month (30 Days)</option>
-                        <option value="180">6 Months (180 Days)</option>
-                        <option value="365">1 Year (365 Days)</option>
+                        <option value="7" selected>1 Week</option>
+                        <option value="30">1 Month</option>
+                        <option value="180">6 Months</option>
+                        <option value="365">1 Year</option>
                         <option value="36500">All Time</option>
                     </select>
                 </div>
@@ -1317,13 +1320,6 @@
                 const activeTab = localStorage.getItem("trilingua_active_tab");
                 if (activeTab === 'tab6') renderCalendarTab();
             });
-
-            window.addEventListener('click', (e) => {
-                const container = document.querySelector('.custom-dropdown-container');
-                if (container && !container.contains(e.target)) {
-                    document.getElementById('posDropdownContent').classList.remove('show');
-                }
-            });
         };
 
         function triggerWordOfTheDay() {
@@ -1409,16 +1405,6 @@
             const isVerb = checkedPos.includes('verb');
             document.getElementById('enIrregBtn').style.display = isVerb ? 'inline-flex' : 'none';
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
-        }
-
-        function setFontSizeVal(sizePx) {
-            const selection = window.getSelection();
-            if (!selection.rangeCount || selection.isCollapsed) return;
-            const range = selection.getRangeAt(0);
-            const span = document.createElement("span");
-            span.style.fontSize = sizePx;
-            span.appendChild(range.extractContents());
-            range.insertNode(span);
         }
 
         function handleTopicChange(topicVal) {
@@ -1898,7 +1884,7 @@
             }
         }
 
-        // --- TAB 2: SEARCH & TOPICS (FIXED AUTOCOMPLETE AND ENTER KEY) ---
+        // --- TAB 2: SEARCH & TOPICS ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
@@ -2199,7 +2185,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES SEARCH RENDERER */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -3138,7 +3124,6 @@
             if(matches.length === 0) {
                 dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
                 dropdown.style.display = 'block';
-                renderMindmap(null);
                 return;
             }
 
