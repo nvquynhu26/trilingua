@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua</title>
-     <link rel="apple-touch-icon" href="Logo1.png">
+    <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -642,6 +642,7 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -900,6 +901,7 @@
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
+                    <!-- RESTRICTED FILTER PERIODS: DEFAULT 1 WEEK -->
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
                         <option value="7" selected>1 Week (7 Days)</option>
                         <option value="30">1 Month (30 Days)</option>
@@ -1320,23 +1322,11 @@
                 if (activeTab === 'tab6') renderCalendarTab();
             });
 
-            // SAFELY CLOSE POS DROPDOWN WITHOUT BLOCKING SEARCH DROPDOWNS
             window.addEventListener('click', (e) => {
-                const posContainer = document.querySelector('.custom-dropdown-container');
-                if (posContainer && !posContainer.contains(e.target)) {
-                    document.getElementById('posDropdownContent')?.classList.remove('show');
-                }
-                
-                const searchInput = document.getElementById('searchInput');
-                const searchDropdown = document.getElementById('searchDropdown');
-                if (searchDropdown && searchInput && !searchDropdown.contains(e.target) && e.target !== searchInput) {
-                    searchDropdown.style.display = 'none';
-                }
-
-                const boardInput = document.getElementById('boardSearchInput');
-                const boardDropdown = document.getElementById('boardDropdown');
-                if (boardDropdown && boardInput && !boardDropdown.contains(e.target) && e.target !== boardInput) {
-                    boardDropdown.style.display = 'none';
+                const container = document.querySelector('.custom-dropdown-container');
+                if (container && !container.contains(e.target)) {
+                    const content = document.getElementById('posDropdownContent');
+                    if (content) content.classList.remove('show');
                 }
             });
         };
@@ -1388,17 +1378,6 @@
                 updatePosLabel();
             }
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.pos-item').forEach(item => {
-                item.onclick = function(e) {
-                    e.stopPropagation();
-                    const cb = this.querySelector('input');
-                    cb.checked = !cb.checked;
-                    updatePosLabel();
-                };
-            });
-        });
 
         function updatePosLabel() {
             const checkedBoxes = Array.from(document.querySelectorAll('input[name="posSelect"]:checked'));
@@ -1489,6 +1468,7 @@
             localStorage.setItem("trilingua_quiz_hist", JSON.stringify(quizHistory));
         }
 
+        /* DATA FETCHING FROM GOOGLE APPS SCRIPT */
         async function fetchDataFromGAS(retryCount = 0) {
             if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("DÁN_URL_WEB_APP")) {
                 showToast("⚠️ Vui lòng dán URL Web App vào biến GAS_WEB_APP_URL!", true);
@@ -2303,7 +2283,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES SEARCH RENDERER */
+        /* CONJUGACIÓN DIRECTORY WITH NO TABLE WRAPPING FIX */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2474,7 +2454,6 @@
             renderBlogFeed(feedCurrentPage);
         }
 
-        /* GRAMMAR BLOG TIMELINE FEED SORT (NEWEST / OLDEST FIRST) */
         function renderBlogFeed(page = 1) {
             feedCurrentPage = page;
             const container = document.getElementById('feedPostsList');
@@ -2780,7 +2759,7 @@
             showToast("Saved");
 
             try {
-                const response = await fetch(GAS_WEB_APP_URL, {
+                await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
