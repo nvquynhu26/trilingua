@@ -90,12 +90,6 @@
         .pos-item input { display: none; }
         .pos-item.selected::after { content: "✔"; color: var(--primary); font-weight: bold; }
 
-        /* AUTOCOMPLETE DROPDOWN STYLING FOR SEARCH & BOARD */
-        .board-search-container { position: relative; max-width: 500px; margin: 0 auto 20px auto; z-index: 100; width: 100%; }
-        .board-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 250px; overflow-y: auto; z-index: 999; display: none; box-shadow: var(--shadow); }
-        .board-dropdown-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text); }
-        .board-dropdown-item:hover { background: var(--primary); color: white; }
-
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: #ffffff !important; font-size: 14px !important; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor img, .feed-post-body img, #quickBlogContent img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px auto; display: block; object-fit: contain; }
@@ -271,7 +265,6 @@
         .tag-checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .tag-checkbox-item input { width: auto; cursor: pointer; }
 
-        /* CONJUGACIÓN INPUT MODAL TABLE - BALANCED EQUAL COLUMNS */
         .modal-conj-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 16px; }
         .modal-conj-table { width: 100%; border-collapse: collapse; background: var(--bg); }
         .modal-conj-table th, .modal-conj-table td { border: 1px solid var(--border); padding: 8px; font-size: 0.85rem; text-align: center; }
@@ -279,7 +272,6 @@
         .modal-conj-table th.col-pronoun, .modal-conj-table td.col-pronoun { width: 18% !important; min-width: 100px; font-weight: 700; color: #f8fafc; background: rgba(255,255,255,0.03); text-align: left; padding-left: 12px; }
         .modal-conj-table td input { width: 100%; padding: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 4px; text-align: center; font-size: 0.85rem; }
 
-        /* CONJUGACIÓN SEARCH VIEW - CLEAN TABLE NO WRAPPING */
         .conj-category-title { font-size: 1.25rem; font-weight: 900; color: #fff; background: var(--grammar); padding: 10px 16px; margin: 24px 0 12px 0; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
         .conj-section-title { font-size: 1rem; font-weight: 800; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 8px 12px; margin: 16px 0 6px 0; border-radius: 6px 6px 0 0; text-transform: uppercase; letter-spacing: 1px; }
         
@@ -395,15 +387,15 @@
                                     <span id="posDropdownLabel">-- Select POS --</span> <span>▼</span>
                                 </button>
                                 <div id="posDropdownContent" class="custom-dropdown-content">
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="noun" onchange="updatePosLabel()"> noun (n)</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="verb" onchange="updatePosLabel()"> verb (v)</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="adj" onchange="updatePosLabel()"> adjective (adj)</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="adv" onchange="updatePosLabel()"> adverb (adv)</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="prep" onchange="updatePosLabel()"> preposition (prep)</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="updatePosLabel()"> phrasal verb</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="idiom" onchange="updatePosLabel()"> idiom</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="collocation" onchange="updatePosLabel()"> collocation</label>
-                                    <label class="pos-item" onclick="handlePosItemClick(event)"><input type="checkbox" name="posSelect" value="phrase" onchange="updatePosLabel()"> phrase</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="noun" onchange="updatePosLabel()"> noun (n)</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="verb" onchange="updatePosLabel()"> verb (v)</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="adj" onchange="updatePosLabel()"> adjective (adj)</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="adv" onchange="updatePosLabel()"> adverb (adv)</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="prep" onchange="updatePosLabel()"> preposition (prep)</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="phrasal verb" onchange="updatePosLabel()"> phrasal verb</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="idiom" onchange="updatePosLabel()"> idiom</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="collocation" onchange="updatePosLabel()"> collocation</label>
+                                    <label class="pos-item"><input type="checkbox" name="posSelect" value="phrase" onchange="updatePosLabel()"> phrase</label>
                                 </div>
                             </div>
                         </div>
@@ -648,7 +640,6 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -1420,6 +1411,16 @@
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
         }
 
+        function setFontSizeVal(sizePx) {
+            const selection = window.getSelection();
+            if (!selection.rangeCount || selection.isCollapsed) return;
+            const range = selection.getRangeAt(0);
+            const span = document.createElement("span");
+            span.style.fontSize = sizePx;
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+
         function handleTopicChange(topicVal) {
             const subSelect = document.getElementById('subTopic');
             const bookSelect = document.getElementById('book');
@@ -1897,7 +1898,7 @@
             }
         }
 
-        // --- TAB 2: SEARCH & TOPICS (FIXED AUTOCOMPLETE & ENTER FILTER) ---
+        // --- TAB 2: SEARCH & TOPICS (FIXED AUTOCOMPLETE AND ENTER KEY) ---
         function handleSearchAutocomplete(val) {
             const dropdown = document.getElementById('searchDropdown');
             if (!val || val.trim().length < 1) {
@@ -2198,7 +2199,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES SEARCH RENDERER */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2298,6 +2299,1266 @@
                 paginationEl.appendChild(label);
                 paginationEl.appendChild(nextBtn);
             }
+        }
+
+        // --- TAB 3: GRAMMAR BLOG ---
+        let pinnedPostIds = JSON.parse(localStorage.getItem("trilingua_pinned_posts") || "[]");
+        let feedCurrentPage = 1;
+
+        function openWriteBlogForm(editId = null) {
+            document.getElementById('blogFeedContainer').style.display = "none";
+            document.getElementById('blogFormCard').style.display = "block";
+            if (editId) { loadGrammarPost(editId); } 
+            else { resetGrammarForm(); }
+        }
+
+        function closeWriteBlogForm() {
+            document.getElementById('blogFeedContainer').style.display = "block";
+            document.getElementById('blogFormCard').style.display = "none";
+            renderBlogFeed(feedCurrentPage);
+        }
+
+        function handleGramLangChange(langVal) {
+            const wrapper = document.getElementById('tagCheckboxWrapper');
+            wrapper.innerHTML = "";
+
+            let availableTags = [];
+            if (langVal === 'Note') {
+                availableTags = ['English', 'Espanol', '한국어', 'Jottings'];
+            } else {
+                availableTags = ['A1-A2', 'B1-B2', 'C1-C2', 'Exam_Prep'];
+            }
+
+            availableTags.forEach(tag => {
+                const item = document.createElement('label');
+                item.className = "tag-checkbox-item";
+                item.innerHTML = `<input type="checkbox" name="blogTagCheckbox" value="${tag}" onchange="enforceMaxTwoTags(this)"> #${tag}`;
+                wrapper.appendChild(item);
+            });
+        }
+
+        function enforceMaxTwoTags(changedInput) {
+            const checkedBoxes = document.querySelectorAll('input[name="blogTagCheckbox"]:checked');
+            if (checkedBoxes.length > 2) {
+                changedInput.checked = false;
+                alert("⚠️ You can select a maximum of 2 tags per blog post!");
+            }
+        }
+
+        function togglePinnedFeedFilter() {
+            filterPinnedFeedOnly = !filterPinnedFeedOnly;
+            const btn = document.getElementById('filterPinnedFeedBtn');
+            if (filterPinnedFeedOnly) {
+                btn.className = "btn btn-sm btn-warning active";
+                btn.innerText = "★ Showing Pinned Only";
+            } else {
+                btn.className = "btn btn-sm btn-warning";
+                btn.innerText = "⭐ Pinned Only";
+            }
+            renderBlogFeed(1);
+        }
+
+        function togglePinPost(e, id) {
+            e.stopPropagation();
+            if (pinnedPostIds.includes(id)) {
+                pinnedPostIds = pinnedPostIds.filter(pId => pId !== id);
+            } else {
+                pinnedPostIds.push(id);
+            }
+            localStorage.setItem("trilingua_pinned_posts", JSON.stringify(pinnedPostIds));
+            renderGrammarSidebar();
+            renderBlogFeed(feedCurrentPage);
+        }
+
+        function renderBlogFeed(page = 1) {
+            feedCurrentPage = page;
+            const container = document.getElementById('feedPostsList');
+            const pagination = document.getElementById('feedPagination');
+            container.innerHTML = "";
+            pagination.innerHTML = "";
+
+            if (grammarList.length === 0) {
+                container.innerHTML = `<div class="card" style="text-align:center; padding:30px;">No blog posts created yet! Click "+ Write New Post" to start.</div>`;
+                return;
+            }
+
+            const sortOrder = document.getElementById('blogFeedSortMode')?.value || "newest";
+            let sortedList = [...grammarList];
+
+            if (sortOrder === "newest") {
+                sortedList.sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            } else {
+                sortedList.sort((a, b) => new Date(a.timestamp || '2026-07-28') - new Date(b.timestamp || '2026-07-28'));
+            }
+            
+            if (filterPinnedFeedOnly) {
+                sortedList = sortedList.filter(p => pinnedPostIds.includes(p.id));
+            }
+
+            const pageSize = 5;
+            const totalPages = Math.ceil(sortedList.length / pageSize) || 1;
+            const pagedList = sortedList.slice((page - 1) * pageSize, page * pageSize);
+
+            if (pagedList.length === 0) {
+                container.innerHTML = `<div class="card" style="text-align:center; padding:30px;">No pinned posts found!</div>`;
+                return;
+            }
+
+            pagedList.forEach(post => {
+                const langIcons = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
+                const isPinned = pinnedPostIds.includes(post.id);
+
+                const postCard = document.createElement('div');
+                postCard.className = "feed-post";
+                postCard.innerHTML = `
+                    <div class="feed-post-header">
+                        <div>
+                            <span style="font-size:0.85rem; font-weight:700; color:var(--grammar);">${langIcons[post.lang] || '📝'} ${post.lang} • ${post.topic || 'General'}</span>
+                            <div class="feed-post-title">${isPinned ? '⭐ ' : ''}${post.title || 'Untitled Note'}</div>
+                        </div>
+                        <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin Post">${isPinned ? '★ Pinned' : '☆ Pin'}</span>
+                    </div>
+                    <div class="feed-post-body">${post.content || ''}</div>
+                    <div class="feed-post-footer">
+                        <div>
+                            <span>📅 Published: ${post.timestamp || '2026-07-28'}</span>
+                            ${post.keywords ? ` | 🏷️ <i>${post.keywords}</i>` : ''}
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-edit" onclick="openWriteBlogForm('${post.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteGrammarFromFeed('${post.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(postCard);
+            });
+
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `btn btn-sm ${i === page ? '' : 'btn-fmt'}`;
+                    pageBtn.innerText = i;
+                    pageBtn.onclick = () => renderBlogFeed(i);
+                    pagination.appendChild(pageBtn);
+                }
+            }
+        }
+
+        function deleteGrammarFromFeed(id) {
+            document.getElementById('grammarId').value = id;
+            deleteGrammar();
+        }
+
+        function renderSingleBlogFeedPost(postId) {
+            document.getElementById('blogFormCard').style.display = "none";
+            document.getElementById('blogFeedContainer').style.display = "block";
+
+            const post = grammarList.find(g => String(g.id) === String(postId));
+            if (!post) return;
+
+            const container = document.getElementById('feedPostsList');
+            const pagination = document.getElementById('feedPagination');
+            container.innerHTML = "";
+            pagination.innerHTML = "";
+
+            const langIcons = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
+            const isPinned = pinnedPostIds.includes(post.id);
+
+            const postCard = document.createElement('div');
+            postCard.className = "feed-post";
+            postCard.innerHTML = `
+                <div class="feed-post-header">
+                    <div>
+                        <span style="font-size:0.85rem; font-weight:700; color:var(--grammar);">${langIcons[post.lang] || '📝'} ${post.lang} • ${post.topic || 'General'}</span>
+                        <div class="feed-post-title">${isPinned ? '⭐ ' : ''}${post.title || 'Untitled Note'}</div>
+                    </div>
+                    <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')" title="Pin Post">${isPinned ? '★ Pinned' : '☆ Pin'}</span>
+                </div>
+                <div class="feed-post-body">${post.content || ''}</div>
+                <div class="feed-post-footer">
+                    <div>
+                        <span>📅 Published: ${post.timestamp || '2026-07-28'}</span>
+                        ${post.keywords ? ` | 🏷️ <i>${post.keywords}</i>` : ''}
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-fmt" onclick="renderBlogFeed(1)">◄ Back to Feed</button>
+                        <button class="btn btn-sm btn-edit" onclick="openWriteBlogForm('${post.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteGrammarFromFeed('${post.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(postCard);
+        }
+
+        function renderGrammarSidebar() {
+            const query = (document.getElementById('gramSearchInput')?.value || "").toLowerCase();
+            const selectedTag = document.getElementById('tagFilterSelect').value;
+            const container = document.getElementById('grammarTreeContainer');
+            container.innerHTML = "";
+
+            const languages = ["English", "Español", "한국어", "Note"];
+            const langFlags = { "English": "🇺🇸", "Español": "🇪🇸", "한국어": "🇰🇷", "Note": "📝" };
+
+            languages.forEach(lang => {
+                let langPosts = grammarList.filter(g => {
+                    const matchLang = g.lang === lang;
+                    const matchQuery = !query || 
+                        (g.title && g.title.toLowerCase().includes(query)) ||
+                        (g.topic && g.topic.toLowerCase().includes(query)) ||
+                        (g.content && g.content.toLowerCase().includes(query));
+                    
+                    const matchTag = (selectedTag === "ALL") || (g.content && g.content.includes(`#${selectedTag}`)) || (g.topic && g.topic.includes(selectedTag));
+                    return matchLang && matchQuery && matchTag;
+                });
+
+                const langEl = document.createElement('div');
+                langEl.className = `tree-lang ${query || selectedTag !== 'ALL' || langPosts.length > 0 ? 'open' : ''}`;
+                
+                const langHeader = document.createElement('div');
+                langHeader.className = "tree-lang-header";
+                langHeader.innerHTML = `<span>${langFlags[lang]} ${lang}</span> <span>(${langPosts.length})</span>`;
+                langHeader.onclick = () => langEl.classList.toggle('open');
+
+                const langBody = document.createElement('div');
+                langBody.className = "tree-lang-body";
+
+                const foldersMap = {};
+                langPosts.forEach(p => {
+                    let cat = (p.topic || "General").trim();
+                    cat = cat.charAt(0).toUpperCase() + cat.slice(1);
+                    if (!foldersMap[cat]) foldersMap[cat] = [];
+                    foldersMap[cat].push(p);
+                });
+
+                const sortedFolderKeys = Object.keys(foldersMap).sort();
+
+                sortedFolderKeys.forEach(cat => {
+                    const folderPosts = foldersMap[cat].sort((a,b) => (a.title || '').localeCompare(b.title || ''));
+
+                    const folderEl = document.createElement('div');
+                    folderEl.className = `tree-folder ${query ? 'open' : ''}`;
+
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = "tree-folder-header";
+                    folderHeader.innerHTML = `<span>📁 ${cat}</span> <span>(${folderPosts.length})</span>`;
+                    folderHeader.onclick = () => folderEl.classList.toggle('open');
+
+                    const folderBody = document.createElement('div');
+                    folderBody.className = "tree-folder-body";
+
+                    folderPosts.forEach(post => {
+                        const isPinned = pinnedPostIds.includes(post.id);
+                        const postEl = document.createElement('div');
+                        postEl.className = "post-item";
+                        postEl.innerHTML = `
+                            <div>
+                                <div>${isPinned ? '⭐ ' : ''}<b>${post.title || "Untitled Note"}</b></div>
+                                <span class="post-date">📅 ${post.timestamp || '2026-07-28'}</span>
+                            </div>
+                            <span class="pin-icon" onclick="togglePinPost(event, '${post.id}')">${isPinned ? '★' : '☆'}</span>
+                        `;
+                        postEl.onclick = (e) => {
+                            e.stopPropagation();
+                            renderSingleBlogFeedPost(post.id);
+                        };
+                        folderBody.appendChild(postEl);
+                    });
+
+                    folderEl.appendChild(folderHeader);
+                    folderEl.appendChild(folderBody);
+                    langBody.appendChild(folderEl);
+                });
+
+                langEl.appendChild(langHeader);
+                langEl.appendChild(langBody);
+                container.appendChild(langEl);
+            });
+        }
+
+        function loadGrammarPost(id) {
+            const g = grammarList.find(i => String(i.id) === String(id));
+            if (!g) return;
+            document.getElementById('grammarId').value = g.id;
+            document.getElementById('gramLang').value = g.lang || "English";
+            handleGramLangChange(g.lang || "English");
+            document.getElementById('gramTopic').value = g.topic || "";
+            document.getElementById('gramTitle').value = g.title || "";
+            document.getElementById('gramKeywords').value = g.keywords || "";
+            
+            let cleanContent = g.content || "";
+            cleanContent = cleanContent.replace(/<span style="background:var\(--primary\); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.75rem;">#.*?<\/span>/gi, "").trim();
+            document.getElementById('gramContentEditor').innerHTML = cleanContent;
+
+            document.querySelectorAll('input[name="blogTagCheckbox"]').forEach(cb => {
+                if (g.content && g.content.includes(`#${cb.value}`)) {
+                    cb.checked = true;
+                } else {
+                    cb.checked = false;
+                }
+            });
+
+            document.getElementById('grammarHeader').innerText = "Create Note";
+            document.getElementById('gramSubmitBtn').innerText = "Update Note";
+            document.getElementById('gramDeleteBtn').style.display = "inline-flex";
+        }
+
+        function resetGrammarForm() {
+            document.getElementById('grammarForm').reset();
+            document.getElementById('grammarId').value = "";
+            document.getElementById('gramContentEditor').innerHTML = "";
+            handleGramLangChange('English');
+            document.getElementById('grammarHeader').innerText = "Create Note";
+            document.getElementById('gramSubmitBtn').innerText = "Save Grammar Note";
+            document.getElementById('gramDeleteBtn').style.display = "none";
+        }
+
+        async function saveGrammar(e) {
+            e.preventDefault();
+            const editId = document.getElementById('grammarId').value;
+            const isEdit = !!editId;
+            const id = editId ? editId : 'GRAM_' + Date.now();
+            const timestamp = formatDateYYYYMMDD(isEdit ? (grammarList.find(i => String(i.id) === String(editId)).timestamp || new Date()) : new Date());
+
+            let contentHTML = document.getElementById('gramContentEditor').innerHTML.trim();
+            contentHTML = contentHTML.replace(/<span style="background:var\(--primary\); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.75rem;">#.*?<\/span>/gi, "").trim();
+
+            const checkedBoxes = document.querySelectorAll('input[name="blogTagCheckbox"]:checked');
+            checkedBoxes.forEach(cb => {
+                contentHTML += ` <span style="background:var(--primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.75rem;">#${cb.value}</span>`;
+            });
+
+            let rawTopic = document.getElementById('gramTopic').value.trim();
+            if (rawTopic) rawTopic = rawTopic.charAt(0).toUpperCase() + rawTopic.slice(1);
+
+            const newPost = {
+                id, timestamp,
+                lang: document.getElementById('gramLang').value,
+                topic: rawTopic,
+                title: document.getElementById('gramTitle').value.trim(),
+                keywords: document.getElementById('gramKeywords').value.trim(),
+                content: contentHTML
+            };
+
+            if (isEdit) {
+                const idx = grammarList.findIndex(item => String(item.id) === String(id));
+                if (idx !== -1) grammarList[idx] = newPost;
+            } else {
+                grammarList.push(newPost);
+            }
+
+            saveToLocalStorage();
+            closeWriteBlogForm();
+            renderCalendarTab();
+            showToast("Saved");
+
+            const rowData = [newPost.id, newPost.timestamp, newPost.lang, newPost.topic, newPost.title, newPost.keywords, newPost.content];
+
+            try {
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: isEdit ? "update" : "add", type: "grammar", id: newPost.id, row: rowData }),
+                    redirect: "follow"
+                });
+                const resData = await response.json();
+                if(resData.status === "success") showToast("Saved");
+            } catch(err) { showToast("Saved"); }
+        }
+
+        async function deleteGrammar() {
+            const id = document.getElementById('grammarId').value;
+            if (!id || !confirm("Are you sure you want to delete this grammar note?")) return;
+            grammarList = grammarList.filter(item => String(item.id) !== String(id));
+            saveToLocalStorage();
+            closeWriteBlogForm();
+            renderCalendarTab();
+            showToast("Saved");
+
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "delete", type: "grammar", id }),
+                    redirect: "follow"
+                });
+                showToast("Saved");
+            } catch(err) { showToast("Saved"); }
+        }
+
+        // --- TAB 4: REVIEW ---
+        let quizList = [];
+        let currentQuizIndex = 0;
+
+        function populateQuizTopics() {
+            const select = document.getElementById('quizTopic');
+            select.innerHTML = `<option value="ALL">All Topics</option>`;
+            Object.keys(TOPIC_MAPPING).forEach(top => {
+                select.innerHTML += `<option value="${top}">${top}</option>`;
+            });
+            updateQuizSubTopics();
+        }
+
+        function updateQuizSubTopics() {
+            const mainTopic = document.getElementById('quizTopic').value;
+            const subSelect = document.getElementById('quizSubTopic');
+            subSelect.innerHTML = `<option value="ALL">All Sub-topics</option>`;
+
+            if (mainTopic !== "ALL" && TOPIC_MAPPING[mainTopic]) {
+                TOPIC_MAPPING[mainTopic].subs.forEach(sub => {
+                    subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+                });
+            }
+            startQuiz();
+        }
+
+        function startQuiz() {
+            const topic = document.getElementById('quizTopic').value;
+            const subTopic = document.getElementById('quizSubTopic').value;
+            const mode = document.getElementById('quizMode').value;
+            
+            const allowedFlashcardPos = ['noun', 'verb', 'adj', 'adv', 'phrase'];
+
+            quizList = userVocabList.filter(i => {
+                const matchTop = (topic === "ALL" || i.topic === topic);
+                const matchSub = (subTopic === "ALL" || i.subTopic === subTopic);
+
+                if (mode === 'phrasal') return matchTop && matchSub && i.pos && i.pos.includes('phrasal verb');
+                if (mode === 'idiom') return matchTop && matchSub && i.pos && i.pos.includes('idiom');
+                if (mode === 'collocation') return matchTop && matchSub && i.pos && i.pos.includes('collocation');
+                
+                if (mode === 'flashcard' || mode === 'reverse') {
+                    return matchTop && matchSub && i.pos && allowedFlashcardPos.some(p => i.pos.includes(p));
+                }
+
+                return matchTop && matchSub;
+            });
+            
+            quizList = quizList.sort(() => Math.random() - 0.5);
+            currentQuizIndex = 0;
+
+            document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'block' : 'none';
+            document.getElementById('reverseView').style.display = mode === 'reverse' ? 'block' : 'none';
+            document.getElementById('typingView').style.display = mode === 'typing' ? 'block' : 'none';
+            document.getElementById('mcView').style.display = (mode === 'phrasal' || mode === 'idiom' || mode === 'collocation') ? 'block' : 'none';
+            
+            renderQuizCard();
+        }
+
+        function renderQuizCard() {
+            const total = quizList.length;
+            const mode = document.getElementById('quizMode').value;
+            document.getElementById('quizProgress').innerText = `${total === 0 ? 0 : currentQuizIndex + 1} / ${total}`;
+            
+            if (total === 0) {
+                document.getElementById('triPromptVI').innerText = "No vocabulary found for review!";
+                document.getElementById('typePrompt').innerText = "No vocabulary found for review!";
+                document.getElementById('mcPrompt').innerText = "No items found for review!";
+                return;
+            }
+
+            const item = quizList[currentQuizIndex];
+
+            if (mode === 'flashcard') {
+                currentFlashcardStatus = { EN: null, ES: null, KO: null };
+                
+                ['EN', 'ES', 'KO'].forEach(l => {
+                    document.getElementById(`btnStill${l}`).style.opacity = "1";
+                    document.getElementById(`btnMaster${l}`).style.opacity = "1";
+                    document.getElementById(`btnStill${l}`).disabled = false;
+                    document.getElementById(`btnMaster${l}`).disabled = false;
+                });
+
+                document.getElementById('triPromptVI').innerText = item.vi || "---";
+                document.getElementById('cardTextEN').innerText = item.en || "---";
+                document.getElementById('cardTextES').innerText = item.es || "---";
+                document.getElementById('cardTextKO').innerText = item.ko || "---";
+
+                document.getElementById('cardFlagEN').style.display = 'block';
+                document.getElementById('cardFlagES').style.display = 'block';
+                document.getElementById('cardFlagKO').style.display = 'block';
+
+                document.getElementById('cardTextEN').style.display = 'none';
+                document.getElementById('cardTextES').style.display = 'none';
+                document.getElementById('cardTextKO').style.display = 'none';
+            }
+            else if (mode === 'reverse') {
+                currentReverseItem = item;
+                document.getElementById('revWordEN').innerText = `🇺🇸 ${item.en || '---'}`;
+                document.getElementById('revWordES').innerText = `🇪🇸 ${item.es || '---'}`;
+                document.getElementById('revWordKO').innerText = `🇰🇷 ${item.ko || '---'}`;
+                document.getElementById('revResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.vi).sort(() => Math.random() - 0.5).slice(0, 3);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('revGridContainer');
+                grid.innerHTML = "";
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.innerText = opt.vi || "---";
+                    btn.onclick = () => checkReverseAnswer(opt.id === item.id, item);
+                    grid.appendChild(btn);
+                });
+            }
+            else if (mode === 'typing') {
+                document.getElementById('typePrompt').innerText = item.vi || "---";
+                document.getElementById('inputEN').value = "";
+                document.getElementById('inputES').value = "";
+                document.getElementById('inputKO').value = "";
+                document.getElementById('typeResult').style.display = 'none';
+            }
+            else if (mode === 'phrasal') {
+                document.getElementById('mcPrompt').innerText = item.vi || "---";
+                document.getElementById('mcResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('phrasal verb')).sort(() => Math.random() - 0.5).slice(0, 3);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('mcGridContainer');
+                grid.style.gridTemplateColumns = "1fr";
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.style.fontSize = "0.95rem";
+                    btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
+                    grid.appendChild(btn);
+                });
+            }
+            else if (mode === 'idiom') {
+                document.getElementById('mcPrompt').innerText = item.vi || "---";
+                document.getElementById('mcResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('idiom')).sort(() => Math.random() - 0.5).slice(0, 2);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('mcGridContainer');
+                grid.style.gridTemplateColumns = "1fr";
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.style.fontSize = "0.95rem";
+                    btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
+                    grid.appendChild(btn);
+                });
+            }
+            else if (mode === 'collocation') {
+                document.getElementById('mcPrompt').innerText = item.vi || "---";
+                document.getElementById('mcResult').style.display = 'none';
+
+                const distractors = userVocabList.filter(x => x.id !== item.id && x.pos && x.pos.includes('collocation')).sort(() => Math.random() - 0.5).slice(0, 3);
+                const options = [item, ...distractors].sort(() => Math.random() - 0.5);
+
+                const grid = document.getElementById('mcGridContainer');
+                grid.style.gridTemplateColumns = "1fr";
+                grid.innerHTML = "";
+
+                options.forEach(opt => {
+                    const btn = document.createElement('div');
+                    btn.className = "mc-option";
+                    btn.style.fontSize = "0.95rem";
+                    btn.innerHTML = `🇺🇸 <b>${opt.en || '---'}</b><br>🇪🇸 <b>${opt.es || '---'}</b><br>🇰🇷 <b>${opt.ko || '---'}</b>`;
+                    btn.onclick = () => checkMcAnswer(opt.id === item.id, item);
+                    grid.appendChild(btn);
+                });
+            }
+        }
+
+        async function saveQuizEntryToSheet(entry) {
+            const rowDataQuiz = [entry.vocabId, entry.wordEN, entry.pos, entry.lang, entry.timestamp, entry.remembered, entry.source];
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "add", type: "quiz", row: rowDataQuiz }),
+                    redirect: "follow"
+                });
+            } catch(e) {}
+        }
+
+        function checkReverseAnswer(isCorrect, item) {
+            const resEl = document.getElementById('revResult');
+            resEl.style.display = 'block';
+
+            const quizEntry = { vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: formatDateYYYYMMDD(new Date()), remembered: isCorrect, source: 'flashcard' };
+            quizHistory.push(quizEntry);
+            saveToLocalStorage();
+            saveQuizEntryToSheet(quizEntry);
+            renderAnalyticsDashboard();
+
+            if (isCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Correct Answer! Moving to next...`;
+                if (item.en) speak(item.en, 'en-US');
+
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) { alert("🎉 Session completed!"); startQuiz(); }
+                    else { renderQuizCard(); }
+                }, 1200);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `❌ Incorrect! Correct meaning is: <b>${item.vi}</b>`;
+            }
+        }
+
+        function checkMcAnswer(isCorrect, item) {
+            const resEl = document.getElementById('mcResult');
+            resEl.style.display = 'block';
+
+            const quizEntry = { vocabId: item.id, wordEN: item.en, pos: item.pos, lang: 'EN', timestamp: formatDateYYYYMMDD(new Date()), remembered: isCorrect, source: 'flashcard' };
+            quizHistory.push(quizEntry);
+            saveToLocalStorage();
+            saveQuizEntryToSheet(quizEntry);
+            renderAnalyticsDashboard();
+
+            if (isCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Correct Answer! Moving to next...`;
+                if (item.en) speak(item.en, 'en-US');
+
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) { alert("🎉 Session completed!"); startQuiz(); }
+                    else { renderQuizCard(); }
+                }, 1200);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `❌ Incorrect! The correct answer is: <b>${item.en}</b>`;
+            }
+        }
+
+        function flipTriCard(lang) {
+            const flagEl = document.getElementById(`cardFlag${lang}`);
+            const textEl = document.getElementById(`cardText${lang}`);
+            const isTextHidden = textEl.style.display === 'none';
+
+            flagEl.style.display = isTextHidden ? 'none' : 'block';
+            textEl.style.display = isTextHidden ? 'block' : 'none';
+
+            if (isTextHidden) {
+                const item = quizList[currentQuizIndex];
+                if (lang === 'EN' && item.en) speak(item.en, 'en-US');
+                if (lang === 'ES' && item.es) speak(item.es, 'es-ES');
+                if (lang === 'KO' && item.ko) speak(item.ko, 'ko-KR');
+            }
+        }
+
+        function markCardLang(lang, remembered) {
+            if (quizList.length === 0) return;
+            const item = quizList[currentQuizIndex];
+            
+            currentFlashcardStatus[lang] = remembered;
+
+            const btnS = document.getElementById(`btnStill${lang}`);
+            const btnM = document.getElementById(`btnMaster${lang}`);
+            if (remembered) {
+                btnM.style.opacity = "1";
+                btnS.style.opacity = "0.4";
+            } else {
+                btnS.style.opacity = "1";
+                btnM.style.opacity = "0.4";
+            }
+
+            const quizEntry = {
+                vocabId: item.id,
+                wordEN: item.en,
+                pos: item.pos || 'noun',
+                lang: lang,
+                timestamp: formatDateYYYYMMDD(new Date()),
+                remembered: remembered,
+                source: 'flashcard'
+            };
+
+            quizHistory.push(quizEntry);
+            saveToLocalStorage();
+            saveQuizEntryToSheet(quizEntry);
+            renderAnalyticsDashboard();
+
+            showToast(`Recorded`);
+
+            if (currentFlashcardStatus.EN !== null && currentFlashcardStatus.ES !== null && currentFlashcardStatus.KO !== null) {
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) {
+                        alert("🎉 Completed all flashcards in this session!");
+                        startQuiz();
+                    } else {
+                        renderQuizCard();
+                    }
+                }, 600);
+            }
+        }
+
+        function normalizeString(str) {
+            if (!str) return "";
+            return str
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[¿¡!?,.]/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function checkTyping() {
+            if (quizList.length === 0) return;
+            const item = quizList[currentQuizIndex];
+
+            const valEN = normalizeString(document.getElementById('inputEN').value);
+            const valES = normalizeString(document.getElementById('inputES').value);
+            const valKO = normalizeString(document.getElementById('inputKO').value);
+
+            const isENCorrect = !item.en || valEN === normalizeString(item.en);
+            const isESCorrect = !item.es || valES === normalizeString(item.es);
+            const isKOCorrect = !item.ko || valKO === normalizeString(item.ko);
+
+            const resEl = document.getElementById('typeResult');
+            resEl.style.display = 'block';
+
+            const todayStr = formatDateYYYYMMDD(new Date());
+            if(!isENCorrect) { let e={ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'EN', timestamp: todayStr, remembered: false, source: 'typing' }; quizHistory.push(e); saveQuizEntryToSheet(e); }
+            if(!isESCorrect) { let e={ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'ES', timestamp: todayStr, remembered: false, source: 'typing' }; quizHistory.push(e); saveQuizEntryToSheet(e); }
+            if(!isKOCorrect) { let e={ vocabId: item.id, wordEN: item.en, pos: item.pos || 'noun', lang: 'KO', timestamp: todayStr, remembered: false, source: 'typing' }; quizHistory.push(e); saveQuizEntryToSheet(e); }
+            
+            saveToLocalStorage();
+            renderAnalyticsDashboard();
+
+            if (isENCorrect && isESCorrect && isKOCorrect) {
+                resEl.style.color = "var(--primary)";
+                resEl.innerHTML = `🎉 Perfect Match! Moving to next card...`;
+                if(item.en) speak(item.en, 'en-US');
+
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex >= quizList.length) { alert("🎉 Session completed!"); startQuiz(); }
+                    else { renderQuizCard(); }
+                }, 1400);
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerHTML = `
+                    ❌ Incorrect! The exact answers are:<br>
+                    ${item.en ? `🇺🇸 <b>${item.en}</b> <button class="tts-btn" onclick="speak('${item.en}', 'en-US')">🔊</button><br>` : ''}
+                    ${item.es ? `🇪🇸 <b>${item.es}</b> <button class="tts-btn" onclick="speak('${item.es}', 'es-ES')">🔊</button><br>` : ''}
+                    ${item.ko ? `🇰🇷 <b>${item.ko}</b> <button class="tts-btn" onclick="speak('${item.ko}', 'ko-KR')">🔊</button><br>` : ''}
+                `;
+            }
+        }
+
+        // --- DASHBOARD ANALYTICS ---
+        function renderAnalyticsDashboard() {
+            const days = parseInt(document.getElementById('statsFilterPeriod').value || 7);
+            const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+            
+            const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
+
+            const vocabRecordMap = {};
+            flashcardHist.forEach(h => {
+                if (!vocabRecordMap[h.vocabId]) vocabRecordMap[h.vocabId] = { total: 0, mastered: 0 };
+                vocabRecordMap[h.vocabId].total++;
+                if (h.remembered) vocabRecordMap[h.vocabId].mastered++;
+            });
+
+            let strongCount = 0, mediumCount = 0, weakCount = 0;
+            Object.values(vocabRecordMap).forEach(rec => {
+                const ratio = rec.total > 0 ? (rec.mastered / rec.total) * 100 : 0;
+                if (ratio >= 80) strongCount++;
+                else if (ratio >= 40) mediumCount++;
+                else weakCount++;
+            });
+
+            document.getElementById('groupStrongCount').innerText = `${strongCount}`;
+            document.getElementById('groupMediumCount').innerText = `${mediumCount}`;
+            document.getElementById('groupWeakCount').innerText = `${weakCount}`;
+
+            ['EN', 'ES', 'KO'].forEach(lang => {
+                const langHist = flashcardHist.filter(h => h.lang === lang);
+                const mastered = langHist.filter(h => h.remembered).length;
+                const total = langHist.length;
+                const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+
+                document.getElementById(`langCol${lang}`).innerText = `${mastered} / ${total} (${pct}%)`;
+                document.getElementById(`langBar${lang}`).style.width = `${pct}%`;
+            });
+
+            const posList = ["noun", "verb", "adj", "adv", "phrasal verb", "idiom", "collocation", "phrase"];
+            const posMasteredEN = {}, posMasteredES = {}, posMasteredKO = {};
+            posList.forEach(p => { posMasteredEN[p] = 0; posMasteredES[p] = 0; posMasteredKO[p] = 0; });
+
+            flashcardHist.forEach(h => {
+                const p = h.pos || "noun";
+                if (h.remembered) {
+                    if (h.lang === 'EN') posMasteredEN[p]++;
+                    if (h.lang === 'ES') posMasteredES[p]++;
+                    if (h.lang === 'KO') posMasteredKO[p]++;
+                }
+            });
+
+            const ctx = document.getElementById('posChart').getContext('2d');
+            if (posChartInstance) posChartInstance.destroy();
+
+            posChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: posList,
+                    datasets: [
+                        { label: 'EN', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredEN[p]), backgroundColor: '#4e90c0', borderRadius: 4 },
+                        { label: 'ES', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredES[p]), backgroundColor: '#10b981', borderRadius: 4 },
+                        { label: 'KO', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? 0 : posMasteredKO[p]), backgroundColor: '#d57c91', borderRadius: 4 },
+                        { label: 'All languages', data: posList.map(p => (p === 'phrasal verb' || p === 'idiom') ? (posMasteredEN[p] + posMasteredES[p] + posMasteredKO[p]) : 0), backgroundColor: '#f59e0b', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
+            });
+        }
+
+        // --- TAB 5: BOARD ---
+        function handleBoardAutocomplete(val) {
+            const dropdown = document.getElementById('boardDropdown');
+            if(!val || val.trim().length < 1) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            const q = val.toLowerCase().trim();
+            
+            const matches = userVocabList.filter(i => 
+                (!i.pos || !i.pos.includes('idiom')) && (
+                    (i.en && i.en.toLowerCase().includes(q)) ||
+                    (i.es && i.es.toLowerCase().includes(q)) ||
+                    (i.ko && i.ko.toLowerCase().includes(q))
+                )
+            ).sort((a,b) => (a.en || '').localeCompare(b.en || ''));
+
+            if(matches.length === 0) {
+                dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
+                dropdown.style.display = 'block';
+                renderMindmap(null);
+                return;
+            }
+
+            dropdown.innerHTML = "";
+            matches.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "board-dropdown-item";
+                el.innerText = `[${item.pos || 'Vocab'}] ${item.en || "---"} | ${item.es || "---"} | ${item.ko || "---"}`;
+                el.onclick = () => {
+                    document.getElementById('boardSearchInput').value = item.en || item.es || item.ko;
+                    dropdown.style.display = 'none';
+                    renderMindmap(item);
+                };
+                dropdown.appendChild(el);
+            });
+
+            dropdown.style.display = 'block';
+        }
+
+        function formatWordFamilyList(str) {
+            if (!str || !str.trim()) return `<li><em>None recorded</em></li>`;
+            return str
+                .split(',')
+                .map(s => s.trim())
+                .filter(s => s.length > 0)
+                .map(s => `<li>${s}</li>`)
+                .join('');
+        }
+
+        function renderMindmap(item) {
+            lastRenderedBoardItem = item;
+            const canvas = document.getElementById('mindmapCanvas');
+            const bottomGrid = document.getElementById('wfBottomContainer');
+            
+            canvas.innerHTML = "";
+
+            if (!item || (item.pos && item.pos.includes('idiom'))) {
+                canvas.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:200px; font-weight:600;">Item not found in database!</div>`;
+                bottomGrid.style.display = "none";
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const cx = (rect.width || 800) / 2;
+            const cy = (rect.height || 480) / 2;
+            
+            const isMobile = window.innerWidth <= 768;
+            const dist2 = isMobile ? 110 : 140;
+
+            const langNodes = [
+                { key: 'es', val: item.es, class: 'es', angle: -30 },
+                { key: 'ko', val: item.ko, class: 'ko', angle: 90 },
+                { key: 'vi', val: item.vi, class: 'vi', angle: 210 }
+            ];
+
+            let nodesHTML = "";
+            let svgLinesHTML = `<svg class="mindmap-svg-lines">`;
+
+            nodesHTML += `
+                <div class="mindmap-node mindmap-node-main" style="left:${cx}px; top:${cy}px;">
+                    <div>${item.en || "---"}</div>
+                    ${item.pos ? `<div class="pos-tag">(${item.pos})</div>` : ''}
+                </div>
+            `;
+
+            langNodes.forEach(lang => {
+                if(!lang.val) return;
+
+                const rad = (lang.angle * Math.PI) / 180;
+                const l2x = cx + dist2 * Math.cos(rad);
+                const l2y = cy + dist2 * Math.sin(rad);
+
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
+
+                nodesHTML += `
+                    <div class="mindmap-node mindmap-node-sub ${lang.class}" style="left:${l2x}px; top:${l2y}px;">
+                        ${lang.val}
+                    </div>
+                `;
+            });
+
+            svgLinesHTML += `</svg>`;
+            canvas.innerHTML = svgLinesHTML + nodesHTML;
+
+            document.getElementById('wfListEN').innerHTML = formatWordFamilyList(item.familyEN);
+            document.getElementById('wfListES').innerHTML = formatWordFamilyList(item.familyES);
+            document.getElementById('wfListKO').innerHTML = formatWordFamilyList(item.familyKO);
+            bottomGrid.style.display = "grid";
+        }
+
+        // --- TAB 6: CALENDAR ---
+        function changeCalDate(offset) {
+            const mode = document.getElementById('calViewMode').value;
+            if (mode === 'month') calCurrentDate.setMonth(calCurrentDate.getMonth() + offset);
+            else if (mode === 'week') calCurrentDate.setDate(calCurrentDate.getDate() + offset * 7);
+            else if (mode === 'year') calCurrentDate.setFullYear(calCurrentDate.getFullYear() + offset);
+            renderCalendarTab();
+        }
+
+        function renderCalendarTab() {
+            const mode = document.getElementById('calViewMode').value;
+            const grid = document.getElementById('calendarGrid');
+            const label = document.getElementById('calCurrentLabel');
+            grid.innerHTML = "";
+
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            const studyDatesVocab = new Set(userVocabList.map(v => formatDateYYYYMMDD(v.timestamp)));
+
+            const blogLangDateMap = {};
+            grammarList.forEach(g => {
+                const dateKey = formatDateYYYYMMDD(g.timestamp);
+                if (!blogLangDateMap[dateKey]) blogLangDateMap[dateKey] = new Set();
+                blogLangDateMap[dateKey].add(g.lang);
+            });
+
+            if (mode === 'month') {
+                const year = calCurrentDate.getFullYear();
+                const month = calCurrentDate.getMonth();
+                label.innerText = `${months[month]} ${year}`;
+
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                dayHeaders.forEach(dh => { grid.innerHTML += `<div class="cal-day-header">${dh}</div>`; });
+
+                for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div></div>`; }
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    const hasVocab = studyDatesVocab.has(dateStr);
+                    const blogLangs = blogLangDateMap[dateStr] || new Set();
+
+                    let dotsHTML = "";
+                    if (blogLangs.has('English')) dotsHTML += `<span class="dot-blog-en" title="English Blog"></span>`;
+                    if (blogLangs.has('Español')) dotsHTML += `<span class="dot-blog-es" title="Español Blog"></span>`;
+                    if (blogLangs.has('한국어')) dotsHTML += `<span class="dot-blog-ko" title="Korean Blog"></span>`;
+                    if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note" title="Note"></span>`;
+
+                    const cell = document.createElement('div');
+                    cell.className = `cal-cell ${hasVocab ? 'active-vocab' : ''}`;
+                    cell.onclick = () => selectCalDate(dateStr);
+                    cell.innerHTML = `
+                        <span class="cal-num">${d}</span>
+                        <div class="cal-dots">${dotsHTML}</div>
+                    `;
+                    grid.appendChild(cell);
+                }
+            } else if (mode === 'week') {
+                const curr = new Date(calCurrentDate);
+                const first = curr.getDate() - curr.getDay();
+                label.innerText = `Week of ${formatDateYYYYMMDD(calCurrentDate)}`;
+
+                const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                dayHeaders.forEach(dh => { grid.innerHTML += `<div class="cal-day-header">${dh}</div>`; });
+
+                for (let i = 0; i < 7; i++) {
+                    const next = new Date(curr.setDate(first + i));
+                    const dateStr = formatDateYYYYMMDD(next);
+                    const hasVocab = studyDatesVocab.has(dateStr);
+                    const blogLangs = blogLangDateMap[dateStr] || new Set();
+
+                    let dotsHTML = "";
+                    if (blogLangs.has('English')) dotsHTML += `<span class="dot-blog-en"></span>`;
+                    if (blogLangs.has('Español')) dotsHTML += `<span class="dot-blog-es"></span>`;
+                    if (blogLangs.has('한국어')) dotsHTML += `<span class="dot-blog-ko"></span>`;
+                    if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note"></span>`;
+
+                    const cell = document.createElement('div');
+                    cell.className = `cal-cell ${hasVocab ? 'active-vocab' : ''}`;
+                    cell.onclick = () => selectCalDate(dateStr);
+                    cell.innerHTML = `
+                        <span class="cal-num">${next.getDate()}</span>
+                        <div class="cal-dots">${dotsHTML}</div>
+                    `;
+                    grid.appendChild(cell);
+                }
+            } else if (mode === 'year') {
+                const year = calCurrentDate.getFullYear();
+                label.innerText = `Year ${year}`;
+                grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(260px, 1fr))";
+
+                months.forEach((mName, mIdx) => {
+                    const firstDay = new Date(year, mIdx, 1).getDay();
+                    const daysInMonth = new Date(year, mIdx + 1, 0).getDate();
+
+                    let miniDaysHTML = `<div class="year-mini-grid">
+                        <div style="font-weight:bold; color:var(--text-secondary);">S</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">M</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">T</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">W</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">T</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">F</div>
+                        <div style="font-weight:bold; color:var(--text-secondary);">S</div>`;
+
+                    for (let i = 0; i < firstDay; i++) { miniDaysHTML += `<div></div>`; }
+
+                    for (let d = 1; d <= daysInMonth; d++) {
+                        const dateStr = `${year}-${String(mIdx + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                        const hasVocab = studyDatesVocab.has(dateStr);
+                        const blogLangs = blogLangDateMap[dateStr] || new Set();
+
+                        let dotsHTML = "";
+                        if (blogLangs.has('English')) dotsHTML += `<span class="dot-blog-en"></span>`;
+                        if (blogLangs.has('Español')) dotsHTML += `<span class="dot-blog-es"></span>`;
+                        if (blogLangs.has('한국어')) dotsHTML += `<span class="dot-blog-ko"></span>`;
+                        if (blogLangs.has('Note')) dotsHTML += `<span class="dot-blog-note"></span>`;
+
+                        miniDaysHTML += `
+                            <div class="year-mini-num ${hasVocab ? 'active-vocab' : ''}" onclick="selectCalDate('${dateStr}')">
+                                ${d}
+                                <div class="cal-dots" style="margin-top:1px;">${dotsHTML}</div>
+                            </div>
+                        `;
+                    }
+                    miniDaysHTML += `</div>`;
+
+                    const monthCell = document.createElement('div');
+                    monthCell.className = "year-month-card";
+                    monthCell.innerHTML = `<div class="year-month-title">${mName}</div>${miniDaysHTML}`;
+                    grid.appendChild(monthCell);
+                });
+            }
+        }
+
+        function selectCalDate(dateStr) {
+            document.getElementById('daySummaryCard').style.display = "block";
+            document.getElementById('selectedDateTitle').innerText = `📅 Summary for ${dateStr}`;
+
+            const dayVocabs = userVocabList.filter(v => formatDateYYYYMMDD(v.timestamp) === dateStr);
+            const dayBlogs = grammarList.filter(g => formatDateYYYYMMDD(g.timestamp) === dateStr);
+
+            const vList = document.getElementById('dayVocabList');
+            if (dayVocabs.length === 0) vList.innerText = "No vocabulary added on this day.";
+            else {
+                vList.innerHTML = dayVocabs.map(v => `• <b>${v.en}</b> (${v.es} / ${v.ko}) - <i>${v.vi}</i>`).join('<br>');
+            }
+
+            const bList = document.getElementById('dayBlogList');
+            if (dayBlogs.length === 0) bList.innerText = "No blog posts published on this day.";
+            else {
+                bList.innerHTML = dayBlogs.map(g => `• [<b>${g.lang}</b>] <span style="cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="openQuickBlogPopup('${g.id}')">${g.title || 'Untitled Note'}</span> (${g.topic})`).join('<br>');
+            }
+        }
+
+        function openQuickBlogPopup(blogId) {
+            activeQuickBlogList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            activeQuickBlogIndex = activeQuickBlogList.findIndex(x => String(x.id) === String(blogId));
+            if (activeQuickBlogIndex === -1) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+            document.getElementById('quickBlogModal').style.display = "flex";
+        }
+
+        function displayQuickBlogModal() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            document.getElementById('quickBlogDate').innerText = `📅 Published: ${post.timestamp || '2026-07-28'} • [${post.lang}]`;
+            document.getElementById('quickBlogTitle').innerText = post.title || 'Untitled Note';
+            document.getElementById('quickBlogContent').innerHTML = post.content || 'No content';
+        }
+
+        function navigateQuickBlog(direction) {
+            activeQuickBlogIndex += direction;
+            if (activeQuickBlogIndex < 0) activeQuickBlogIndex = activeQuickBlogList.length - 1;
+            if (activeQuickBlogIndex >= activeQuickBlogList.length) activeQuickBlogIndex = 0;
+            displayQuickBlogModal();
+        }
+
+        function goToEditCurrentBlog() {
+            if (activeQuickBlogList.length === 0) return;
+            const post = activeQuickBlogList[activeQuickBlogIndex];
+            closeQuickBlogPopup();
+            switchTab('tab3');
+            openWriteBlogForm(post.id);
+        }
+
+        function closeQuickBlogPopup() {
+            document.getElementById('quickBlogModal').style.display = "none";
+        }
+
+        // --- TAB 7: REPORT ---
+        function renderReportTab() {
+            let countEN = 0, countES = 0, countKO = 0;
+            
+            userVocabList.forEach(i => {
+                if (i.en) countEN++;
+                if (i.es) countES++;
+                if (i.ko) countKO++;
+            });
+
+            document.getElementById('reportCountEN').innerText = `${countEN}`;
+            document.getElementById('reportCountES').innerText = `${countES}`;
+            document.getElementById('reportCountKO').innerText = `${countKO}`;
+
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            if (radarChartInstance) radarChartInstance.destroy();
+
+            radarChartInstance = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['English (EN)', 'Spanish (ES)', 'Korean (KO)'],
+                    datasets: [{
+                        label: 'Mastered Volume',
+                        data: [countEN, countES, countKO],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: '#10b981',
+                        pointBackgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { r: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', backdropColor: 'transparent' } } }
+                }
+            });
+
+            const velMode = document.getElementById('velocityPeriodMode')?.value || 'weekly';
+            const timeBuckets = {};
+
+            userVocabList.forEach(i => {
+                if (i.timestamp) {
+                    const d = new Date(i.timestamp);
+                    let key = "";
+                    if (velMode === 'daily') {
+                        key = formatDateYYYYMMDD(d);
+                    } else if (velMode === 'weekly') {
+                        const weekNum = Math.floor(d.getTime() / (7 * 24 * 60 * 60 * 1000));
+                        key = `W-${weekNum}`;
+                    } else if (velMode === 'monthly') {
+                        key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                    } else {
+                        key = `${d.getFullYear()}`;
+                    }
+                    timeBuckets[key] = (timeBuckets[key] || 0) + 1;
+                }
+            });
+
+            const sortedKeys = Object.keys(timeBuckets).sort();
+            const velocityLabels = sortedKeys.map((k, idx) => velMode === 'weekly' ? `Period ${idx + 1}` : k);
+            const velocityData = sortedKeys.map(k => timeBuckets[k]);
+
+            const velCtx = document.getElementById('velocityChart').getContext('2d');
+            if (velocityChartInstance) velocityChartInstance.destroy();
+
+            velocityChartInstance = new Chart(velCtx, {
+                type: 'line',
+                data: {
+                    labels: velocityLabels.length > 0 ? velocityLabels : ['Current'],
+                    datasets: [{
+                        label: 'Words Added',
+                        data: velocityData.length > 0 ? velocityData : [0],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
+                }
+            });
+
+            const bookProgressMap = {};
+            Object.keys(BOOK_UNITS_CONFIG).forEach(b => {
+                bookProgressMap[b] = { total: BOOK_UNITS_CONFIG[b], learnedUnits: new Set() };
+            });
+
+            userVocabList.forEach(item => {
+                if (item.book && bookProgressMap[item.book] && item.unit) {
+                    bookProgressMap[item.book].learnedUnits.add(item.unit);
+                }
+            });
+
+            const bookLabels = Object.keys(BOOK_UNITS_CONFIG);
+            const bookLearnedCounts = bookLabels.map(b => bookProgressMap[b].learnedUnits.size);
+            const bookTotals = bookLabels.map(b => bookProgressMap[b].total);
+
+            const bCtx = document.getElementById('bookChart').getContext('2d');
+            if (bookChartInstance) bookChartInstance.destroy();
+
+            bookChartInstance = new Chart(bCtx, {
+                type: 'bar',
+                data: {
+                    labels: bookLabels,
+                    datasets: [
+                        { label: 'Learned Units', data: bookLearnedCounts, backgroundColor: '#f59e0b', borderRadius: 4 },
+                        { label: 'Total Units', data: bookTotals, backgroundColor: '#334155', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#f8fafc' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, y: { ticks: { color: '#f8fafc', font: { size: 11 } }, grid: { display: false } } }
+                }
+            });
+
+            const bTbody = document.getElementById('bookProgressTableBody');
+            bTbody.innerHTML = "";
+
+            bookLabels.forEach(b => {
+                const learned = bookProgressMap[b].learnedUnits.size;
+                const total = bookProgressMap[b].total;
+                const remaining = total - learned;
+
+                bTbody.innerHTML += `
+                    <tr>
+                        <td><strong>${b}</strong></td>
+                        <td style="color:var(--primary); font-weight:bold;">${learned} Units</td>
+                        <td>${total} Units</td>
+                        <td style="color:var(--warning); font-weight:bold;">${remaining} Units left</td>
+                    </tr>
+                `;
+            });
         }
     </script>
 </body>
