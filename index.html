@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+     <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -642,7 +642,6 @@
                     </div>
                 </div>
 
-                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -694,7 +693,6 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                             <h3 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h3>
                             <div style="display: flex; gap: 8px; align-items: center;">
-                                <!-- ADDED TIMELINE FEED SORT DROPDOWN -->
                                 <select id="blogFeedSortMode" onchange="renderBlogFeed(1)" style="width: auto; padding: 6px 10px; font-size: 0.82rem;">
                                     <option value="newest" selected>Newest First</option>
                                     <option value="oldest">Oldest First</option>
@@ -752,7 +750,6 @@
                                     <button type="button" id="btnBold" class="btn-fmt" onclick="toggleStyle('bold')"><b>B</b> Bold</button>
                                     <button type="button" id="btnItalic" class="btn-fmt" onclick="toggleStyle('italic')"><i>I</i> Light</button>
                                     
-                                    <!-- UPDATED FONT SIZE OPTIONS: 12-14-16-20-24-30-36-40px -->
                                     <select class="btn-fmt" onchange="setFontSizeVal(this.value)" style="width: auto; padding: 4px;">
                                         <option value="12px">12px</option>
                                         <option value="14px" selected>14px</option>
@@ -810,7 +807,6 @@
                         <option value="ALL">All Sub-topics</option>
                     </select>
 
-                    <!-- RENAMED FLASHCARD MODES -->
                     <label style="margin-left: 6px;">Mode:</label>
                     <select id="quizMode" onchange="startQuiz()" style="width: auto;">
                         <option value="flashcard">Flashcard EN/ES/KO</option>
@@ -904,7 +900,6 @@
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
-                    <!-- RESTRICTED FILTER PERIODS: 1 WEEK, 1 MONTH, 6 MONTHS, 1 YEAR, ALL TIME (DEFAULT 1 WEEK) -->
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
                         <option value="7" selected>1 Week (7 Days)</option>
                         <option value="30">1 Month (30 Days)</option>
@@ -1105,8 +1100,6 @@
             <div class="editor-toolbar">
                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
-                
-                <!-- UPDATED FONT SIZES: 12, 14, 16, 20, 24, 30, 36, 40px -->
                 <select class="btn-fmt" onchange="setFontSizeVal(this.value)" style="width: auto; padding: 4px;">
                     <option value="12px">12px</option>
                     <option value="14px" selected>14px</option>
@@ -1117,7 +1110,6 @@
                     <option value="36px">36px</option>
                     <option value="40px">40px</option>
                 </select>
-
                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
                 <button type="button" class="btn-fmt" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 3x2</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
@@ -1328,10 +1320,23 @@
                 if (activeTab === 'tab6') renderCalendarTab();
             });
 
+            // SAFELY CLOSE POS DROPDOWN WITHOUT BLOCKING SEARCH DROPDOWNS
             window.addEventListener('click', (e) => {
-                const container = document.querySelector('.custom-dropdown-container');
-                if (container && !container.contains(e.target)) {
-                    document.getElementById('posDropdownContent').classList.remove('show');
+                const posContainer = document.querySelector('.custom-dropdown-container');
+                if (posContainer && !posContainer.contains(e.target)) {
+                    document.getElementById('posDropdownContent')?.classList.remove('show');
+                }
+                
+                const searchInput = document.getElementById('searchInput');
+                const searchDropdown = document.getElementById('searchDropdown');
+                if (searchDropdown && searchInput && !searchDropdown.contains(e.target) && e.target !== searchInput) {
+                    searchDropdown.style.display = 'none';
+                }
+
+                const boardInput = document.getElementById('boardSearchInput');
+                const boardDropdown = document.getElementById('boardDropdown');
+                if (boardDropdown && boardInput && !boardDropdown.contains(e.target) && e.target !== boardInput) {
+                    boardDropdown.style.display = 'none';
                 }
             });
         };
@@ -1933,7 +1938,6 @@
             } catch(err) { showToast("Saved"); }
         }
 
-        /* VOCABULARY LOG WITH GROUPED FAMILY & EXAMPLE ROWS */
         function renderLogTable() {
             const filterVal = document.getElementById('logFilter').value;
             const tbody = document.getElementById('logTableBody');
@@ -2299,7 +2303,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES SEARCH RENDERER */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2776,7 +2780,7 @@
             showToast("Saved");
 
             try {
-                await fetch(GAS_WEB_APP_URL, {
+                const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ action: "delete", type: "grammar", id }),
