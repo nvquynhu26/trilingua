@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <link rel="apple-touch-icon" href="Logo1.png">
     <title>Trilingua</title>
+    <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -90,7 +90,6 @@
         .pos-item input { display: none; }
         .pos-item.selected::after { content: "✔"; color: var(--primary); font-weight: bold; }
 
-        /* DEFAULT BLOG EDITOR STYLE: 14px, WHITE COLOR #ffffff */
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: #ffffff !important; font-size: 14px !important; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor img, .feed-post-body img, #quickBlogContent img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px auto; display: block; object-fit: contain; }
@@ -643,6 +642,7 @@
                     </div>
                 </div>
 
+                <!-- CONJUGACIÓN TABLE VIEW WITH FULL 18 TENSES -->
                 <div id="searchConjView" style="display: none;">
                     <div id="conjDirectoryContainer"></div>
                     <div id="conjPagination" style="display:flex; justify-content:center; gap:6px; margin-top:20px;"></div>
@@ -691,9 +691,16 @@
 
                 <div>
                     <div id="blogFeedContainer">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                             <h3 style="color: var(--grammar);">📰 Grammar Blog Timeline Feed</h3>
-                            <button id="filterPinnedFeedBtn" class="btn btn-sm btn-warning" onclick="togglePinnedFeedFilter()">⭐ Pinned Only</button>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <!-- ADDED TIMELINE FEED SORT DROPDOWN -->
+                                <select id="blogFeedSortMode" onchange="renderBlogFeed(1)" style="width: auto; padding: 6px 10px; font-size: 0.82rem;">
+                                    <option value="newest" selected>Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                                <button id="filterPinnedFeedBtn" class="btn btn-sm btn-warning" onclick="togglePinnedFeedFilter()">⭐ Pinned Only</button>
+                            </div>
                         </div>
                         <div id="feedPostsList"></div>
                         <div id="feedPagination" style="display: flex; justify-content: center; gap: 6px; margin-top: 20px;"></div>
@@ -803,7 +810,7 @@
                         <option value="ALL">All Sub-topics</option>
                     </select>
 
-                    <!-- UPDATED FLASHCARD MODE NAMES -->
+                    <!-- RENAMED FLASHCARD MODES -->
                     <label style="margin-left: 6px;">Mode:</label>
                     <select id="quizMode" onchange="startQuiz()" style="width: auto;">
                         <option value="flashcard">Flashcard EN/ES/KO</option>
@@ -897,13 +904,13 @@
             <div class="card" style="margin-top: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap;">
                     <h3 style="color: var(--primary);">Learning Analytics Dashboard</h3>
+                    <!-- RESTRICTED FILTER PERIODS: 1 WEEK, 1 MONTH, 6 MONTHS, 1 YEAR, ALL TIME (DEFAULT 1 WEEK) -->
                     <select id="statsFilterPeriod" onchange="renderAnalyticsDashboard()" style="width: auto; padding: 6px 12px;">
-                        <option value="36500" selected>All Time</option>
-                        <option value="7">1 Week (7 Days)</option>
+                        <option value="7" selected>1 Week (7 Days)</option>
                         <option value="30">1 Month (30 Days)</option>
-                        <option value="90">3 Months (90 Days)</option>
                         <option value="180">6 Months (180 Days)</option>
                         <option value="365">1 Year (365 Days)</option>
+                        <option value="36500">All Time</option>
                     </select>
                 </div>
 
@@ -1098,6 +1105,8 @@
             <div class="editor-toolbar">
                 <button type="button" class="btn-fmt" onclick="execCmd('bold')"><b>B</b> Bold</button>
                 <button type="button" class="btn-fmt" onclick="execCmd('italic')"><i>I</i> Light</button>
+                
+                <!-- UPDATED FONT SIZES: 12, 14, 16, 20, 24, 30, 36, 40px -->
                 <select class="btn-fmt" onchange="setFontSizeVal(this.value)" style="width: auto; padding: 4px;">
                     <option value="12px">12px</option>
                     <option value="14px" selected>14px</option>
@@ -1108,6 +1117,7 @@
                     <option value="36px">36px</option>
                     <option value="40px">40px</option>
                 </select>
+
                 <button type="button" class="btn-fmt" onclick="execCmd('insertUnorderedList')">- List</button>
                 <button type="button" class="btn-fmt" onclick="insertSmartTable('tempNoteContentEditor')">+ Table 3x2</button>
                 <label style="font-size:0.75rem; margin-left:4px;">Text:</label>
@@ -1374,6 +1384,17 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pos-item').forEach(item => {
+                item.onclick = function(e) {
+                    e.stopPropagation();
+                    const cb = this.querySelector('input');
+                    cb.checked = !cb.checked;
+                    updatePosLabel();
+                };
+            });
+        });
+
         function updatePosLabel() {
             const checkedBoxes = Array.from(document.querySelectorAll('input[name="posSelect"]:checked'));
             const labelEl = document.getElementById('posDropdownLabel');
@@ -1588,6 +1609,95 @@
             window.speechSynthesis.speak(utterance);
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
+        
+        function insertSmartTable(editorId) {
+            const editor = document.getElementById(editorId);
+            const tableHTML = `
+                <div class="smart-table-wrapper" contenteditable="false">
+                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
+                    <button class="tbl-btn" style="top:-12px; left:14px;" onclick="removeSmartRow(this)" title="Remove Row">-</button>
+                    <button class="tbl-btn" style="top:-12px; right:18px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="removeSmartCol(this)" title="Remove Column">-</button>
+                    <button class="tbl-btn tbl-btn-del" style="top:4px; right:4px;" onclick="deleteBlockElement(this)" title="Delete Table">🗑</button>
+                    <table class="smart-table">
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
+                    </table>
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, tableHTML);
+        }
+
+        function addSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            const cols = table.rows[0].cells.length;
+            const newTr = table.insertRow();
+            newTr.contentEditable = "true";
+            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
+        }
+
+        function removeSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows.length > 1) table.deleteRow(table.rows.length - 1);
+        }
+
+        function addSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            for(let i=0; i<table.rows.length; i++) {
+                const cell = table.rows[i].insertCell();
+                cell.innerText = "New cell";
+            }
+        }
+
+        function removeSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows[0].cells.length > 1) {
+                for(let i=0; i<table.rows.length; i++) {
+                    table.rows[i].deleteCell(table.rows[i].cells.length - 1);
+                }
+            }
+        }
+
+        function insertColumnLayout(cols) {
+            const editor = document.getElementById('gramContentEditor');
+            let colsHTML = "";
+            for (let i = 1; i <= cols; i++) {
+                colsHTML += `<div contenteditable="true" style="padding:10px; background:rgba(255,255,255,0.03); border-radius:6px; min-height:60px;"><p>Col ${i} content...</p></div>`;
+            }
+            const wrapperHTML = `
+                <div class="column-layout-${cols}" contenteditable="false">
+                    <button class="del-block-btn" onclick="deleteBlockElement(this)" title="Delete Layout">🗑</button>
+                    ${colsHTML}
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, wrapperHTML);
+        }
+
+        function deleteBlockElement(btn) {
+            if(confirm("Delete this element?")) {
+                btn.parentNode.remove();
+            }
+        }
+
+        function handleBlogImageUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                const editor = document.getElementById('gramContentEditor');
+                const imgHTML = `<div contenteditable="false" style="margin:16px 0; text-align:center;"><img src="${base64Img}" alt="Uploaded Image" style="max-width:100%; border-radius:8px; display:inline-block;"></div><p><br></p>`;
+                editor.focus();
+                document.execCommand('insertHTML', false, imgHTML);
+            };
+            reader.readAsDataURL(file);
+            input.value = "";
+        }
 
         // --- MODALS ---
         function openNoteModal(lang) {
@@ -2360,6 +2470,7 @@
             renderBlogFeed(feedCurrentPage);
         }
 
+        /* GRAMMAR BLOG TIMELINE FEED SORT (NEWEST / OLDEST FIRST) */
         function renderBlogFeed(page = 1) {
             feedCurrentPage = page;
             const container = document.getElementById('feedPostsList');
@@ -2372,7 +2483,14 @@
                 return;
             }
 
-            let sortedList = [...grammarList].sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            const sortOrder = document.getElementById('blogFeedSortMode')?.value || "newest";
+            let sortedList = [...grammarList];
+
+            if (sortOrder === "newest") {
+                sortedList.sort((a, b) => new Date(b.timestamp || '2026-07-28') - new Date(a.timestamp || '2026-07-28'));
+            } else {
+                sortedList.sort((a, b) => new Date(a.timestamp || '2026-07-28') - new Date(b.timestamp || '2026-07-28'));
+            }
             
             if (filterPinnedFeedOnly) {
                 sortedList = sortedList.filter(p => pinnedPostIds.includes(p.id));
@@ -3034,9 +3152,9 @@
             }
         }
 
-        // --- DASHBOARD ANALYTICS ---
+        /* DASHBOARD ANALYTICS DEFAULT 1 WEEK (7 DAYS) & FILTER PERIODS RESTRICTED TO 1 WEEK, 1 MONTH, 6 MONTHS, 1 YEAR, ALL TIME */
         function renderAnalyticsDashboard() {
-            const days = parseInt(document.getElementById('statsFilterPeriod').value || 36500);
+            const days = parseInt(document.getElementById('statsFilterPeriod').value || 7);
             const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
             
             const flashcardHist = quizHistory.filter(h => new Date(h.timestamp) >= cutoff && h.source === 'flashcard');
