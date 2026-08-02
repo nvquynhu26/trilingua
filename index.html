@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
-    <title>Trilingua - EN | ES | KO</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+    <title>Trilingua</title>
+     <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -83,13 +83,15 @@
 
         .custom-dropdown-container { position: relative; width: 100%; }
         .custom-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .custom-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 9999; max-height: 180px; overflow-y: auto; box-shadow: var(--shadow); }
+        .custom-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 999; max-height: 180px; overflow-y: auto; box-shadow: var(--shadow); }
         .custom-dropdown-content.show { display: flex; flex-direction: column; gap: 4px; }
-        .pos-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding: 6px 8px; cursor: pointer; border-radius: 4px; color: var(--text); user-select: none; }
+        .pos-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding: 6px 8px; cursor: pointer; border-radius: 4px; color: var(--text); }
         .pos-item:hover { background: var(--surface-hover); }
         .pos-item input { display: none; }
         .pos-item.selected::after { content: "✔"; color: var(--primary); font-weight: bold; }
 
+        /* EDITOR TOOLBAR & RICH EDITOR */
+        .editor-toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
         .rich-editor { width: 100%; min-height: 480px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: #ffffff !important; font-size: 14px !important; line-height: 1.6; overflow-y: auto; outline: none; overflow-wrap: anywhere; word-break: break-word; }
         .rich-editor:focus { border-color: var(--primary); }
         .rich-editor img, .feed-post-body img, #quickBlogContent img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px auto; display: block; object-fit: contain; }
@@ -1185,7 +1187,7 @@
         // =========================================================================
         // GAS API CONFIG - DÁN URL WEB APP CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec ";
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
 
         let userVocabList = [];
         let grammarList = [];
@@ -1307,7 +1309,6 @@
             }
         }
 
-        /* KHỞI TẠO MẶC ĐỊNH LUÔN HIỂN THỊ TRANG VOCABULARY (TAB 1) ĐẦU TIÊN */
         window.onload = () => {
             handleTopicChange(document.getElementById('topic').value);
             renderTopicNav();
@@ -1316,13 +1317,17 @@
             loadFromLocalStorage();
             fetchDataFromGAS();
 
-            // FORCE DEFAULT TO TAB 1 (VOCABULARY) ON INITIAL LOAD
-            switchTab('tab1', true);
-
             window.addEventListener('resize', () => {
                 if (lastRenderedBoardItem) renderMindmap(lastRenderedBoardItem);
                 const activeTab = localStorage.getItem("trilingua_active_tab");
                 if (activeTab === 'tab6') renderCalendarTab();
+            });
+
+            window.addEventListener('click', (e) => {
+                const container = document.querySelector('.custom-dropdown-container');
+                if (container && !container.contains(e.target)) {
+                    document.getElementById('posDropdownContent').classList.remove('show');
+                }
             });
         };
 
@@ -1400,18 +1405,6 @@
             document.getElementById('esConjBtn').style.display = isVerb ? 'inline-flex' : 'none';
         }
 
-        function setFontSizeVal(sizePx) {
-            const editor = document.getElementById('tempNoteContentEditor') || document.getElementById('gramContentEditor');
-            editor.focus();
-            const selection = window.getSelection();
-            if (!selection.rangeCount || selection.isCollapsed) return;
-            const range = selection.getRangeAt(0);
-            const span = document.createElement("span");
-            span.style.fontSize = sizePx;
-            span.appendChild(range.extractContents());
-            range.insertNode(span);
-        }
-
         function handleTopicChange(topicVal) {
             const subSelect = document.getElementById('subTopic');
             const bookSelect = document.getElementById('book');
@@ -1454,6 +1447,9 @@
                 }));
             }
             if (savedQuiz) quizHistory = JSON.parse(savedQuiz);
+
+            // MẶC ĐỊNH LUÔN HIỂN THỊ TRANG VOCABULARY (TAB 1) ĐẦU TIÊN KHI VÀO TRANG
+            switchTab('tab1', false);
         }
 
         function saveToLocalStorage() {
@@ -1588,7 +1584,106 @@
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
-        // --- MODALS & FORM EDITING ---
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
+        
+        function setFontSizeVal(sizePx) {
+            const selection = window.getSelection();
+            if (!selection.rangeCount || selection.isCollapsed) return;
+            const range = selection.getRangeAt(0);
+            const span = document.createElement("span");
+            span.style.fontSize = sizePx;
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+
+        function insertSmartTable(editorId) {
+            const editor = document.getElementById(editorId);
+            const tableHTML = `
+                <div class="smart-table-wrapper" contenteditable="false">
+                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
+                    <button class="tbl-btn" style="top:-12px; left:14px;" onclick="removeSmartRow(this)" title="Remove Row">-</button>
+                    <button class="tbl-btn" style="top:-12px; right:18px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="removeSmartCol(this)" title="Remove Column">-</button>
+                    <button class="tbl-btn tbl-btn-del" style="top:4px; right:4px;" onclick="deleteBlockElement(this)" title="Delete Table">🗑</button>
+                    <table class="smart-table">
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
+                    </table>
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, tableHTML);
+        }
+
+        function addSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            const cols = table.rows[0].cells.length;
+            const newTr = table.insertRow();
+            newTr.contentEditable = "true";
+            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
+        }
+
+        function removeSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows.length > 1) table.deleteRow(table.rows.length - 1);
+        }
+
+        function addSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            for(let i=0; i<table.rows.length; i++) {
+                const cell = table.rows[i].insertCell();
+                cell.innerText = "New cell";
+            }
+        }
+
+        function removeSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows[0].cells.length > 1) {
+                for(let i=0; i<table.rows.length; i++) {
+                    table.rows[i].deleteCell(table.rows[i].cells.length - 1);
+                }
+            }
+        }
+
+        function insertColumnLayout(cols) {
+            const editor = document.getElementById('gramContentEditor');
+            let colsHTML = "";
+            for (let i = 1; i <= cols; i++) {
+                colsHTML += `<div contenteditable="true" style="padding:10px; background:rgba(255,255,255,0.03); border-radius:6px; min-height:60px;"><p>Col ${i} content...</p></div>`;
+            }
+            const wrapperHTML = `
+                <div class="column-layout-${cols}" contenteditable="false">
+                    <button class="del-block-btn" onclick="deleteBlockElement(this)" title="Delete Layout">🗑</button>
+                    ${colsHTML}
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, wrapperHTML);
+        }
+
+        function deleteBlockElement(btn) {
+            if(confirm("Delete this element?")) {
+                btn.parentNode.remove();
+            }
+        }
+
+        function handleBlogImageUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                const editor = document.getElementById('gramContentEditor');
+                const imgHTML = `<div contenteditable="false" style="margin:16px 0; text-align:center;"><img src="${base64Img}" alt="Uploaded Image" style="max-width:100%; border-radius:8px; display:inline-block;"></div><p><br></p>`;
+                editor.focus();
+                document.execCommand('insertHTML', false, imgHTML);
+            };
+            reader.readAsDataURL(file);
+            input.value = "";
+        }
+
+        // --- MODALS ---
         function openNoteModal(lang) {
             currentEditingNoteLang = lang;
             document.getElementById('noteModalTitle').innerText = `Edit Note [${lang}]`;
@@ -2187,7 +2282,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES SEARCH RENDERER */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
