@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Trilingua">
     <title>Trilingua</title>
-    <link rel="apple-touch-icon" href="Logo1.png">
+     <link rel="apple-touch-icon" href="Logo1.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -81,7 +81,6 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
         textarea { resize: vertical; min-height: 70px; }
 
-        /* FIXED STABLE CUSTOM DROPDOWN MULTI-SELECT POS */
         .custom-dropdown-container { position: relative; width: 100%; }
         .custom-dropdown-btn { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .custom-dropdown-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; padding: 8px; z-index: 9999; max-height: 200px; overflow-y: auto; box-shadow: var(--shadow); }
@@ -1186,7 +1185,7 @@
         // =========================================================================
         // GAS API CONFIG - DÁN URL WEB APP CỦA BẠN VÀO BÊN DƯỚI
         // =========================================================================
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec";
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzRMiJUDGXOXaNg1mM7tNTYSIgu-k-AbP2z96ExLWQkV5WiV0CVYRUNr37I_6-_lZsjg/exec ";
 
         let userVocabList = [];
         let grammarList = [];
@@ -1321,6 +1320,13 @@
                 const activeTab = localStorage.getItem("trilingua_active_tab");
                 if (activeTab === 'tab6') renderCalendarTab();
             });
+
+            window.addEventListener('click', (e) => {
+                const container = document.querySelector('.custom-dropdown-container');
+                if (container && !container.contains(e.target)) {
+                    document.getElementById('posDropdownContent').classList.remove('show');
+                }
+            });
         };
 
         function triggerWordOfTheDay() {
@@ -1356,6 +1362,7 @@
             menu.classList.toggle('show');
         }
 
+        /* FIXED CONFLICT-FREE POS DROPDOWN TOGGLE */
         function togglePosDropdown(e) {
             e.stopPropagation();
             const content = document.getElementById('posDropdownContent');
@@ -1585,6 +1592,95 @@
             window.speechSynthesis.speak(utterance);
         }
         if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+        function execCmd(command, value = null) { document.execCommand(command, false, value); }
+        function toggleStyle(styleName) { document.execCommand(styleName, false, null); }
+        
+        function insertSmartTable(editorId) {
+            const editor = document.getElementById(editorId);
+            const tableHTML = `
+                <div class="smart-table-wrapper" contenteditable="false">
+                    <button class="tbl-btn" style="top:-12px; left:-12px;" onclick="addSmartRow(this)" title="Add Row">+</button>
+                    <button class="tbl-btn" style="top:-12px; left:14px;" onclick="removeSmartRow(this)" title="Remove Row">-</button>
+                    <button class="tbl-btn" style="top:-12px; right:18px;" onclick="addSmartCol(this)" title="Add Column">+</button>
+                    <button class="tbl-btn" style="top:-12px; right:-12px;" onclick="removeSmartCol(this)" title="Remove Column">-</button>
+                    <button class="tbl-btn tbl-btn-del" style="top:4px; right:4px;" onclick="deleteBlockElement(this)" title="Delete Table">🗑</button>
+                    <table class="smart-table">
+                        <tr contenteditable="true"><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>
+                        <tr contenteditable="true"><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr>
+                    </table>
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, tableHTML);
+        }
+
+        function addSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            const cols = table.rows[0].cells.length;
+            const newTr = table.insertRow();
+            newTr.contentEditable = "true";
+            for(let i=0; i<cols; i++) { newTr.insertCell().innerText = "New cell"; }
+        }
+
+        function removeSmartRow(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows.length > 1) table.deleteRow(table.rows.length - 1);
+        }
+
+        function addSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            for(let i=0; i<table.rows.length; i++) {
+                const cell = table.rows[i].insertCell();
+                cell.innerText = "New cell";
+            }
+        }
+
+        function removeSmartCol(btn) {
+            const table = btn.parentNode.querySelector('table');
+            if(table.rows[0].cells.length > 1) {
+                for(let i=0; i<table.rows.length; i++) {
+                    table.rows[i].deleteCell(table.rows[i].cells.length - 1);
+                }
+            }
+        }
+
+        function insertColumnLayout(cols) {
+            const editor = document.getElementById('gramContentEditor');
+            let colsHTML = "";
+            for (let i = 1; i <= cols; i++) {
+                colsHTML += `<div contenteditable="true" style="padding:10px; background:rgba(255,255,255,0.03); border-radius:6px; min-height:60px;"><p>Col ${i} content...</p></div>`;
+            }
+            const wrapperHTML = `
+                <div class="column-layout-${cols}" contenteditable="false">
+                    <button class="del-block-btn" onclick="deleteBlockElement(this)" title="Delete Layout">🗑</button>
+                    ${colsHTML}
+                </div><p><br></p>
+            `;
+            editor.focus();
+            document.execCommand('insertHTML', false, wrapperHTML);
+        }
+
+        function deleteBlockElement(btn) {
+            if(confirm("Delete this element?")) {
+                btn.parentNode.remove();
+            }
+        }
+
+        function handleBlogImageUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                const editor = document.getElementById('gramContentEditor');
+                const imgHTML = `<div contenteditable="false" style="margin:16px 0; text-align:center;"><img src="${base64Img}" alt="Uploaded Image" style="max-width:100%; border-radius:8px; display:inline-block;"></div><p><br></p>`;
+                editor.focus();
+                document.execCommand('insertHTML', false, imgHTML);
+            };
+            reader.readAsDataURL(file);
+            input.value = "";
+        }
 
         // --- MODALS ---
         function openNoteModal(lang) {
@@ -2185,7 +2281,7 @@
             if(count === 0) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px;">No irregular verbs recorded yet.</td></tr>`;
         }
 
-        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY */
+        /* CONJUGACIÓN DIRECTORY FULL 18 TENSES DISPLAY WITH NO WRAPPING */
         function renderConjDirectory(searchQuery = "") {
             const container = document.getElementById('conjDirectoryContainer');
             const paginationEl = document.getElementById('conjPagination');
@@ -2856,6 +2952,18 @@
             }
         }
 
+        async function saveQuizEntryToSheet(entry) {
+            const rowDataQuiz = [entry.vocabId, entry.wordEN, entry.pos, entry.lang, entry.timestamp, entry.remembered, entry.source];
+            try {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: "add", type: "quiz", row: rowDataQuiz }),
+                    redirect: "follow"
+                });
+            } catch(e) {}
+        }
+
         function checkReverseAnswer(isCorrect, item) {
             const resEl = document.getElementById('revResult');
             resEl.style.display = 'block';
@@ -2968,18 +3076,6 @@
                     }
                 }, 600);
             }
-        }
-
-        async function saveQuizEntryToSheet(entry) {
-            const rowDataQuiz = [entry.vocabId, entry.wordEN, entry.pos, entry.lang, entry.timestamp, entry.remembered, entry.source];
-            try {
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: "add", type: "quiz", row: rowDataQuiz }),
-                    redirect: "follow"
-                });
-            } catch(e) {}
         }
 
         function normalizeString(str) {
@@ -3124,6 +3220,7 @@
             if(matches.length === 0) {
                 dropdown.innerHTML = `<div class="board-dropdown-item" style="color:var(--text-secondary); cursor:default;">Word not found in database</div>`;
                 dropdown.style.display = 'block';
+                renderMindmap(null);
                 return;
             }
 
@@ -3196,7 +3293,7 @@
                 const l2x = cx + dist2 * Math.cos(rad);
                 const l2y = cy + dist2 * Math.sin(rad);
 
-                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" />`;
+                svgLinesHTML += `<line x1="${cx}" y1="${cy}" x2="${l2x}" y2="${l2y}" stroke="#475569" stroke-width="3" stroke-dasharray="6" opacity="0.8" />`;
 
                 nodesHTML += `
                     <div class="mindmap-node mindmap-node-sub ${lang.class}" style="left:${l2x}px; top:${l2y}px;">
